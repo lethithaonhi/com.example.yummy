@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFC107</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#FF8400</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="color_btn_signin_microsoft">#04aef4</color>
+    <color name="color_btn_signin_microsoft_pressed">#2b88ae</color>
+    <color name="color_btn_signin_google">#fc5345</color>
+    <color name="color_btn_signin_google_pressed">#c6483e</color>
+    <color name="btn_exit">#bdbdbd</color>
+    <color name="searchbox_hint_text_color">#737373</color>
+    <color name="color_press_bg">#34000000</color>
+    <color name="note_passcode">#f5f5f5</color>
+    <color name="bg_grey">#80F7F2F2</color>
+    <color name="bg_green">#FF4EDD55</color>
+    <color name="bg_yellow">#F7D702</color>
+    <color name="bg_purple">#7F48DF</color>
+    <color name="defaultColor">#EEDC75</color>
+</resources>

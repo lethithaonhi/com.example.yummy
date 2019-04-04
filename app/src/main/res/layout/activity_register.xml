@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:layout_marginRight="50dp"
+    android:layout_marginLeft="50dp"
+    android:id="@+id/view_root"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/txt_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:fontFamily="@font/audiowide"
+    android:gravity="center_horizontal"
+    android:text="@string/signup"
+    android:textColor="@color/black"
+    android:textSize="35sp"
+    android:visibility="visible"
+    app:layout_constraintBottom_toTopOf="@id/content" />
+
+        <ImageView
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/logo"/>
+
+    <TextView
+    android:id="@+id/txt_title_register"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:fontFamily="@font/audiowide"
+    android:gravity="center_horizontal"
+    android:text="@string/app_name"
+    android:textColor="@color/colorPrimary"
+    android:textSize="20sp"
+    android:visibility="visible"
+    app:layout_constraintBottom_toTopOf="@id/content" />
+
+        <EditText
+            android:id="@+id/edt_username"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_ed_register"
+            android:fontFamily="sans-serif"
+            android:hint="@string/cred_verify_input_user_label"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:paddingLeft="16dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/btn_exit"
+            android:textSize="14sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edt_pass"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_ed_register"
+            android:fontFamily="sans-serif"
+            android:hint="@string/new_pass"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:paddingLeft="16dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/btn_exit"
+            android:textSize="14sp" />
+
+        <ImageButton
+            android:id="@+id/btn_password_show1"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="16dp"
+            android:background="@color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_remove_red_eye" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edt_passconfirm"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_ed_register"
+            android:fontFamily="sans-serif"
+            android:hint="@string/confirm_pass"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:paddingLeft="16dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/btn_exit"
+            android:textSize="14sp" />
+
+        <ImageButton
+            android:id="@+id/btn_password_show"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="16dp"
+            android:background="@color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_remove_red_eye" />
+
+    </FrameLayout>
+
+        <Button
+            android:layout_marginTop="16dp"
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="@drawable/btn_register"
+            android:elevation="3dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/register_text"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
