@@ -6,11 +6,12 @@
     <string name="history">History</string>
     <string name="notifications">Notifications</string>
     <string name="information">Information</string>
-    <string name="cred_verify_input_user_label">Username</string>
-    <string name="cred_verify_input_pass_label">Password</string>
+    <string name="cred_verify_input_user_label">Your email address</string>
+    <string name="cred_verify_input_pass_label">Yout password</string>
     <string name="register_text">Sign in</string>
     <string name="sso_facebook_ad">Facebook</string>
     <string name="sso_google_ad">Google</string>
+    <string name="sso_phone">Phone</string>
     <string name="sign_other">or sign in with</string>
     <string name="policy_message">By using this software, you agree to our \n<u><b>Terms of Use</b></u> and <u><b>Privacy Policy</b></u>.</string>
     <string name="policy_main">By using  this software, you agree to these \n Term Of Use &amp; Privacy Policy</string>
@@ -43,4 +44,11 @@
     <string name="success_register">Authentication successful!</string>
     <string name="open_setting_wifi">Tap icon to open wifi setting</string>
     <string name="disconnected">Disconnected</string>
+    <string name="fragment_user">Account</string>
+    <string name="login_please">Log in to your Yummy account</string>
+    <string name="intro_account">Sync your list, likes and history</string>
+    <string name="history_user">History</string>
+    <string name="address_user">Address</string>
+    <string name="setting_user">Settings</string>
+    <string name="sign_out">Sign out</string>
 </resources>

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.yummy.Fragment.AccountFragment;
 import com.example.yummy.Fragment.HomeFragment;
 import com.example.yummy.R;
 import com.example.yummy.Utils.UtilsBottomBar;
@@ -59,7 +60,7 @@ public class BottomBarActivity extends AppCompatActivity {
                 UtilsBottomBar.startFragment(getSupportFragmentManager(), HomeFragment.newInstance());
                 break;
             case R.id.tab_info:
-                UtilsBottomBar.startFragment(getSupportFragmentManager(), HomeFragment.newInstance());
+                UtilsBottomBar.startFragment(getSupportFragmentManager(), AccountFragment.newInstance());
                 break;
         }
         return true;

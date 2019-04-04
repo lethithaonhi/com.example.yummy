@@ -8,6 +8,7 @@
     <color name="transparent">#00000000</color>
     <color name="color_btn_signin_microsoft">#04aef4</color>
     <color name="color_btn_signin_microsoft_pressed">#2b88ae</color>
+    <color name="color_btn_signin_phone_pressed">#2AAD35</color>
     <color name="color_btn_signin_google">#fc5345</color>
     <color name="color_btn_signin_google_pressed">#c6483e</color>
     <color name="btn_exit">#bdbdbd</color>

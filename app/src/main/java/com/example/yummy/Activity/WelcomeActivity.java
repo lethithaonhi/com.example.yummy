@@ -41,7 +41,7 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
     @Override
     public void onProgressChange(int current, int max) {
         if(current == max) {
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, BottomBarActivity.class));
             finish();
             timer.cancel();
         }
