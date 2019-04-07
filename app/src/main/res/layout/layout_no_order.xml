@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:src="@drawable/tracking"
+        android:layout_gravity="center"
+        android:layout_width="120dp"
+        android:layout_height="120dp" />
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/no_order"
+        android:textSize="24dp"
+        app:fontFamily="@font/capriola" />
+
+    <TextView
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:text="@string/contect_order"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

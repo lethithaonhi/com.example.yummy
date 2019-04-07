@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.yummy.Fragment.AccountFragment;
+import com.example.yummy.Fragment.HistoryTabFragment;
 import com.example.yummy.Fragment.HomeFragment;
+import com.example.yummy.Fragment.NotificationFragment;
 import com.example.yummy.R;
 import com.example.yummy.Utils.UtilsBottomBar;
 import java.lang.reflect.Field;
@@ -54,10 +56,10 @@ public class BottomBarActivity extends AppCompatActivity {
                 UtilsBottomBar.startFragment(getSupportFragmentManager(), HomeFragment.newInstance());
                 break;
             case R.id.tab_history:
-                UtilsBottomBar.startFragment(getSupportFragmentManager(), HomeFragment.newInstance());
+                UtilsBottomBar.startFragment(getSupportFragmentManager(), HistoryTabFragment.newInstance());
                 break;
             case R.id.tab_bell:
-                UtilsBottomBar.startFragment(getSupportFragmentManager(), HomeFragment.newInstance());
+                UtilsBottomBar.startFragment(getSupportFragmentManager(), NotificationFragment.newInstance());
                 break;
             case R.id.tab_info:
                 UtilsBottomBar.startFragment(getSupportFragmentManager(), AccountFragment.newInstance());
