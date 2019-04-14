@@ -39,6 +39,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initView(){
+        LinearLayout btnPhoneLogin = findViewById(R.id.btn_login_phone);
+        btnPhoneLogin.setOnClickListener(v-> startActivity(new Intent(LoginActivity.this, PhoneActivity.class)));
+
         TextView txtRegister = findViewById(R.id.txtRegister);
         Button btnLogin = findViewById(R.id.btn_register);
         btnLogin.setOnClickListener(v -> signinWithEmail());

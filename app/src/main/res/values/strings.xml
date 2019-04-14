@@ -52,6 +52,7 @@
     <string name="address_user">Address</string>
     <string name="setting_user">Settings</string>
     <string name="sign_out">Sign out</string>
+    <string name="phone_login">Phone Login</string>
     <string name="ongoing">Ongoing</string>
     <string name="no_order">No Order</string>
     <string name="contect_order">Find menu and place for order.\nWe \'re ready to serve you </string>
