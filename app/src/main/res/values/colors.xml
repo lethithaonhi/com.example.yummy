@@ -20,4 +20,5 @@
     <color name="bg_yellow">#F7D702</color>
     <color name="bg_purple">#7F48DF</color>
     <color name="defaultColor">#EEDC75</color>
+    <color name="trans">#8A585858</color>
 </resources>

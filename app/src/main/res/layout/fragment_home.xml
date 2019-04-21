@@ -80,15 +80,15 @@
                         android:layout_marginRight="16dp"
                         android:layout_marginLeft="16dp"
                         android:background="@drawable/bg_circle_blue"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp">
+                        android:layout_width="45dp"
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:layout_gravity="center"
                             android:padding="10dp"
                             android:src="@drawable/like"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp" />
+                            android:layout_width="40dp"
+                            android:layout_height="40dp" />
                     </FrameLayout>
 
                     <TextView
@@ -110,15 +110,15 @@
                         android:layout_marginRight="16dp"
                         android:layout_marginLeft="16dp"
                         android:background="@drawable/bg_circle_green"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp">
+                        android:layout_width="45dp"
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:layout_gravity="center"
                             android:padding="10dp"
                             android:src="@drawable/blog"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp" />
+                            android:layout_width="40dp"
+                            android:layout_height="40dp" />
                     </FrameLayout>
 
                     <TextView
@@ -140,15 +140,15 @@
                         android:layout_marginRight="16dp"
                         android:layout_marginLeft="16dp"
                         android:background="@drawable/bg_circle_orange"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp">
+                        android:layout_width="45dp"
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:layout_gravity="center"
                             android:padding="10dp"
                             android:src="@drawable/nearby"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp" />
+                            android:layout_width="45dp"
+                            android:layout_height="45dp" />
                     </FrameLayout>
 
                     <TextView
@@ -171,15 +171,15 @@
                         android:layout_marginRight="16dp"
                         android:layout_marginLeft="16dp"
                         android:background="@drawable/bg_circle_purple"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp">
+                        android:layout_width="45dp"
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:layout_gravity="center"
                             android:padding="10dp"
                             android:src="@drawable/discount"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp" />
+                            android:layout_width="40dp"
+                            android:layout_height="40dp" />
                     </FrameLayout>
 
                     <TextView
@@ -490,7 +490,7 @@
                             <ImageView
                                 android:layout_gravity="center"
                                 android:padding="10dp"
-                                android:src="@drawable/like"
+                                android:src="@drawable/more"
                                 android:layout_width="45dp"
                                 android:layout_height="45dp" />
                         </FrameLayout>
@@ -499,7 +499,7 @@
                             android:textColor="@color/black"
                             android:fontFamily="sans-serif-light"
                             android:textSize="14sp"
-                            android:text="@string/fruits"
+                            android:text="@string/more"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
