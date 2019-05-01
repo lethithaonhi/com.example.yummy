@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.daimajia.numberprogressbar.OnProgressBarListener;
 import com.example.yummy.Database.MyDatabaseHelper;
+import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Node;
@@ -51,6 +52,8 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
     private GoogleApiClient gac;
     private DatabaseReference mDatabase;
     private  String addressStr;
+    private MyDatabaseHelper db;
+    private List<Restaurant> restaurantList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,16 +61,16 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
         setContentView(R.layout.activity_welcome);
 
         timer = new Timer();
+        restaurantList = new ArrayList<>();
         progressBar = findViewById(R.id.number_progress_bar);
         progressBar.setOnProgressBarListener(this);
         progressBar.setProgress(0);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         registerService();
-        MyDatabaseHelper db = new MyDatabaseHelper(this);
+        db = new MyDatabaseHelper(this);
     }
 
     private void getRestaurant(){
-        List<Restaurant> restaurantList = new ArrayList<>();
         mDatabase.child(Node.DiaDiem).child(addressStr).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshotRoot) {
@@ -80,16 +83,53 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
                             Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
                             if(restaurant != null) {
                                 restaurant.setRes_id(dataSnapshot.getKey());
-                                List<String> menuList = new ArrayList<>();
+//                                restaurant.setBranchList(getBranch(resID));
+
+                                List<String> imgList = new ArrayList<>();
+                                mDatabase.child(Node.HinhAnhQuanAn).child(resID).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot data : dataSnapshot.getChildren())
+                                        imgList.add(data.getValue(String.class));
+                                        restaurant.setImgList(imgList);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
                                 mDatabase.child(Node.QuanAn).child(resID).child(Node.Menu_QuanAn).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        List<String> menuList = new ArrayList<>();
                                         for (DataSnapshot menuSnapshot : dataSnapshot.getChildren()) {
                                             menuList.add(menuSnapshot.getValue(String.class));
                                             restaurant.setMenuIdList(menuList);
                                         }
-                                        restaurantList.add(restaurant);
-                                        setTimer((int)((float)1/dataSnapshotRoot.getChildrenCount()*100));
+
+                                        List<Branch> branchList = new ArrayList<>();
+                                        mDatabase.child(Node.Branch).child(resID).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                                                    Branch branch = data.getValue(Branch.class);
+                                                    if (branch != null)
+                                                        branch.setId(data.getKey());
+                                                    branchList.add(branch);
+                                                }
+
+                                                restaurant.setBranchList(branchList);
+                                                restaurantList.add(restaurant);
+                                                setTimer((int)((float)1/dataSnapshotRoot.getChildrenCount()*100));
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                        //                db.addRestaurant(restaurant);
                                     }
 
                                     @Override

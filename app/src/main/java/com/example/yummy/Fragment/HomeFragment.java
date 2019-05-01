@@ -29,6 +29,7 @@ public class HomeFragment extends Fragment {
 
         rcvExp.setLayoutManager(layoutManager);
 
+
         return v;
     }
 
