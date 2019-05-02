@@ -8,8 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.yummy.Model.Branch;
+import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.Utils.BranchContrains;
+import com.example.yummy.Utils.MenuContrains;
 import com.example.yummy.Utils.RestaurantContrains;
 
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         Log.i(TAG, "MyDatabaseHelper.onCreate ... ");
         db.execSQL(RestaurantContrains.CREATE_TABLE);
         db.execSQL(BranchContrains.CREATE_TABLE);
+        db.execSQL(MenuContrains.CREATE_TABLE);
     }
 
 
@@ -39,6 +42,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         // Hủy (drop) bảng cũ nếu nó đã tồn tại.
         db.execSQL("DROP TABLE IF EXISTS " + RestaurantContrains.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + BranchContrains.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + MenuContrains.TABLE_NAME);
         onCreate(db);
     }
 
@@ -57,6 +61,23 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.insert(BranchContrains.TABLE_NAME, null, values);
         db.close();
     }
+
+    public void addMenu(Menu menu, String resID) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(MenuContrains.Menu_ID, menu.getMenu_id());
+        values.put(MenuContrains.TYPE, menu.getType());
+        values.put(MenuContrains.RES_ID, resID);
+        values.put(MenuContrains.NAME, menu.getName());
+        values.put(MenuContrains.PRICES, menu.getPrices());
+        values.put(MenuContrains.IMAGE, menu.getImage());
+
+        db.insert(BranchContrains.TABLE_NAME, null, values);
+        db.close();
+    }
+
 
     public void addRestaurant(Restaurant restaurant) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -102,6 +123,17 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return branch;
     }
 
+    private Menu getMenuFromCursor(Cursor cursor){
+        Menu menu = new Menu();
+        menu.setMenu_id(cursor.getString(0));
+        menu.setType(cursor.getString(2));
+        menu.setName(cursor.getString(3));
+        menu.setPrices(cursor.getInt(4));
+        menu.setImage(cursor.getString(5));
+
+        return menu;
+    }
+
     public List<Restaurant> getRestaurant(List<String> idList) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Restaurant> dataList = new ArrayList<>();
@@ -116,6 +148,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                     do {
                         Restaurant restaurant = getResFromCursor(cursor);
                         restaurant.setBranchList(branchList);
+                        restaurant.setMenuList(getMenu(id));
                         dataList.add(restaurant);
                     } while (cursor.moveToNext());
                 }
@@ -145,6 +178,27 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 if (!cursor.isClosed()) {
                     cursor.close();
                 }
+        }
+        return dataList;
+    }
+
+    private List<Menu> getMenu(String resID){
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Menu> dataList = new ArrayList<>();
+        String query = "SELECT * FROM " + MenuContrains.TABLE_NAME + " WHERE " + MenuContrains.RES_ID
+                + " = ? ";
+        String[] selectionArgs = new String[]{String.valueOf(resID)};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    Menu menu = getMenuFromCursor(cursor);
+                    dataList.add(menu);
+                } while (cursor.moveToNext());
+            }
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
         }
         return dataList;
     }

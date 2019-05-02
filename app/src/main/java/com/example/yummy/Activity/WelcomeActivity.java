@@ -25,6 +25,7 @@ import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.daimajia.numberprogressbar.OnProgressBarListener;
 import com.example.yummy.Database.MyDatabaseHelper;
 import com.example.yummy.Model.Branch;
+import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Node;
@@ -120,8 +121,31 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
                                                 }
 
                                                 restaurant.setBranchList(branchList);
-                                                restaurantList.add(restaurant);
-                                                setTimer((int)((float)1/dataSnapshotRoot.getChildrenCount()*100));
+
+                                                List<Menu> menuList1 = new ArrayList<>();
+                                                mDatabase.child(Node.ThucDonQuanAn).child(resID).addValueEventListener(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        for (DataSnapshot menuIDSnap : dataSnapshot.getChildren()) {
+                                                            for (DataSnapshot data : menuIDSnap.getChildren()) {
+                                                                Menu menu = data.getValue(Menu.class);
+                                                                if (menu != null) {
+                                                                    menu.setType(menuIDSnap.getKey());
+                                                                    menu.setMenu_id(data.getKey());
+                                                                }
+                                                                menuList1.add(menu);
+                                                            }
+                                                        }
+                                                        restaurant.setMenuList(menuList1);
+                                                        restaurantList.add(restaurant);
+                                                        setTimer((int) ((float) 1 / dataSnapshotRoot.getChildrenCount() * 100));
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                    }
+                                                });
                                             }
 
                                             @Override

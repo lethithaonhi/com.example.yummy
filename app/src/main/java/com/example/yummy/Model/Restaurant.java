@@ -14,6 +14,7 @@ public class Restaurant implements Parcelable {
     private List<String> menuIdList;
     private List<String> imgList;
     private List<Branch> branchList;
+    private List<Menu> menuList;
 
     public Restaurant(){}
 
@@ -81,6 +82,14 @@ public class Restaurant implements Parcelable {
         this.branchList = branchList;
     }
 
+    public List<Menu> getMenuList() {
+        return menuList;
+    }
+
+    public void setMenuList(List<Menu> menuList) {
+        this.menuList = menuList;
+    }
+
     protected Restaurant(Parcel in) {
         res_id = in.readString();
         name = in.readString();
@@ -90,6 +99,7 @@ public class Restaurant implements Parcelable {
         menuIdList = in.createStringArrayList();
         imgList = in.createStringArrayList();
         in.readList(branchList,Branch.class.getClassLoader());
+        in.readList(menuList, Menu.class.getClassLoader());
     }
 
     public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
@@ -119,5 +129,6 @@ public class Restaurant implements Parcelable {
         dest.writeStringList(menuIdList);
         dest.writeStringList(imgList);
         dest.writeList(branchList);
+        dest.writeList(menuList);
     }
 }

@@ -45,7 +45,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:16.2.0'
     implementation 'com.google.firebase:firebase-database:16.1.0'
     //location
-    compile 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
     //phone
     implementation 'com.hbb20:ccp:2.2.7'
 }

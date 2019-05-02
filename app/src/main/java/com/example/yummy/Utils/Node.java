@@ -6,4 +6,5 @@ public class Node {
     public static String Menu_QuanAn = "menu";
     public static String Branch = "ChiNhanh";
     public static String HinhAnhQuanAn = "HinhAnhQuanAn";
+    public static String ThucDonQuanAn ="ThucDonQuanAn";
 }
