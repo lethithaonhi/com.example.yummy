@@ -28,6 +28,7 @@ import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
+import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -52,7 +53,6 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
     private NetworkChangeReceiver broadcastReceiver;
     private GoogleApiClient gac;
     private DatabaseReference mDatabase;
-    private  String addressStr;
     private MyDatabaseHelper db;
     private List<Restaurant> restaurantList;
 
@@ -67,78 +67,107 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
         progressBar.setOnProgressBarListener(this);
         progressBar.setProgress(0);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        Common.listResId = new ArrayList<>();
         registerService();
         db = new MyDatabaseHelper(this);
+        Common.db = db;
     }
 
     private void getRestaurant(){
-        mDatabase.child(Node.DiaDiem).child(addressStr).addValueEventListener(new ValueEventListener() {
+        mDatabase.child(Node.DiaDiem).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshotRoot) {
-                for (DataSnapshot postSnapshot: dataSnapshotRoot.getChildren()) {
-                    String resID = postSnapshot.getValue(String.class);
-                    if(resID != null){
-                        mDatabase.child(Node.QuanAn).child(resID).addValueEventListener(new ValueEventListener(){
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    String address = data.getKey();
+                    if(address != null)
+                    mDatabase.child(Node.DiaDiem).child(address).addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
-                            if(restaurant != null) {
-                                restaurant.setRes_id(dataSnapshot.getKey());
-//                                restaurant.setBranchList(getBranch(resID));
-
-                                List<String> imgList = new ArrayList<>();
-                                mDatabase.child(Node.HinhAnhQuanAn).child(resID).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        for(DataSnapshot data : dataSnapshot.getChildren())
-                                        imgList.add(data.getValue(String.class));
-                                        restaurant.setImgList(imgList);
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshotRoot) {
+                            for (DataSnapshot postSnapshot: dataSnapshotRoot.getChildren()) {
+                                String resID = postSnapshot.getValue(String.class);
+                                if(resID != null){
+                                    if(address.equals(Common.myAddress)){
+                                        Common.listResId.add(resID);
                                     }
+                                    mDatabase.child(Node.QuanAn).child(resID).addValueEventListener(new ValueEventListener(){
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
+                                            if(restaurant != null) {
+                                                restaurant.setCity(address);
+                                                restaurant.setRes_id(dataSnapshot.getKey());
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
-                                mDatabase.child(Node.QuanAn).child(resID).child(Node.Menu_QuanAn).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        List<String> menuList = new ArrayList<>();
-                                        for (DataSnapshot menuSnapshot : dataSnapshot.getChildren()) {
-                                            menuList.add(menuSnapshot.getValue(String.class));
-                                            restaurant.setMenuIdList(menuList);
-                                        }
-
-                                        List<Branch> branchList = new ArrayList<>();
-                                        mDatabase.child(Node.Branch).child(resID).addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                for(DataSnapshot data : dataSnapshot.getChildren()) {
-                                                    Branch branch = data.getValue(Branch.class);
-                                                    if (branch != null)
-                                                        branch.setId(data.getKey());
-                                                    branchList.add(branch);
-                                                }
-
-                                                restaurant.setBranchList(branchList);
-
-                                                List<Menu> menuList1 = new ArrayList<>();
-                                                mDatabase.child(Node.ThucDonQuanAn).child(resID).addValueEventListener(new ValueEventListener() {
+                                                List<String> imgList = new ArrayList<>();
+                                                mDatabase.child(Node.HinhAnhQuanAn).child(resID).addValueEventListener(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                        for (DataSnapshot menuIDSnap : dataSnapshot.getChildren()) {
-                                                            for (DataSnapshot data : menuIDSnap.getChildren()) {
-                                                                Menu menu = data.getValue(Menu.class);
-                                                                if (menu != null) {
-                                                                    menu.setType(menuIDSnap.getKey());
-                                                                    menu.setMenu_id(data.getKey());
-                                                                }
-                                                                menuList1.add(menu);
-                                                            }
+                                                        for(DataSnapshot data : dataSnapshot.getChildren())
+                                                            imgList.add(data.getValue(String.class));
+                                                        restaurant.setImgList(imgList);
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                    }
+                                                });
+                                                mDatabase.child(Node.QuanAn).child(resID).child(Node.Menu_QuanAn).addValueEventListener(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        List<String> menuList = new ArrayList<>();
+                                                        for (DataSnapshot menuSnapshot : dataSnapshot.getChildren()) {
+                                                            menuList.add(menuSnapshot.getValue(String.class));
+                                                            restaurant.setMenuIdList(menuList);
                                                         }
-                                                        restaurant.setMenuList(menuList1);
-                                                        restaurantList.add(restaurant);
-                                                        setTimer((int) ((float) 1 / dataSnapshotRoot.getChildrenCount() * 100));
+
+                                                        List<Branch> branchList = new ArrayList<>();
+                                                        mDatabase.child(Node.Branch).child(resID).addValueEventListener(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                                                                    Branch branch = data.getValue(Branch.class);
+                                                                    if (branch != null)
+                                                                        branch.setId(data.getKey());
+                                                                    branchList.add(branch);
+                                                                    db.addBranch(branch, resID, address);
+                                                                }
+
+                                                                restaurant.setBranchList(branchList);
+
+                                                                List<Menu> menuList1 = new ArrayList<>();
+                                                                mDatabase.child(Node.ThucDonQuanAn).child(resID).addValueEventListener(new ValueEventListener() {
+                                                                    @Override
+                                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                                        for (DataSnapshot menuIDSnap : dataSnapshot.getChildren()) {
+                                                                            for (DataSnapshot data : menuIDSnap.getChildren()) {
+                                                                                Menu menu = data.getValue(Menu.class);
+                                                                                if (menu != null) {
+                                                                                    menu.setType(menuIDSnap.getKey());
+                                                                                    menu.setMenu_id(data.getKey());
+                                                                                }
+                                                                                menuList1.add(menu);
+                                                                                db.addMenu(menu, resID, address);
+                                                                            }
+                                                                        }
+                                                                        restaurant.setMenuList(menuList1);
+                                                                        restaurantList.add(restaurant);
+                                                                        db.addRestaurant(restaurant);
+                                                                        setTimer((int) ((float) 1 / dataSnapshotRoot.getChildrenCount() * 100));
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                                    }
+                                                                });
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                            }
+                                                        });
+                                                        //                db.addRestaurant(restaurant);
                                                     }
 
                                                     @Override
@@ -147,27 +176,21 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
                                                     }
                                                 });
                                             }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                            }
-                                        });
-                                        //                db.addRestaurant(restaurant);
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        }
+                                    });
+                                }
                             }
                         }
+
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
+
                         }
                     });
-                    }
+
                 }
             }
 
@@ -176,7 +199,7 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
 
             }
         });
-    }
+            }
 
     private void setTimer(int progress){
         timer.schedule(new TimerTask() {
@@ -275,7 +298,7 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
             if (location != null) {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
-                Toast.makeText(this, latitude + " - "+longitude, Toast.LENGTH_SHORT).show();
+                Common.myLocation = location;
                 getCityLocation(latitude, longitude);
             } else {
                 Toast.makeText(this, "Falied!", Toast.LENGTH_SHORT).show();
@@ -329,7 +352,7 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
         try {
             List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
             for (int i=0; i<address.size(); i++) {
-                addressStr = address.get(0).getAdminArea();
+                Common.myAddress = address.get(0).getAdminArea();
                 getRestaurant();
             }
         } catch (IOException e) {

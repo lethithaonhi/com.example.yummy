@@ -15,6 +15,7 @@ import com.example.yummy.Fragment.HistoryTabFragment;
 import com.example.yummy.Fragment.HomeFragment;
 import com.example.yummy.Fragment.NotificationFragment;
 import com.example.yummy.R;
+import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.UtilsBottomBar;
 import java.lang.reflect.Field;
 
@@ -72,5 +73,11 @@ public class BottomBarActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         UtilsBottomBar.startFragment(getSupportFragmentManager(), HomeFragment.newInstance());
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Common.db.clearData();
     }
 }

@@ -1,6 +1,6 @@
 package com.example.yummy.Model;
 
-import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.Node;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -44,7 +44,7 @@ public class User {
     }
 
     public void AddUser(User user, String uid){
-        dataNode = FirebaseDatabase.getInstance().getReference().child(Common.user);
+        dataNode = FirebaseDatabase.getInstance().getReference().child(Node.user);
         dataNode.child(uid).setValue(user);
 
     }
