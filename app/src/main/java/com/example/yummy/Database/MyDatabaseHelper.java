@@ -40,13 +40,18 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.i(TAG, "MyDatabaseHelper.onUpgrade ... ");
         // Hủy (drop) bảng cũ nếu nó đã tồn tại.
+        clearData();
+    }
+
+    public void clearData(){
+        SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + RestaurantContrains.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + BranchContrains.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MenuContrains.TABLE_NAME);
         onCreate(db);
     }
 
-    public void clearData() {
+    public void deleteData() {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             db.execSQL(RestaurantContrains.DELETE_TABLE);

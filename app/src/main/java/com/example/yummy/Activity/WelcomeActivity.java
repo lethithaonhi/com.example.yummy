@@ -54,7 +54,6 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
     private GoogleApiClient gac;
     private DatabaseReference mDatabase;
     private MyDatabaseHelper db;
-    private List<Restaurant> restaurantList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,7 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
         setContentView(R.layout.activity_welcome);
 
         timer = new Timer();
-        restaurantList = new ArrayList<>();
+        Common.restaurantList = new ArrayList<>();
         progressBar = findViewById(R.id.number_progress_bar);
         progressBar.setOnProgressBarListener(this);
         progressBar.setProgress(0);
@@ -150,7 +149,7 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
                                                                             }
                                                                         }
                                                                         restaurant.setMenuList(menuList1);
-                                                                        restaurantList.add(restaurant);
+                                                                        Common.restaurantList.add(restaurant);
                                                                         db.addRestaurant(restaurant);
                                                                         setTimer((int) ((float) 1 / dataSnapshotRoot.getChildrenCount() * 100));
                                                                     }
@@ -353,6 +352,11 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
             List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
             for (int i=0; i<address.size(); i++) {
                 Common.myAddress = address.get(0).getAdminArea();
+                List<String>list = new ArrayList<>();
+                list.add("quan1");
+                if(Common.db.getRestaurant(list, Common.myAddress).size() > 0){
+                    Common.db.clearData();
+                }
                 getRestaurant();
             }
         } catch (IOException e) {
