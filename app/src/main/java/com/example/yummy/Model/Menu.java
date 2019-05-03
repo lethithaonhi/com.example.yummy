@@ -9,6 +9,7 @@ public class Menu implements Parcelable {
     private String name;
     private int prices;
     private String image;
+    private String describe;
 
     public Menu(){}
 
@@ -18,6 +19,7 @@ public class Menu implements Parcelable {
         name = in.readString();
         prices = in.readInt();
         image = in.readString();
+        describe = in.readString();
     }
 
     public String getMenu_id() {
@@ -60,6 +62,14 @@ public class Menu implements Parcelable {
         this.image = image;
     }
 
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
+    }
+
     public static final Creator<Menu> CREATOR = new Creator<Menu>() {
         @Override
         public Menu createFromParcel(Parcel in) {
@@ -84,5 +94,6 @@ public class Menu implements Parcelable {
         dest.writeString(name);
         dest.writeInt(prices);
         dest.writeString(image);
+        dest.writeString(describe);
     }
 }

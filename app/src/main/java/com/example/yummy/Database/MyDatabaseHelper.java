@@ -87,6 +87,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(MenuContrains.PRICES, menu.getPrices());
         values.put(MenuContrains.IMAGE, menu.getImage());
         values.put(MenuContrains.CITY, city);
+        values.put(MenuContrains.DESCRIBE, menu.getDescribe() != null ? menu.getDescribe() : "");
 
         db.insert(MenuContrains.TABLE_NAME, null, values);
         db.close();
@@ -146,6 +147,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         menu.setName(cursor.getString(4));
         menu.setPrices(cursor.getInt(5));
         menu.setImage(cursor.getString(6));
+        menu.setDescribe(cursor.getString(7));
 
         return menu;
     }

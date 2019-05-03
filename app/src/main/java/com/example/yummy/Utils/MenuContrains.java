@@ -10,10 +10,11 @@ public class MenuContrains {
     public static final String PRICES = "Prices";
     public static final String IMAGE = "Image";
     public static final String CITY = "City";
+    public static final String DESCRIBE = "Describe";
 
     public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
             + ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "+ Menu_ID + " TEXT, " + RES_ID +" TEXT, " +TYPE +" TEXT, " + NAME +" TEXT, "
-            + PRICES + " INTEGER, " + IMAGE + " TEXT, " + CITY + " TEXT" + ")";
+            + PRICES + " INTEGER, " + IMAGE + " TEXT, " + CITY + " TEXT, "+ DESCRIBE + " TEXT" + ")";
 
     public static final String DELETE_TABLE = "DELETE FROM " + TABLE_NAME;
 }
