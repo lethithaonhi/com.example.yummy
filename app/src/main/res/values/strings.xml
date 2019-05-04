@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Yummy</string>
     <string name="Your_API_KEY">AIzaSyB9v2vE1hC-ojehepfnkcCSwBp6BLVTsN4</string>
     <string name="welcome">Welcome to Yummy</string>
@@ -61,6 +61,8 @@
     <string name="ongoing">Ongoing</string>
     <string name="no_order">No Order</string>
     <string name="contect_order">Find menu and place for order.\nWe \'re ready to serve you </string>
-    <string name="comment">Comments</string>
+    <string name="comment" tools:ignore="ExtraTranslation">Comments</string>
     <string name="menu">Menu</string>
+    <string name="open_time">OPENING</string>
+    <string name="close">CLOSED</string>
 </resources>

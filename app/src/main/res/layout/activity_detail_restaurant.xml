@@ -4,68 +4,78 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:fitsSystemWindows="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <android.support.design.widget.CoordinatorLayout
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbarLayout"
+        android:layout_height="match_parent">
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-            <FrameLayout
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="180dp">
-
-                <ImageView
-                    android:id="@+id/imgQuanAnChiTiet"
+                android:layout_height="match_parent"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways">
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"/>
+                    android:layout_height="180dp">
 
-                <VideoView
-                    android:id="@+id/videoTrailer"
+                    <ImageView
+                        android:id="@+id/imgQuanAnChiTiet"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"/>
+
+                    <VideoView
+                        android:id="@+id/videoTrailer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/imgPlayVideo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/play"
+                        android:visibility="gone" />
+
+                </FrameLayout>
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:visibility="gone" />
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            </android.support.design.widget.CollapsingToolbarLayout>
 
-                <ImageView
-                    android:id="@+id/imgPlayVideo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/play"
-                    android:visibility="gone" />
-
-            </FrameLayout>
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                app:tabGravity="fill"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-        </android.support.design.widget.CollapsingToolbarLayout>
+                app:tabMode="fixed"/>
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tab_layout"
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+            android:background="@color/white"
+            android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            app:tabGravity="fill"
-            app:tabMode="fixed"/>
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    </android.support.design.widget.CoordinatorLayout>
 
     <FrameLayout
         android:layout_gravity="end|bottom"

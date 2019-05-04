@@ -24,6 +24,7 @@ import java.util.List;
 public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<RestaurantHorizontalAdapter.RestaurantHorizontalHolder> {
     private List<Restaurant> data;
     private Context context;
+    private Branch branch;
 
     public RestaurantHorizontalAdapter (Context context, List<Restaurant> data){
         this.context = context;
@@ -49,6 +50,7 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
         holder.viewRoot.setOnClickListener(v->{
             Intent intent = new Intent(context, RestaurantDetailActivity.class);
             intent.putExtra("restaurant", restaurant);
+            intent.putExtra("branch", branch);
             context.startActivity(intent);
         });
     }
@@ -59,7 +61,7 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
     }
 
     private Branch getBranch(Restaurant restaurant){
-        Branch branch = new Branch();
+        branch = new Branch();
         float[] distance = new float[1];
         float max = 0;
         for(Branch branchNew : restaurant.getBranchList()){

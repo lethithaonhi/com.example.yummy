@@ -1,42 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/nestScrollChiTietQuanAn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txtTenQuanAnChiTiet"
+                    android:fontFamily="sans-serif"
+                    android:id="@+id/tv_Address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="8dp"
                     android:paddingTop="5dp"
                     android:text="Địa chỉ"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/bg_grey" />
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -45,6 +32,7 @@
                     android:background="@color/bg_grey" />
 
                 <LinearLayout
+                    android:layout_marginLeft="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -52,12 +40,13 @@
 
                     <TextView
                         android:id="@+id/txtGioHoatDong"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
                         android:text="0:00  -  20:00"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:layout_marginStart="5dp" />
 
                     <TextView
                         android:id="@+id/txtTrangThaiHoatDong"
@@ -65,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         android:text="Chưa mở cửa"
-                        android:textColor="@color/green"
+                        android:textColor="@color/bg_green"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -107,14 +96,8 @@
                     </android.support.v7.widget.RecyclerView>
 
                 </LinearLayout>
-
-
-
-
             </LinearLayout>
-
-        </android.support.v4.widget.NestedScrollView>
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>

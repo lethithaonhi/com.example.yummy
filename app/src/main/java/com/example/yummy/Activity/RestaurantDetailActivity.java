@@ -10,11 +10,14 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.yummy.Adapter.HistoryPaperAdapter;
 import com.example.yummy.Adapter.RestaurantDetailPaperAdapter;
+import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
     private Restaurant restaurant;
+    private Branch branch;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,6 +25,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail_restaurant);
 
         restaurant = getIntent().getParcelableExtra("restaurant");
+        branch = getIntent().getParcelableExtra("branch");
         setToolbar();
         setViewPaper();
     }
@@ -37,13 +41,13 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     }
 
     private void setViewPaper(){
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        RestaurantDetailPaperAdapter adapter = new RestaurantDetailPaperAdapter(getSupportFragmentManager());
+        viewPager = findViewById(R.id.view_pager);
+        RestaurantDetailPaperAdapter adapter = new RestaurantDetailPaperAdapter(getSupportFragmentManager(), restaurant, branch);
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

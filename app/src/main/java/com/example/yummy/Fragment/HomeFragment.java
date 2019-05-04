@@ -43,6 +43,11 @@ public class HomeFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     @SuppressLint("StaticFieldLeak")
     private class RestaurantAsyncTask extends AsyncTask<Void, Void, Void> {
 
@@ -61,7 +66,6 @@ public class HomeFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            if(restaurantList != null && Common.db != null)
             restaurantList = Common.db.getRestaurant(Common.listResId, Common.myAddress);
             return null;
         }
