@@ -3,6 +3,7 @@ package com.example.yummy.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Restaurant implements Parcelable {
@@ -107,6 +108,8 @@ public class Restaurant implements Parcelable {
         video = in.readString();
         menuIdList = in.createStringArrayList();
         imgList = in.createStringArrayList();
+        branchList = new ArrayList<>();
+        menuList = new ArrayList<>();
         in.readList(branchList,Branch.class.getClassLoader());
         in.readList(menuList, Menu.class.getClassLoader());
         city = in.readString();

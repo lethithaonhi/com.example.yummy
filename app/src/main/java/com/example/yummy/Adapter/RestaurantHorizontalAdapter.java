@@ -1,6 +1,7 @@
 package com.example.yummy.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.yummy.Activity.RestaurantDetailActivity;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
@@ -42,6 +45,12 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
         holder.tvName.setText(restaurant.getName());
         holder.tvAddress.setText(getBranch(restaurant).getAddress());
         Picasso.get().load(getBranch(restaurant).getAvatar()).into(holder.imgRes);
+
+        holder.viewRoot.setOnClickListener(v->{
+            Intent intent = new Intent(context, RestaurantDetailActivity.class);
+            intent.putExtra("restaurant", restaurant);
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -67,12 +76,14 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
     class RestaurantHorizontalHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvAddress;
         ImageView imgRes;
+        LinearLayout viewRoot;
         RestaurantHorizontalHolder(@NonNull View itemView) {
             super(itemView);
 
             tvName = itemView.findViewById(R.id.tv_name);
             tvAddress = itemView.findViewById(R.id.tv_address);
             imgRes = itemView.findViewById(R.id.img_res);
+            viewRoot= itemView.findViewById(R.id.viewRoot);
         }
     }
 

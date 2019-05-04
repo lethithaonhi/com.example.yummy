@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF8400</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="green">#37FA0C</color>
     <color name="transparent">#00000000</color>
     <color name="color_btn_signin_microsoft">#04aef4</color>
     <color name="color_btn_signin_microsoft_pressed">#2b88ae</color>
@@ -21,4 +22,6 @@
     <color name="bg_purple">#7F48DF</color>
     <color name="defaultColor">#EEDC75</color>
     <color name="trans">#8A585858</color>
+    <color name="transBlack">#73000000</color>
+    <color name="transWhite">#67FFFFFF</color>
 </resources>
