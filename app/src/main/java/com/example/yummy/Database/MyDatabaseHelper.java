@@ -254,6 +254,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     private List<String> convertStringToList(String s) {
-        return new ArrayList<>(Arrays.asList(s.split(",")));
+        return new ArrayList<>(Arrays.asList(s.split(", ")));
     }
 }

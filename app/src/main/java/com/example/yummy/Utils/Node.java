@@ -8,4 +8,5 @@ public class Node {
     public static String Branch = "ChiNhanh";
     public static String HinhAnhQuanAn = "HinhAnhQuanAn";
     public static String ThucDonQuanAn ="ThucDonQuanAn";
+    public static String ThucDon = "ThucDon";
 }

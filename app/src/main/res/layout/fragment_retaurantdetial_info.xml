@@ -74,13 +74,15 @@
 
             <fragment
                 android:id="@+id/map"
-                android:name="com.google.android.gms.maps.MapFragment"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="130dp"/>
+                android:layout_height="150dp"/>
 
             <TextView
+                android:textColor="@color/transWhite"
+                android:textSize="12sp"
                 android:padding="10dp"
-                android:id="@+id/txtDiaChiQuanAnChiTiet"
+                android:id="@+id/tvAddressMap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

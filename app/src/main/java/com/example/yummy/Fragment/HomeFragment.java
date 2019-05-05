@@ -15,6 +15,7 @@ import com.example.yummy.Adapter.RestaurantHorizontalAdapter;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.UtilsBottomBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,7 @@ public class HomeFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... voids) {
             restaurantList = Common.db.getRestaurant(Common.listResId, Common.myAddress);
+            Common.menuList = UtilsBottomBar.getMenuList();
             return null;
         }
     }

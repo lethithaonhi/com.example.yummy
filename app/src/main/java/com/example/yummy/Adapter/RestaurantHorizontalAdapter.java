@@ -42,14 +42,15 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
     @Override
     public void onBindViewHolder(@NonNull RestaurantHorizontalHolder holder, int i) {
         Restaurant restaurant = data.get(i);
-
+        branch = getBranch(restaurant);
         holder.tvName.setText(restaurant.getName());
-        holder.tvAddress.setText(getBranch(restaurant).getAddress());
+        holder.tvAddress.setText(branch.getAddress());
         Picasso.get().load(getBranch(restaurant).getAvatar()).into(holder.imgRes);
 
         holder.viewRoot.setOnClickListener(v->{
             Intent intent = new Intent(context, RestaurantDetailActivity.class);
             intent.putExtra("restaurant", restaurant);
+            branch = getBranch(restaurant);
             intent.putExtra("branch", branch);
             context.startActivity(intent);
         });
@@ -61,17 +62,19 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
     }
 
     private Branch getBranch(Restaurant restaurant){
-        branch = new Branch();
         float[] distance = new float[1];
-        float max = 0;
+        float[] min = new float[1];
+        branch = restaurant.getBranchList().get(0);
+        Location.distanceBetween(branch.getLatitude(), branch.getLongitude(),
+                Common.myLocation.getLatitude(), Common.myLocation.getLongitude(), min);
         for(Branch branchNew : restaurant.getBranchList()){
-            Location.distanceBetween(branch.getLatitude(), branch.getLongitude(),
+            Location.distanceBetween(branchNew.getLatitude(), branchNew.getLongitude(),
                     Common.myLocation.getLatitude(), Common.myLocation.getLongitude(), distance);
-            if(max < distance[0]){
+            if(min[0] > distance[0]){
+                min[0] = distance[0];
                 branch = branchNew;
             }
         }
-
         return branch;
     }
 
@@ -81,7 +84,6 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
         LinearLayout viewRoot;
         RestaurantHorizontalHolder(@NonNull View itemView) {
             super(itemView);
-
             tvName = itemView.findViewById(R.id.tv_name);
             tvAddress = itemView.findViewById(R.id.tv_address);
             imgRes = itemView.findViewById(R.id.img_res);

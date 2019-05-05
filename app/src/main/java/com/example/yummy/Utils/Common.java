@@ -5,7 +5,9 @@ import android.location.Location;
 import com.example.yummy.Database.MyDatabaseHelper;
 import com.example.yummy.Model.Restaurant;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Common {
     public static MyDatabaseHelper db;
@@ -13,4 +15,5 @@ public class Common {
     public static List<String> listResId;
     public static String myAddress;
     public static List<Restaurant> restaurantList;
+    public static List<Map> menuList;
 }
