@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.VideoView;
 
+import com.example.yummy.Activity.RestaurantDetailActivity;
 import com.example.yummy.Adapter.MenuRestaurantDetailAdapter;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
@@ -40,9 +42,7 @@ public class DeliveryRestaurantDetailFragment extends Fragment {
             restaurant = getArguments().getParcelable("restaurant");
             branch = getArguments().getParcelable("branch");
         }
-
         initView(v);
-
         return v;
     }
 

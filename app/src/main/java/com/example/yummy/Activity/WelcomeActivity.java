@@ -39,6 +39,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.jpardogo.android.googleprogressbar.library.GoogleProgressBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,9 +48,8 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class WelcomeActivity extends AppCompatActivity implements OnProgressBarListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-    private NumberProgressBar progressBar;
-    private Timer timer;
+public class WelcomeActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+    private GoogleProgressBar progressBar;
     private NetworkChangeReceiver broadcastReceiver;
     private GoogleApiClient gac;
     private DatabaseReference mDatabase;
@@ -59,12 +59,8 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-
-        timer = new Timer();
         Common.restaurantList = new ArrayList<>();
         progressBar = findViewById(R.id.number_progress_bar);
-        progressBar.setOnProgressBarListener(this);
-        progressBar.setProgress(0);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         Common.listResId = new ArrayList<>();
         registerService();
@@ -151,7 +147,6 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
                                                                         restaurant.setMenuList(menuList1);
                                                                         Common.restaurantList.add(restaurant);
                                                                         db.addRestaurant(restaurant);
-                                                                        setTimer((int) ((float) 1 / dataSnapshotRoot.getChildrenCount() * 100));
                                                                     }
 
                                                                     @Override
@@ -166,7 +161,6 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
 
                                                             }
                                                         });
-                                                        //                db.addRestaurant(restaurant);
                                                     }
 
                                                     @Override
@@ -200,23 +194,7 @@ public class WelcomeActivity extends AppCompatActivity implements OnProgressBarL
         });
             }
 
-    private void setTimer(int progress){
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(() -> progressBar.incrementProgressBy(progress));
-                }
-        }, 1000, 100);
-    }
 
-    @Override
-    public void onProgressChange(int current, int max) {
-        if(current == max) {
-            startActivity(new Intent(this, BottomBarActivity.class));
-            finish();
-            timer.cancel();
-        }
-    }
 
     private void registerService(){
         broadcastReceiver = new NetworkChangeReceiver();

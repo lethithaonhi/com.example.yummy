@@ -1,18 +1,17 @@
 package com.example.yummy.Activity;
 import android.os.Bundle;
-import android.os.ResultReceiver;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
-import com.example.yummy.Adapter.HistoryPaperAdapter;
+import android.widget.ImageView;
 import com.example.yummy.Adapter.RestaurantDetailPaperAdapter;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
+import com.squareup.picasso.Picasso;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
     private Restaurant restaurant;
@@ -28,6 +27,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         branch = getIntent().getParcelableExtra("branch");
         setToolbar();
         setViewPaper();
+        initView();
+    }
+
+    private void initView(){
+        ImageView imRes = findViewById(R.id.imgQuanAnChiTiet);
+        Picasso.get().load(branch.getAvatar()).into(imRes);
     }
 
     private void setToolbar() {

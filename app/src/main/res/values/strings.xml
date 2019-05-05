@@ -65,4 +65,8 @@
     <string name="menu">Menu</string>
     <string name="open_time">OPENING</string>
     <string name="close">CLOSED</string>
+    <string-array name="text">
+        <item>Loading</item>
+        <item>Loading</item>
+    </string-array>
 </resources>
