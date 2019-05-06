@@ -46,6 +46,8 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity android:name=".Activity.RestaurantDetailActivity"/>
+        <activity android:name=".Activity.ImgDetailReviewActivity"/>
+        <activity android:name=".Activity.RestaurantActivity"/>
     </application>
 
 </manifest>

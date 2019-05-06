@@ -63,6 +63,8 @@
     <string name="contect_order">Find menu and place for order.\nWe \'re ready to serve you </string>
     <string name="comment" tools:ignore="ExtraTranslation">Comments</string>
     <string name="menu">Menu</string>
+    <string name="image">Images</string>
+    <string name="review">Reviews</string>
     <string name="open_time">OPENING</string>
     <string name="close">CLOSED</string>
     <string-array name="text">

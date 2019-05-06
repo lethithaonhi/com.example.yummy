@@ -14,6 +14,7 @@ public class Common {
     public static Location myLocation;
     public static List<String> listResId;
     public static String myAddress;
-    public static List<Restaurant> restaurantList;
+    public static List<Restaurant> restaurantListAll;
     public static List<Map> menuList;
+    public static List<Restaurant> restaurantListCurrent;
 }

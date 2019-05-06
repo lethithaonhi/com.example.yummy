@@ -8,17 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.yummy.Activity.RestaurantDetailActivity;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
-import com.example.yummy.Utils.UtilsBottomBar;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -26,8 +22,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-
-import java.util.HashMap;
 import java.util.Map;
 
 public class InfoRestaurantDetailFragment extends Fragment implements OnMapReadyCallback, YouTubePlayer.OnInitializedListener {
@@ -109,7 +103,7 @@ public class InfoRestaurantDetailFragment extends Fragment implements OnMapReady
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult result) {
-        if (result.isUserRecoverableError()) {
+        if (result.isUserRecoverableError() && getActivity() != null) {
             result.getErrorDialog(getActivity(), 1).show();
         } else {
             String error = String.format("Error initializing YouTube player", result.toString());

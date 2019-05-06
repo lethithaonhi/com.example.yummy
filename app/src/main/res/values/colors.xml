@@ -23,5 +23,5 @@
     <color name="defaultColor">#EEDC75</color>
     <color name="trans">#8A585858</color>
     <color name="transBlack">#73000000</color>
-    <color name="transWhite">#67FFFFFF</color>
+    <color name="transWhite">#99FFFFFF</color>
 </resources>

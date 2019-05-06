@@ -63,7 +63,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void addBranch(Branch branch, String resID, String city) {
+    public int addBranch(Branch branch, String resID, String city) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -76,8 +76,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(BranchContrains.LONGITUDE, branch.getLongitude());
         values.put(BranchContrains.CITY, city);
 
-        db.insert(BranchContrains.TABLE_NAME, null, values);
-        db.close();
+        return (int) db.insert(BranchContrains.TABLE_NAME, null, values);
     }
 
     public void addMenu(Menu menu, String resID, String city) {
@@ -111,6 +110,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(RestaurantContrains.IMG_LIST, convertListToString(restaurant.getImgList()));
         values.put(RestaurantContrains.MENU_LIST, convertListToString(restaurant.getMenuIdList()));
         values.put(RestaurantContrains.CITY, restaurant.getCity());
+        values.put(RestaurantContrains.FREESHIP, restaurant.getFreeship());
 
         // Trèn một dòng dữ liệu vào bảng.
         db.insert(RestaurantContrains.TABLE_NAME, null, values);
@@ -130,6 +130,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         restaurant.setImgList(convertStringToList(cursor.getString(6)));
         restaurant.setMenuIdList(convertStringToList(cursor.getString(7)));
         restaurant.setCity(cursor.getString(8));
+        restaurant.setFreeship(cursor.getInt(9));
 
         return restaurant;
     }
@@ -141,6 +142,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         branch.setAddress(cursor.getString(4));
         branch.setLatitude(cursor.getDouble(5));
         branch.setLongitude(cursor.getDouble(6));
+        branch.setDistance(cursor.getFloat(7));
 
         return branch;
     }
@@ -237,6 +239,16 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 //        return db.update(TABLE_NOTE, values, COLUMN_NOTE_ID + " = ?",
 //                new String[]{String.valueOf(note.getNoteId())});
 //    }
+
+
+    public void updateBranch(float distance, int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(BranchContrains.DISTANCE, distance);
+
+        db.update(BranchContrains.TABLE_NAME, values, BranchContrains.ID + " = ?",
+                new String[]{String.valueOf(id)});
+    }
 
     public void deleteRes(String id) {
         SQLiteDatabase db = this.getWritableDatabase();

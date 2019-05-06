@@ -17,6 +17,8 @@ public class Restaurant implements Parcelable {
     private List<Branch> branchList;
     private List<Menu> menuList;
     private String city;
+    private float mark;
+    private int freeship;
 
     public Restaurant(){}
 
@@ -100,6 +102,22 @@ public class Restaurant implements Parcelable {
         this.city = city;
     }
 
+    public float getMark() {
+        return mark;
+    }
+
+    public void setMark(float mark) {
+        this.mark = mark;
+    }
+
+    public int getFreeship() {
+        return freeship;
+    }
+
+    public void setFreeship(int freeship) {
+        this.freeship = freeship;
+    }
+
     protected Restaurant(Parcel in) {
         res_id = in.readString();
         name = in.readString();
@@ -113,6 +131,8 @@ public class Restaurant implements Parcelable {
         in.readList(branchList,Branch.class.getClassLoader());
         in.readList(menuList, Menu.class.getClassLoader());
         city = in.readString();
+        mark = in.readFloat();
+        freeship = in.readInt();
     }
 
     public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
@@ -144,5 +164,7 @@ public class Restaurant implements Parcelable {
         dest.writeList(branchList);
         dest.writeList(menuList);
         dest.writeString(city);
+        dest.writeFloat(mark);
+        dest.writeInt(freeship);
     }
 }

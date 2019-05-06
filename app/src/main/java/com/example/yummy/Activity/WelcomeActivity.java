@@ -59,7 +59,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        Common.restaurantList = new ArrayList<>();
+        Common.restaurantListAll = new ArrayList<>();
         progressBar = findViewById(R.id.number_progress_bar);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         Common.listResId = new ArrayList<>();
@@ -123,8 +123,10 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                                                                     Branch branch = data.getValue(Branch.class);
                                                                     if (branch != null)
                                                                         branch.setId(data.getKey());
+
+                                                                    int id = db.addBranch(branch, resID, address);
+                                                                    branch.setId_db(id);
                                                                     branchList.add(branch);
-                                                                    db.addBranch(branch, resID, address);
                                                                 }
 
                                                                 restaurant.setBranchList(branchList);
@@ -145,8 +147,11 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                                                                             }
                                                                         }
                                                                         restaurant.setMenuList(menuList1);
-                                                                        Common.restaurantList.add(restaurant);
+                                                                        Common.restaurantListAll.add(restaurant);
                                                                         db.addRestaurant(restaurant);
+                                                                        if(Common.restaurantListAll.size() == dataSnapshotRoot.getChildrenCount()){
+                                                                            startActivity(new Intent(WelcomeActivity.this, BottomBarActivity.class));
+                                                                        }
                                                                     }
 
                                                                     @Override

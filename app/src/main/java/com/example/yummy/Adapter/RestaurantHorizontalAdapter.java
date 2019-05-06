@@ -25,6 +25,7 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
     private List<Restaurant> data;
     private Context context;
     private Branch branch;
+    private int max = 8;
 
     public RestaurantHorizontalAdapter (Context context, List<Restaurant> data){
         this.context = context;
@@ -58,20 +59,21 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
 
     @Override
     public int getItemCount() {
-        return data != null ? data.size() : 0;
+        if(data != null){
+            if(data.size() > max)
+                return max;
+            else
+                return data.size();
+        }else
+            return 0;
     }
 
     private Branch getBranch(Restaurant restaurant){
-        float[] distance = new float[1];
-        float[] min = new float[1];
         branch = restaurant.getBranchList().get(0);
-        Location.distanceBetween(branch.getLatitude(), branch.getLongitude(),
-                Common.myLocation.getLatitude(), Common.myLocation.getLongitude(), min);
+        float min = branch.getDistance();
         for(Branch branchNew : restaurant.getBranchList()){
-            Location.distanceBetween(branchNew.getLatitude(), branchNew.getLongitude(),
-                    Common.myLocation.getLatitude(), Common.myLocation.getLongitude(), distance);
-            if(min[0] > distance[0]){
-                min[0] = distance[0];
+            if(min > branchNew.getDistance()){
+                min = branchNew.getDistance();
                 branch = branchNew;
             }
         }

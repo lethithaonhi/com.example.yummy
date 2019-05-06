@@ -28,7 +28,7 @@ public class RestaurantDetailPaperAdapter extends FragmentStatePagerAdapter {
         }else if( position == 1) {
             return InfoRestaurantDetailFragment.getInstance(restaurant, branch);
         }else{
-            return ReviewsRestaurantDetailFragment.getInstance();
+            return ReviewsRestaurantDetailFragment.getInstance(restaurant, branch);
         }
     }
 
