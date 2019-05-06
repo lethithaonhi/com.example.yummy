@@ -38,9 +38,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.i(TAG, "MyDatabaseHelper.onUpgrade ... ");
-        // Hủy (drop) bảng cũ nếu nó đã tồn tại.
-        clearData();
+
     }
 
     public void clearData(){
@@ -110,6 +108,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(RestaurantContrains.IMG_LIST, convertListToString(restaurant.getImgList()));
         values.put(RestaurantContrains.MENU_LIST, convertListToString(restaurant.getMenuIdList()));
         values.put(RestaurantContrains.CITY, restaurant.getCity());
+        values.put(RestaurantContrains.MARK, restaurant.getMark());
         values.put(RestaurantContrains.FREESHIP, restaurant.getFreeship());
 
         // Trèn một dòng dữ liệu vào bảng.
@@ -130,7 +129,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         restaurant.setImgList(convertStringToList(cursor.getString(6)));
         restaurant.setMenuIdList(convertStringToList(cursor.getString(7)));
         restaurant.setCity(cursor.getString(8));
-        restaurant.setFreeship(cursor.getInt(9));
+        restaurant.setMark(cursor.getFloat(9));
+        restaurant.setFreeship(cursor.getInt(10));
 
         return restaurant;
     }
@@ -226,6 +226,22 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             }
         }
         return dataList;
+    }
+
+    public int checkExistRes(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+            String query = "select count(*) from "+ RestaurantContrains.TABLE_NAME +" where "+RestaurantContrains.NAME_RES+" = ?";
+            Cursor cursor = db.rawQuery(query, new String[] {name});
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            }
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return  0;
     }
 
 //    public int updateNote(Restaurant note) {

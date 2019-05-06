@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.yummy.Model.Branch;
@@ -45,6 +46,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         holder.tvMark.setText(restaurant.getMark()+"");
         holder.tvDistance.setText(min[0]+" km");
         Picasso.get().load(branch.getAvatar()).into(holder.imRes);
+        if(restaurant.getFreeship() == 1){
+            holder.viewFreeship.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -67,6 +71,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     class RestaurantHolder extends RecyclerView.ViewHolder {
         ImageView imRes;
         TextView tvName, tvAddress, tvMark, tvDistance;
+        LinearLayout viewFreeship;
         RestaurantHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -75,6 +80,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             tvAddress = itemView.findViewById(R.id.tv_address);
             tvMark = itemView.findViewById(R.id.tv_mark);
             tvDistance = itemView.findViewById(R.id.tv_distance);
+            viewFreeship = itemView.findViewById(R.id.view_freeship);
         }
     }
 }

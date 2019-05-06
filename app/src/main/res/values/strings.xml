@@ -71,4 +71,5 @@
         <item>Loading</item>
         <item>Loading</item>
     </string-array>
+    <string name="freeship">Freeship</string>
 </resources>

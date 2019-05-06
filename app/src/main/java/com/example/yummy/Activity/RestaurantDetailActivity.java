@@ -7,6 +7,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.example.yummy.Adapter.RestaurantDetailPaperAdapter;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
@@ -33,6 +35,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private void initView(){
         ImageView imRes = findViewById(R.id.imgQuanAnChiTiet);
         Picasso.get().load(branch.getAvatar()).into(imRes);
+        TextView tvMark = findViewById(R.id.tv_mark);
+        tvMark.setText(restaurant.getMark()+"");
     }
 
     private void setToolbar() {

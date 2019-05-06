@@ -96,7 +96,7 @@ public class InfoRestaurantDetailFragment extends Fragment implements OnMapReady
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-        if (!b) {
+        if (!b && restaurant.getVideo() != null) {
             youTubePlayer.cueVideo(restaurant.getVideo());
         }
     }

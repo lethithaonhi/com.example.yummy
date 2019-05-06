@@ -78,6 +78,6 @@ public class BottomBarActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Common.db.deleteData();
+//        Common.db.deleteData();
     }
 }

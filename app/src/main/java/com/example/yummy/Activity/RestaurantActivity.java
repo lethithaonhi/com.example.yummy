@@ -3,6 +3,7 @@ package com.example.yummy.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -42,6 +43,8 @@ public class RestaurantActivity extends AppCompatActivity {
         RecyclerView rcvRes = findViewById(R.id.rcv_restaurant);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcvRes.setLayoutManager(layoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvRes.getContext(), layoutManager.getOrientation());
+        rcvRes.addItemDecoration(dividerItemDecoration);
 
         RestaurantAdapter adapter = new RestaurantAdapter(restaurantList, this);
         rcvRes.setAdapter(adapter);

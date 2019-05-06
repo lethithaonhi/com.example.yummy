@@ -2,12 +2,14 @@
 <LinearLayout
     android:layout_marginTop="8dp"
     android:layout_marginLeft="8dp"
+    android:layout_marginBottom="8dp"
     android:weightSum="1"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ImageView
+        android:scaleType="fitCenter"
         android:layout_weight="0.2"
         android:id="@+id/im_restaurant"
         android:src="@drawable/bg_circle_green"
@@ -23,7 +25,7 @@
 
         <TextView
             android:id="@+id/tv_name"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/black"
             android:text="Koi The"
             android:fontFamily="sans-serif-medium"
@@ -33,16 +35,35 @@
         <TextView
             android:id="@+id/tv_address"
             android:text="345 Nguyen Thi Minh Khai, Quan 1, TP HCM"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-
-        <ImageView
-            android:src="@drawable/freeship"
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/view_freeship"
+            android:paddingLeft="8dp"
+            android:paddingRight="10dp"
+            android:background="@drawable/bg_freeship"
             android:layout_marginTop="8dp"
-            android:layout_width="24dp"
-            android:layout_height="24dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="24dp">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:src="@drawable/freeshipping"
+                android:layout_width="18dp"
+                android:layout_height="15dp" />
+
+            <TextView
+                android:textSize="10sp"
+                android:textColor="@color/color_btn_signin_google"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center"
+                android:text="@string/freeship"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
     </LinearLayout>
 

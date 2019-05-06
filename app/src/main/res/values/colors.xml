@@ -24,4 +24,5 @@
     <color name="trans">#8A585858</color>
     <color name="transBlack">#73000000</color>
     <color name="transWhite">#99FFFFFF</color>
+    <color name="freeship">#F4F9FF</color>
 </resources>
