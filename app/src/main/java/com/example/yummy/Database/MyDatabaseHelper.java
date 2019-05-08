@@ -111,10 +111,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(RestaurantContrains.CITY, restaurant.getCity());
         values.put(RestaurantContrains.MARK, restaurant.getMark());
         values.put(RestaurantContrains.FREESHIP, restaurant.getFreeship());
-        values.put(RestaurantContrains.DISCOUNT, restaurant.getDiscounts().getDiscount());
-        values.put(RestaurantContrains.MAX_DISCOUNT, restaurant.getDiscounts().getMax_discount());
-        values.put(RestaurantContrains.MIN_ORDER, restaurant.getDiscounts().getMin_order());
-        values.put(RestaurantContrains.CODE, restaurant.getDiscounts().getCode());
+        values.put(RestaurantContrains.DISCOUNT, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getDiscount():0);
+        values.put(RestaurantContrains.MAX_DISCOUNT, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getMax_discount():0);
+        values.put(RestaurantContrains.MIN_ORDER, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getMin_order():0);
+        values.put(RestaurantContrains.CODE, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getCode():"");
 
         // Trèn một dòng dữ liệu vào bảng.
         db.insert(RestaurantContrains.TABLE_NAME, null, values);
@@ -142,6 +142,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         discounts.setMax_discount(cursor.getInt(12));
         discounts.setMin_order(cursor.getInt(13));
         discounts.setCode(cursor.getString(14));
+        restaurant.setDiscounts(discounts);
 
         return restaurant;
     }

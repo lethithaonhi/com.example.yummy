@@ -56,7 +56,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             holder.viewFreeship.setVisibility(View.VISIBLE);
         }
 
-        if(restaurant.getDiscounts() != null){
+        if(restaurant.getDiscounts()!= null && restaurant.getDiscounts().getDiscount() != 0){
             holder.viewDiscount.setVisibility(View.VISIBLE);
             holder.tvDiscount.setText(restaurant.getDiscounts().getDiscount() + "%");
         }
