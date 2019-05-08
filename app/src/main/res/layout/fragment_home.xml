@@ -138,6 +138,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/view_discount"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
@@ -170,16 +171,13 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:layout_marginBottom="24dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/bg_baner"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+            <android.support.v4.view.ViewPager
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginRight="8dp"
                 android:layout_width="match_parent"
-                android:layout_height="130dp">
-
-            </ImageView>
+                android:layout_height="150dp"
+                android:id="@+id/viewPager"/>
 
             <LinearLayout
                 android:paddingTop="8dp"
@@ -229,7 +227,7 @@
                         <FrameLayout
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
-                            android:background="@drawable/bg_square_blue"
+                            android:background="@drawable/bg_square_yellow"
                             android:layout_width="45dp"
                             android:layout_height="45dp">
 
@@ -261,7 +259,7 @@
                         <FrameLayout
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
-                            android:background="@drawable/bg_square_blue"
+                            android:background="@drawable/bg_square_yellow"
                             android:layout_width="45dp"
                             android:layout_height="45dp">
 
@@ -293,7 +291,7 @@
                         <FrameLayout
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
-                            android:background="@drawable/bg_square_blue"
+                            android:background="@drawable/bg_square_yellow"
                             android:layout_width="45dp"
                             android:layout_height="45dp">
 
@@ -325,7 +323,7 @@
                         <FrameLayout
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
-                            android:background="@drawable/bg_square_blue"
+                            android:background="@drawable/bg_square_yellow"
                             android:layout_width="45dp"
                             android:layout_height="45dp">
 
@@ -364,7 +362,7 @@
                         <FrameLayout
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
-                            android:background="@drawable/bg_square_blue"
+                            android:background="@drawable/bg_square_yellow"
                             android:layout_width="45dp"
                             android:layout_height="45dp">
 
@@ -396,7 +394,7 @@
                         <FrameLayout
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
-                            android:background="@drawable/bg_square_blue"
+                            android:background="@drawable/bg_square_yellow"
                             android:layout_width="45dp"
                             android:layout_height="45dp">
 
@@ -428,7 +426,7 @@
                         <FrameLayout
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
-                            android:background="@drawable/bg_square_blue"
+                            android:background="@drawable/bg_square_yellow"
                             android:layout_width="45dp"
                             android:layout_height="45dp">
 
@@ -460,7 +458,7 @@
                         <FrameLayout
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
-                            android:background="@drawable/bg_square_blue"
+                            android:background="@drawable/bg_square_yellow"
                             android:layout_width="45dp"
                             android:layout_height="45dp">
 
@@ -519,110 +517,6 @@
                 android:layout_height="wrap_content">
 
             </android.support.v7.widget.RecyclerView>
-
-            <LinearLayout
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
-
-                    <FrameLayout
-                        android:layout_marginRight="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:background="@drawable/bg_square_blue"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp">
-
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:padding="10dp"
-                            android:src="@drawable/like"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp" />
-                    </FrameLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
-
-                    <FrameLayout
-                        android:layout_marginRight="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:background="@drawable/bg_square_blue"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp">
-
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:padding="10dp"
-                            android:src="@drawable/like"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp" />
-                    </FrameLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
-
-                    <FrameLayout
-                        android:layout_marginRight="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:background="@drawable/bg_square_blue"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp">
-
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:padding="10dp"
-                            android:src="@drawable/like"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp" />
-                    </FrameLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content">
-
-                    <FrameLayout
-                        android:layout_marginRight="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:background="@drawable/bg_square_blue"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp">
-
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:padding="10dp"
-                            android:src="@drawable/like"
-                            android:layout_width="45dp"
-                            android:layout_height="45dp" />
-                    </FrameLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

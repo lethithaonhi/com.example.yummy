@@ -20,8 +20,8 @@ import java.util.List;
 
 public class RestaurantActivity extends AppCompatActivity {
     private List<Restaurant> restaurantList;
-    private int type; //1: mark, 0: normal, 2: distance
-    private String[] typeName ={"Suggest", "Hot", "NearBy"};
+    private int type; //1: mark, 0: normal, 2: distance, 3:discount
+    private String[] typeName ={"Suggest", "Hot", "NearBy", "Discount"};
     private boolean isSearch = false;
 
     @Override
@@ -65,6 +65,8 @@ public class RestaurantActivity extends AppCompatActivity {
             }
 
             Collections.sort(restaurantList, (obj1, obj2) -> Float.compare(obj1.getBranchList().get(0).getDistance(), obj2.getBranchList().get(0).getDistance()));
+        }else if (type== 3){
+            Collections.sort(restaurantList, (ob1, ob2) -> Integer.compare(ob1.getDiscounts().getDiscount(), ob2.getDiscounts().getDiscount()));
         }
     }
 }

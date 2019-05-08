@@ -231,38 +231,6 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
         });
     }
 
-    private void getMenu(String resID, String address, Restaurant restaurant, DataSnapshot dataSnapshotRoot){
-        List<Menu> menuList1 = new ArrayList<>();
-        mDatabase.child(Node.ThucDonQuanAn).child(resID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot menuIDSnap : dataSnapshot.getChildren()) {
-                    for (DataSnapshot data : menuIDSnap.getChildren()) {
-                        Menu menu = data.getValue(Menu.class);
-                        if (menu != null) {
-                            menu.setType(menuIDSnap.getKey());
-                            menu.setMenu_id(data.getKey());
-                        }
-                        menuList1.add(menu);
-                        db.addMenu(menu, resID, address);
-                    }
-                }
-                restaurant.setMenuList(menuList1);
-                Common.restaurantListAll.add(restaurant);
-                db.addRestaurant(restaurant);
-                if (Common.restaurantListAll.size() == dataSnapshotRoot.getChildrenCount()) {
-                    startActivity(new Intent(WelcomeActivity.this, BottomBarActivity.class));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("databaseError FireBase", databaseError.getDetails());
-            }
-        });
-    }
-
-
     private void registerService(){
         broadcastReceiver = new NetworkChangeReceiver();
         IntentFilter intentFilter = new IntentFilter();
