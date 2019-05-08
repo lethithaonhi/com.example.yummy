@@ -23,6 +23,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 import com.example.yummy.Database.MyDatabaseHelper;
 import com.example.yummy.Model.Branch;
+import com.example.yummy.Model.Discounts;
 import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
@@ -45,18 +46,18 @@ import java.util.List;
 import java.util.Locale;
 
 public class WelcomeActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-    private GoogleProgressBar progressBar;
     private NetworkChangeReceiver broadcastReceiver;
     private GoogleApiClient gac;
     private DatabaseReference mDatabase;
     private MyDatabaseHelper db;
+    private boolean isDelete=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         Common.restaurantListAll = new ArrayList<>();
-        progressBar = findViewById(R.id.number_progress_bar);
+        GoogleProgressBar progressBar = findViewById(R.id.number_progress_bar);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         Common.listResId = new ArrayList<>();
         registerService();
@@ -64,27 +65,31 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
         Common.db = db;
     }
 
-    private void getRestaurant(){
+    private void getRestaurant() {
         mDatabase.child(Node.DiaDiem).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot data : dataSnapshot.getChildren()){
+                if(!isDelete) {
+                    isDelete = true;
+                    deteleDataCurrent();
+                }
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
                     String address = data.getKey();
-                    if(address != null)
-                    mDatabase.child(Node.DiaDiem).child(address).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshotRoot) {
-                            for (DataSnapshot postSnapshot: dataSnapshotRoot.getChildren()) {
-                                String resID = postSnapshot.getValue(String.class);
-                                if(resID != null){
-                                    if(address.equals(Common.myAddress)){
-                                        Common.listResId.add(resID);
-                                    }
-                                    mDatabase.child(Node.QuanAn).child(resID).addValueEventListener(new ValueEventListener(){
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
-                                            if (restaurant != null) {
+                    if (address != null)
+                        mDatabase.child(Node.DiaDiem).child(address).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshotRoot) {
+                                for (DataSnapshot postSnapshot : dataSnapshotRoot.getChildren()) {
+                                    String resID = postSnapshot.getValue(String.class);
+                                    if (resID != null) {
+                                        if (address.equals(Common.myAddress)) {
+                                            Common.listResId.add(resID);
+                                        }
+                                        mDatabase.child(Node.QuanAn).child(resID).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
+                                                if (restaurant != null) {
                                                     Common.db.clearData();
                                                     restaurant.setCity(address);
                                                     restaurant.setRes_id(dataSnapshot.getKey());
@@ -96,6 +101,19 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                                                             for (DataSnapshot data : dataSnapshot.getChildren())
                                                                 imgList.add(data.getValue(String.class));
                                                             restaurant.setImgList(imgList);
+
+//                                                            mDatabase.child(Node.KhuyenMai).child(resID).addValueEventListener(new ValueEventListener() {
+//                                                                @Override
+//                                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                                                    Discounts discounts = dataSnapshot.getValue(Discounts.class);
+//                                                                    restaurant.setDiscounts(discounts);
+//                                                                }
+//
+//                                                                @Override
+//                                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                                                }
+//                                                            });
                                                         }
 
                                                         @Override
@@ -103,6 +121,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
 
                                                         }
                                                     });
+
                                                     mDatabase.child(Node.QuanAn).child(resID).child(Node.Menu_QuanAn).addValueEventListener(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -112,57 +131,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                                                                 restaurant.setMenuIdList(menuList);
                                                             }
 
-                                                            List<Branch> branchList = new ArrayList<>();
-                                                            mDatabase.child(Node.Branch).child(resID).addValueEventListener(new ValueEventListener() {
-                                                                @Override
-                                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                                                        Branch branch = data.getValue(Branch.class);
-                                                                        if (branch != null) {
-                                                                            branch.setId(data.getKey());
-                                                                            int id = db.addBranch(branch, resID, address);
-                                                                            branch.setId_db(id);
-                                                                            branchList.add(branch);
-                                                                        }
-                                                                    }
-
-                                                                    restaurant.setBranchList(branchList);
-
-                                                                    List<Menu> menuList1 = new ArrayList<>();
-                                                                    mDatabase.child(Node.ThucDonQuanAn).child(resID).addValueEventListener(new ValueEventListener() {
-                                                                        @Override
-                                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                                            for (DataSnapshot menuIDSnap : dataSnapshot.getChildren()) {
-                                                                                for (DataSnapshot data : menuIDSnap.getChildren()) {
-                                                                                    Menu menu = data.getValue(Menu.class);
-                                                                                    if (menu != null) {
-                                                                                        menu.setType(menuIDSnap.getKey());
-                                                                                        menu.setMenu_id(data.getKey());
-                                                                                    }
-                                                                                    menuList1.add(menu);
-                                                                                    db.addMenu(menu, resID, address);
-                                                                                }
-                                                                            }
-                                                                            restaurant.setMenuList(menuList1);
-                                                                            Common.restaurantListAll.add(restaurant);
-                                                                            db.addRestaurant(restaurant);
-                                                                            if (Common.restaurantListAll.size() == dataSnapshotRoot.getChildrenCount()) {
-                                                                                startActivity(new Intent(WelcomeActivity.this, BottomBarActivity.class));
-                                                                            }
-                                                                        }
-
-                                                                        @Override
-                                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                                            Log.d("databaseError FireBase", databaseError.getDetails());
-                                                                        }
-                                                                    });
-                                                                }
-
-                                                                @Override
-                                                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                                    Log.d("databaseError FireBase", databaseError.getDetails());
-                                                                }
-                                                            });
+                                                            getBranch(resID, address, restaurant, dataSnapshotRoot);
                                                         }
 
                                                         @Override
@@ -170,39 +139,100 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                                                             Log.d("databaseError FireBase", databaseError.getDetails());
                                                         }
                                                     });
-//                                                } else {
-//                                                    Common.restaurantListAll.add(restaurant);
-//                                                    if (Common.restaurantListAll.size() == dataSnapshotRoot.getChildrenCount()) {
-//                                                        startActivity(new Intent(WelcomeActivity.this, BottomBarActivity.class));
-//                                                    }
-//                                                }
+                                                }
                                             }
-                                        }
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                                            Log.d("databaseError FireBase", databaseError.getDetails());
-                                        }
-                                    });
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                Log.d("databaseError FireBase", databaseError.getDetails());
+
+                                            }
+                                        });
+                                    }
                                 }
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            Log.d("Error", databaseError.getDetails());
-                        }
-                    });
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Log.d("databaseError FireBase", databaseError.getDetails());
+
+                            }
+                        });
 
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("Error", databaseError.getDetails());
+                Log.d("databaseError FireBase", databaseError.getDetails());
+                List<String> list = new ArrayList<>();
+                list.add("quan1");
+                if(Common.db.getRestaurant(list, Common.myAddress).size() > 0){
+                    startActivity(new Intent(WelcomeActivity.this,BottomBarActivity.class));
+                }else{
+                    getRestaurant();
+                }
             }
         });
+    }
+
+    private void getBranch(String resID, String address, Restaurant restaurant, DataSnapshot dataSnapshotRoot){
+        List<Branch> branchList = new ArrayList<>();
+        mDatabase.child(Node.Branch).child(resID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Branch branch = data.getValue(Branch.class);
+                    if (branch != null) {
+                        branch.setId(data.getKey());
+                        int id = db.addBranch(branch, resID, address);
+                        branch.setId_db(id);
+                        branchList.add(branch);
+                    }
+                }
+
+                restaurant.setBranchList(branchList);
+
+                getMenu(resID, address, restaurant, dataSnapshotRoot);
             }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("databaseError FireBase", databaseError.getDetails());
+            }
+        });
+    }
+
+    private void getMenu(String resID, String address, Restaurant restaurant, DataSnapshot dataSnapshotRoot){
+        List<Menu> menuList1 = new ArrayList<>();
+        mDatabase.child(Node.ThucDonQuanAn).child(resID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot menuIDSnap : dataSnapshot.getChildren()) {
+                    for (DataSnapshot data : menuIDSnap.getChildren()) {
+                        Menu menu = data.getValue(Menu.class);
+                        if (menu != null) {
+                            menu.setType(menuIDSnap.getKey());
+                            menu.setMenu_id(data.getKey());
+                        }
+                        menuList1.add(menu);
+                        db.addMenu(menu, resID, address);
+                    }
+                }
+                restaurant.setMenuList(menuList1);
+                Common.restaurantListAll.add(restaurant);
+                db.addRestaurant(restaurant);
+                if (Common.restaurantListAll.size() == dataSnapshotRoot.getChildrenCount()) {
+                    startActivity(new Intent(WelcomeActivity.this, BottomBarActivity.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("databaseError FireBase", databaseError.getDetails());
+            }
+        });
+    }
 
 
     private void registerService(){
@@ -339,17 +369,20 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
             List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
             for (int i=0; i<address.size(); i++) {
                 Common.myAddress = address.get(0).getAdminArea();
-                List<String>list = new ArrayList<>();
-                list.add("quan1");
-                if(Common.db.getRestaurant(list, Common.myAddress).size() > 0){
-                    Common.db.clearData();
-                }
                 getRestaurant();
             }
         } catch (IOException e) {
             // Handle IOException
         } catch (NullPointerException e) {
             // Handle NullPointerException
+        }
+    }
+
+    private void deteleDataCurrent(){
+        List<String>list = new ArrayList<>();
+        list.add("quan1");
+        if(Common.db.getRestaurant(list, Common.myAddress).size() > 0){
+            Common.db.clearData();
         }
     }
 }

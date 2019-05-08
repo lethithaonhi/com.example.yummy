@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.yummy.Model.Branch;
+import com.example.yummy.Model.Discounts;
 import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.Utils.BranchContrains;
@@ -110,6 +111,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(RestaurantContrains.CITY, restaurant.getCity());
         values.put(RestaurantContrains.MARK, restaurant.getMark());
         values.put(RestaurantContrains.FREESHIP, restaurant.getFreeship());
+        values.put(RestaurantContrains.DISCOUNT, restaurant.getDiscounts().getDiscount());
+        values.put(RestaurantContrains.MAX_DISCOUNT, restaurant.getDiscounts().getMax_discount());
+        values.put(RestaurantContrains.MIN_ORDER, restaurant.getDiscounts().getMin_order());
+        values.put(RestaurantContrains.CODE, restaurant.getDiscounts().getCode());
 
         // Trèn một dòng dữ liệu vào bảng.
         db.insert(RestaurantContrains.TABLE_NAME, null, values);
@@ -131,6 +136,12 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         restaurant.setCity(cursor.getString(8));
         restaurant.setMark(cursor.getFloat(9));
         restaurant.setFreeship(cursor.getInt(10));
+
+        Discounts discounts = new Discounts();
+        discounts.setDiscount(cursor.getInt(11));
+        discounts.setMax_discount(cursor.getInt(12));
+        discounts.setMin_order(cursor.getInt(13));
+        discounts.setCode(cursor.getString(14));
 
         return restaurant;
     }
