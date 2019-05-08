@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.yummy.Activity.RestaurantActivity;
@@ -48,6 +49,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         TextView tvMore = v.findViewById(R.id.tv_more);
         tvMore.setOnClickListener(this);
+
+        LinearLayout viewNearBy = v.findViewById(R.id.view_nearby);
+        viewNearBy.setOnClickListener(this);
+
+        LinearLayout viewHot = v.findViewById(R.id.view_hot);
+        viewHot.setOnClickListener(this);
         return v;
     }
 
@@ -61,6 +68,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         if(v.getId() == R.id.tv_more){
             Intent intent = new Intent(getContext(), RestaurantActivity.class);
             intent.putExtra("type", 0);
+            startActivity(intent);
+        }else if(v.getId() == R.id.view_nearby){
+            Intent intent = new Intent(getContext(), RestaurantActivity.class);
+            intent.putExtra("type", 2);
+            startActivity(intent);
+        }else if(v.getId() == R.id.view_hot){
+            Intent intent = new Intent(getContext(), RestaurantActivity.class);
+            intent.putExtra("type", 1);
             startActivity(intent);
         }
     }

@@ -45,6 +45,7 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:id="@+id/view_hot"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
@@ -106,6 +107,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/view_nearby"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
@@ -152,7 +154,7 @@
                         <ImageView
                             android:layout_gravity="center"
                             android:padding="10dp"
-                            android:src="@drawable/discount"
+                            android:src="@drawable/discount_white"
                             android:layout_width="40dp"
                             android:layout_height="40dp" />
                     </FrameLayout>

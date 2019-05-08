@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_rooot"
     android:layout_marginTop="8dp"
     android:layout_marginLeft="8dp"
     android:layout_marginBottom="8dp"
@@ -40,29 +41,72 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/view_freeship"
-            android:paddingLeft="8dp"
-            android:paddingRight="10dp"
-            android:background="@drawable/bg_freeship"
-            android:layout_marginTop="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_gravity="center"
-                android:src="@drawable/freeshipping"
-                android:layout_width="18dp"
-                android:layout_height="15dp" />
-
-            <TextView
-                android:textSize="10sp"
-                android:textColor="@color/color_btn_signin_google"
-                android:layout_marginLeft="5dp"
-                android:layout_gravity="center"
-                android:text="@string/freeship"
+            <LinearLayout
+                android:layout_marginRight="8dp"
+                android:visibility="gone"
+                android:id="@+id/view_discount"
+                android:paddingLeft="8dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/bg_freeship"
+                android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="24dp"
+                android:layout_marginEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="10dp">
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/discount_blue"
+                    android:layout_width="18dp"
+                    android:layout_height="15dp" />
+
+                <TextView
+                    android:id="@+id/tv_discount"
+                    android:textSize="10sp"
+                    android:textColor="@color/color_btn_signin_google"
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="center"
+                    android:text="30%"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="SmallSp"
+                    android:layout_marginStart="5dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/view_freeship"
+                android:paddingLeft="8dp"
+                android:paddingRight="10dp"
+                android:background="@drawable/bg_freeship"
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="10dp">
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/freeshipping"
+                    android:layout_width="18dp"
+                    android:layout_height="15dp"/>
+
+                <TextView
+                    android:textSize="10sp"
+                    android:textColor="@color/color_btn_signin_google"
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="center"
+                    android:text="@string/freeship"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="SmallSp"
+                    android:layout_marginStart="5dp" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

@@ -19,6 +19,7 @@ public class Restaurant implements Parcelable {
     private String city;
     private float mark;
     private int freeship;
+    private Discounts discounts;
 
     public Restaurant(){}
 
@@ -118,6 +119,14 @@ public class Restaurant implements Parcelable {
         this.freeship = freeship;
     }
 
+    public Discounts getDiscounts() {
+        return discounts;
+    }
+
+    public void setDiscounts(Discounts discounts) {
+        this.discounts = discounts;
+    }
+
     protected Restaurant(Parcel in) {
         res_id = in.readString();
         name = in.readString();
@@ -133,6 +142,7 @@ public class Restaurant implements Parcelable {
         city = in.readString();
         mark = in.readFloat();
         freeship = in.readInt();
+        discounts = in.readParcelable(Discounts.class.getClassLoader());
     }
 
     public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
@@ -166,5 +176,6 @@ public class Restaurant implements Parcelable {
         dest.writeString(city);
         dest.writeFloat(mark);
         dest.writeInt(freeship);
+        dest.writeParcelable(discounts, flags);
     }
 }
