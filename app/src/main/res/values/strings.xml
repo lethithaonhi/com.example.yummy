@@ -66,10 +66,12 @@
     <string name="image">Images</string>
     <string name="review">Reviews</string>
     <string name="open_time">OPENING</string>
+    <string name="city">Province/City</string>
     <string name="close">CLOSED</string>
     <string-array name="text">
         <item>Loading</item>
         <item>Loading</item>
     </string-array>
     <string name="freeship">Freeship</string>
+    <string name="search_city">Search province, city name</string>
 </resources>

@@ -42,6 +42,7 @@ import com.jpardogo.android.googleprogressbar.library.GoogleProgressBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -60,6 +61,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
         GoogleProgressBar progressBar = findViewById(R.id.number_progress_bar);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         Common.listResId = new ArrayList<>();
+        Common.cityList = new HashMap<>();
         registerService();
         db = new MyDatabaseHelper(this);
         Common.db = db;
@@ -76,6 +78,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     String address = data.getKey();
                     if (address != null)
+                        Common.cityList.put(address, 0);
                         mDatabase.child(Node.DiaDiem).child(address).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshotRoot) {

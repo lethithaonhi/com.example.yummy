@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -90,7 +91,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 handler.post(Update);
             }
         }, DELAY_MS, PERIOD_MS);
+
+        updateCityList();
+
         return v;
+    }
+
+    private void updateCityList(){
+        for(String key : Common.cityList.keySet()){
+            int count = 0;
+            for (Restaurant restaurant : Common.restaurantListAll){
+                if(restaurant.getCity().equals(key)){
+                    count++;
+                }
+            }
+            Common.cityList.put(key, count);
+        }
     }
 
     @Override
