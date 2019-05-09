@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,10 +23,14 @@ import com.example.yummy.Utils.Common;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantHolder> {
+public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantHolder> implements Filterable {
     private List<Restaurant> restaurantList;
+    private List<Restaurant> dataFilter;
+    private String query = "";
     private Context context;
     private Branch branch;
     private float min;
@@ -32,6 +38,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     public RestaurantAdapter(List<Restaurant> restaurantList, Context context){
         this.restaurantList = restaurantList;
         this.context = context;
+        dataFilter = restaurantList;
     }
 
     @NonNull
@@ -45,7 +52,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RestaurantAdapter.RestaurantHolder holder, int i) {
-        Restaurant restaurant = restaurantList.get(i);
+        Restaurant restaurant = dataFilter.get(i);
         branch = getBranch(restaurant);
         holder.tvName.setText(restaurant.getName());
         holder.tvMark.setText(restaurant.getMark()+"");
@@ -71,7 +78,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
     @Override
     public int getItemCount() {
-        return restaurantList != null ? restaurantList.size() : 0;
+        return dataFilter != null ? dataFilter.size() : 0;
     }
 
     private Branch getBranch(Restaurant restaurant){
@@ -103,5 +110,38 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             viewDiscount = itemView.findViewById(R.id.view_discount);
             tvDiscount = itemView.findViewById(R.id.tv_discount);
         }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                query = charSequence.toString();
+                if (!query.isEmpty()) {
+                    List<Restaurant> filteredList = new ArrayList<>();
+                    for (Restaurant restaurant : restaurantList) {
+                        if (restaurant.getName().toLowerCase().contains(query.toLowerCase())) {
+                            filteredList.add(restaurant);
+                        }
+                    }
+
+                    dataFilter = filteredList;
+
+                } else {
+                    dataFilter = restaurantList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = dataFilter;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                dataFilter = (List<Restaurant>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

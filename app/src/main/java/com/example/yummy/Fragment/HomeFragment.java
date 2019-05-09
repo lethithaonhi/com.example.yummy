@@ -71,6 +71,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         BannerAdapter bannerAdapter = new BannerAdapter(Objects.requireNonNull(getContext()),1);
         viewPager.setAdapter(bannerAdapter);
 
+        viewPager.setOnClickListener(v1 -> {
+            Intent intent = new Intent(getContext(), RestaurantActivity.class);
+            intent.putExtra("type", 3);
+            startActivity(intent);
+        });
+
         /*After setting the adapter use the timer */
         final Handler handler = new Handler();
         final Runnable Update = () -> {
@@ -156,19 +162,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             Common.restaurantListCurrent = Common.db.getRestaurant(Common.listResId, Common.myAddress);
             for (Restaurant restaurant : Common.restaurantListCurrent){
                 for (Branch branch: restaurant.getBranchList()){
-                    branch.setDistance(getDistanceBranch(branch));
+                    branch.setDistance(UtilsBottomBar.getDistanceBranch(branch));
                 }
             }
             Common.menuList = UtilsBottomBar.getMenuList();
             return null;
-        }
-
-        private float getDistanceBranch(Branch branch){
-            float[] distance = new float[1];
-            Location.distanceBetween(branch.getLatitude(), branch.getLongitude(),
-                    Common.myLocation.getLatitude(), Common.myLocation.getLongitude(), distance);
-                Common.db.updateBranch(distance[0], branch.getId_db());
-            return distance[0];
         }
     }
 }

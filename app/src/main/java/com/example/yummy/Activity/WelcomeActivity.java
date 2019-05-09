@@ -58,7 +58,6 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         Common.restaurantListAll = new ArrayList<>();
-        GoogleProgressBar progressBar = findViewById(R.id.number_progress_bar);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         Common.listResId = new ArrayList<>();
         Common.cityList = new HashMap<>();
@@ -172,6 +171,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                 list.add("quan1");
                 if(Common.db.getRestaurant(list, Common.myAddress).size() > 0){
                     startActivity(new Intent(WelcomeActivity.this,BottomBarActivity.class));
+                    finish();
                 }else{
                     getRestaurant();
                 }
@@ -217,6 +217,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                         db.addRestaurant(restaurant);
                         if (Common.restaurantListAll.size() == dataSnapshotRoot.getChildrenCount()) {
                             startActivity(new Intent(WelcomeActivity.this, BottomBarActivity.class));
+                            finish();
                         }
                     }
 

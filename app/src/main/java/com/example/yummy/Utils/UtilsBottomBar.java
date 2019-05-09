@@ -1,13 +1,18 @@
 package com.example.yummy.Utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
+import com.example.yummy.Model.Branch;
 import com.example.yummy.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,5 +55,24 @@ public class UtilsBottomBar {
         });
 
         return menuList;
+    }
+
+    public static float getDistanceBranch(Branch branch){
+        float[] distance = new float[1];
+        Location.distanceBetween(branch.getLatitude(), branch.getLongitude(),
+                Common.myLocation.getLatitude(), Common.myLocation.getLongitude(), distance);
+        Common.db.updateBranch(distance[0], branch.getId_db());
+        return distance[0];
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

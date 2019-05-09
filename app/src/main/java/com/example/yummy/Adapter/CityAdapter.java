@@ -12,9 +12,11 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.example.yummy.Activity.RestaurantActivity;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> implements Filterable {
     private Context context;
@@ -37,10 +39,11 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> im
         return new CityHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull CityAdapter.CityHolder holder, @SuppressLint("RecyclerView") int i) {
         if(dataFilter.keySet().toArray() != null) {
-            String key = (String) dataFilter.keySet().toArray()[i];
+            String key = (String) Objects.requireNonNull(dataFilter.keySet().toArray())[i];
 
             if (Common.myAddress.equals(key)) {
                 holder.checkBox.setChecked(true);

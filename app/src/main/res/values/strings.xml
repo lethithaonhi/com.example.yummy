@@ -74,4 +74,5 @@
     </string-array>
     <string name="freeship">Freeship</string>
     <string name="search_city">Search province, city name</string>
+    <string name="done">Done</string>
 </resources>
