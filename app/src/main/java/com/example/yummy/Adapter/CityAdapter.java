@@ -1,5 +1,6 @@
 package com.example.yummy.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> im
     private HashMap<String, Integer> data;
     private HashMap<String, Integer> dataFilter;
     private String query = "";
+    private int prevSelection = -1;
 
     public CityAdapter (Context context, HashMap<String, Integer> data){
         this.context = context;
@@ -36,18 +38,32 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> im
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CityAdapter.CityHolder holder, int i) {
+    public void onBindViewHolder(@NonNull CityAdapter.CityHolder holder, @SuppressLint("RecyclerView") int i) {
         if(dataFilter.keySet().toArray() != null) {
             String key = (String) dataFilter.keySet().toArray()[i];
 
             if (Common.myAddress.equals(key)) {
                 holder.checkBox.setChecked(true);
+                prevSelection = i;
             } else {
                 holder.checkBox.setChecked(false);
             }
 
             holder.tvCityName.setText(key);
             holder.tvCount.setText(dataFilter.get(key) + " places");
+
+            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    holder.checkBox.setChecked(true);
+                    Common.myAddress = key;
+                    if (prevSelection >= 0) {
+                        notifyItemChanged(prevSelection);
+                    }
+                    prevSelection = i;
+                } else {
+                    holder.checkBox.setChecked(false);
+                }
+            });
         }
     }
 
@@ -87,6 +103,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> im
                 } else {
                     dataFilter = data;
                 }
+
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = dataFilter;
                 return filterResults;
