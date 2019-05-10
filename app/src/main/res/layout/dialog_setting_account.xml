@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:background="@color/white"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:padding="8dp"
+        android:paddingLeft="8dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
@@ -48,12 +51,13 @@
         android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/im_avatar"
+            android:id="@+id/img_avatar"
             android:src="@drawable/bg_baner"
             android:layout_width="36dp"
             android:layout_height="36dp" />
 
         <TextView
+            android:textColor="@color/black"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
@@ -92,6 +96,7 @@
             android:layout_height="36dp" />
 
         <TextView
+            android:textColor="@color/black"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
@@ -129,6 +134,7 @@
             android:layout_height="36dp" />
 
         <TextView
+            android:textColor="@color/black"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
@@ -172,6 +178,7 @@
             android:layout_height="36dp" />
 
         <TextView
+            android:textColor="@color/black"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"

@@ -97,6 +97,7 @@
                             android:layout_height="wrap_content">
 
                             <TextView
+                                android:id="@+id/tv_discount"
                                 android:text="Discount: 30% - Code: GOT"
                                 android:textSize="12sp"
                                 android:layout_width="wrap_content"
@@ -131,6 +132,7 @@
                             android:layout_height="24dp" />
 
                             <TextView
+                                android:id="@+id/tv_freeship"
                                 android:layout_marginLeft="8dp"
                                 android:layout_weight="1"
                                 android:text="FreeShip under 2km, only 15000VND"

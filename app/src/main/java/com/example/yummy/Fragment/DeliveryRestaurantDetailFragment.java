@@ -64,6 +64,18 @@ public class DeliveryRestaurantDetailFragment extends Fragment {
             MenuRestaurantDetailAdapter adapter = new MenuRestaurantDetailAdapter(getContext(), restaurant.getMenuList());
             rvMenu.setAdapter(adapter);
         }
+
+        TextView tvDiscount = v.findViewById(R.id.tv_discount);
+        String discount = "Discount: "+restaurant.getDiscounts().getDiscount()+"% - Code: "+restaurant.getDiscounts().getCode()+
+                "\nMin order: "+restaurant.getDiscounts().getMin_order() +"VND - Max discount: "+restaurant.getDiscounts().getMax_discount()+"VND";
+        tvDiscount.setText(discount);
+
+        String freeship = "";
+        if(restaurant.getFreeship() == 0)
+            freeship = "FreeShip under 2km, only 15000VND for 2km - 5km\n";
+        freeship =  freeship + "Verify: "+restaurant.getFreeship() +"VND/Km";
+        TextView tvFreeship = v.findViewById(R.id.tv_freeship);
+        tvFreeship.setText(freeship);
     }
 
     private void setStatusActive(){

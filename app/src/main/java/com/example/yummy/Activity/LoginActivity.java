@@ -7,21 +7,28 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.example.yummy.Model.Account;
+import com.example.yummy.Model.Address;
 import com.example.yummy.R;
+import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.Node;
 import com.example.yummy.Utils.UtilsBottomBar;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText edtUsername, edtPassword;
@@ -72,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("notifySignInEmail", "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            getInfoAccount();
                             startActivity(new Intent(LoginActivity.this, BottomBarActivity.class));
                             finish();
                             //updateUI(user);
@@ -97,7 +105,43 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null) {
-            edtUsername.setText(currentUser.getEmail());
+            getInfoAccount();
+            startActivity(new Intent(LoginActivity.this, BottomBarActivity.class));
+            finish();
         }
+    }
+
+    private void getInfoAccount(){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        if(mAuth.getUid() != null)
+        mDatabase.child(Node.user).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Common.accountCurrent = dataSnapshot.getValue(Account.class);
+                mDatabase.child(Node.Address).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<Address> addresses = new ArrayList<>();
+                        for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                            Address address = dataSnapshot1.getValue(Address.class);
+                            addresses.add(address);
+                        }
+
+                        Common.accountCurrent.setAddressList(addresses);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }

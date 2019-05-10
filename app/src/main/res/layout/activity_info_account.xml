@@ -100,10 +100,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
-        <TextView
+        <EditText
             android:layout_weight="0.7"
             android:textSize="14sp"
-            android:id="@+id/tv_nameinfo"
+            android:id="@+id/ed_nameinfo"
             android:text="@string/username"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
@@ -133,7 +133,7 @@
         <EditText
             android:layout_weight="0.7"
             android:textSize="14sp"
-            android:id="@+id/tv_email"
+            android:id="@+id/ed_email"
             android:text="@string/username"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
@@ -233,6 +233,7 @@
             android:layout_height="wrap_content" />
 
         <EditText
+            android:id="@+id/ed_phone"
             android:drawablePadding="5dp"
             android:layout_weight="0.6"
             android:drawableLeft="@drawable/ic_check_circle_24dp"

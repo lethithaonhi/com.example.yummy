@@ -3,6 +3,7 @@ package com.example.yummy.Utils;
 import android.location.Location;
 
 import com.example.yummy.Database.MyDatabaseHelper;
+import com.example.yummy.Model.Account;
 import com.example.yummy.Model.Restaurant;
 
 import java.util.HashMap;
@@ -18,4 +19,5 @@ public class Common {
     public static List<Map> menuList;
     public static List<Restaurant> restaurantListCurrent;
     public static HashMap<String, Integer> cityList;
+    public static Account accountCurrent;
 }

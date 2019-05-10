@@ -45,13 +45,13 @@ public class PhoneActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone);
 
-        edtPhoneNumber = (EditText) findViewById(R.id.phoneText);
-        edtCodeText = (EditText) findViewById(R.id.codeText);
-        btnVerifyCode = (Button) findViewById(R.id.verifyButton);
-        btnSendCode = (Button) findViewById(R.id.sendButton);
-        btnResendCode = (Button) findViewById(R.id.resendButton);
+        edtPhoneNumber =  findViewById(R.id.phoneText);
+        edtCodeText =  findViewById(R.id.codeText);
+        btnVerifyCode = findViewById(R.id.verifyButton);
+        btnSendCode = findViewById(R.id.sendButton);
+        btnResendCode = findViewById(R.id.resendButton);
 
-        ccp = (CountryCodePicker) findViewById(R.id.ccp);
+        ccp = findViewById(R.id.ccp);
         ccp.registerCarrierNumberEditText(edtPhoneNumber);
 
         btnVerifyCode.setEnabled(false);

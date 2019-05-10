@@ -91,4 +91,9 @@
     <string name="information_contact">Information &amp; Contact</string>
     <string name="pass">Password</string>
     <string name="change_lang">Change Language</string>
+    <string name="login_first">You need to login to app. Please Login!</string>
+    <string name="male">Male</string>
+    <string name="felmale">Felmale</string>
+    <string name="none">None</string>
+    <string name="info_account">Welcome you to join Yummy apps</string>
 </resources>
