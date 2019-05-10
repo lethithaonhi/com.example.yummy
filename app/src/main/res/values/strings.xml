@@ -75,4 +75,20 @@
     <string name="freeship">Freeship</string>
     <string name="search_city">Search province, city name</string>
     <string name="done">Done</string>
+    <string name="save">Save</string>
+    <string name="user_info">User Information</string>
+    <string name="numberphone">Number Phone</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="birth">Date of Birth</string>
+    <string name="name">Name</string>
+    <string name="gender">Gender</string>
+    <string name="phone">Phone</string>
+    <string name="history_address">Address History</string>
+    <string name="account_setting">Account Settings</string>
+    <string name="app_setting">App Settings</string>
+    <string name="avatar">Avatar</string>
+    <string name="information_contact">Information &amp; Contact</string>
+    <string name="pass">Password</string>
+    <string name="change_lang">Change Language</string>
 </resources>

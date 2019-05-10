@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/im_close"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_close_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginLeft="8dp"
+            android:id="@+id/tv_name"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:text="@string/setting_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:paddingLeft="10dp"
+        android:background="@color/grey"
+        android:text="@string/account_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/view_avatar"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/im_avatar"
+            android:src="@drawable/bg_baner"
+            android:layout_width="36dp"
+            android:layout_height="36dp" />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/avatar"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginRight="8dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_navigate_next_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/grey"/>
+
+
+    <LinearLayout
+        android:id="@+id/view_info"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/ic_account_circle_grey_24dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp" />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/information_contact"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginRight="8dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_navigate_next_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/grey"/>
+
+    <LinearLayout
+        android:id="@+id/view_changepass"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp" />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/pass"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginRight="8dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_navigate_next_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:paddingLeft="10dp"
+        android:background="@color/grey"
+        android:text="@string/app_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/view_changelang"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/ic_language_grey_24dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp" />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/change_lang"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginRight="8dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_navigate_next_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

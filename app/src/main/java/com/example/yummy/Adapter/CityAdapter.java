@@ -59,7 +59,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> im
                 if (isChecked) {
                     holder.checkBox.setChecked(true);
                     Common.myAddress = key;
-                    if (prevSelection >= 0) {
+                    if (prevSelection >= 0 && prevSelection < dataFilter.size()) {
                         notifyItemChanged(prevSelection);
                     }
                     prevSelection = i;

@@ -2,6 +2,7 @@ package com.example.yummy.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -31,17 +32,26 @@ import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.UtilsBottomBar;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import javax.net.ssl.HttpsURLConnection;
+
 public class RestaurantActivity extends AppCompatActivity {
     private List<Restaurant> restaurantList;
     private int type; //1: mark, 0: normal, 2: distance, 3:discount
     private String[] typeName ={"Suggest", "Hot", "NearBy", "Discount"};
-    private boolean isSearch = false;
     private CityAdapter cityAdapter;
     private TextView tvAddress;
     private RecyclerView rcvRes;
@@ -55,6 +65,10 @@ public class RestaurantActivity extends AppCompatActivity {
 
         type = getIntent().getIntExtra("type", 0);
         initView();
+
+        DataLongOperationAsynchTask asynchTask = new DataLongOperationAsynchTask();
+        asynchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
     }
 
     private void initView(){
@@ -66,7 +80,6 @@ public class RestaurantActivity extends AppCompatActivity {
         TextView tvCIty = findViewById(R.id.tv_city);
         tvCIty.setText(Common.myAddress);
         ImageView btnClose = findViewById(R.id.btn_close);
-        ImageView btnMap = findViewById(R.id.btn_map);
         rcvRes = findViewById(R.id.rcv_restaurant);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcvRes.setLayoutManager(layoutManager);
@@ -97,9 +110,6 @@ public class RestaurantActivity extends AppCompatActivity {
             UtilsBottomBar.hideKeyboard(this);
         });
 
-        btnMap.setOnClickListener(v -> {
-
-        });
         getAddressCurrent();
 
         edSearch.addTextChangedListener(new TextWatcher() {
@@ -117,6 +127,11 @@ public class RestaurantActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 adapter.getFilter().filter(s.toString());
             }
+        });
+
+        LinearLayout viewAddress = findViewById(R.id.view_address);
+        viewAddress.setOnClickListener(v->{
+
         });
     }
 
@@ -184,6 +199,15 @@ public class RestaurantActivity extends AppCompatActivity {
         }
     }
 
+    public void createDialogAddress(){
+        dialog = new Dialog(RestaurantActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.setTitle("");
+        dialog.setContentView(R.layout.dialog_find_address);
+        dialog.show();
+
+
+    }
+
     private void getAddressCurrent(){
         Geocoder geocoder;
         List<Address> addresses;
@@ -228,7 +252,85 @@ public class RestaurantActivity extends AppCompatActivity {
             setRestaurantList();
             return null;
         }
+    }
+
+    private class DataLongOperationAsynchTask extends AsyncTask<String, Void, String[]> {
+        ProgressDialog dialog = new ProgressDialog(RestaurantActivity.this);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage("Please wait...");
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+        }
+
+        @Override
+        protected String[] doInBackground(String... params) {
+            String response, address="";
+            try {
+                address = address.replaceAll("\\s", "+");
+                response = getLatLongByURL("http://maps.google.com/maps/api/geocode/json?address="+address+"&sensor=false&key="+getResources().getString(R.string.Your_API_KEY));
+                Log.d("response",""+response);
+                return new String[]{response};
+            } catch (Exception e) {
+                return new String[]{"error"};
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String... result) {
+            try {
+                JSONObject jsonObject = new JSONObject(result[0]);
+
+                double lng = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
+                        .getJSONObject("geometry").getJSONObject("location")
+                        .getDouble("lng");
+
+                double lat = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
+                        .getJSONObject("geometry").getJSONObject("location")
+                        .getDouble("lat");
+
+                Log.d("latitude", "" + lat);
+                Log.d("longitude", "" + lng);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        }
+    }
 
 
+    public String getLatLongByURL(String requestURL) {
+        URL url;
+        String response = "";
+        try {
+            url = new URL(requestURL);
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            conn.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+            conn.setDoOutput(true);
+            int responseCode = conn.getResponseCode();
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                }
+            } else {
+                response = "";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return response;
     }
 }

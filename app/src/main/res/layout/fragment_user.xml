@@ -128,6 +128,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/view_setting"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"

@@ -84,6 +84,7 @@
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
+        android:id="@+id/view_address"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="8dp"

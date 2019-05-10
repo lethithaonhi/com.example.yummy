@@ -48,6 +48,7 @@
         <activity android:name=".Activity.RestaurantDetailActivity"/>
         <activity android:name=".Activity.ImgDetailReviewActivity"/>
         <activity android:name=".Activity.RestaurantActivity"/>
+        <activity android:name=".Activity.InforUserActivity"/>
     </application>
 
 </manifest>
