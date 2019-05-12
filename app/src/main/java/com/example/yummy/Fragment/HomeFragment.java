@@ -18,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -70,6 +71,30 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         LinearLayout viewDiscount = v.findViewById(R.id.view_discount);
         viewDiscount.setOnClickListener(this);
+
+        FrameLayout viewFood = v.findViewById(R.id.view_food);
+        viewFood.setOnClickListener(this);
+
+        FrameLayout viewDrink = v.findViewById(R.id.view_drink);
+        viewDrink.setOnClickListener(this);
+
+        FrameLayout viewFruits = v.findViewById(R.id.view_friuts);
+        viewFruits.setOnClickListener(this);
+
+        FrameLayout viewCake = v.findViewById(R.id.view_cake);
+        viewCake.setOnClickListener(this);
+
+        FrameLayout viewSnack = v.findViewById(R.id.view_snack);
+        viewSnack.setOnClickListener(this);
+
+        FrameLayout viewVegetarian = v.findViewById(R.id.view_vegetarian);
+        viewVegetarian.setOnClickListener(this);
+
+        FrameLayout viewHandmade = v.findViewById(R.id.view_handmade);
+        viewHandmade.setOnClickListener(this);
+
+        FrameLayout viewMore = v.findViewById(R.id.view_more);
+        viewMore.setOnClickListener(this);
 
         ViewPager viewPager = v.findViewById(R.id.viewPager);
         BannerAdapter bannerAdapter = new BannerAdapter(Objects.requireNonNull(getContext()),1);
@@ -141,6 +166,38 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }else if(v.getId() == R.id.view_discount){
             Intent intent = new Intent(getContext(), RestaurantActivity.class);
             intent.putExtra("type", 3);
+            startActivity(intent);
+        }else if(v.getId() == R.id.view_food){
+            Intent intent = new Intent(getContext(), RestaurantActivity.class);
+            intent.putExtra("type", 4);
+            startActivity(intent);
+        }else if(v.getId() == R.id.view_drink){
+            Intent intent = new Intent(getContext(), RestaurantActivity.class);
+            intent.putExtra("type", 5);
+            startActivity(intent);
+        }else if(v.getId() == R.id.view_cake){
+            Intent intent = new Intent(getContext(), RestaurantActivity.class);
+            intent.putExtra("type", 6);
+            startActivity(intent);
+        }else if(v.getId() == R.id.view_friuts){
+            Intent intent = new Intent(getContext(), RestaurantActivity.class);
+            intent.putExtra("type", 7);
+            startActivity(intent);
+        }else if(v.getId() == R.id.view_snack){
+            Intent intent = new Intent(getContext(), RestaurantActivity.class);
+            intent.putExtra("type", 8);
+            startActivity(intent);
+        }else if(v.getId() == R.id.view_vegetarian){
+            Intent intent = new Intent(getContext(), RestaurantActivity.class);
+            intent.putExtra("type", 9);
+            startActivity(intent);
+        }else  if(v.getId() == R.id.view_handmade){
+            Intent intent = new Intent(getContext(), RestaurantActivity.class);
+            intent.putExtra("type", 10);
+            startActivity(intent);
+        }else if(v.getId() == R.id.view_more){
+            Intent intent = new Intent(getContext(), RestaurantActivity.class);
+            intent.putExtra("type", 11);
             startActivity(intent);
         }
     }

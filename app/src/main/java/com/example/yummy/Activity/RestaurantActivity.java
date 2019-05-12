@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,10 +28,18 @@ import com.example.yummy.Adapter.RestaurantAdapter;
 import com.example.yummy.Adapter.RestaurantHorizontalAdapter;
 import com.example.yummy.Fragment.HomeFragment;
 import com.example.yummy.Model.Branch;
+import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.UtilsBottomBar;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,12 +60,14 @@ import javax.net.ssl.HttpsURLConnection;
 public class RestaurantActivity extends AppCompatActivity {
     private List<Restaurant> restaurantList;
     private int type; //1: mark, 0: normal, 2: distance, 3:discount
-    private String[] typeName ={"Suggest", "Hot", "NearBy", "Discount"};
+    private String[] typeName ={"Suggest", "Hot", "NearBy", "Discount","Food", "Drink","Cake", "Fruits", "Snack", "Vegetarian", "Handmade", "Dessert"};
     private CityAdapter cityAdapter;
     private TextView tvAddress;
     private RecyclerView rcvRes;
     private Dialog dialog;
     private  RestaurantAdapter adapter;
+    private Location location;
+    private String address;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,10 +76,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
         type = getIntent().getIntExtra("type", 0);
         initView();
-
-        DataLongOperationAsynchTask asynchTask = new DataLongOperationAsynchTask();
-        asynchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
+        location = Common.myLocation;
     }
 
     private void initView(){
@@ -131,7 +139,10 @@ public class RestaurantActivity extends AppCompatActivity {
 
         LinearLayout viewAddress = findViewById(R.id.view_address);
         viewAddress.setOnClickListener(v->{
-
+            Intent intent = new Intent(this, ChangeAddressActivity.class);
+            intent.putExtra("location", location);
+            intent.putExtra("address", address);
+            startActivity(intent);
         });
     }
 
@@ -144,9 +155,43 @@ public class RestaurantActivity extends AppCompatActivity {
             }
 
             Collections.sort(restaurantList, (obj1, obj2) -> Float.compare(obj1.getBranchList().get(0).getDistance(), obj2.getBranchList().get(0).getDistance()));
-        }else if (type== 3){
+        }else if(type== 3){
             Collections.sort(restaurantList, (ob1, ob2) -> ob2.getDiscounts().getDiscount() - ob1.getDiscounts().getDiscount());
+        }else if(type == 4){
+            getResFromMenu("mathucdon1");
+        }else if(type == 5){
+            getResFromMenu("mathucdon2");
+        }else if(type == 6){
+            getResFromMenu("mathucdon3");
+        }else if(type == 7){
+            getResFromMenu("mathucdon5");
+        }else if(type == 8){
+            getResFromMenu("mathucdon6");
+        }else if(type == 9){
+            getResFromMenu("mathucdon7");
+        }else if(type == 10){
+            getResFromMenu("mathucdon8");
+        }else if(type == 11){
+            getResFromMenu("mathucdon4");
         }
+    }
+
+    private void getResFromMenu(String maMenu){
+        List<Restaurant> restaurantNewList = new ArrayList<>();
+        for(Restaurant restaurant: restaurantList){
+            for(String menu : restaurant.getMenuIdList()){
+                if(menu.equals(maMenu)){
+                    restaurantNewList.add(restaurant);
+                    break;
+                }
+            }
+        }
+        restaurantList = restaurantNewList;
+        for (Restaurant restaurant : restaurantList){
+            Collections.sort(restaurant.getBranchList(), (obj1, obj2) -> Float.compare(obj1.getDistance(), obj2.getDistance()));
+        }
+
+        Collections.sort(restaurantList, (obj1, obj2) -> Float.compare(obj1.getBranchList().get(0).getDistance(), obj2.getBranchList().get(0).getDistance()));
     }
 
     private void createDialog(){
@@ -199,15 +244,6 @@ public class RestaurantActivity extends AppCompatActivity {
         }
     }
 
-    public void createDialogAddress(){
-        dialog = new Dialog(RestaurantActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
-        dialog.setTitle("");
-        dialog.setContentView(R.layout.dialog_find_address);
-        dialog.show();
-
-
-    }
-
     private void getAddressCurrent(){
         Geocoder geocoder;
         List<Address> addresses;
@@ -217,8 +253,8 @@ public class RestaurantActivity extends AppCompatActivity {
             addresses = geocoder.getFromLocation(Common.myLocation.getLatitude(), Common.myLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
 
-            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            String knownName = addresses.get(0).getFeatureName();
+            address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+//            String knownName = addresses.get(0).getFeatureName();
             tvAddress.setText(address);
         }catch (IOException e) {
             e.printStackTrace();
@@ -252,85 +288,5 @@ public class RestaurantActivity extends AppCompatActivity {
             setRestaurantList();
             return null;
         }
-    }
-
-    private class DataLongOperationAsynchTask extends AsyncTask<String, Void, String[]> {
-        ProgressDialog dialog = new ProgressDialog(RestaurantActivity.this);
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog.setMessage("Please wait...");
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
-        }
-
-        @Override
-        protected String[] doInBackground(String... params) {
-            String response, address="";
-            try {
-                address = address.replaceAll("\\s", "+");
-                response = getLatLongByURL("http://maps.google.com/maps/api/geocode/json?address="+address+"&sensor=false&key="+getResources().getString(R.string.Your_API_KEY));
-                Log.d("response",""+response);
-                return new String[]{response};
-            } catch (Exception e) {
-                return new String[]{"error"};
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String... result) {
-            try {
-                JSONObject jsonObject = new JSONObject(result[0]);
-
-                double lng = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
-                        .getJSONObject("geometry").getJSONObject("location")
-                        .getDouble("lng");
-
-                double lat = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
-                        .getJSONObject("geometry").getJSONObject("location")
-                        .getDouble("lat");
-
-                Log.d("latitude", "" + lat);
-                Log.d("longitude", "" + lng);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-        }
-    }
-
-
-    public String getLatLongByURL(String requestURL) {
-        URL url;
-        String response = "";
-        try {
-            url = new URL(requestURL);
-
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(15000);
-            conn.setConnectTimeout(15000);
-            conn.setRequestMethod("GET");
-            conn.setDoInput(true);
-            conn.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded");
-            conn.setDoOutput(true);
-            int responseCode = conn.getResponseCode();
-
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-                String line;
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                while ((line = br.readLine()) != null) {
-                    response += line;
-                }
-            } else {
-                response = "";
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return response;
     }
 }

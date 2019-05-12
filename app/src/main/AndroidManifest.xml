@@ -49,6 +49,7 @@
         <activity android:name=".Activity.ImgDetailReviewActivity"/>
         <activity android:name=".Activity.RestaurantActivity"/>
         <activity android:name=".Activity.InforUserActivity"/>
+        <activity android:name=".Activity.ChangeAddressActivity" />
     </application>
 
 </manifest>

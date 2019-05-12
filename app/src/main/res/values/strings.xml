@@ -25,7 +25,7 @@
     <string name="discount">Discount</string>
     <string name="product">Product</string>
     <string name="Exp">Suggestion</string>
-    <string name="more">More</string>
+    <string name="more">Dessert</string>
     <string name="food">Food</string>
     <string name="drink">Drink</string>
     <string name="cake">Cake</string>
@@ -74,6 +74,8 @@
     </string-array>
     <string name="freeship">Freeship</string>
     <string name="search_city">Search province, city name</string>
+    <string name="search_location">Enter address</string>
+    <string name="search">Search</string>
     <string name="done">Done</string>
     <string name="save">Save</string>
     <string name="user_info">User Information</string>
@@ -96,4 +98,5 @@
     <string name="felmale">Felmale</string>
     <string name="none">None</string>
     <string name="info_account">Welcome you to join Yummy apps</string>
+    <string name="error_change_address">Can\' t change address. Please check the entered address again!</string>
 </resources>

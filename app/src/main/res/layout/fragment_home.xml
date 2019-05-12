@@ -225,6 +225,7 @@
                         android:layout_height="wrap_content">
 
                         <FrameLayout
+                            android:id="@+id/view_food"
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
                             android:background="@drawable/bg_square_yellow"
@@ -257,6 +258,7 @@
                         android:layout_height="wrap_content">
 
                         <FrameLayout
+                            android:id="@+id/view_drink"
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
                             android:background="@drawable/bg_square_yellow"
@@ -289,6 +291,7 @@
                         android:layout_height="wrap_content">
 
                         <FrameLayout
+                            android:id="@+id/view_cake"
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
                             android:background="@drawable/bg_square_yellow"
@@ -321,6 +324,7 @@
                         android:layout_height="wrap_content">
 
                         <FrameLayout
+                            android:id="@+id/view_friuts"
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
                             android:background="@drawable/bg_square_yellow"
@@ -360,6 +364,7 @@
                         android:layout_height="wrap_content">
 
                         <FrameLayout
+                            android:id="@+id/view_snack"
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
                             android:background="@drawable/bg_square_yellow"
@@ -392,6 +397,7 @@
                         android:layout_height="wrap_content">
 
                         <FrameLayout
+                            android:id="@+id/view_vegetarian"
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
                             android:background="@drawable/bg_square_yellow"
@@ -424,6 +430,7 @@
                         android:layout_height="wrap_content">
 
                         <FrameLayout
+                            android:id="@+id/view_handmade"
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
                             android:background="@drawable/bg_square_yellow"
@@ -456,6 +463,7 @@
                         android:layout_height="wrap_content">
 
                         <FrameLayout
+                            android:id="@+id/view_more"
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
                             android:background="@drawable/bg_square_yellow"
