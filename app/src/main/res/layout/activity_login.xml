@@ -241,7 +241,7 @@
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:id="@+id/btn_sso_ms"
+                    android:id="@+id/btn_sso_fb"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
                     android:background="@drawable/bg_button_sign_mc"

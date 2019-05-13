@@ -1,5 +1,6 @@
 package com.example.yummy.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,8 +21,12 @@ import com.example.yummy.Activity.RestaurantActivity;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.squareup.picasso.Picasso;
+import android.content.Context;
+
 
 public class AccountFragment extends Fragment {
+    @SuppressLint("StaticFieldLeak")
+    private Context mContext;
 
     public static AccountFragment newInstance() {
         AccountFragment fragment = new AccountFragment();
@@ -32,6 +37,8 @@ public class AccountFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_user, container, false);
+        if(getContext() != null)
+            mContext = getContext();
 
         Button btnSignIn = v.findViewById(R.id.btn_signin);
         btnSignIn.setOnClickListener(v1 -> startActivity(new Intent(getContext(), LoginActivity.class)));
@@ -80,5 +87,11 @@ public class AccountFragment extends Fragment {
                 Picasso.get().load(Common.accountCurrent.getAvatar()).into(imgAvatar);
             }
         }
+    }
+    // Initialise it from onAttach()
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 }
