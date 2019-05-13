@@ -2,7 +2,9 @@ package com.example.yummy.Fragment;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -128,7 +130,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }, DELAY_MS, PERIOD_MS);
 
         updateCityList();
-
+        doSaveLang();
         return v;
     }
 
@@ -200,6 +202,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             intent.putExtra("type", 11);
             startActivity(intent);
         }
+    }
+
+    private void doSaveLang()  {
+        SharedPreferences sharedPreferences= Objects.requireNonNull(getContext()).getSharedPreferences("changeLang", Context.MODE_PRIVATE);
+        if(sharedPreferences!= null) {
+            Common.language = sharedPreferences.getString("lang", "en");
+        }else {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putString("lang", Locale.getDefault().getLanguage());
+            Common.language = Locale.getDefault().getLanguage();
+            editor.apply();
+        }
+
     }
 
     @SuppressLint("StaticFieldLeak")
