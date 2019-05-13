@@ -103,4 +103,8 @@
     <string name="vietname">Vietnamese</string>
     <string name="english">English</string>
     <string name="cancel">Cancel</string>
+    <string name="change_pass_suc">Password Successfully Modified</string>
+    <string name="change_pass_fail">Something went wrong. Please try again later</string>
+    <string name="reset_pass_succ">Reset password instructions has sent to your email</string>
+    <string name="reset_pass_fail">Email don\'t exist</string>
 </resources>

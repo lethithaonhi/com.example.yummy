@@ -28,6 +28,11 @@ import com.example.yummy.Activity.InfoUserActivity;
 import com.example.yummy.Activity.LoginActivity;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
@@ -91,7 +96,18 @@ public class AccountFragment extends Fragment {
             });
 
             viewChangePass.setOnClickListener(v->{
-
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                String pass="";
+                if(currentUser != null) {
+                    currentUser.updatePassword(pass).addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            Toast.makeText(mContext, R.string.change_pass_suc, Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(mContext, R.string.change_pass_fail, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             });
 
             viewinfor.setOnClickListener(v -> {

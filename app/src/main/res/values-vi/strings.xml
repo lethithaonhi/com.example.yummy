@@ -99,4 +99,8 @@
         <item>Đang tải</item>
         <item>Đang tải</item>
     </string-array>
+    <string name="change_pass_suc">Thay đổi mật khẩu thành công!</string>
+    <string name="change_pass_fail">Lỗi. Vui lòng thử lại!</string>
+    <string name="reset_pass_succ">Chúng tôi đã gửi mail đến tài khoản email cuae bạn, vui lòng kiểm tra!</string>
+    <string name="reset_pass_fail">Email không tồn tại!</string>
 </resources>
