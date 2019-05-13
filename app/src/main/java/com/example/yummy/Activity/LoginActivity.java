@@ -287,4 +287,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             });
 
     }
+
+    private void fogotPass(){
+        String email="";
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                Toast.makeText(LoginActivity.this, R.string.register_text, Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(LoginActivity.this, R.string.register_text, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

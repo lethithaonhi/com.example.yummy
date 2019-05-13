@@ -27,8 +27,6 @@ import java.util.Map;
 public class InfoRestaurantDetailFragment extends Fragment implements OnMapReadyCallback, YouTubePlayer.OnInitializedListener {
     private Restaurant restaurant;
     private Branch branch;
-    private GoogleMap mMap;
-    private YouTubePlayerSupportFragment youTubePlayerView;
 
     public static InfoRestaurantDetailFragment getInstance(Restaurant restaurant, Branch branch) {
         InfoRestaurantDetailFragment fragment = new InfoRestaurantDetailFragment();
@@ -68,13 +66,13 @@ public class InfoRestaurantDetailFragment extends Fragment implements OnMapReady
             type += "\\"+getStringMenuList(key);
         }
         tvType.setText(type.substring(1));
-        youTubePlayerView = (YouTubePlayerSupportFragment) this.getChildFragmentManager().findFragmentById(R.id.videoTrailer);
+        YouTubePlayerSupportFragment youTubePlayerView = (YouTubePlayerSupportFragment) this.getChildFragmentManager().findFragmentById(R.id.videoTrailer);
         youTubePlayerView.initialize(getResources().getString(R.string.Your_API_KEY), this);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        GoogleMap mMap = googleMap;
         LatLng latLng = new LatLng(branch.getLatitude(), branch.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
