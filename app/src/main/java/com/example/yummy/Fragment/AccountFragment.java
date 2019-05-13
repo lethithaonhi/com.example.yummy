@@ -1,5 +1,6 @@
 package com.example.yummy.Fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yummy.Activity.BottomBarActivity;
 import com.example.yummy.Activity.InfoUserActivity;
 import com.example.yummy.Activity.LoginActivity;
 import com.example.yummy.R;
@@ -22,6 +24,7 @@ import com.example.yummy.Utils.Common;
 import com.squareup.picasso.Picasso;
 
 public class AccountFragment extends Fragment {
+    @SuppressLint("StaticFieldLeak")
     private Context mContext;
 
     public static AccountFragment newInstance() {
@@ -68,13 +71,16 @@ public class AccountFragment extends Fragment {
             LinearLayout viewChangePass = dialog.findViewById(R.id.view_changepass);
 
             viewinfor.setOnClickListener(v -> {
-                if(Common.accountCurrent != null) {
-                    startActivity(new Intent(mContext, InfoUserActivity.class));
+                if(Common.accountCurrent != null && mContext != null) {
+                    Intent intent = new Intent(mContext, InfoUserActivity.class);
+                    startActivity(intent);
+                    dialog.dismiss();
                 }else {
                     Toast.makeText(mContext, R.string.login_first, Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(mContext, LoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
             });
+
             ImageView imClose = dialog.findViewById(R.id.im_close);
             imClose.setOnClickListener(v->dialog.dismiss());
 
