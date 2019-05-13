@@ -39,7 +39,8 @@
                 android:text="@string/save"
                 android:textSize="16sp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp" />
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
@@ -170,6 +171,7 @@
             android:text="05-06-1997"
             android:layout_width="0dp"
             android:layout_height="30dp" />
+
     </LinearLayout>
 
     <View
@@ -187,22 +189,58 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:layout_weight="0.3"
+            android:layout_weight="0.6"
             android:text="@string/gender"
             android:textSize="14sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@drawable/bg_square_yellow"
-            android:layout_weight="0.25"
-            android:textSize="14sp"
-            android:id="@+id/tv_sex"
-            android:text="felmale"
-            android:layout_width="0dp"
-            android:layout_height="30dp" />
+        <!--<TextView-->
+            <!--android:textColor="@color/white"-->
+            <!--android:gravity="center"-->
+            <!--android:background="@drawable/bg_square_yellow"-->
+            <!--android:layout_weight="0.25"-->
+            <!--android:textSize="14sp"-->
+            <!--android:id="@+id/tv_sex"-->
+            <!--android:text="felmale"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="30dp" />-->
+        <RadioGroup
+            android:id="@+id/radioGrp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8sp"
+                android:layout_marginRight="8sp"
+                android:checked="true"
+                android:text="@string/male"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/radio_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8sp"
+                android:layout_marginRight="8sp"
+                android:checked="false"
+                android:text="@string/female"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/radio_none"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="@string/none"
+                android:textSize="14sp" />
+        </RadioGroup>
+
     </LinearLayout>
 
     <TextView

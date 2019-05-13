@@ -1,6 +1,7 @@
 package com.example.yummy.Fragment;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,14 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.yummy.Activity.InforUserActivity;
+import com.example.yummy.Activity.InfoUserActivity;
 import com.example.yummy.Activity.LoginActivity;
-import com.example.yummy.Activity.RestaurantActivity;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.squareup.picasso.Picasso;
 
 public class AccountFragment extends Fragment {
+    private Context mContext;
 
     public static AccountFragment newInstance() {
         AccountFragment fragment = new AccountFragment();
@@ -32,9 +33,11 @@ public class AccountFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_user, container, false);
+        if(getContext() != null)
+        mContext = getContext();
 
         Button btnSignIn = v.findViewById(R.id.btn_signin);
-        btnSignIn.setOnClickListener(v1 -> startActivity(new Intent(getContext(), LoginActivity.class)));
+        btnSignIn.setOnClickListener(v1 -> startActivity(new Intent(mContext, LoginActivity.class)));
 
         LinearLayout viewSetting = v.findViewById(R.id.view_setting);
         viewSetting.setOnClickListener(vl-> dialogSetting());
@@ -55,7 +58,7 @@ public class AccountFragment extends Fragment {
 
     private void dialogSetting(){
         if(getContext() != null) {
-            Dialog dialog = new Dialog(getContext(), android.R.style.Theme_Translucent_NoTitleBar);
+            Dialog dialog = new Dialog(mContext, android.R.style.Theme_Translucent_NoTitleBar);
             dialog.setTitle("");
             dialog.setContentView(R.layout.dialog_setting_account);
             dialog.show();
@@ -66,10 +69,10 @@ public class AccountFragment extends Fragment {
 
             viewinfor.setOnClickListener(v -> {
                 if(Common.accountCurrent != null) {
-                    startActivity(new Intent(getContext(), InforUserActivity.class));
+                    startActivity(new Intent(mContext, InfoUserActivity.class));
                 }else {
-                    Toast.makeText(getContext(), R.string.login_first, Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getContext(), LoginActivity.class));
+                    Toast.makeText(mContext, R.string.login_first, Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(mContext, LoginActivity.class));
                 }
             });
             ImageView imClose = dialog.findViewById(R.id.im_close);
@@ -80,5 +83,12 @@ public class AccountFragment extends Fragment {
                 Picasso.get().load(Common.accountCurrent.getAvatar()).into(imgAvatar);
             }
         }
+    }
+
+    // Initialise it from onAttach()
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 }

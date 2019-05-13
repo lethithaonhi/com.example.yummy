@@ -126,12 +126,14 @@
         android:id="@+id/view_changepass"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="36dp"
-            android:layout_height="36dp" />
+            android:src="@drawable/lock"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
 
         <TextView
             android:textColor="@color/black"

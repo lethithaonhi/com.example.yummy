@@ -2,7 +2,6 @@ package com.example.yummy.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -16,7 +15,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,37 +23,16 @@ import android.widget.TextView;
 
 import com.example.yummy.Adapter.CityAdapter;
 import com.example.yummy.Adapter.RestaurantAdapter;
-import com.example.yummy.Adapter.RestaurantHorizontalAdapter;
-import com.example.yummy.Fragment.HomeFragment;
 import com.example.yummy.Model.Branch;
-import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.UtilsBottomBar;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-
-import javax.net.ssl.HttpsURLConnection;
 
 public class RestaurantActivity extends AppCompatActivity {
     private List<Restaurant> restaurantList;
@@ -96,9 +73,7 @@ public class RestaurantActivity extends AppCompatActivity {
         RestaurantMainAsyncTask myAsyncTask = new RestaurantMainAsyncTask();
         myAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         LinearLayout viewCity = findViewById(R.id.view_city);
-        viewCity.setOnClickListener(v -> {
-            createDialog();
-        });
+        viewCity.setOnClickListener(v -> createDialog());
 
         btnSearch.setOnClickListener(v -> {
             edSearch.setVisibility(View.VISIBLE);
