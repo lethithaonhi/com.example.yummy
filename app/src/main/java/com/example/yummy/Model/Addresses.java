@@ -3,12 +3,12 @@ package com.example.yummy.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Address implements Parcelable {
+public class Addresses implements Parcelable{
     private String name;
     private double latitude;
     private double longitude;
 
-    public Address(){}
+    public Addresses(){}
 
     public String getName() {
         return name;
@@ -34,21 +34,21 @@ public class Address implements Parcelable {
         this.longitude = longitude;
     }
 
-    protected Address(Parcel in) {
+    protected Addresses(Parcel in) {
         name = in.readString();
         latitude = in.readDouble();
         longitude = in.readDouble();
     }
 
-    public static final Creator<Address> CREATOR = new Creator<Address>() {
+    public static final Parcelable.Creator<Addresses> CREATOR = new Parcelable.Creator<Addresses>() {
         @Override
-        public Address createFromParcel(Parcel in) {
-            return new Address(in);
+        public Addresses createFromParcel(Parcel in) {
+            return new Addresses(in);
         }
 
         @Override
-        public Address[] newArray(int size) {
-            return new Address[size];
+        public Addresses[] newArray(int size) {
+            return new Addresses[size];
         }
     };
 

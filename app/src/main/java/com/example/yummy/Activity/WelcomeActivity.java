@@ -22,6 +22,7 @@ import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import com.example.yummy.Database.MyDatabaseHelper;
+import com.example.yummy.Model.Addresses;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Discounts;
 import com.example.yummy.Model.Menu;
@@ -38,7 +39,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.jpardogo.android.googleprogressbar.library.GoogleProgressBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -314,7 +314,10 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
             if (location != null) {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
-                Common.myLocation = location;
+                Addresses address = new Addresses();
+                address.setLatitude(latitude);
+                address.setLongitude(longitude);
+                Common.myLocation = address;
                 getCityLocation(latitude, longitude);
             } else {
                 Toast.makeText(this, "Falied!", Toast.LENGTH_SHORT).show();

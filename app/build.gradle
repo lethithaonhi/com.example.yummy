@@ -55,7 +55,7 @@ dependencies {
     implementation 'com.jpardogo.googleprogressbar:library:1.2.0'
     implementation 'com.tomer:fadingtextview:2.5'
     //facebook
-    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    implementation 'com.facebook.android:facebook-android-sdk:4.42.0'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'

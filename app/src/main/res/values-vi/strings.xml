@@ -103,4 +103,10 @@
     <string name="change_pass_fail">Lỗi. Vui lòng thử lại!</string>
     <string name="reset_pass_succ">Chúng tôi đã gửi mail đến tài khoản email cuae bạn, vui lòng kiểm tra!</string>
     <string name="reset_pass_fail">Email không tồn tại!</string>
+    <string name="old_pass">Mật khẩu cũ</string>
+    <string name="confirm">Xác nhận</string>
+    <string name="enter_current_pass">Nhập mật khẩu hiện tại</string>
+    <string name="enter_new_pass">Nhập mật khẩu mới</string>
+    <string name="re_enter_pass">Nhập lại mật khẩu</string>
+    <string name="error_change_pass">Mật khẩu không đúng!</string>
 </resources>

@@ -43,8 +43,6 @@ public class RestaurantActivity extends AppCompatActivity {
     private RecyclerView rcvRes;
     private Dialog dialog;
     private  RestaurantAdapter adapter;
-    private Location location;
-    private String address;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +51,6 @@ public class RestaurantActivity extends AppCompatActivity {
 
         type = getIntent().getIntExtra("type", 0);
         initView();
-        location = Common.myLocation;
     }
 
     private void initView(){
@@ -74,6 +71,7 @@ public class RestaurantActivity extends AppCompatActivity {
         myAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         LinearLayout viewCity = findViewById(R.id.view_city);
         viewCity.setOnClickListener(v -> createDialog());
+        tvAddress.setText(Common.myLocation.getName());
 
         btnSearch.setOnClickListener(v -> {
             edSearch.setVisibility(View.VISIBLE);
@@ -92,8 +90,6 @@ public class RestaurantActivity extends AppCompatActivity {
             btnSearch.setVisibility(View.VISIBLE);
             UtilsBottomBar.hideKeyboard(this);
         });
-
-        getAddressCurrent();
 
         edSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -115,8 +111,6 @@ public class RestaurantActivity extends AppCompatActivity {
         LinearLayout viewAddress = findViewById(R.id.view_address);
         viewAddress.setOnClickListener(v->{
             Intent intent = new Intent(this, ChangeAddressActivity.class);
-            intent.putExtra("location", location);
-            intent.putExtra("address", address);
             startActivity(intent);
         });
     }
@@ -218,24 +212,6 @@ public class RestaurantActivity extends AppCompatActivity {
             dialog.dismiss();
         }
     }
-
-    private void getAddressCurrent(){
-        Geocoder geocoder;
-        List<Address> addresses;
-        geocoder = new Geocoder(this, Locale.getDefault());
-
-        try {
-            addresses = geocoder.getFromLocation(Common.myLocation.getLatitude(), Common.myLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-
-
-            address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-//            String knownName = addresses.get(0).getFeatureName();
-            tvAddress.setText(address);
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     @SuppressLint("StaticFieldLeak")
     private class RestaurantMainAsyncTask extends AsyncTask<Void, Void, Void> {
 

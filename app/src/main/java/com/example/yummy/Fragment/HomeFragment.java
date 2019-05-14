@@ -31,8 +31,12 @@ import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.Node;
 import com.example.yummy.Utils.UtilsBottomBar;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -61,6 +65,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         rcvExp.setLayoutManager(layoutManager);
         RestaurantAsyncTask myAsyncTask = new RestaurantAsyncTask();
         myAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        getAddressCurrent();
 
         TextView tvMore = v.findViewById(R.id.tv_more);
         tvMore.setOnClickListener(this);
@@ -215,8 +220,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             Common.language = Locale.getDefault().getLanguage();
             editor.apply();
         }
-
     }
+
+    private void getAddressCurrent(){
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(Common.myLocation.getLatitude(), Common.myLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+
+            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+//            String knownName = addresses.get(0).getFeatureName();
+            Common.myLocation.setName(address);
+            DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
+            nodeRoot.child(Node.user).child(Common.accountCurrent.getUserId()).child("addressList").push().setValue(Common.myLocation);
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @SuppressLint("StaticFieldLeak")
     private class RestaurantAsyncTask extends AsyncTask<Void, Void, Void> {

@@ -12,8 +12,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.yummy.Model.Addresses;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.Node;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,6 +24,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,12 +50,11 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_address);
 
-        if(getIntent().getExtras() != null)
-        location = getIntent().getExtras().getParcelable("location");
-        address = getIntent().getStringExtra("address");
-
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        location = new Location("");
+        location.setLatitude(Common.myLocation.getLatitude());
+        location.setLongitude(Common.myLocation.getLongitude());
 
         edtSearch = findViewById(R.id.edt_search_address);
         Button btnSearch = findViewById(R.id.btn_search);
@@ -113,7 +116,7 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
         protected void onPostExecute(String... result) {
             try {
                 JSONObject jsonObject = new JSONObject(result[0]);
-
+                Addresses addressnew = new Addresses();
                 double lng = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
                         .getJSONObject("geometry").getJSONObject("location")
                         .getDouble("lng");
@@ -122,11 +125,17 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
                         .getJSONObject("geometry").getJSONObject("location")
                         .getDouble("lat");
 
+                addressnew.setLatitude(lat);
+                addressnew.setLongitude(lng);
+                addressnew.setName(address);
+
                 location.setLatitude(lat);
                 location.setLongitude(lng);
 
-                Common.myLocation = location;
+                Common.myLocation = addressnew;
                 mapFragment.getMapAsync(ChangeAddressActivity.this);
+                DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
+                nodeRoot.child(Node.user).child(Common.accountCurrent.getUserId()).child("addressList").push().setValue(addressnew);
             } catch (JSONException e) {
                 e.printStackTrace();
                 Toast.makeText(ChangeAddressActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();

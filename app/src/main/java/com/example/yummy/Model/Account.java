@@ -17,7 +17,7 @@ public class Account implements Parcelable {
     private String avatar;
     private int role;
     private String password;
-    private List<Address> addressList;
+    private List<Addresses> addressList;
 
     public Account(){}
 
@@ -33,7 +33,7 @@ public class Account implements Parcelable {
         role = in.readInt();
         password = in.readString();
         addressList = new ArrayList<>();
-        in.readList(addressList, Address.class.getClassLoader());
+        in.readList(addressList, Addresses.class.getClassLoader());
     }
 
     public String getUserId() {
@@ -116,11 +116,11 @@ public class Account implements Parcelable {
         this.password = password;
     }
 
-    public List<Address> getAddressList() {
+    public List<Addresses> getAddressList() {
         return addressList;
     }
 
-    public void setAddressList(List<Address> addressList) {
+    public void setAddressList(List<Addresses> addressList) {
         this.addressList = addressList;
     }
 

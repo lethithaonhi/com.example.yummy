@@ -16,8 +16,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -28,11 +30,14 @@ import com.example.yummy.Activity.InfoUserActivity;
 import com.example.yummy.Activity.LoginActivity;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.Node;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 import android.content.Context;
 
@@ -98,18 +103,8 @@ public class AccountFragment extends Fragment {
             });
 
             viewChangePass.setOnClickListener(v->{
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-                String pass="";
-                if(currentUser != null) {
-                    currentUser.updatePassword(pass).addOnCompleteListener(task -> {
-                        if(task.isSuccessful()){
-                            Toast.makeText(mContext, R.string.change_pass_suc, Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(mContext, R.string.change_pass_fail, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+                createDialogChangePass();
+                dialog.dismiss();
             });
 
             viewinfor.setOnClickListener(v -> {
@@ -196,7 +191,63 @@ public class AccountFragment extends Fragment {
         }else {
             Common.language = "en";
         }
-
     }
 
+    private void createDialogChangePass(){
+        if (mContext != null) {
+            Dialog dialog = new Dialog(mContext,  android.R.style.Theme_Translucent_NoTitleBar);
+            dialog.setTitle("");
+            dialog.setContentView(R.layout.dialog_change_pass);
+            dialog.show();
+
+            EditText edCurrentPass = dialog.findViewById(R.id.ed_curent_pass);
+            EditText edNewPass = dialog.findViewById(R.id.ed_new_pass);
+            EditText edRePass = dialog.findViewById(R.id.ed_re_pass);
+            TextView tvEmail = dialog.findViewById(R.id.tv_email);
+            TextView tvSave = dialog.findViewById(R.id.tv_save);
+            if(Common.accountCurrent != null) {
+                tvEmail.setText(Common.accountCurrent.getEmail());
+            }else{
+                Toast.makeText(mContext, R.string.login_first, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getContext(), LoginActivity.class));
+            }
+            tvSave.setOnClickListener(v->{
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                FirebaseUser currentUser = mAuth.getCurrentUser();
+                String newPass= edNewPass.getText().toString().trim();
+                String rePass = edRePass.getText().toString().trim();
+                String curentPass = edCurrentPass.getText().toString().trim();
+                ProgressBar progressBar = dialog.findViewById(R.id.progress_circular);
+                progressBar.setIndeterminate(true);
+                if(currentUser != null) {
+                    if(!newPass.isEmpty() && !rePass.isEmpty() && !curentPass.isEmpty()) {
+                        if(!curentPass.equals(Common.accountCurrent.getPassword())){
+                            Toast.makeText(mContext, R.string.error_change_pass, Toast.LENGTH_SHORT).show();
+                        }else if(!newPass.equals(rePass)){
+                            Toast.makeText(mContext, R.string.wrong_pass, Toast.LENGTH_SHORT).show();
+                        }else {
+                            progressBar.setVisibility(View.VISIBLE);
+                            currentUser.updatePassword(newPass).addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(mContext, R.string.change_pass_suc, Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    Common.accountCurrent.setPassword(newPass);
+                                    DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
+                                    nodeRoot.child(Node.user).child(Common.accountCurrent.getUserId()).child("password").setValue(newPass);
+                                } else {
+                                    Toast.makeText(mContext, R.string.change_pass_fail, Toast.LENGTH_SHORT).show();
+                                }
+                                progressBar.setVisibility(View.GONE);
+                            });
+                        }
+                    }else {
+                        Toast.makeText(mContext, R.string.empty_user, Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(mContext, R.string.login_first, Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getContext(), LoginActivity.class));
+                }
+            });
+        }
+    }
 }

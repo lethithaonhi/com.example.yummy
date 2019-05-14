@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yummy.Model.Account;
-import com.example.yummy.Model.Address;
+import com.example.yummy.Model.Addresses;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
@@ -34,10 +34,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -81,27 +79,24 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         LinearLayout btnFacebook = findViewById(R.id.btn_sso_fb);
         callbackManager = CallbackManager.Factory.create();
-        btnFacebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("email", "public_profile"));
-                LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        handleFacebookToken(loginResult.getAccessToken());
-                    }
+        btnFacebook.setOnClickListener(view -> {
+            LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("email", "public_profile"));
+            LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    handleFacebookToken(loginResult.getAccessToken());
+                }
 
-                    @Override
-                    public void onCancel() {
+                @Override
+                public void onCancel() {
 
-                    }
+                }
 
-                    @Override
-                    public void onError(FacebookException error) {
+                @Override
+                public void onError(FacebookException error) {
 
-                    }
-                });
-            }
+                }
+            });
         });
 
         LinearLayout btnGoogleSigin = findViewById(R.id.btn_sso_gg);
@@ -110,12 +105,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        btnGoogleSigin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signInGG();
-            }
-        });
+        btnGoogleSigin.setOnClickListener(view -> signInGG());
 
         TextView txtForgetPass = findViewById(R.id.txtForgetPass);
         txtForgetPass.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, ResetPassActivity.class)));
@@ -146,18 +136,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void handleFacebookToken(AccessToken accessToken) {
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
-        mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    Intent intent = new Intent(LoginActivity.this, BottomBarActivity.class);
-                    startActivity(intent);
-                    finish();
+        mAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                FirebaseUser user = mAuth.getCurrentUser();
+                Intent intent = new Intent(LoginActivity.this, BottomBarActivity.class);
+                startActivity(intent);
+                finish();
 
-                } else {
-                    Toast.makeText(getApplicationContext(), "Login failure", Toast.LENGTH_SHORT).show();
-                }
+            } else {
+                Toast.makeText(getApplicationContext(), "Login failure", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -175,6 +162,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 GoogleSignInAccount account = task.getResult(ApiException.class);
 
                 //authenticating with firebase
+                if(account != null)
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -186,22 +174,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(LoginActivity.this, BottomBarActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "signInWithCredential:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        Intent intent = new Intent(LoginActivity.this, BottomBarActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
 
-                        }
                     }
                 });
     }
@@ -233,8 +218,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
-
-                        // ...
                     });
         } else {
             Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
@@ -264,9 +247,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     mDatabase.child(Node.Address).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            List<Address> addresses = new ArrayList<>();
+                            List<Addresses> addresses = new ArrayList<>();
                             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                Address address = dataSnapshot1.getValue(Address.class);
+                                Addresses address = dataSnapshot1.getValue(Addresses.class);
                                 addresses.add(address);
                             }
 
