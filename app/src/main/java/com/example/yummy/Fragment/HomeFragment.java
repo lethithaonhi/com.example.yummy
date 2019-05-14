@@ -234,8 +234,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
 //            String knownName = addresses.get(0).getFeatureName();
             Common.myLocation.setName(address);
-            DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
-            nodeRoot.child(Node.user).child(Common.accountCurrent.getUserId()).child("addressList").push().setValue(Common.myLocation);
         }catch (IOException e) {
             e.printStackTrace();
         }

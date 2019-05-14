@@ -239,7 +239,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void getInfoAccount() {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        if (mAuth.getUid() != null)
+        if (mAuth.getUid() != null) {
+            DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
+            nodeRoot.child(Node.user).child(mAuth.getUid()).child("addressList").push().setValue(Common.myLocation);
+
             mDatabase.child(Node.user).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -268,6 +271,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                 }
             });
+        }
 
     }
 
