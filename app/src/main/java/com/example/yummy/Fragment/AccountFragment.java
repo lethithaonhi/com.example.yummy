@@ -1,17 +1,26 @@
 package com.example.yummy.Fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.location.Location;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,31 +34,38 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yummy.Activity.AddressHistoryActivity;
 import com.example.yummy.Activity.BottomBarActivity;
 import com.example.yummy.Activity.InfoUserActivity;
 import com.example.yummy.Activity.LoginActivity;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-import android.content.Context;
 
-
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
+
+import static android.app.Activity.RESULT_OK;
 
 public class AccountFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     @SuppressLint("StaticFieldLeak")
     private Context mContext;
+    private int TAKE_PHOTO_CODE = 1;
+    private int CHOOSE_PHOTO_CODE = 2;
+    private ImageView imgAvatar, imAvatarMain;
+    private FirebaseStorage storage;
+    private  LinearLayout layoutSetting;
 
     public static AccountFragment newInstance() {
         AccountFragment fragment = new AccountFragment();
@@ -68,10 +84,20 @@ public class AccountFragment extends Fragment {
         btnSignIn.setOnClickListener(v1 -> startActivity(new Intent(mContext, LoginActivity.class)));
         LinearLayout viewSignOut = v.findViewById(R.id.view_signout);
         LinearLayout viewSetting = v.findViewById(R.id.view_setting);
-        viewSetting.setOnClickListener(vl-> dialogSetting());
+        LinearLayout viewAddress = v.findViewById(R.id.view_address_setting);
+        layoutSetting = v.findViewById(R.id.layout_setting);
+        viewSetting.setOnClickListener(vl-> dialogSetting(v));
         viewSignOut.setOnClickListener(vl->createDialogSignOut());
+        viewAddress.setOnClickListener(v1 -> {
+            if(Common.accountCurrent == null) {
+                Toast.makeText(getContext(), R.string.login_first, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+            }else {
+                startActivity(new Intent(getContext(), AddressHistoryActivity.class));
+            }
+        });
 
-        ImageView imAvatar = v.findViewById(R.id.im_avatar);
+        imAvatarMain = v.findViewById(R.id.im_avatar);
         TextView tvInfoAccount = v.findViewById(R.id.view_infoaccount);
         TextView tvName = v.findViewById(R.id.tv_name);
         if (Common.accountCurrent != null){
@@ -80,51 +106,62 @@ public class AccountFragment extends Fragment {
             tvName.setText(Common.accountCurrent.getName());
             tvInfoAccount.setText(R.string.info_account);
             if(Common.accountCurrent.getAvatar() != null){
-                Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatar);
+                Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatarMain);
             }
         }
+
+        v.setOnKeyListener((v12, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if(layoutSetting.getVisibility() == View.VISIBLE){
+                        layoutSetting.setVisibility(View.GONE);
+                    }else {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        });
 
         return v;
     }
 
-    private void dialogSetting(){
+    private void dialogSetting(View v){
         if(getContext() != null) {
-            Dialog dialog = new Dialog(mContext, android.R.style.Theme_Translucent_NoTitleBar);
-            dialog.setTitle("");
-            dialog.setContentView(R.layout.dialog_setting_account);
-            dialog.show();
+            layoutSetting.setVisibility(View.VISIBLE);
 
-            LinearLayout viewAvatar = dialog.findViewById(R.id.view_avatar);
-            LinearLayout viewinfor = dialog.findViewById(R.id.view_info);
-            LinearLayout viewChangePass = dialog.findViewById(R.id.view_changepass);
-            LinearLayout viewChangLang = dialog.findViewById(R.id.view_changelang);
+            LinearLayout viewAvatar = v.findViewById(R.id.view_avatar);
+            LinearLayout viewInfo = v.findViewById(R.id.view_info);
+            LinearLayout viewChangePass = v.findViewById(R.id.view_changepass);
+            LinearLayout viewChangLang = v.findViewById(R.id.view_changelang);
 
-            viewChangLang.setOnClickListener(v-> createDialogLang());
+            viewChangLang.setOnClickListener(vl-> createDialogLang());
 
-            viewAvatar.setOnClickListener(v->{
-                createDialogChangeAvatar();
+            viewAvatar.setOnClickListener(vl->{
+                if(Common.accountCurrent == null && mContext != null) {
+                    Toast.makeText(mContext, R.string.login_first, Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                }else {
+                    createDialogChangeAvatar();
+                }
             });
 
-            viewChangePass.setOnClickListener(v->{
-                createDialogChangePass();
-                dialog.dismiss();
-            });
+            viewChangePass.setOnClickListener(vl-> createDialogChangePass());
 
-            viewinfor.setOnClickListener(v -> {
+            viewInfo.setOnClickListener(vl -> {
                 if(Common.accountCurrent != null && mContext != null) {
                     Intent intent = new Intent(mContext, InfoUserActivity.class);
                     startActivity(intent);
-                    dialog.dismiss();
                 }else {
                     Toast.makeText(mContext, R.string.login_first, Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
             });
 
-            ImageView imClose = dialog.findViewById(R.id.im_close);
-            imClose.setOnClickListener(v->dialog.dismiss());
+            ImageView imClose = v.findViewById(R.id.im_close);
+            imClose.setOnClickListener(vl->layoutSetting.setVisibility(View.GONE));
 
-            ImageView imgAvatar = dialog.findViewById(R.id.img_avatar);
+            imgAvatar = v.findViewById(R.id.img_avatar);
             if(Common.accountCurrent != null && Common.accountCurrent.getAvatar() != null){
                 Picasso.get().load(Common.accountCurrent.getAvatar()).into(imgAvatar);
             }
@@ -285,6 +322,87 @@ public class AccountFragment extends Fragment {
             TextView btnCancel = dialog.findViewById(R.id.btn_cancel);
             TextView btnTake = dialog.findViewById(R.id.btn_takePho);
             TextView btnChoose = dialog.findViewById(R.id.btn_choosePho);
+
+            btnTake.setOnClickListener(v->{
+                checkPermission();
+                startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), TAKE_PHOTO_CODE);
+                dialog.dismiss();
+            });
+
+            btnChoose.setOnClickListener(v->{
+                checkPermission();
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), CHOOSE_PHOTO_CODE);
+                dialog.dismiss();
+            });
+
+            btnCancel.setOnClickListener(v->dialog.dismiss());
         }
+    }
+
+    private void checkPermission() {
+        if (getActivity() != null && (ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+                && (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA))) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.CAMERA}, TAKE_PHOTO_CODE);
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+            if (requestCode == TAKE_PHOTO_CODE && data.getExtras() != null) {
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                if(bitmap != null)
+                uploadAvatarFB(bitmap);
+
+            } else if (requestCode == CHOOSE_PHOTO_CODE)
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), data.getData());
+                    if(bitmap != null)
+                    uploadAvatarFB(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
+    }
+
+    private void uploadAvatarFB(Bitmap bitmap){
+        // Create a storage reference from our app
+        storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        StorageReference mountainsRef = storageRef.child("avatar").child(Common.accountCurrent.getUserId()+".png");
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = mountainsRef.putBytes(data);
+        uploadTask.addOnFailureListener(exception -> Toast.makeText(mContext, R.string.error_change_avatar, Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(taskSnapshot -> uploadTask.continueWithTask(task -> {
+                    if (!task.isSuccessful()) {
+                        throw Objects.requireNonNull(task.getException());
+                    }
+
+                    // Continue with the task to get the download URL
+                    return mountainsRef.getDownloadUrl();
+                }).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        if(downloadUri != null) {
+                            ((Activity) mContext).runOnUiThread(() -> {
+                                Picasso.get().load(downloadUri).into(imgAvatar);
+                                Picasso.get().load(downloadUri).into(imAvatarMain);
+                            });
+                            DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
+                            nodeRoot.child(Node.user).child(Common.accountCurrent.getUserId()).child("avatar").setValue(downloadUri.toString());
+                        }
+                    } else {
+                        Toast.makeText(mContext, R.string.error_change_avatar, Toast.LENGTH_SHORT).show();
+                    }
+                }));
     }
 }

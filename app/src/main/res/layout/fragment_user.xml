@@ -1,180 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_awesome_toolbar"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        android:minHeight="?attr/actionBarSize"
-        android:background="?attr/colorPrimary">
-
-        <TextView
-            android:visibility="visible"
-            android:textSize="22sp"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:textColor="@color/white"
-            android:gravity="center"
-            app:fontFamily="@font/audiowide"
-            android:text="@string/fragment_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </android.support.v7.widget.Toolbar>
-
     <LinearLayout
-        android:padding="16dp"
-        android:background="@color/bg_grey"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_awesome_toolbar"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:minHeight="?attr/actionBarSize"
+            android:background="?attr/colorPrimary">
+
+            <TextView
+                android:visibility="visible"
+                android:textSize="22sp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:gravity="center"
+                app:fontFamily="@font/audiowide"
+                android:text="@string/fragment_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </android.support.v7.widget.Toolbar>
 
         <LinearLayout
-            android:layout_marginBottom="16dp"
+            android:padding="16dp"
+            android:background="@color/bg_grey"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/im_avatar"
-                android:padding="5dp"
-                android:src="@drawable/ic_person"
-                android:background="@drawable/bg_circle_white"
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
-
             <LinearLayout
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/login_please"
-                    android:textSize="18dp"
-                    app:fontFamily="sans-serif-medium" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/im_avatar"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_person"
+                    android:background="@drawable/bg_circle_white"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp" />
 
-                <TextView
-                    android:id="@+id/view_infoaccount"
-                    android:layout_marginTop="8dp"
+                <LinearLayout
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/intro_account"
-                    android:textSize="14dp"
-                    app:fontFamily="sans-serif-light" />
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/login_please"
+                        android:textSize="18dp"
+                        app:fontFamily="sans-serif-medium" />
+
+                    <TextView
+                        android:id="@+id/view_infoaccount"
+                        android:layout_marginTop="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/intro_account"
+                        android:textSize="14dp"
+                        app:fontFamily="sans-serif-light" />
+                </LinearLayout>
+
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_signin"
+                android:layout_gravity="right"
+                android:textColor="@color/white"
+                android:text="@string/register_text"
+                android:background="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_signin"
-            android:layout_gravity="right"
-            android:textColor="@color/white"
-            android:text="@string/register_text"
-            android:background="@color/colorPrimary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:src="@drawable/ic_history"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
-
-        <TextView
-            app:fontFamily="sans-serif-medium"
-            android:text="@string/history_user"
+        <LinearLayout
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="16dp"
-            android:layout_gravity="center"
-            android:textSize="18dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <ImageView
+                android:src="@drawable/ic_history"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
 
-        <ImageView
-            android:padding="5dp"
-            android:src="@drawable/address"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            <TextView
+                app:fontFamily="sans-serif-medium"
+                android:text="@string/history_user"
+                android:layout_marginLeft="16dp"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
-        <TextView
-            app:fontFamily="sans-serif-medium"
-            android:text="@string/address_user"
+        <LinearLayout
+            android:id="@+id/view_address_setting"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="16dp"
-            android:layout_gravity="center"
-            android:textSize="18dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/view_setting"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <ImageView
+                android:padding="5dp"
+                android:src="@drawable/address"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
 
-        <ImageView
-            android:src="@drawable/ic_settings"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            <TextView
+                app:fontFamily="sans-serif-medium"
+                android:text="@string/address_user"
+                android:layout_marginLeft="16dp"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
-        <TextView
-            app:fontFamily="sans-serif-medium"
-            android:text="@string/setting_user"
+        <LinearLayout
+            android:id="@+id/view_setting"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="16dp"
-            android:layout_gravity="center"
-            android:textSize="18dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/ic_settings"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <TextView
+                app:fontFamily="sans-serif-medium"
+                android:text="@string/setting_user"
+                android:layout_marginLeft="16dp"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/view_signout"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:padding="5dp"
+                android:src="@drawable/logout"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <TextView
+                app:fontFamily="sans-serif-medium"
+                android:text="@string/sign_out"
+                android:layout_marginLeft="16dp"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/view_signout"
+    <include
         android:visibility="gone"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:padding="5dp"
-            android:src="@drawable/logout"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
-
-        <TextView
-            app:fontFamily="sans-serif-medium"
-            android:text="@string/sign_out"
-            android:layout_marginLeft="16dp"
-            android:layout_gravity="center"
-            android:textSize="18dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-</LinearLayout>
+        android:layout_height="match_parent"
+        layout="@layout/dialog_setting_account"
+        android:id="@+id/layout_setting"/>
+</FrameLayout>

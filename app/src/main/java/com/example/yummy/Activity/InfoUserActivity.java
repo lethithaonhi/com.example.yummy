@@ -74,7 +74,7 @@ public class InfoUserActivity extends AppCompatActivity {
         rcvAddress.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvAddress.getContext(), layoutManager.getOrientation());
         rcvAddress.addItemDecoration(dividerItemDecoration);
-        AddressAdapter addressAdapter = new AddressAdapter(this, Common.accountCurrent.getAddressList());
+        AddressAdapter addressAdapter = new AddressAdapter(this, Common.accountCurrent.getAddressList(), 1);
         rcvAddress.setAdapter(addressAdapter);
 
         EditText tvPhone = findViewById(R.id.ed_phone);
@@ -110,12 +110,8 @@ public class InfoUserActivity extends AppCompatActivity {
     }
 
     public void showDatePickerDialog() {
-        @SuppressLint("SetTextI18n") DatePickerDialog.OnDateSetListener callback= (view, year, monthOfYear, dayOfMonth) -> {
-            //Mỗi lần thay đổi ngày tháng năm thì cập nhật lại TextView Date
-            tvBirth.setText((dayOfMonth) +"/"+(monthOfYear+1)+"/"+year);
-        };
-        //các lệnh dưới này xử lý ngày giờ trong DatePickerDialog
-        //sẽ giống với trên TextView khi mở nó lên
+        @SuppressLint("SetTextI18n") DatePickerDialog.OnDateSetListener callback= (view, year, monthOfYear, dayOfMonth) -> tvBirth.setText((dayOfMonth) +"/"+(monthOfYear+1)+"/"+year);
+
         String s=tvBirth.getText()+"";
         String[] strArrtmp = s.split("/");
         int ngay=Integer.parseInt(strArrtmp[0]);
@@ -124,7 +120,7 @@ public class InfoUserActivity extends AppCompatActivity {
         DatePickerDialog pic=new DatePickerDialog(
                 InfoUserActivity.this,
                 callback, nam, thang, ngay);
-        pic.setTitle("Chọn ngày hoàn thành");
+        pic.setTitle(R.string.address_user);
         pic.show();
     }
 }

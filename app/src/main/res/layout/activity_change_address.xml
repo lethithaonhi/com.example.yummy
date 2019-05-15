@@ -25,15 +25,15 @@
             android:hint="@string/search_location"
             android:paddingLeft="5dp"
             android:drawableLeft="@drawable/ic_search_black_24dp"
-            android:background="@drawable/bg_ed_register"
             android:layout_margin="8dp"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_search_black_24dp"
             android:paddingStart="5dp"
             tools:ignore="RtlSymmetry" />
 
         <Button
+            android:textSize="12sp"
             android:layout_marginRight="8dp"
             android:id="@+id/btn_search"
             android:background="@color/defaultColor"

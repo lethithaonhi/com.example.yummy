@@ -112,6 +112,7 @@
     <string name="enter_new_pass">Enter New Password</string>
     <string name="re_enter_pass">Re-Enter Password</string>
     <string name="error_change_pass">Wrong password.</string>
+    <string name="error_change_avatar">Can\'t change avatar. Please try again later!</string>
     <string name="confirmation">Confirmation</string>
     <string name="are_sign_out">Do you want to sign out?</string>
     <string name="sign_out">Sign out</string>
@@ -120,4 +121,7 @@
     <string name="change_avatar">Change Avatar</string>
     <string name="take_photo">Take photo</string>
     <string name="choose_photo">Choose photo</string>
+    <string name="complete">Complete</string>
+    <string name="delete_question">Do you want to delete?</string>
+    <string name="delete">Delete</string>
 </resources>

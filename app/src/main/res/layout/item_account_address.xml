@@ -19,14 +19,6 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tv_name"
-            android:text="ĐH Sư phạm Kỹ thuật shgdjhagdha gdhagjd ghjg ghgj hagjdhgajd"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
             android:id="@+id/tv_address"
             android:layout_marginTop="8dp"
             android:text="256, Võ Thị Sáu, Quận 1, Tp.HCM sgdjag dgadhagdhadgja"

@@ -50,6 +50,7 @@
         <activity android:name=".Activity.RestaurantActivity" />
         <activity android:name=".Activity.InfoUserActivity"/>
         <activity android:name=".Activity.ChangeAddressActivity" />
+        <activity android:name=".Activity.AddressHistoryActivity" />
 
     </application>
 

@@ -267,6 +267,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                 Addresses address = dataSnapshot1.getValue(Addresses.class);
                                 if(address != null) {
+                                    address.setId(dataSnapshot1.getKey());
                                     if (address.getLongitude() == Common.myLocation.getLongitude() && address.getLatitude() == Common.myLocation.getLatitude()) {
                                         isShow = true;
                                     }

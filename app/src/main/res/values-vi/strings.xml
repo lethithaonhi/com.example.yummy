@@ -116,4 +116,8 @@
     <string name="change_avatar">Đổi ảnh đại diện</string>
     <string name="take_photo">Chụp hình</string>
     <string name="choose_photo">Thư viện</string>
+    <string name="error_change_avatar">Không thể đổi avatar. Vui lòng thử lại!</string>
+    <string name="complete">Hoàn tất!</string>
+    <string name="delete_question">Bạn có chắc chắn muốn xóa?</string>
+    <string name="delete">Xóa</string>
 </resources>
