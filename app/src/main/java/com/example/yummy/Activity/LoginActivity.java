@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -57,6 +59,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private LinearLayout viewRoot;
 
     private CallbackManager callbackManager;
+    private ImageButton btnShowPass;
+    private boolean isShowPass = false;
     private FirebaseUser user;
     private LoginButton loginFB;
 
@@ -118,6 +122,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         edtPassword = findViewById(R.id.cred_password);
         viewLanguage = findViewById(R.id.layout_language);
         viewRoot = findViewById(R.id.root_view);
+        btnShowPass = findViewById(R.id.btn_password_show);
+        btnShowPass.setOnClickListener(v->{
+            isShowPass = !isShowPass;
+            if(isShowPass){
+                edtPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+            }else {
+                edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            }
+
+            btnShowPass.setImageResource(isShowPass ? R.drawable.ic_remove_red_eye : R.drawable.ic_hide_pass);
+        });
 
         viewRoot.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
             int heightDiff = viewRoot.getRootView().getHeight() - viewRoot.getHeight();
@@ -231,18 +246,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            /*getInfoAccount();
+            getInfoAccount();
             startActivity(new Intent(LoginActivity.this, BottomBarActivity.class));
-            finish();*/
+            finish();
         }
     }
 
     private void getInfoAccount() {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         if (mAuth.getUid() != null) {
-            DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
-            nodeRoot.child(Node.user).child(mAuth.getUid()).child("addressList").push().setValue(Common.myLocation);
-
             mDatabase.child(Node.user).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -250,12 +262,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     mDatabase.child(Node.Address).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            boolean isShow = false;
                             List<Addresses> addresses = new ArrayList<>();
                             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                 Addresses address = dataSnapshot1.getValue(Addresses.class);
-                                addresses.add(address);
+                                if(address != null) {
+                                    if (address.getLongitude() == Common.myLocation.getLongitude() && address.getLatitude() == Common.myLocation.getLatitude()) {
+                                        isShow = true;
+                                    }
+                                    addresses.add(address);
+                                }
                             }
-
+                            if(!isShow){
+                                mDatabase.child(Node.Address).child(mAuth.getUid()).push().setValue(Common.myLocation);
+                                addresses.add(Common.myLocation);
+                            }
                             Common.accountCurrent.setAddressList(addresses);
                         }
 

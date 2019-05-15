@@ -5,6 +5,9 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -12,6 +15,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yummy.Adapter.AddressAdapter;
 import com.example.yummy.Model.Account;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
@@ -64,6 +68,14 @@ public class InfoUserActivity extends AppCompatActivity {
                gender = 3;
             }
         });
+
+        RecyclerView rcvAddress = findViewById(R.id.rcv_address);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rcvAddress.setLayoutManager(layoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvAddress.getContext(), layoutManager.getOrientation());
+        rcvAddress.addItemDecoration(dividerItemDecoration);
+        AddressAdapter addressAdapter = new AddressAdapter(this, Common.accountCurrent.getAddressList());
+        rcvAddress.setAdapter(addressAdapter);
 
         EditText tvPhone = findViewById(R.id.ed_phone);
         tvPhone.setText(Common.accountCurrent.getPhone());

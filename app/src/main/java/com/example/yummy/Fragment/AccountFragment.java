@@ -66,14 +66,16 @@ public class AccountFragment extends Fragment {
 
         Button btnSignIn = v.findViewById(R.id.btn_signin);
         btnSignIn.setOnClickListener(v1 -> startActivity(new Intent(mContext, LoginActivity.class)));
-
+        LinearLayout viewSignOut = v.findViewById(R.id.view_signout);
         LinearLayout viewSetting = v.findViewById(R.id.view_setting);
         viewSetting.setOnClickListener(vl-> dialogSetting());
+        viewSignOut.setOnClickListener(vl->createDialogSignOut());
 
         ImageView imAvatar = v.findViewById(R.id.im_avatar);
         TextView tvInfoAccount = v.findViewById(R.id.view_infoaccount);
         TextView tvName = v.findViewById(R.id.tv_name);
         if (Common.accountCurrent != null){
+            viewSignOut.setVisibility(View.VISIBLE);
             btnSignIn.setVisibility(View.GONE);
             tvName.setText(Common.accountCurrent.getName());
             tvInfoAccount.setText(R.string.info_account);
@@ -81,6 +83,7 @@ public class AccountFragment extends Fragment {
                 Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatar);
             }
         }
+
         return v;
     }
 
@@ -99,7 +102,7 @@ public class AccountFragment extends Fragment {
             viewChangLang.setOnClickListener(v-> createDialogLang());
 
             viewAvatar.setOnClickListener(v->{
-
+                createDialogChangeAvatar();
             });
 
             viewChangePass.setOnClickListener(v->{
@@ -177,6 +180,7 @@ public class AccountFragment extends Fragment {
                 Configuration conf = res.getConfiguration();
                 conf.locale = locale;
                 res.updateConfiguration(conf, dm);
+
                 Intent refresh = new Intent(getContext(), BottomBarActivity.class);
                 startActivity(refresh);
                 if (getActivity() != null)
@@ -248,6 +252,39 @@ public class AccountFragment extends Fragment {
                     startActivity(new Intent(getContext(), LoginActivity.class));
                 }
             });
+        }
+    }
+
+    private void createDialogSignOut(){
+        if (mContext != null) {
+            Dialog dialog = new Dialog(mContext);
+            dialog.setTitle("");
+            dialog.setContentView(R.layout.dialog_signout);
+            dialog.show();
+
+            TextView btnSignOut = dialog.findViewById(R.id.btn_signout);
+            TextView btnNo = dialog.findViewById(R.id.btn_no);
+
+            btnSignOut.setOnClickListener(v->{
+                FirebaseAuth.getInstance().signOut();
+                Common.accountCurrent = null;
+                startActivity(new Intent(mContext, BottomBarActivity.class));
+            });
+
+            btnNo.setOnClickListener(v-> dialog.dismiss());
+        }
+    }
+
+    private void createDialogChangeAvatar() {
+        if (mContext != null) {
+            Dialog dialog = new Dialog(mContext);
+            dialog.setTitle("");
+            dialog.setContentView(R.layout.dialog_change_avatar);
+            dialog.show();
+
+            TextView btnCancel = dialog.findViewById(R.id.btn_cancel);
+            TextView btnTake = dialog.findViewById(R.id.btn_takePho);
+            TextView btnChoose = dialog.findViewById(R.id.btn_choosePho);
         }
     }
 }

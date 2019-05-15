@@ -33,7 +33,7 @@
     <string name="freeship">Miễn phí vận chuyển</string>
     <string name="fruits">Trái cây</string>
     <string name="gender">Giới tính</string>
-    <string name="handmade">Đồ handmade</string>
+    <string name="handmade">Handmade</string>
     <string name="history">Lịch sử</string>
     <string name="history_address">Lịch sử địa chỉ</string>
     <string name="history_user">Lịch sử</string>
@@ -43,10 +43,10 @@
     <string name="information">Thông tin</string>
     <string name="information_contact">Thông tin liên lạc</string>
     <string name="intro_account">Khám phá danh sách, lượt thích và lịch sử</string>
-    <string name="loading">Đang tải...</string>
+    <string name="loading">Đang tải…</string>
     <string name="login_first">Bạn chưa đăng nhập. Vui lòng đăng nhập!</string>
     <string name="login_please">Vui lòng đăng nhập!</string>
-    <string name="male">Nữ</string>
+    <string name="male">Nam</string>
     <string name="menu">Thực đơn</string>
     <string name="more">Tráng miệng</string>
     <string name="name">Tên</string>
@@ -80,7 +80,6 @@
     <string name="send_code">Gửi code</string>
     <string name="setting_user">Cài đặt</string>
     <string name="sign_other">hoặc đăng nhập với</string>
-    <string name="sign_out">Đăng xuất</string>
     <string name="signup">Đăng ký</string>
     <string name="snack">Snack</string>
     <string name="sso_phone">Số điện thoại</string>
@@ -109,4 +108,12 @@
     <string name="enter_new_pass">Nhập mật khẩu mới</string>
     <string name="re_enter_pass">Nhập lại mật khẩu</string>
     <string name="error_change_pass">Mật khẩu không đúng!</string>
+    <string name="confirmation">Xác nhận</string>
+    <string name="are_sign_out">Bạn có chắc chắn muốn đăng xuất?</string>
+    <string name="sign_out">Đăng xuất</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    <string name="change_avatar">Đổi ảnh đại diện</string>
+    <string name="take_photo">Chụp hình</string>
+    <string name="choose_photo">Thư viện</string>
 </resources>

@@ -34,6 +34,9 @@ public class BottomBarActivity extends AppCompatActivity {
     @SuppressLint("RestrictedApi")
     public void disableShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
+        BottomNavigationItemView items = (BottomNavigationItemView) menuView.getChildAt(0);
+        // set once again checked value, so view will be updated
+        items.setChecked(true);
         try {
             Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
             shiftingMode.setAccessible(true);

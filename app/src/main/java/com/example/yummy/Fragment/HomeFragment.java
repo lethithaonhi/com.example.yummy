@@ -135,7 +135,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }, DELAY_MS, PERIOD_MS);
 
         updateCityList();
-        doSaveLang();
         return v;
     }
 
@@ -209,19 +208,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void doSaveLang()  {
-        SharedPreferences sharedPreferences= Objects.requireNonNull(getContext()).getSharedPreferences("changeLang", Context.MODE_PRIVATE);
-        if(sharedPreferences!= null) {
-            Common.language = sharedPreferences.getString("lang", "en");
-        }else {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            editor.putString("lang", Locale.getDefault().getLanguage());
-            Common.language = Locale.getDefault().getLanguage();
-            editor.apply();
-        }
-    }
-
     private void getAddressCurrent(){
         Geocoder geocoder;
         List<Address> addresses;
@@ -232,7 +218,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
 
             String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-//            String knownName = addresses.get(0).getFeatureName();
+            String knownName = addresses.get(0).getAdminArea();
             Common.myLocation.setName(address);
         }catch (IOException e) {
             e.printStackTrace();

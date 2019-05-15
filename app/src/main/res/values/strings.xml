@@ -52,7 +52,6 @@
     <string name="history_user">History</string>
     <string name="address_user">Address</string>
     <string name="setting_user">Settings</string>
-    <string name="sign_out">Sign out</string>
     <string name="phone_login">Phone Login</string>
     <string name="send_code">Send Code</string>
     <string name="resend_code">Resend Code</string>
@@ -113,4 +112,12 @@
     <string name="enter_new_pass">Enter New Password</string>
     <string name="re_enter_pass">Re-Enter Password</string>
     <string name="error_change_pass">Wrong password.</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="are_sign_out">Do you want to sign out?</string>
+    <string name="sign_out">Sign out</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="change_avatar">Change Avatar</string>
+    <string name="take_photo">Take photo</string>
+    <string name="choose_photo">Choose photo</string>
 </resources>

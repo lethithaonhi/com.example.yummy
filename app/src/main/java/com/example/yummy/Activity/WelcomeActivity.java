@@ -6,7 +6,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -18,6 +21,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -45,6 +49,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class WelcomeActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private NetworkChangeReceiver broadcastReceiver;
@@ -63,20 +68,33 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
         Common.cityList = new HashMap<>();
         registerService();
         db = new MyDatabaseHelper(this);
+        doSaveLang();
         Common.db = db;
+    }
+
+    private void doSaveLang()  {
+        SharedPreferences sharedPreferences= Objects.requireNonNull(getSharedPreferences("changeLang", Context.MODE_PRIVATE));
+        Common.language = sharedPreferences.getString("lang", "en");
+
+        Locale locale = new Locale(Common.language);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = locale;
+        res.updateConfiguration(conf, dm);
     }
 
     private void getRestaurant() {
         mDatabase.child(Node.DiaDiem).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!isDelete) {
+                if (!isDelete) {
                     isDelete = true;
                     deteleDataCurrent();
                 }
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     String address = data.getKey();
-                    if (address != null)
+                    if (address != null) {
                         Common.cityList.put(address, 0);
                         mDatabase.child(Node.DiaDiem).child(address).addValueEventListener(new ValueEventListener() {
                             @Override
@@ -160,6 +178,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
 
                             }
                         });
+                    }
 
                 }
             }
