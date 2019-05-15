@@ -3,9 +3,6 @@ package com.example.yummy.Activity;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,7 +25,6 @@ import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.UtilsBottomBar;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +34,6 @@ public class RestaurantActivity extends AppCompatActivity {
     private int type; //1: mark, 0: normal, 2: distance, 3:discount
     private String[] typeName ={"Suggest", "Hot", "NearBy", "Discount","Food", "Drink","Cake", "Fruits", "Snack", "Vegetarian", "Handmade", "Dessert"};
     private CityAdapter cityAdapter;
-    private TextView tvAddress;
     private RecyclerView rcvRes;
     private Dialog dialog;
     private  RestaurantAdapter adapter;
@@ -57,7 +52,7 @@ public class RestaurantActivity extends AppCompatActivity {
         tvType.setText(typeName[type]);
         EditText edSearch = findViewById(R.id.edt_search);
         ImageView btnSearch = findViewById(R.id.btn_search);
-        tvAddress = findViewById(R.id.tv_address);
+        TextView tvAddress = findViewById(R.id.tv_address);
         TextView tvCIty = findViewById(R.id.tv_city);
         tvCIty.setText(Common.myAddress);
         ImageView btnClose = findViewById(R.id.btn_close);

@@ -2,6 +2,7 @@ package com.example.yummy.Activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
@@ -14,10 +15,21 @@ import com.example.yummy.Fragment.AccountFragment;
 import com.example.yummy.Fragment.HistoryTabFragment;
 import com.example.yummy.Fragment.HomeFragment;
 import com.example.yummy.Fragment.NotificationFragment;
+import com.example.yummy.Model.Blog;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.Node;
 import com.example.yummy.Utils.UtilsBottomBar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class BottomBarActivity extends AppCompatActivity {
     @Override
@@ -29,6 +41,28 @@ public class BottomBarActivity extends AppCompatActivity {
         disableShiftMode(bottomNavigation);
 
         bottomNavigation.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
+        Common.blogList = new ArrayList<>();
+        getBlog();
+    }
+
+    private void getBlog(){
+        Common.blogList = new ArrayList<>();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child(Node.Blog).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                   Blog blog = dataSnapshot1.getValue(Blog.class);
+                   if(blog != null)
+                       Common.blogList.add(blog);
+               }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @SuppressLint("RestrictedApi")

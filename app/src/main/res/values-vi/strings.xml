@@ -120,4 +120,5 @@
     <string name="complete">Hoàn tất!</string>
     <string name="delete_question">Bạn có chắc chắn muốn xóa?</string>
     <string name="delete">Xóa</string>
+    <string name="error">Lỗi!</string>
 </resources>

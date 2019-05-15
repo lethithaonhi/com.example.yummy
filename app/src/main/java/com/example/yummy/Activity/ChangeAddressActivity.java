@@ -16,6 +16,7 @@ import com.example.yummy.Model.Addresses;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
+import com.example.yummy.Utils.UtilsBottomBar;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,16 +27,13 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import javax.net.ssl.HttpsURLConnection;
 
 public class ChangeAddressActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -127,7 +125,8 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
 
                 addressnew.setLatitude(lat);
                 addressnew.setLongitude(lng);
-                addressnew.setName(address);
+                String addresse = UtilsBottomBar.getAddressCurrent(getBaseContext(), lat, lng);
+                addressnew.setName(addresse);
 
                 location.setLatitude(lat);
                 location.setLongitude(lng);
@@ -139,7 +138,11 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
             } catch (JSONException e) {
                 e.printStackTrace();
                 Toast.makeText(ChangeAddressActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
             }
+
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }

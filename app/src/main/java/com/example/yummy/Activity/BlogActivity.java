@@ -1,17 +1,15 @@
-package com.example.yummy.Fragment;
+package com.example.yummy.Activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.yummy.Adapter.BannerAdapter;
 import com.example.yummy.Adapter.NotificationAdapter;
@@ -25,23 +23,17 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class NotificationFragment extends Fragment {
+public class BlogActivity extends AppCompatActivity {
     private int currentPage = 0;
 
-    public static NotificationFragment newInstance() {
-        NotificationFragment fragment = new NotificationFragment();
-        Bundle bundle = new Bundle();
-        fragment.setArguments(bundle);
-        return fragment;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_notification);
+        initView();
     }
 
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_notification, container, false);
-        initView(v);
-        return v;
-    }
-
-    private void initView(View v){
+    private void initView(){
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Collections.sort(Common.blogList, (obj1, obj2) -> {
             try {
@@ -52,17 +44,20 @@ public class NotificationFragment extends Fragment {
             return 1;
         });
 
-        RecyclerView rcvNotify = v.findViewById(R.id.rcv_notify_list);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        RecyclerView rcvNotify = findViewById(R.id.rcv_notify_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcvNotify.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvNotify.getContext(), layoutManager.getOrientation());
         rcvNotify.addItemDecoration(dividerItemDecoration);
-        NotificationAdapter adapter = new NotificationAdapter(getContext(), Common.blogList);
+        NotificationAdapter adapter = new NotificationAdapter(this, Common.blogList);
         rcvNotify.setAdapter(adapter);
 
-        ViewPager viewPager = v.findViewById(R.id.viewPager);
-        BannerAdapter bannerAdapter = new BannerAdapter(Objects.requireNonNull(getContext()),2);
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        BannerAdapter bannerAdapter = new BannerAdapter(Objects.requireNonNull(this),2);
         viewPager.setAdapter(bannerAdapter);
+
+        TextView tvHeader = findViewById(R.id.tv_header);
+        tvHeader.setText(R.string.blog);
 
         /*After setting the adapter use the timer */
         final Handler handler = new Handler();

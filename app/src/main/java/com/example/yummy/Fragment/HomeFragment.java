@@ -24,6 +24,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.yummy.Activity.BlogActivity;
 import com.example.yummy.Activity.RestaurantActivity;
 import com.example.yummy.Adapter.BannerAdapter;
 import com.example.yummy.Adapter.RestaurantHorizontalAdapter;
@@ -65,8 +66,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         rcvExp.setLayoutManager(layoutManager);
         RestaurantAsyncTask myAsyncTask = new RestaurantAsyncTask();
         myAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        getAddressCurrent();
-
+        String address = UtilsBottomBar.getAddressCurrent(getContext(), Common.myLocation.getLatitude(), Common.myLocation.getLongitude());
+        Common.myLocation.setName(address);
         TextView tvMore = v.findViewById(R.id.tv_more);
         tvMore.setOnClickListener(this);
 
@@ -102,6 +103,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         FrameLayout viewMore = v.findViewById(R.id.view_more);
         viewMore.setOnClickListener(this);
+
+        LinearLayout viewBlog = v.findViewById(R.id.view_blog);
+        viewBlog.setOnClickListener(this);
 
         ViewPager viewPager = v.findViewById(R.id.viewPager);
         BannerAdapter bannerAdapter = new BannerAdapter(Objects.requireNonNull(getContext()),1);
@@ -205,26 +209,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             Intent intent = new Intent(getContext(), RestaurantActivity.class);
             intent.putExtra("type", 11);
             startActivity(intent);
+        }else if(v.getId() == R.id.view_blog){
+            startActivity(new Intent(getContext(), BlogActivity.class));
         }
     }
-
-    private void getAddressCurrent(){
-        Geocoder geocoder;
-        List<Address> addresses;
-        geocoder = new Geocoder(getContext(), Locale.getDefault());
-
-        try {
-            addresses = geocoder.getFromLocation(Common.myLocation.getLatitude(), Common.myLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-
-
-            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            String knownName = addresses.get(0).getAdminArea();
-            Common.myLocation.setName(address);
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     @SuppressLint("StaticFieldLeak")
     private class RestaurantAsyncTask extends AsyncTask<Void, Void, Void> {
