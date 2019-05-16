@@ -123,18 +123,25 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
                         .getJSONObject("geometry").getJSONObject("location")
                         .getDouble("lat");
 
-                addressnew.setLatitude(lat);
-                addressnew.setLongitude(lng);
-                String addresse = UtilsBottomBar.getAddressCurrent(getBaseContext(), lat, lng);
-                addressnew.setName(addresse);
+                if(lat != 0 && lng != 0) {
+                    addressnew.setLatitude(lat);
+                    addressnew.setLongitude(lng);
+                    String addresse = UtilsBottomBar.getAddressCurrent(getBaseContext(), lat, lng);
+                    addressnew.setName(addresse);
 
-                location.setLatitude(lat);
-                location.setLongitude(lng);
+                    location.setLatitude(lat);
+                    location.setLongitude(lng);
 
-                Common.myLocation = addressnew;
-                mapFragment.getMapAsync(ChangeAddressActivity.this);
-                DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
-                nodeRoot.child(Node.user).child(Common.accountCurrent.getUserId()).child("addressList").push().setValue(addressnew);
+                    Common.myLocation = addressnew;
+                    mapFragment.getMapAsync(ChangeAddressActivity.this);
+                    DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
+                    nodeRoot.child(Node.user).child(Common.accountCurrent.getUserId()).child("addressList").push().setValue(addressnew);
+                }else {
+                    Toast.makeText(ChangeAddressActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
+                    if (dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
                 Toast.makeText(ChangeAddressActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();

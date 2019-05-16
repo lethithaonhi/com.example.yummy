@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.yummy.Adapter.CityAdapter;
 import com.example.yummy.Adapter.RestaurantAdapter;
@@ -104,8 +105,13 @@ public class RestaurantActivity extends AppCompatActivity {
 
         LinearLayout viewAddress = findViewById(R.id.view_address);
         viewAddress.setOnClickListener(v->{
-            Intent intent = new Intent(this, ChangeAddressActivity.class);
-            startActivity(intent);
+            if(Common.accountCurrent != null) {
+                Intent intent = new Intent(this, ChangeAddressActivity.class);
+                startActivity(intent);
+            }else {
+                Toast.makeText(this, R.string.login_first, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, LoginActivity.class));
+            }
         });
     }
 

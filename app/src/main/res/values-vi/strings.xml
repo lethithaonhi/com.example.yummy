@@ -121,4 +121,6 @@
     <string name="delete_question">Bạn có chắc chắn muốn xóa?</string>
     <string name="delete">Xóa</string>
     <string name="error">Lỗi!</string>
+    <string name="not_change_pass">Bạn không thể thay đổi mật khẩu!</string>
+    <string name="delevery">Giao hàng</string>
 </resources>

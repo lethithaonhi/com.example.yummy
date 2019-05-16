@@ -14,15 +14,22 @@ import com.example.yummy.Model.Menu;
 import com.example.yummy.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MenuRestaurantDetailAdapter extends RecyclerView.Adapter<MenuRestaurantDetailAdapter.MenuRestaurantDetailHolder> {
     private List<Menu> data;
     private Context context;
+    private int[] countList;
 
     public MenuRestaurantDetailAdapter (Context context, List<Menu> data){
         this.context = context;
         this.data = data;
+        countList = new int [data.size()];
+        for (int i=0;i<data.size();i++){
+            countList[i] = 0;
+        }
     }
 
 
@@ -42,6 +49,26 @@ public class MenuRestaurantDetailAdapter extends RecyclerView.Adapter<MenuRestau
         holder.tvDes.setText(menu.getDescribe());
         holder.tvPrice.setText(menu.getPrices()+" VND");
         Picasso.get().load(menu.getImage()).into(holder.imMenu);
+
+        holder.btnAdd.setOnClickListener(v->{
+            countList[i]++;
+            holder.tvCount.setText(countList[i] +"");
+            if (holder.btnRemove.getVisibility() == View.GONE){
+                holder.btnRemove.setVisibility(View.VISIBLE);
+                holder.tvCount.setVisibility(View.VISIBLE);
+            }
+        });
+
+        holder.btnRemove.setOnClickListener(v->{
+            if(countList[i] > 0){
+                countList[i]--;
+                holder.tvCount.setText(countList[i] +"");
+            }
+            if (countList[i] == 0){
+                holder.btnRemove.setVisibility(View.GONE);
+                holder.tvCount.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override

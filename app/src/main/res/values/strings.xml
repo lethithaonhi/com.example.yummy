@@ -125,4 +125,6 @@
     <string name="delete_question">Do you want to delete?</string>
     <string name="delete">Delete</string>
     <string name="error">Error!</string>
+    <string name="not_change_pass">You can\'t change you password!</string>
+    <string name="delevery">Delivery</string>
 </resources>

@@ -6,7 +6,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.yummy.Adapter.RestaurantDetailPaperAdapter;
@@ -19,6 +21,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private Restaurant restaurant;
     private Branch branch;
     private ViewPager viewPager;
+    private LinearLayout viewDelivery;
+    private FrameLayout viewReview;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,6 +41,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         Picasso.get().load(branch.getAvatar()).into(imRes);
         TextView tvMark = findViewById(R.id.tv_mark);
         tvMark.setText(restaurant.getMark()+"");
+        viewDelivery = findViewById(R.id.view_delivery);
+        viewReview = findViewById(R.id.view_review);
     }
 
     private void setToolbar() {

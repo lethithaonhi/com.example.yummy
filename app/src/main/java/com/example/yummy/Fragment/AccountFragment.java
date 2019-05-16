@@ -64,7 +64,6 @@ public class AccountFragment extends Fragment {
     private int TAKE_PHOTO_CODE = 1;
     private int CHOOSE_PHOTO_CODE = 2;
     private ImageView imgAvatar, imAvatarMain;
-    private FirebaseStorage storage;
     private  LinearLayout layoutSetting;
 
     public static AccountFragment newInstance() {
@@ -137,6 +136,10 @@ public class AccountFragment extends Fragment {
 
             viewChangLang.setOnClickListener(vl-> createDialogLang());
 
+            if(Common.accountCurrent.getPassword() == null || !Common.accountCurrent.getPassword().isEmpty()){
+                viewChangePass.setVisibility(View.GONE);
+            }
+
             viewAvatar.setOnClickListener(vl->{
                 if(Common.accountCurrent == null && mContext != null) {
                     Toast.makeText(mContext, R.string.login_first, Toast.LENGTH_SHORT).show();
@@ -146,7 +149,13 @@ public class AccountFragment extends Fragment {
                 }
             });
 
-            viewChangePass.setOnClickListener(vl-> createDialogChangePass());
+            viewChangePass.setOnClickListener(vl-> {
+                if(Common.accountCurrent.getPassword() != null && !Common.accountCurrent.getPassword().isEmpty())
+                    createDialogChangePass();
+                else {
+                    Toast.makeText(mContext, R.string.not_change_pass, Toast.LENGTH_SHORT).show();
+                }
+            });
 
             viewInfo.setOnClickListener(vl -> {
                 if(Common.accountCurrent != null && mContext != null) {
@@ -372,7 +381,7 @@ public class AccountFragment extends Fragment {
 
     private void uploadAvatarFB(Bitmap bitmap){
         // Create a storage reference from our app
-        storage = FirebaseStorage.getInstance();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
         StorageReference mountainsRef = storageRef.child("avatar").child(Common.accountCurrent.getUserId()+".png");
 
