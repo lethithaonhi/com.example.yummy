@@ -22,6 +22,15 @@ public class MenuRestaurantDetailAdapter extends RecyclerView.Adapter<MenuRestau
     private List<Menu> data;
     private Context context;
     private int[] countList;
+    private OnCountChangeListener onCountChangeListener;
+
+    public void setOnCountChangeListener(OnCountChangeListener onCountChangeListener) {
+        this.onCountChangeListener = onCountChangeListener;
+    }
+
+    public interface OnCountChangeListener {
+        void onCountChanged(int count, Menu menu);
+    }
 
     public MenuRestaurantDetailAdapter (Context context, List<Menu> data){
         this.context = context;
@@ -57,6 +66,7 @@ public class MenuRestaurantDetailAdapter extends RecyclerView.Adapter<MenuRestau
                 holder.btnRemove.setVisibility(View.VISIBLE);
                 holder.tvCount.setVisibility(View.VISIBLE);
             }
+            onCountChangeListener.onCountChanged(countList[i], menu);
         });
 
         holder.btnRemove.setOnClickListener(v->{
@@ -68,6 +78,7 @@ public class MenuRestaurantDetailAdapter extends RecyclerView.Adapter<MenuRestau
                 holder.btnRemove.setVisibility(View.GONE);
                 holder.tvCount.setVisibility(View.GONE);
             }
+            onCountChangeListener.onCountChanged(countList[i], menu);
         });
     }
 
