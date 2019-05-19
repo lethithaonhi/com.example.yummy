@@ -31,6 +31,7 @@ import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Discounts;
 import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Restaurant;
+import com.example.yummy.Model.Review;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
@@ -113,6 +114,28 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                                                     Common.db.clearData();
                                                     restaurant.setCity(address);
                                                     restaurant.setRes_id(dataSnapshot.getKey());
+
+                                                    List<Review> reviewList = new ArrayList<>();
+                                                    mDatabase.child(Node.Review).child(resID).addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                                                                Review review = dataSnapshot1.getValue(Review.class);
+                                                                if (review != null) {
+                                                                    review.setId(dataSnapshot1.getKey());
+                                                                    reviewList.add(review);
+                                                                    Common.db.addReview(review, resID, address);
+                                                                }
+                                                            }
+
+                                                            restaurant.setReviewList(reviewList);
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                        }
+                                                    });
 
                                                     List<String> imgList = new ArrayList<>();
                                                     mDatabase.child(Node.HinhAnhQuanAn).child(resID).addValueEventListener(new ValueEventListener() {

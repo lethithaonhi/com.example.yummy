@@ -6,11 +6,12 @@ import android.os.Parcelable;
 public class Review implements Parcelable {
     private String id;
     private String id_res;
-    private String id_user;
+    private String id_user;// name
     private String content;
-    private String date;
     private String time;
     private float mark;
+    private String avatar;
+    private String name;
 
     public Review(){}
 
@@ -46,14 +47,6 @@ public class Review implements Parcelable {
         this.content = content;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getTime() {
         return time;
     }
@@ -70,15 +63,34 @@ public class Review implements Parcelable {
         this.mark = mark;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     protected Review(Parcel in) {
         id = in.readString();
         id_res = in.readString();
         id_user = in.readString();
         content = in.readString();
-        date = in.readString();
         time = in.readString();
         mark = in.readFloat();
+        avatar = in.readString();
+        name = in.readString();
     }
+
+
 
     public static final Creator<Review> CREATOR = new Creator<Review>() {
         @Override
@@ -103,8 +115,9 @@ public class Review implements Parcelable {
         dest.writeString(id_res);
         dest.writeString(id_user);
         dest.writeString(content);
-        dest.writeString(date);
         dest.writeString(time);
         dest.writeFloat(mark);
+        dest.writeString(avatar);
+        dest.writeString(name);
     }
 }

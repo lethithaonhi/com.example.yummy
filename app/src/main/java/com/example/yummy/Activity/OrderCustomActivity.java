@@ -61,6 +61,7 @@ public class OrderCustomActivity extends AppCompatActivity {
         rcvMenu.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvMenu.getContext(), layoutManager.getOrientation());
         rcvMenu.addItemDecoration(dividerItemDecoration);
+        rcvMenu.setNestedScrollingEnabled(false);
 
         MenuOrderAdapter adapter = new MenuOrderAdapter(this, menuList);
         rcvMenu.setAdapter(adapter);

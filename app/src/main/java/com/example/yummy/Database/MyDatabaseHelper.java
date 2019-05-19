@@ -11,9 +11,11 @@ import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Discounts;
 import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Restaurant;
+import com.example.yummy.Model.Review;
 import com.example.yummy.Utils.BranchContrains;
 import com.example.yummy.Utils.MenuContrains;
 import com.example.yummy.Utils.RestaurantContrains;
+import com.example.yummy.Utils.ReviewContrains;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +36,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(RestaurantContrains.CREATE_TABLE);
         db.execSQL(BranchContrains.CREATE_TABLE);
         db.execSQL(MenuContrains.CREATE_TABLE);
+        db.execSQL(ReviewContrains.CREATE_TABLE);
     }
 
 
@@ -47,6 +50,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + RestaurantContrains.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + BranchContrains.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MenuContrains.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + ReviewContrains.TABLE_NAME);
         onCreate(db);
     }
 
@@ -56,6 +60,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(RestaurantContrains.DELETE_TABLE);
             db.execSQL(MenuContrains.DELETE_TABLE);
             db.execSQL(BranchContrains.DELETE_TABLE);
+            db.execSQL(ReviewContrains.DELETE_TABLE);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -93,6 +98,25 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(MenuContrains.DESCRIBE, menu.getDescribe() != null ? menu.getDescribe() : "");
 
         db.insert(MenuContrains.TABLE_NAME, null, values);
+        db.close();
+    }
+
+    public void addReview(Review review, String resID, String city) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(ReviewContrains.Review_ID, review.getId());
+        values.put(ReviewContrains.USER_ID,review.getId_user());
+        values.put(ReviewContrains.RES_ID, resID);
+        values.put(ReviewContrains.NAME, review.getName());
+        values.put(ReviewContrains.MARK, review.getMark());
+        values.put(ReviewContrains.CONTENT, review.getContent());
+        values.put(ReviewContrains.TIME, review.getTime());
+        values.put(ReviewContrains.AVATAR, review.getAvatar());
+        values.put(ReviewContrains.CITY, city);
+
+        db.insert(ReviewContrains.TABLE_NAME, null, values);
         db.close();
     }
 
@@ -171,6 +195,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return menu;
     }
 
+    private Review getReviewFromCursor(Cursor cursor){
+        Review review = new Review();
+        review.setId(cursor.getString(1));
+        review.setName(cursor.getString(3));
+        review.setMark(cursor.getLong(4));
+        review.setAvatar(cursor.getString(5));
+        review.setId_user(cursor.getString(6));
+        review.setContent(cursor.getString(7));
+        review.setTime(cursor.getString(8));
+
+        return review;
+    }
+
     public List<Restaurant> getRestaurant(List<String> idList, String address) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Restaurant> dataList = new ArrayList<>();
@@ -186,6 +223,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                         Restaurant restaurant = getResFromCursor(cursor);
                         restaurant.setBranchList(branchList);
                         restaurant.setMenuList(getMenu(id, address));
+                        restaurant.setReviewList(getReview(id, address));
                         dataList.add(restaurant);
                     } while (cursor.moveToNext());
                 }
@@ -231,6 +269,27 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 do {
                     Menu menu = getMenuFromCursor(cursor);
                     dataList.add(menu);
+                } while (cursor.moveToNext());
+            }
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return dataList;
+    }
+
+    private List<Review> getReview(String resID, String city){
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Review> dataList = new ArrayList<>();
+        String query = "SELECT * FROM " + ReviewContrains.TABLE_NAME + " WHERE " + ReviewContrains.RES_ID
+                + " = ? AND " + ReviewContrains.CITY + " = ?";
+        String[] selectionArgs = new String[]{resID, city};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    Review review = getReviewFromCursor(cursor);
+                    dataList.add(review);
                 } while (cursor.moveToNext());
             }
             if (!cursor.isClosed()) {

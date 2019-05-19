@@ -3,16 +3,20 @@ package com.example.yummy.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.yummy.Adapter.ImgRestaurantDetailAdapter;
+import com.example.yummy.Adapter.ReviewAdapter;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
+import com.example.yummy.Utils.Common;
 
 public class ReviewsRestaurantDetailFragment extends Fragment {
     private Restaurant restaurant;
@@ -43,5 +47,13 @@ public class ReviewsRestaurantDetailFragment extends Fragment {
         ImgRestaurantDetailAdapter adapter = new ImgRestaurantDetailAdapter(getContext(), restaurant.getImgList(), restaurant, 0);
         rcvImRes.setAdapter(adapter);
 
+        RecyclerView rcvReviews = v.findViewById(R.id.ryc_review_res);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        rcvReviews.setLayoutManager(layoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvReviews.getContext(), layoutManager.getOrientation());
+        rcvReviews.addItemDecoration(dividerItemDecoration);
+
+        ReviewAdapter reviewAdapter = new ReviewAdapter(getContext(), restaurant.getReviewList());
+        rcvReviews.setAdapter(reviewAdapter);
     }
 }

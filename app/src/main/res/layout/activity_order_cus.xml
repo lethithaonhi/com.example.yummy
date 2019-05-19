@@ -185,6 +185,7 @@
                 android:background="@color/grey" />
 
             <android.support.v7.widget.RecyclerView
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:id="@+id/rcv_menu"
