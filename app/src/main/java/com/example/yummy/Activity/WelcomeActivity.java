@@ -53,7 +53,7 @@ import java.util.Objects;
 
 public class WelcomeActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private NetworkChangeReceiver broadcastReceiver;
-    private GoogleApiClient gac;
+    public static GoogleApiClient gac;
     private DatabaseReference mDatabase;
     private MyDatabaseHelper db;
     private boolean isDelete=false;

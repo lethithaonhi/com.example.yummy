@@ -127,4 +127,16 @@
     <string name="error">Error!</string>
     <string name="not_change_pass">You can\'t change you password!</string>
     <string name="delevery">Delivery</string>
+    <string name="delivery_to">Delivery to</string>
+    <string name="pick_up_outside">Pick up outside</string>
+    <string name="delivery_at">Delivery at</string>
+    <string name="Total">Total</string>
+    <string name="total_item">Total Items</string>
+    <string name="item">items</string>
+    <string name="recipient">Recipient</string>
+    <string name="nodes">  Nodes</string>
+    <string name="edit">Edit</string>
+    <string name="submit_order">Submit Order</string>
+    <string name="ship_fee">Ship fee: </string>
+    <string name="order_success">You have successfully ordered! Please wait for confirmation!</string>
 </resources>

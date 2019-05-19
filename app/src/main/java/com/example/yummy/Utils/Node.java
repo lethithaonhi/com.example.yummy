@@ -12,5 +12,7 @@ public class Node {
     public static String KhuyenMai = "KhuyenMai";
     public static String Address ="Address";
     public static String Blog = "Blog";
-
+    public static String Order = "Order";
+    public static String Order_Menu ="OrderMenu";
+    public static String count = "count";
 }

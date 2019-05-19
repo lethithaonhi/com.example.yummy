@@ -62,10 +62,15 @@ public class InfoRestaurantDetailFragment extends Fragment implements OnMapReady
         tvAddressMap.setText(branch.getAddress());
         tvBranchs.setText(restaurant.getBranchList().size()+" braches");
         String type="";
-        for(String key : restaurant.getMenuIdList()){
-            type += "\\"+getStringMenuList(key);
+        if(restaurant.getMenuIdList() != null && Common.menuList != null) {
+            for (String key : restaurant.getMenuIdList()) {
+                type += "\\" + getStringMenuList(key);
+            }
+            tvType.setText(type.substring(1));
+        }else{
+            tvType.setVisibility(View.GONE);
         }
-        tvType.setText(type.substring(1));
+
         YouTubePlayerSupportFragment youTubePlayerView = (YouTubePlayerSupportFragment) this.getChildFragmentManager().findFragmentById(R.id.videoTrailer);
         youTubePlayerView.initialize(getResources().getString(R.string.Your_API_KEY), this);
     }

@@ -1,11 +1,14 @@
 package com.example.yummy.Utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,8 +17,11 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.example.yummy.Model.Addresses;
 import com.example.yummy.Model.Branch;
+import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +37,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import static com.example.yummy.Activity.WelcomeActivity.gac;
+
 public class UtilsBottomBar {
     public static void startFragment(FragmentManager manager, Fragment fragment) {
         final FragmentTransaction transaction = manager.beginTransaction();
@@ -42,7 +50,7 @@ public class UtilsBottomBar {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
     }
 
-    public static List<Map> getMenuList(){
+    public static List<Map> getMenuList() {
         List<Map> menuList = new ArrayList<>();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child(Node.ThucDon).addValueEventListener(new ValueEventListener() {
@@ -61,7 +69,7 @@ public class UtilsBottomBar {
         return menuList;
     }
 
-    public static float getDistanceBranch(Branch branch){
+    public static float getDistanceBranch(Branch branch) {
         float[] distance = new float[1];
         Location.distanceBetween(branch.getLatitude(), branch.getLongitude(),
                 Common.myLocation.getLatitude(), Common.myLocation.getLongitude(), distance);
@@ -80,17 +88,37 @@ public class UtilsBottomBar {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static String getAddressCurrent(Context context, double latitude, double longitude){
-        Geocoder geocoder;
+    public static String getAddressCurrent(Context context, double latitude, double longitude) {
         List<Address> addresses;
-        String address ="";
+        String address = "";
+        if (latitude == 0 || longitude == 0) {
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return null;
+            }
+            Location location = LocationServices.FusedLocationApi.getLastLocation(gac);
+            if (location != null) {
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                Addresses address1 = new Addresses();
+                address1.setLatitude(latitude);
+                address1.setLongitude(longitude);
+                Common.myLocation = address1;
+
+                for (Restaurant restaurant : Common.restaurantListCurrent){
+                    for (Branch branch : restaurant.getBranchList()){
+                        branch.setDistance(getDistanceBranch(branch));
+                    }
+                }
+            }
+        }
+        Geocoder geocoder;
         geocoder = new Geocoder(context, Locale.getDefault());
 
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
 //            String knownName = addresses.get(0).getAdminArea();
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return address;

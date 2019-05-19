@@ -1,6 +1,8 @@
 package com.example.yummy.Fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -9,23 +11,34 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.yummy.Activity.LoginActivity;
+import com.example.yummy.Activity.OrderCustomActivity;
 import com.example.yummy.Activity.RestaurantDetailActivity;
 import com.example.yummy.Adapter.MenuRestaurantDetailAdapter;
 import com.example.yummy.Model.Branch;
+import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
+import com.example.yummy.Utils.Common;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
-public class DeliveryRestaurantDetailFragment extends Fragment {
+public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRestaurantDetailAdapter.OnCountChangeListener {
     private Restaurant restaurant;
     private Branch branch;
     private TextView tvStatus;
+    private TextView tvCount, tvMoneyAll;
+    private LinearLayout viewDelivery;
+    private HashMap<Menu, Integer> listOrderMenu = new HashMap<>();
 
     public static DeliveryRestaurantDetailFragment getInstance(Restaurant restaurant, Branch branch) {
         DeliveryRestaurantDetailFragment fragment = new DeliveryRestaurantDetailFragment();
@@ -47,6 +60,23 @@ public class DeliveryRestaurantDetailFragment extends Fragment {
     }
 
     private void initView(View v){
+        viewDelivery = v.findViewById(R.id.view_delivery);
+        tvCount = v.findViewById(R.id.tv_count);
+        tvMoneyAll = v.findViewById(R.id.tv_moneyAll);
+        TextView btnDelivery = v.findViewById(R.id.btn_delivery);
+        btnDelivery.setOnClickListener(vl->{
+            if(Common.accountCurrent != null) {
+                Intent intent = new Intent(getContext(), OrderCustomActivity.class);
+                intent.putExtra("menulist", listOrderMenu);
+                intent.putExtra("restaurant", restaurant);
+                intent.putExtra("branch", branch);
+                startActivity(intent);
+            }else {
+                Toast.makeText(getContext(), R.string.login_first, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getContext(), LoginActivity.class));
+            }
+        });
+
         TextView tvAddress = v.findViewById(R.id.tv_Address);
         TextView tvTime = v.findViewById(R.id.txtGioHoatDong);
         tvStatus = v.findViewById(R.id.txtTrangThaiHoatDong);
@@ -63,6 +93,7 @@ public class DeliveryRestaurantDetailFragment extends Fragment {
 
             MenuRestaurantDetailAdapter adapter = new MenuRestaurantDetailAdapter(getContext(), restaurant.getMenuList());
             rvMenu.setAdapter(adapter);
+            adapter.setOnCountChangeListener(this);
         }
 
         TextView tvDiscount = v.findViewById(R.id.tv_discount);
@@ -99,6 +130,36 @@ public class DeliveryRestaurantDetailFragment extends Fragment {
             }
         }catch (Exception e){
             System.out.print("Message: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void onCountChanged(int count, Menu menu) {
+        if (Common.accountCurrent != null) {
+            int sum = 0;
+            long moneyAll = 0;
+            if (count > 0) {
+                listOrderMenu.put(menu, count);
+                for (Menu menu1 : listOrderMenu.keySet()) {
+                    sum = sum + listOrderMenu.get(menu1);
+                    moneyAll = moneyAll + menu1.getPrices();
+                }
+                viewDelivery.setVisibility(View.VISIBLE);
+                if (getContext() instanceof RestaurantDetailActivity)
+                    ((RestaurantDetailActivity) getContext()).setHideReview(true);
+                tvCount.setText(sum + "");
+                tvMoneyAll.setText(moneyAll + " VND");
+            } else {
+                listOrderMenu.remove(menu);
+            }
+            if (sum == 0) {
+                viewDelivery.setVisibility(View.GONE);
+                if (getContext() instanceof RestaurantDetailActivity)
+                    ((RestaurantDetailActivity) getContext()).setHideReview(false);
+            }
+        } else {
+            Toast.makeText(getContext(), R.string.login_first, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getContext(), LoginActivity.class));
         }
     }
 }

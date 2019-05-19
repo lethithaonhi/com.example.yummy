@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.example.yummy.Activity.BlogActivity;
 import com.example.yummy.Activity.RestaurantActivity;
+import com.example.yummy.Activity.WelcomeActivity;
 import com.example.yummy.Adapter.BannerAdapter;
 import com.example.yummy.Adapter.RestaurantHorizontalAdapter;
 import com.example.yummy.Model.Branch;
@@ -66,8 +67,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         rcvExp.setLayoutManager(layoutManager);
         RestaurantAsyncTask myAsyncTask = new RestaurantAsyncTask();
         myAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        String address = UtilsBottomBar.getAddressCurrent(getContext(), Common.myLocation.getLatitude(), Common.myLocation.getLongitude());
-        Common.myLocation.setName(address);
+        if(Common.myLocation != null) {
+            String address = UtilsBottomBar.getAddressCurrent(getContext(), Common.myLocation.getLatitude(), Common.myLocation.getLongitude());
+            Common.myLocation.setName(address);
+        }
         TextView tvMore = v.findViewById(R.id.tv_more);
         tvMore.setOnClickListener(this);
 
@@ -143,14 +146,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
 
     private void updateCityList(){
-        for(String key : Common.cityList.keySet()){
-            int count = 0;
-            for (Restaurant restaurant : Common.restaurantListAll){
-                if(restaurant.getCity().equals(key)){
-                    count++;
+        if(Common.cityList != null) {
+            for (String key : Common.cityList.keySet()) {
+                int count = 0;
+                for (Restaurant restaurant : Common.restaurantListAll) {
+                    if (restaurant.getCity().equals(key)) {
+                        count++;
+                    }
                 }
+                Common.cityList.put(key, count);
             }
-            Common.cityList.put(key, count);
+        }else {
+            getActivity().finish();
+            startActivity(new Intent(getContext(), WelcomeActivity.class));
         }
     }
 

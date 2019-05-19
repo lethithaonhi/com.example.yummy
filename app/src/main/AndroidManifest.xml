@@ -52,6 +52,7 @@
         <activity android:name=".Activity.ChangeAddressActivity" />
         <activity android:name=".Activity.AddressHistoryActivity" />
         <activity android:name=".Activity.BlogActivity" />
+        <activity android:name=".Activity.OrderCustomActivity"/>
 
     </application>
 

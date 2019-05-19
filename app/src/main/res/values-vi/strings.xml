@@ -123,4 +123,16 @@
     <string name="error">Lỗi!</string>
     <string name="not_change_pass">Bạn không thể thay đổi mật khẩu!</string>
     <string name="delevery">Giao hàng</string>
+    <string name="delivery_to">Giao đến</string>
+    <string name="pick_up_outside">Lấy bên ngoài</string>
+    <string name="delivery_at">Giao vào lúc: </string>
+    <string name="Total">Tổng tiền:</string>
+    <string name="total_item">Tổng phần: </string>
+    <string name="item">phần</string>
+    <string name="recipient">Người nhận</string>
+    <string name="nodes">  Ghi chú</string>
+    <string name="edit">Sửa</string>
+    <string name="submit_order">Thanh toán</string>
+    <string name="ship_fee">Phí vận chuyển: </string>
+    <string name="order_success">Quý khách đã đặt hàng thành công! Vui lòng đợi xác nhận!</string>
 </resources>
