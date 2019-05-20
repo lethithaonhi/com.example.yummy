@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.example.yummy.Model.Addresses;
 import com.example.yummy.Model.Branch;
+import com.example.yummy.Model.Order;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.google.android.gms.location.LocationServices;
@@ -122,5 +123,31 @@ public class UtilsBottomBar {
             e.printStackTrace();
         }
         return address;
+    }
+
+    public static void getOrderCurrent(){
+        Common.orderListCurrent = new ArrayList<>();
+
+        if(Common.listResId != null && Common.listResId.size() > 0) {
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            for (String resID : Common.listResId) {
+                mDatabase.child(Node.Order).child(resID).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                            Order order = dataSnapshot1.getValue(Order.class);
+                            if(order != null && order.getId_user().equals(Common.accountCurrent.getUserId())){
+                                Common.orderListCurrent.add(order);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        }
     }
 }

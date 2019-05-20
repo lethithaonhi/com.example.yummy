@@ -9,9 +9,11 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,6 +82,8 @@ public class OrderCustomActivity extends AppCompatActivity {
         TextView tvFeeShip = findViewById(R.id.tv_ship);
         TextView tvDistance = findViewById(R.id.tv_distance);
         Button btnSubmit = findViewById(R.id.btn_submit);
+        TextView tvDiscount = findViewById(R.id.tv_discount);
+        LinearLayout viewDiscount = findViewById(R.id.view_discount);
 
         int feeShip;
         if (restaurant.getFreeship() == 0) {
@@ -117,7 +121,27 @@ public class OrderCustomActivity extends AppCompatActivity {
         for (Menu menu : menuList.keySet()) {
             count += menu.getPrices();
         }
-        count += feeShip;
+
+        int discount= 0;
+        if(restaurant.getDiscounts() != null && restaurant.getDiscounts().getMin_order() != 0 && count >= restaurant.getDiscounts().getMin_order()){
+            discount = (int) (count * (restaurant.getDiscounts().getDiscount()/100));
+
+            if (discount / 100 > 5) {
+                discount = (discount / 1000 + 1) * 1000;
+            } else {
+                discount = (discount / 100 + 500);
+
+            }
+
+            if(discount != 0 && discount > restaurant.getDiscounts().getMax_discount()){
+                discount = restaurant.getDiscounts().getMax_discount();
+
+                tvDiscount.setText("-"+discount);
+                viewDiscount.setVisibility(View.VISIBLE);
+            }
+        }
+
+        count = count + feeShip - discount;
 
         imgBack.setOnClickListener(v -> finish());
         tvNameRes.setText(restaurant.getName());
@@ -145,20 +169,29 @@ public class OrderCustomActivity extends AppCompatActivity {
                 order.setTime(time);
                 order.setTotal(count);
                 order.setIsStatus(0);
+                order.setName_res(restaurant.getName());
+                order.setAvatar(branch.getAvatar());
 
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                 String key = nodeRoot.child(Node.Order).child(restaurant.getRes_id()).push().getKey();
-                nodeRoot.child(Node.Order).child(restaurant.getRes_id()).child(key).setValue(order);
+                if (key != null) {
+                    nodeRoot.child(Node.Order).child(restaurant.getRes_id()).child(key).setValue(order);
 
-                for (Menu menu : menuList.keySet()) {
-                    String keyMenu = nodeRoot.child(Node.Order).child(restaurant.getRes_id()).child(key).push().getKey();
-                    nodeRoot.child(Node.Order_Menu).child(restaurant.getRes_id()).child(key).child(keyMenu).setValue(menu);
-                    nodeRoot.child(Node.Order_Menu).child(restaurant.getRes_id()).child(key).child(keyMenu).child(Node.count).setValue(menuList.get(menu));
+                    for (Menu menu : menuList.keySet()) {
+                        String keyMenu = nodeRoot.child(Node.Order).child(restaurant.getRes_id()).child(key).push().getKey();
+                        if (keyMenu != null) {
+                            nodeRoot.child(Node.Order_Menu).child(restaurant.getRes_id()).child(key).child(keyMenu).setValue(menu);
+
+                            nodeRoot.child(Node.Order_Menu).child(restaurant.getRes_id()).child(key).child(keyMenu).child(Node.count).setValue(menuList.get(menu));
+                        }
+                    }
+
+                    Toast.makeText(this, R.string.order_success, Toast.LENGTH_SHORT).show();
+                    finish();
+                    startActivity(new Intent(this, BottomBarActivity.class));
+                }else {
+                    Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
                 }
-
-                Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
-                finish();
-                startActivity(new Intent(this, BottomBarActivity.class));
             }else {
                 Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
             }

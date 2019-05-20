@@ -135,4 +135,8 @@
     <string name="submit_order">Thanh toán</string>
     <string name="ship_fee">Phí vận chuyển: </string>
     <string name="order_success">Quý khách đã đặt hàng thành công! Vui lòng đợi xác nhận!</string>
+    <string name="discount_code">Mã giảm giá</string>
+    <string name="okay">Đồng ý</string>
+    <string name="warning">Cảnh báo</string>
+    <string name="mess_warning">Nếu bạn không cho phép app truy cập vị trí hiện tại, app sẽ bị đóng!\nBạn có muốn cấp quyền lại?</string>
 </resources>

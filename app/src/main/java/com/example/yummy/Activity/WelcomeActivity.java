@@ -1,9 +1,11 @@
 package com.example.yummy.Activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -19,6 +21,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -362,10 +365,49 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                 Common.myLocation = address;
                 getCityLocation(latitude, longitude);
             } else {
-                Toast.makeText(this, "Falied!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
             }
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        // If request is cancelled, the result arrays are empty.
+        if (requestCode == 2) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                // permission was granted, yay! Do the
+                // location-related task you need to do.
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+
+                    //Request location updates:
+                    getLocation();
+                }
+
+            } else {
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.warnin)
+                        .setMessage(R.string.mess_warning)
+                        .setPositiveButton(R.string.okay, (DialogInterface.OnClickListener) (dialogInterface, i) -> {
+                            //Prompt the user once explanation has been shown
+                            ActivityCompat.requestPermissions(WelcomeActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                    2);
+                        })
+                        .setNegativeButton(R.string.cancel, (dialog, which) -> {
+                            finish();
+                        })
+                        .create()
+                        .show();
+
+            }
+        }
+    }
+
     /**
      * Tạo đối tượng google api client
      * */

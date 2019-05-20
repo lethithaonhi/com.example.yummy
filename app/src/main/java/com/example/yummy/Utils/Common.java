@@ -4,6 +4,7 @@ import com.example.yummy.Database.MyDatabaseHelper;
 import com.example.yummy.Model.Account;
 import com.example.yummy.Model.Addresses;
 import com.example.yummy.Model.Blog;
+import com.example.yummy.Model.Order;
 import com.example.yummy.Model.Restaurant;
 
 import java.util.HashMap;
@@ -22,4 +23,5 @@ public class Common {
     public static Account accountCurrent;
     public static String language;
     public static List<Blog> blogList;
+    public static List<Order> orderListCurrent;
 }

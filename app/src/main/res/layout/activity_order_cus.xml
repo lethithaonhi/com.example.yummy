@@ -97,6 +97,7 @@
                         </LinearLayout>
 
                         <EditText
+                            android:paddingLeft="5dp"
                             android:id="@+id/ed_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -112,6 +113,7 @@
                             android:textSize="12sp" />
 
                         <EditText
+                            android:paddingLeft="5dp"
                             android:id="@+id/ed_phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -167,13 +169,13 @@
                 </LinearLayout>
 
                 <EditText
+                    android:paddingLeft="5dp"
                     android:id="@+id/ed_node"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="28dp"
                     android:layout_margin="8dp"
                     android:background="@drawable/bg_ed_register"
                     android:hint="@string/nodes"
-                    android:padding="5dp"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -185,6 +187,7 @@
                 android:background="@color/grey" />
 
             <android.support.v7.widget.RecyclerView
+                android:layout_marginTop="8dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
@@ -254,6 +257,35 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/view_discount"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:textColor="@color/black"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/discount"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_discount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="-32000đ"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_margin="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -286,8 +318,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginRight="50dp"
+                android:layout_marginBottom="50dp"
                 android:background="@color/colorPrimary"
                 android:drawablePadding="20dp"
                 android:gravity="center"

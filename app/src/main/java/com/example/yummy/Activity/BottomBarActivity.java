@@ -16,6 +16,7 @@ import com.example.yummy.Fragment.HistoryTabFragment;
 import com.example.yummy.Fragment.HomeFragment;
 import com.example.yummy.Fragment.NotificationFragment;
 import com.example.yummy.Model.Blog;
+import com.example.yummy.Model.Order;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 public class BottomBarActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,10 @@ public class BottomBarActivity extends AppCompatActivity {
         bottomNavigation.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
         Common.blogList = new ArrayList<>();
         getBlog();
+
+        if(Common.accountCurrent != null){
+            UtilsBottomBar.getOrderCurrent();
+        }
     }
 
     private void getBlog(){

@@ -14,8 +14,12 @@ public class Order implements Parcelable {
     private String time;
     private String node;
     private long total;
-    private int isStatus; // 0: chua xac nhan, 1: xac nhan & dang chuan bi, 3: dang giao, 4: da xong
+    private int isStatus; // 0: chua xac nhan, 1: xac nhan & dang chuan bi, 3: dang giao, 4: da xong, 5: huy
     private String address;
+    private String name_res;
+    private String avatar;
+    private int count;
+
     public Order(){}
 
     protected Order(Parcel in) {
@@ -29,6 +33,7 @@ public class Order implements Parcelable {
         total = in.readLong();
         isStatus = in.readInt();
         address = in.readString();
+        name_res = in.readString();
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {
@@ -128,6 +133,22 @@ public class Order implements Parcelable {
         this.address = address;
     }
 
+    public String getName_res() {
+        return name_res;
+    }
+
+    public void setName_res(String name_res) {
+        this.name_res = name_res;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
@@ -140,5 +161,7 @@ public class Order implements Parcelable {
         dest.writeLong(total);
         dest.writeInt(isStatus);
         dest.writeString(address);
+        dest.writeString(name_res);
+        dest.writeString(avatar);
     }
 }

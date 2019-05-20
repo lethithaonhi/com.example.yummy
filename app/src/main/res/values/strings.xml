@@ -139,4 +139,8 @@
     <string name="submit_order">Submit Order</string>
     <string name="ship_fee">Ship fee: </string>
     <string name="order_success">You have successfully ordered! Please wait for confirmation!</string>
+    <string name="discount_code">Discount code</string>
+    <string name="okay">Ok</string>
+    <string name="warning">Warning</string>
+    <string name="mess_warning">If you do not allow the app to access your current location, the app will be closed!\nDo you want to re-authorize?</string>
 </resources>
