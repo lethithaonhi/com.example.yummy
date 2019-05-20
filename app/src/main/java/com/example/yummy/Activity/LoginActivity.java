@@ -295,6 +295,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             });
         }
 
+        UtilsBottomBar.getOrderCurrent();
+
     }
 
     private void fogotPass(){

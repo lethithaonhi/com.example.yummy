@@ -8,7 +8,7 @@ import com.example.yummy.Fragment.OnGoingFragment;
 
 public class HistoryPaperAdapter extends FragmentStatePagerAdapter {
 
-    private String title[] = {"History", "Ongoing"};
+    private String title[] = {"Ongoing", "History"};
 
     public HistoryPaperAdapter(FragmentManager manager) {
         super(manager);

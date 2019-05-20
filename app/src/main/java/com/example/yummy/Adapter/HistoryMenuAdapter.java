@@ -51,7 +51,7 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
             count += order.getMenuList().get(menu);
         }
 
-        holder.tvCount.setText(count+" " + context.getResources().getString(R.string.item));
+        holder.tvCount.setText(count+" " + context.getResources().getString(R.string.item) +" - ");
     }
 
     @Override

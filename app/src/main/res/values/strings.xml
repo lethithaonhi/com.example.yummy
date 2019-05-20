@@ -143,4 +143,13 @@
     <string name="okay">Ok</string>
     <string name="warning">Warning</string>
     <string name="mess_warning">If you do not allow the app to access your current location, the app will be closed!\nDo you want to re-authorize?</string>
+    <string name="on_sent">Your order is waiting for confirmation</string>
+    <string name="on_confirm">The store is preparing</string>
+    <string name="on_dispatch">The restaurant has dispatched your order</string>
+    <string name="on_complete">Your order has arrived at your address</string>
+    <string name="sent">SENT</string>
+    <string name="confirmed">CONFIRMED</string>
+    <string name="enroute">EN ROUTE</string>
+    <string name="delivered">DELIVERED</string>
+    <string name="thank_order">We will finish delivery soonest for you! Thank you!</string>
 </resources>

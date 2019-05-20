@@ -45,10 +45,6 @@ public class BottomBarActivity extends AppCompatActivity {
         bottomNavigation.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
         Common.blogList = new ArrayList<>();
         getBlog();
-
-        if(Common.accountCurrent != null){
-            UtilsBottomBar.getOrderCurrent();
-        }
     }
 
     private void getBlog(){
@@ -71,10 +67,12 @@ public class BottomBarActivity extends AppCompatActivity {
         });
     }
 
+    private BottomNavigationItemView items;
+    private BottomNavigationMenuView menuView;
     @SuppressLint("RestrictedApi")
     public void disableShiftMode(BottomNavigationView view) {
-        BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
-        BottomNavigationItemView items = (BottomNavigationItemView) menuView.getChildAt(0);
+        menuView = (BottomNavigationMenuView) view.getChildAt(0);
+        items = (BottomNavigationItemView) menuView.getChildAt(0);
         // set once again checked value, so view will be updated
         items.setChecked(true);
         try {
@@ -95,7 +93,13 @@ public class BottomBarActivity extends AppCompatActivity {
     }
 
     private boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        int id = item.getItemId();
+        setItems(id);
+        return true;
+    }
+
+    private void setItems( int id){
+        switch (id) {
             case R.id.tab_home:
                 UtilsBottomBar.startFragment(getSupportFragmentManager(), HomeFragment.newInstance());
                 break;
@@ -109,13 +113,13 @@ public class BottomBarActivity extends AppCompatActivity {
                 UtilsBottomBar.startFragment(getSupportFragmentManager(), AccountFragment.newInstance());
                 break;
         }
-        return true;
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onResume() {
         super.onResume();
-        UtilsBottomBar.startFragment(getSupportFragmentManager(), HomeFragment.newInstance());
+        setItems(menuView.getSelectedItemId());
     }
 
     @Override

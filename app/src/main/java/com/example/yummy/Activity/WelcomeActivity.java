@@ -390,7 +390,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
 
             } else {
                 new AlertDialog.Builder(this)
-                        .setTitle(R.string.warnin)
+                        .setTitle(R.string.warning)
                         .setMessage(R.string.mess_warning)
                         .setPositiveButton(R.string.okay, (DialogInterface.OnClickListener) (dialogInterface, i) -> {
                             //Prompt the user once explanation has been shown

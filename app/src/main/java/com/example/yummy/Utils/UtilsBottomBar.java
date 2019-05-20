@@ -3,6 +3,7 @@ package com.example.yummy.Utils;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -19,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.example.yummy.Model.Addresses;
 import com.example.yummy.Model.Branch;
+import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Order;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
@@ -137,7 +139,43 @@ public class UtilsBottomBar {
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                             Order order = dataSnapshot1.getValue(Order.class);
                             if(order != null && order.getId_user().equals(Common.accountCurrent.getUserId())){
-                                Common.orderListCurrent.add(order);
+                                order.setId(dataSnapshot1.getKey());
+
+                                HashMap<Menu, Integer> menuIntegerHashMap = new HashMap<>();
+                                mDatabase.child(Node.Order_Menu).child(resID).child(order.getId()).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataRoor) {
+                                        for (DataSnapshot dataSnapshot2 : dataRoor.getChildren()) {
+                                            Menu menu = dataSnapshot2.getValue(Menu.class);
+                                            if (menu != null && dataSnapshot2.getKey() != null){
+                                                mDatabase.child(Node.Order_Menu).child(resID).child(order.getId()).child(dataSnapshot2.getKey()).child("count").addValueEventListener(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        if (dataSnapshot.getValue(Integer.class) != null) {
+                                                            int count = dataSnapshot.getValue(Integer.class);
+                                                            menuIntegerHashMap.put(menu, count);
+                                                            order.setMenuList(menuIntegerHashMap);
+
+                                                            if (menuIntegerHashMap.size() == dataRoor.getChildrenCount()){
+                                                                Common.orderListCurrent.add(order);
+                                                            }
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
                             }
                         }
                     }

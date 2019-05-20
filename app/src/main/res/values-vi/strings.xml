@@ -139,4 +139,13 @@
     <string name="okay">Đồng ý</string>
     <string name="warning">Cảnh báo</string>
     <string name="mess_warning">Nếu bạn không cho phép app truy cập vị trí hiện tại, app sẽ bị đóng!\nBạn có muốn cấp quyền lại?</string>
+    <string name="on_sent">Đơn hàng của bạn đang chờ xác nhận</string>
+    <string name="on_confirm">Cửa hàng đang chuẩn bị</string>
+    <string name="on_dispatch">Nhà hàng đang trên đường giao đến địac chỉ của bạn.</string>
+    <string name="on_complete">Đơn hàng của bạn đã đến địa chỉ của bạn</string>
+    <string name="sent">GỬI</string>
+    <string name="confirmed">XÁC NHẬN</string>
+    <string name="enroute">ĐANG GIAO</string>
+    <string name="delivered">ĐÃ GIAO</string>
+    <string name="thank_order">Chúng tôi sẽ hoàn tất giao hàng sớm nhất cho quý khách! Xin cảm ơn!</string>
 </resources>
