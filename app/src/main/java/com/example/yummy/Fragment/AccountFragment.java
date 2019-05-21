@@ -136,9 +136,14 @@ public class AccountFragment extends Fragment {
 
             viewChangLang.setOnClickListener(vl-> createDialogLang());
 
-            if(Common.accountCurrent.getPassword() == null || !Common.accountCurrent.getPassword().isEmpty()){
-                viewChangePass.setVisibility(View.GONE);
+            if(Common.accountCurrent != null) {
+                if (Common.accountCurrent.getPassword() != null && !Common.accountCurrent.getPassword().isEmpty()) {
+                    viewChangePass.setVisibility(View.VISIBLE);
+                }
+                 viewAvatar.setVisibility(View.VISIBLE);
+                viewInfo.setVisibility(View.VISIBLE);
             }
+
 
             viewAvatar.setOnClickListener(vl->{
                 if(Common.accountCurrent == null && mContext != null) {

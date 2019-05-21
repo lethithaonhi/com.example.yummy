@@ -14,11 +14,10 @@ public class Order implements Parcelable {
     private String time;
     private String node;
     private long total;
-    private int isStatus; // 0: chua xac nhan, 1: xac nhan & dang chuan bi, 3: dang giao, 4: da xong, 5: huy
+    private int isStatus; // 0: chua xac nhan, 1: xac nhan & dang chuan bi, 2: dang giao, 3: da xong, 4: huy
     private String address;
     private String name_res;
     private String avatar;
-    private int count;
 
     public Order(){}
 

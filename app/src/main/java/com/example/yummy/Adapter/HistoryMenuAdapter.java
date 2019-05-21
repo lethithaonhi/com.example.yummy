@@ -44,7 +44,7 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
         Picasso.get().load(order.getAvatar()).into(holder.imageView);
 
 
-        holder.tvStatus.setText(order.getIsStatus() == 4 ? R.string.complete : R.string.cancel);
+        holder.tvStatus.setText(order.getIsStatus() == 3 ? R.string.complete : R.string.cancel);
 
         int count =0;
         for(Menu menu : order.getMenuList().keySet()){

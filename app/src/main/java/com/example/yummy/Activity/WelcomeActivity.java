@@ -70,6 +70,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
         mDatabase = FirebaseDatabase.getInstance().getReference();
         Common.listResId = new ArrayList<>();
         Common.cityList = new HashMap<>();
+        Common.orderListCurrent = new ArrayList<>();
         registerService();
         db = new MyDatabaseHelper(this);
         doSaveLang();
@@ -380,30 +381,34 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
 
                 // permission was granted, yay! Do the
                 // location-related task you need to do.
-                if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    Location location = LocationServices.FusedLocationApi.getLastLocation(gac);
+                    if (location != null) {
+                        double latitude = location.getLatitude();
+                        double longitude = location.getLongitude();
+                        Addresses address = new Addresses();
+                        address.setLatitude(latitude);
+                        address.setLongitude(longitude);
+                        Common.myLocation = address;
+                        //Request location updates:
+                        getLocation();
+                    }
 
-                    //Request location updates:
-                    getLocation();
+                } else {
+                    new AlertDialog.Builder(this)
+                            .setTitle(R.string.warning)
+                            .setMessage(R.string.mess_warning)
+                            .setPositiveButton(R.string.okay, (DialogInterface.OnClickListener) (dialogInterface, i) -> {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(WelcomeActivity.this,
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        2);
+                            })
+                            .setNegativeButton(R.string.cancel, (dialog, which) -> finish())
+                            .create()
+                            .show();
+
                 }
-
-            } else {
-                new AlertDialog.Builder(this)
-                        .setTitle(R.string.warning)
-                        .setMessage(R.string.mess_warning)
-                        .setPositiveButton(R.string.okay, (DialogInterface.OnClickListener) (dialogInterface, i) -> {
-                            //Prompt the user once explanation has been shown
-                            ActivityCompat.requestPermissions(WelcomeActivity.this,
-                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                    2);
-                        })
-                        .setNegativeButton(R.string.cancel, (dialog, which) -> {
-                            finish();
-                        })
-                        .create()
-                        .show();
-
             }
         }
     }

@@ -44,6 +44,7 @@
         android:layout_height="wrap_content" />
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/view_avatar"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -84,6 +85,7 @@
 
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/view_info"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -123,6 +125,7 @@
         android:background="@color/grey"/>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/view_changepass"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"

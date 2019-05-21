@@ -135,7 +135,7 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
                     Common.myLocation = addressnew;
                     mapFragment.getMapAsync(ChangeAddressActivity.this);
                     DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
-                    nodeRoot.child(Node.user).child(Common.accountCurrent.getUserId()).child("addressList").push().setValue(addressnew);
+                    nodeRoot.child(Node.Address).child(Common.accountCurrent.getUserId()).push().setValue(addressnew);
                 }else {
                     Toast.makeText(ChangeAddressActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
                     if (dialog.isShowing()) {

@@ -1,5 +1,6 @@
 package com.example.yummy.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +35,30 @@ public class OnGoingCusAdater extends RecyclerView.Adapter<OnGoingCusAdater.OnGo
     @Override
     public void onBindViewHolder(@NonNull OnGoingCusHolder holder, int i) {
         Order order = data.get(i);
+
+        holder.tvNameRes.setText(order.getName_res());
+        holder.tvDate.setText(order.getTime() + " - " + order.getDate());
+
+        if (order.getIsStatus() == 1 || order.getIsStatus() > 1){
+            holder.tvConfirm.setTextColor(context.getResources().getColor(R.color.red));
+            holder.imConfirm.setImageResource(R.drawable.bg_circle_green);
+            holder.vConfirm.setBackgroundResource(R.color.bg_green);
+            holder.tvStatus.setText(R.string.on_confirm);
+        }
+
+        if(order.getIsStatus() == 2 || order.getIsStatus() > 2){
+            holder.tvRoute.setTextColor(context.getResources().getColor(R.color.red));
+            holder.imRoute.setImageResource(R.drawable.bg_circle_green);
+            holder.vRoute.setBackgroundResource(R.color.bg_green);
+            holder.tvStatus.setText(R.string.on_dispatch);
+        }
+
+        if(order.getIsStatus() == 3 || order.getIsStatus() > 3){
+            holder.tvComplete.setTextColor(context.getResources().getColor(R.color.red));
+            holder.imComplete.setImageResource(R.drawable.bg_circle_green);
+            holder.vComplete.setBackgroundResource(R.color.bg_green);
+            holder.tvStatus.setText(R.string.on_complete);
+        }
     }
 
     @Override
@@ -42,9 +67,9 @@ public class OnGoingCusAdater extends RecyclerView.Adapter<OnGoingCusAdater.OnGo
     }
 
     class OnGoingCusHolder extends RecyclerView.ViewHolder {
-        TextView tvStatus, tvSent, tvConfirm, tvRoute, tvComplete, tvNameRes;
+        TextView tvStatus, tvSent, tvConfirm, tvRoute, tvComplete, tvNameRes, tvDate;
         ImageView imSent, imConfirm, imRoute, imComplete;
-        View vConfirm, vRoutr, vComplete;
+        View vConfirm, vRoute, vComplete;
 
         OnGoingCusHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,8 +85,9 @@ public class OnGoingCusAdater extends RecyclerView.Adapter<OnGoingCusAdater.OnGo
             imRoute = itemView.findViewById(R.id.im_route);
             imComplete = itemView.findViewById(R.id.im_complete);
             vConfirm = itemView.findViewById(R.id.v_confirm);
-            vRoutr = itemView.findViewById(R.id.v_route);
+            vRoute = itemView.findViewById(R.id.v_route);
             vComplete = itemView.findViewById(R.id.v_complete);
+            tvDate = itemView.findViewById(R.id.tv_date);
         }
     }
 }

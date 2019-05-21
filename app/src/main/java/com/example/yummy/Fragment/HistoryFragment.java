@@ -1,5 +1,6 @@
 package com.example.yummy.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -17,7 +18,10 @@ import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.UtilsBottomBar;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HistoryFragment extends Fragment {
@@ -40,7 +44,6 @@ public class HistoryFragment extends Fragment {
     private void initView(View v){
         LinearLayout viewNoOrder = v.findViewById(R.id.view_no_order);
         RecyclerView rcvOrderList = v.findViewById(R.id.rcv_order_list);
-        rcvOrderList.setLayoutManager(new LinearLayoutManager(getContext()));
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcvOrderList.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvOrderList.getContext(), layoutManager.getOrientation());
@@ -57,9 +60,19 @@ public class HistoryFragment extends Fragment {
 
     private void getData(){
         for (Order order : Common.orderListCurrent){
-            if(order.getIsStatus() == 4 || order.getIsStatus() == 5){
+            if(order.getIsStatus() == 4 || order.getIsStatus() == 3){
                 data.add(order);
             }
         }
+
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss dd-MM-yyyy");
+        Collections.sort(data, (obj1, obj2) -> {
+            try {
+                return dateFormat.parse(obj1.getTime()+" "+obj1.getDate()).compareTo(dateFormat.parse(obj2.getTime() +" "+obj2.getDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 1;
+        });
     }
 }
