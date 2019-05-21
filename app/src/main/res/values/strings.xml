@@ -152,4 +152,5 @@
     <string name="enroute">EN ROUTE</string>
     <string name="delivered">DELIVERED</string>
     <string name="thank_order">We will finish delivery soonest for you! Thank you!</string>
+    <string name="cash">Cash</string>
 </resources>

@@ -148,4 +148,5 @@
     <string name="enroute">ĐANG GIAO</string>
     <string name="delivered">ĐÃ GIAO</string>
     <string name="thank_order">Chúng tôi sẽ hoàn tất giao hàng sớm nhất cho quý khách! Xin cảm ơn!</string>
+    <string name="cash">Tiền mặt</string>
 </resources>

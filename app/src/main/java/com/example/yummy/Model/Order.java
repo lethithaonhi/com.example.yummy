@@ -3,9 +3,10 @@ package com.example.yummy.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Order implements Parcelable {
+public class Order implements Parcelable, Serializable {
     private String id;
     private String id_res;
     private String id_user;
@@ -18,6 +19,13 @@ public class Order implements Parcelable {
     private String address;
     private String name_res;
     private String avatar;
+    private String address_res;
+    private int feeShip;
+    private float distance;
+    private int discount;
+    private String name;
+    private String phone;
+    private int count;
 
     public Order(){}
 
@@ -33,6 +41,13 @@ public class Order implements Parcelable {
         isStatus = in.readInt();
         address = in.readString();
         name_res = in.readString();
+        address_res = in.readString();
+        feeShip = in.readInt();
+        distance = in.readFloat();
+        discount = in.readInt();
+        name = in.readString();
+        phone = in.readString();
+        count = in.readInt();
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {
@@ -148,6 +163,62 @@ public class Order implements Parcelable {
         this.avatar = avatar;
     }
 
+    public String getAddress_res() {
+        return address_res;
+    }
+
+    public void setAddress_res(String address_res) {
+        this.address_res = address_res;
+    }
+
+    public int getFeeShip() {
+        return feeShip;
+    }
+
+    public void setFeeShip(int feeShip) {
+        this.feeShip = feeShip;
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
@@ -162,5 +233,12 @@ public class Order implements Parcelable {
         dest.writeString(address);
         dest.writeString(name_res);
         dest.writeString(avatar);
+        dest.writeString(address_res);
+        dest.writeInt(feeShip);
+        dest.writeFloat(distance);
+        dest.writeInt(discount);
+        dest.writeString(name);
+        dest.writeString(phone);
+        dest.writeInt(count);
     }
 }

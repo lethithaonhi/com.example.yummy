@@ -49,7 +49,7 @@ public class NotificationFragment extends Fragment {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            return 1;
+            return -1;
         });
 
         RecyclerView rcvNotify = v.findViewById(R.id.rcv_notify_list);

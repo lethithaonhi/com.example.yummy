@@ -72,6 +72,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             intent.putExtra("restaurant", restaurant);
             branch = getBranch(restaurant);
             intent.putExtra("branch", branch);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         });
     }

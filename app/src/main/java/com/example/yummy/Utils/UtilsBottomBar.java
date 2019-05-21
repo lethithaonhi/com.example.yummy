@@ -128,6 +128,7 @@ public class UtilsBottomBar {
     }
 
     public static void getOrderCurrent(){
+        Common.orderListCurrent.clear();
         if(Common.listResId != null && Common.listResId.size() > 0) {
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
             for (String resID : Common.listResId) {
@@ -155,7 +156,7 @@ public class UtilsBottomBar {
                                                                 menuIntegerHashMap.put(menu, count);
                                                                 order.setMenuList(menuIntegerHashMap);
 
-                                                                if (menuIntegerHashMap.size() == dataRoor.getChildrenCount()) {
+                                                                if (menuIntegerHashMap.size() == dataRoor.getChildrenCount() && !Common.orderListCurrent.contains(order)) {
                                                                     Common.orderListCurrent.add(order);
                                                                 }
                                                             }

@@ -142,7 +142,7 @@ public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRe
                 listOrderMenu.put(menu, count);
                 for (Menu menu1 : listOrderMenu.keySet()) {
                     sum = sum + listOrderMenu.get(menu1);
-                    moneyAll = moneyAll + menu1.getPrices();
+                    moneyAll = moneyAll + menu1.getPrices()*count;
                 }
                 viewDelivery.setVisibility(View.VISIBLE);
                 if (getContext() instanceof RestaurantDetailActivity)

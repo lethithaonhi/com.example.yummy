@@ -1,14 +1,18 @@
 package com.example.yummy.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.yummy.Activity.OrderDetailActivity;
 import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Order;
 import com.example.yummy.R;
@@ -52,6 +56,13 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
         }
 
         holder.tvCount.setText(count+" " + context.getResources().getString(R.string.item) +" - ");
+
+        holder.viewContainer.setOnClickListener(v->{
+            Intent intent = new Intent(context, OrderDetailActivity.class);
+            intent.putExtra("order", (Parcelable) order);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -62,6 +73,7 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
     class HistoryMenuHolder extends RecyclerView.ViewHolder {
         TextView tvNameRes, tvAddress, tvTotal, tvCount, tvDate, tvStatus;
         ImageView imageView;
+        LinearLayout viewContainer;
         HistoryMenuHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -72,6 +84,7 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
             imageView = itemView.findViewById(R.id.img_res);
             tvDate = itemView.findViewById(R.id.tv_date);
             tvStatus = itemView.findViewById(R.id.tv_status);
+            viewContainer = itemView.findViewById(R.id.view_container);
         }
     }
 }

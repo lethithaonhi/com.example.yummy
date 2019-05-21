@@ -2,6 +2,7 @@ package com.example.yummy.Fragment;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -15,8 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.yummy.Adapter.OnGoingCusAdater;
+import com.example.yummy.Adapter.RestaurantHorizontalAdapter;
+import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Order;
+import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
@@ -39,6 +43,8 @@ public class OnGoingFragment extends Fragment {
     private List<Order> data;
     private Timer timer;
     private OnGoingCusAdater adapter;
+    private RecyclerView rcvOrderList;
+    private LinearLayout viewNoOrder;
 
     public static OnGoingFragment getInstance() {
         OnGoingFragment fragment = new OnGoingFragment();
@@ -56,20 +62,15 @@ public class OnGoingFragment extends Fragment {
     }
 
     private void initView(View v){
-        LinearLayout viewNoOrder = v.findViewById(R.id.view_no_order);
-        RecyclerView rcvOrderList = v.findViewById(R.id.rcv_order_list);
+        viewNoOrder = v.findViewById(R.id.view_no_order);
+        rcvOrderList = v.findViewById(R.id.rcv_order_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcvOrderList.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvOrderList.getContext(), layoutManager.getOrientation());
         rcvOrderList.addItemDecoration(dividerItemDecoration);
 
-        if(Common.accountCurrent != null){
-            getData();
-            viewNoOrder.setVisibility(View.GONE);
-            rcvOrderList.setVisibility(View.VISIBLE);
-            adapter = new OnGoingCusAdater(getContext(), data);
-            rcvOrderList.setAdapter(adapter);
-        }
+        OnGoingAsyncTask myAsyncTask = new OnGoingAsyncTask();
+        myAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void getData(){
@@ -86,7 +87,7 @@ public class OnGoingFragment extends Fragment {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            return 1;
+            return -1;
         });
     }
 
@@ -123,7 +124,6 @@ public class OnGoingFragment extends Fragment {
                                     }
                                     if(status == 3){
                                         Toast.makeText(getContext(), "Success!!", Toast.LENGTH_SHORT).show();
-                                        Common.orderListCurrent.clear();
                                         UtilsBottomBar.getOrderCurrent();
                                     }
 
@@ -156,5 +156,34 @@ public class OnGoingFragment extends Fragment {
                 .setNegativeButton(getContext().getResources().getString(R.string.okay), (dialogInterface, i) -> dialogInterface.dismiss());
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class OnGoingAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            data = new ArrayList<>();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(data.size() > 0) {
+                adapter = new OnGoingCusAdater(getContext(), data);
+                rcvOrderList.setAdapter(adapter);
+                viewNoOrder.setVisibility(View.GONE);
+                rcvOrderList.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            if(Common.accountCurrent != null){
+                getData();
+            }
+            return null;
+        }
     }
 }

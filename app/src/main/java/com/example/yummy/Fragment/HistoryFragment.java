@@ -1,6 +1,7 @@
 package com.example.yummy.Fragment;
 
 import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.yummy.Adapter.HistoryMenuAdapter;
+import com.example.yummy.Adapter.OnGoingCusAdater;
 import com.example.yummy.Model.Order;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
@@ -26,6 +28,8 @@ import java.util.List;
 
 public class HistoryFragment extends Fragment {
     private List<Order> data;
+    private RecyclerView rcvOrderList;
+    private LinearLayout viewNoOrder;
 
     public static HistoryFragment getInstance() {
         HistoryFragment fragment = new HistoryFragment();
@@ -42,21 +46,17 @@ public class HistoryFragment extends Fragment {
     }
 
     private void initView(View v){
-        LinearLayout viewNoOrder = v.findViewById(R.id.view_no_order);
-        RecyclerView rcvOrderList = v.findViewById(R.id.rcv_order_list);
+        viewNoOrder = v.findViewById(R.id.view_no_order);
+        rcvOrderList = v.findViewById(R.id.rcv_order_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcvOrderList.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvOrderList.getContext(), layoutManager.getOrientation());
         rcvOrderList.addItemDecoration(dividerItemDecoration);
 
-        if(Common.accountCurrent != null){
-            getData();
-            viewNoOrder.setVisibility(View.GONE);
-            rcvOrderList.setVisibility(View.VISIBLE);
-            HistoryMenuAdapter adapter = new HistoryMenuAdapter(getContext(), data);
-            rcvOrderList.setAdapter(adapter);
-        }
+        HistoryAsyncTask myAsyncTask = new HistoryAsyncTask();
+        myAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
+
 
     private void getData(){
         for (Order order : Common.orderListCurrent){
@@ -72,7 +72,36 @@ public class HistoryFragment extends Fragment {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            return 1;
+            return -1;
         });
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class HistoryAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            data = new ArrayList<>();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(data.size() > 0) {
+                HistoryMenuAdapter adapter = new HistoryMenuAdapter(getContext(), data);
+                rcvOrderList.setAdapter(adapter);
+                viewNoOrder.setVisibility(View.GONE);
+                rcvOrderList.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            if(Common.accountCurrent != null){
+                getData();
+            }
+            return null;
+        }
     }
 }

@@ -39,6 +39,7 @@ public class OrderCustomActivity extends AppCompatActivity {
     private HashMap<Menu, Integer> menuList = new HashMap<>();
     private Branch branch;
     private long count = 0;
+    private int feeShip = 0, discount=0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,7 +86,6 @@ public class OrderCustomActivity extends AppCompatActivity {
         TextView tvDiscount = findViewById(R.id.tv_discount);
         LinearLayout viewDiscount = findViewById(R.id.view_discount);
 
-        int feeShip;
         if (restaurant.getFreeship() == 0) {
             if (branch.getDistance() <= 2000) {
                 feeShip = 0;
@@ -119,12 +119,11 @@ public class OrderCustomActivity extends AppCompatActivity {
         tvDate.setText(dateformat.format(c.getTime()));
 
         for (Menu menu : menuList.keySet()) {
-            count += menu.getPrices();
+            count += (menu.getPrices()* menuList.get(menu));
         }
 
-        int discount= 0;
-        if(restaurant.getDiscounts() != null && restaurant.getDiscounts().getMin_order() != 0 && count >= restaurant.getDiscounts().getMin_order()){
-            discount = (int) (count * (restaurant.getDiscounts().getDiscount()/100));
+        if(restaurant.getDiscounts() != null && count >= restaurant.getDiscounts().getMin_order()){
+            discount = (int) ((count * restaurant.getDiscounts().getDiscount())/100);
 
             if (discount / 100 > 5) {
                 discount = (discount / 1000 + 1) * 1000;
@@ -133,12 +132,12 @@ public class OrderCustomActivity extends AppCompatActivity {
 
             }
 
-            if(discount != 0 && discount > restaurant.getDiscounts().getMax_discount()){
+            if(discount != 0 && discount > restaurant.getDiscounts().getMax_discount())
                 discount = restaurant.getDiscounts().getMax_discount();
 
                 tvDiscount.setText("-"+discount);
                 viewDiscount.setVisibility(View.VISIBLE);
-            }
+
         }
 
         count = count + feeShip - discount;
@@ -171,6 +170,13 @@ public class OrderCustomActivity extends AppCompatActivity {
                 order.setIsStatus(0);
                 order.setName_res(restaurant.getName());
                 order.setAvatar(branch.getAvatar());
+                order.setAddress_res(branch.getAddress());
+                order.setFeeShip(feeShip);
+                order.setDistance(branch.getDistance() / 1000);
+                order.setDiscount(discount);
+                order.setName(name);
+                order.setPhone(phone);
+                order.setCount(menuList.size());
 
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                 String key = nodeRoot.child(Node.Order).child(restaurant.getRes_id()).push().getKey();
@@ -189,6 +195,7 @@ public class OrderCustomActivity extends AppCompatActivity {
                     Toast.makeText(this, R.string.order_success, Toast.LENGTH_SHORT).show();
                     finish();
                     startActivity(new Intent(this, BottomBarActivity.class));
+                    UtilsBottomBar.getOrderCurrent();
                 }else {
                     Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
                 }
