@@ -153,4 +153,10 @@
     <string name="delivered">DELIVERED</string>
     <string name="thank_order">We will finish delivery soonest for you! Thank you!</string>
     <string name="cash">Cash</string>
+    <string name="write_review">Write review</string>
+    <string name="post">Post</string>
+    <string name="title">Title (optional)</string>
+    <string name="content">Please review more than 100 words, do not spam… to get reward points!</string>
+    <string name="rating">Required Rating</string>
+    <string name="success">Success!!</string>
 </resources>

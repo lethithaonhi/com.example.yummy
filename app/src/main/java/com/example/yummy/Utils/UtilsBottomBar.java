@@ -23,6 +23,7 @@ import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Order;
 import com.example.yummy.Model.Restaurant;
+import com.example.yummy.Model.Review;
 import com.example.yummy.R;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.database.DataSnapshot;
@@ -125,6 +126,32 @@ public class UtilsBottomBar {
             e.printStackTrace();
         }
         return address;
+    }
+
+    public static void getReview(){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        for (Restaurant restaurant : Common.restaurantListCurrent){
+            List<Review> reviewList = new ArrayList<>();
+            mDatabase.child(Node.Review).child(restaurant.getRes_id()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                        Review review = dataSnapshot1.getValue(Review.class);
+                        if (review != null){
+                            review.setId(dataSnapshot1.getKey());
+                            review.setId_res(restaurant.getRes_id());
+                            reviewList.add(review);
+                        }
+                    }
+                    restaurant.setReviewList(reviewList);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     public static void getOrderCurrent(){

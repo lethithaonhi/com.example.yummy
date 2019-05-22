@@ -149,4 +149,10 @@
     <string name="delivered">ĐÃ GIAO</string>
     <string name="thank_order">Chúng tôi sẽ hoàn tất giao hàng sớm nhất cho quý khách! Xin cảm ơn!</string>
     <string name="cash">Tiền mặt</string>
+    <string name="write_review">Viết bình luận</string>
+    <string name="post">Đăng</string>
+    <string name="title">Tiêu đề (Không bắt buộc)</string>
+    <string name="content">Hãy bình luận hơn 100 ký tự, không spam… xong bạn hãy cho điểm quán ăn nha!</string>
+    <string name="rating">Yêu cầu đánh giá điểm</string>
+    <string name="success">Thành công!!</string>
 </resources>
