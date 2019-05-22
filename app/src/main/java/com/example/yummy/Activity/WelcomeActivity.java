@@ -394,21 +394,21 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                         getLocation();
                     }
 
-                } else {
-                    new AlertDialog.Builder(this)
-                            .setTitle(R.string.warning)
-                            .setMessage(R.string.mess_warning)
-                            .setPositiveButton(R.string.okay, (DialogInterface.OnClickListener) (dialogInterface, i) -> {
-                                //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(WelcomeActivity.this,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        2);
-                            })
-                            .setNegativeButton(R.string.cancel, (dialog, which) -> finish())
-                            .create()
-                            .show();
-
                 }
+            } else {
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.warning)
+                        .setMessage(R.string.mess_warning)
+                        .setPositiveButton(R.string.okay, (DialogInterface.OnClickListener) (dialogInterface, i) -> {
+                            //Prompt the user once explanation has been shown
+                            ActivityCompat.requestPermissions(WelcomeActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                    2);
+                        })
+                        .setNegativeButton(R.string.cancel, (dialog, which) -> finish())
+                        .create()
+                        .show();
+
             }
         }
     }
