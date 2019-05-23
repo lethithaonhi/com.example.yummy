@@ -155,4 +155,6 @@
     <string name="content">Hãy bình luận hơn 100 ký tự, không spam… xong bạn hãy cho điểm quán ăn nha!</string>
     <string name="rating">Yêu cầu đánh giá điểm</string>
     <string name="success">Thành công!!</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

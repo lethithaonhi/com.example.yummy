@@ -27,11 +27,7 @@
 
         <activity android:name=".Activity.PhoneActivity" />
         <activity android:name=".Activity.WelcomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data
@@ -54,6 +50,13 @@
         <activity android:name=".Activity.BlogActivity" />
         <activity android:name=".Activity.OrderCustomActivity"/>
         <activity android:name=".Activity.OrderDetailActivity" />
+        <activity android:name=".Activity.HomePartnerActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
     </application>
 
