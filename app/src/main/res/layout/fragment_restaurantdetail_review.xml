@@ -43,6 +43,8 @@
                 android:layout_height="wrap_content" />
 
             <android.support.v7.widget.RecyclerView
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="10dp"
                 android:id="@+id/ryc_review_res"
                 android:layout_width="match_parent"

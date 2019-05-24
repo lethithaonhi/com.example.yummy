@@ -329,7 +329,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
             dialog = new Dialog(WelcomeActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
             dialog.setTitle("");
             dialog.setContentView(R.layout.dialog_network_notify);
-            dialog.setCancelable(true);
+            dialog.setCancelable(false);
             dialog.show();
 
             FrameLayout btnSetting = dialog.findViewById(R.id.btn_setting);
@@ -375,26 +375,20 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[], @NonNull int[] grantResults) {
         // If request is cancelled, the result arrays are empty.
-        if (requestCode == 2) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                // permission was granted, yay! Do the
-                // location-related task you need to do.
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    Location location = LocationServices.FusedLocationApi.getLastLocation(gac);
-                    if (location != null) {
-                        double latitude = location.getLatitude();
-                        double longitude = location.getLongitude();
-                        Addresses address = new Addresses();
-                        address.setLatitude(latitude);
-                        address.setLongitude(longitude);
-                        Common.myLocation = address;
-                        //Request location updates:
-                        getLocation();
-                    }
-
+        if (requestCode == 2 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                Location location = LocationServices.FusedLocationApi.getLastLocation(gac);
+                if (location != null) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    Addresses address = new Addresses();
+                    address.setLatitude(latitude);
+                    address.setLongitude(longitude);
+                    Common.myLocation = address;
+                    //Request location updates:
+                    getLocation();
                 }
+
             } else {
                 new AlertDialog.Builder(this)
                         .setTitle(R.string.warning)

@@ -20,6 +20,7 @@
             android:layout_height="wrap_content" />
 
         <EditText
+            android:background="@drawable/bg_edttext_none"
             android:layout_weight="1"
             android:id="@+id/edt_search_address"
             android:hint="@string/search_location"

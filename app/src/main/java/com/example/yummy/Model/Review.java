@@ -12,6 +12,7 @@ public class Review implements Parcelable {
     private float mark;
     private String avatar;
     private String name;
+    private String title;
 
     public Review(){}
 
@@ -79,6 +80,14 @@ public class Review implements Parcelable {
         this.name = name;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     protected Review(Parcel in) {
         id = in.readString();
         id_res = in.readString();
@@ -88,6 +97,7 @@ public class Review implements Parcelable {
         mark = in.readFloat();
         avatar = in.readString();
         name = in.readString();
+        title = in.readString();
     }
 
 
@@ -119,5 +129,6 @@ public class Review implements Parcelable {
         dest.writeFloat(mark);
         dest.writeString(avatar);
         dest.writeString(name);
+        dest.writeString(title);
     }
 }
