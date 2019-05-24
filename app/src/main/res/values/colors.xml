@@ -29,4 +29,6 @@
     <color name="freeship">#F4F9FF</color>
     <color name="backgroundColor">#E8E8E0</color>
     <color name="backgroundColorPress">#DBDBD3</color>
+    <color name="mess1">#4D858484</color>
+    <color name="mess2">#33979797</color>
 </resources>

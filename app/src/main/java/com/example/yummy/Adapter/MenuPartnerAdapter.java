@@ -1,5 +1,6 @@
 package com.example.yummy.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +48,9 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
         holder.tvDes.setText(menu.getDescribe());
         holder.tvPrice.setText(menu.getPrices()+" VND");
         Picasso.get().load(menu.getImage()).into(holder.imMenu);
+
+        holder.btnDelete.setOnClickListener(v->showDialogDeleteConference(menu));
+
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
@@ -71,6 +76,7 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
         ImageView imMenu;
         TextView tvName, tvDes, tvCount, tvPrice;
         SwipeLayout swipeLayout;
+        LinearLayout btnEdit, btnDelete;
         MenuPartnerHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -80,6 +86,8 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
             tvPrice = itemView.findViewById(R.id.tv_price);
             tvCount = itemView.findViewById(R.id.tv_countMenu);
             swipeLayout = itemView.findViewById(R.id.swipe);
+            btnDelete = itemView.findViewById(R.id.btn_delete);
+            btnEdit = itemView.findViewById(R.id.btn_edit);
 
             ViewTreeObserver vto = imMenu.getViewTreeObserver();
             vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -91,5 +99,19 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
                 }
             });
         }
+    }
+
+    private void showDialogDeleteConference(Menu menu) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder
+                .setMessage(context.getResources().getString(R.string.mess_delete))
+                .setCancelable(false)
+                .setPositiveButton(context.getResources().getString(R.string.delete), ((dialog, which) -> {
+                    dialog.dismiss();
+                    notifyDataSetChanged();
+                }))
+                .setNegativeButton(context.getResources().getString(R.string.cancel), (dialogInterface, i) -> dialogInterface.dismiss());
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

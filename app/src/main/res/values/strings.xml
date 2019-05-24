@@ -163,4 +163,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="order">Order</string>
     <string name="branch">Branch</string>
+    <string name="mess_delete">Do you want to delete?</string>
+    <string name="edit_menu">Edit Menu</string>
 </resources>

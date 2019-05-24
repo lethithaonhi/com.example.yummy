@@ -159,4 +159,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="order">Đơn hàng</string>
     <string name="branch">Chi nhánh</string>
+    <string name="mess_delete">Bạn có chắc chắn muốn xóa?</string>
+    <string name="edit_menu">Sửa thực đơn</string>
 </resources>
