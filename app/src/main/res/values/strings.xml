@@ -161,4 +161,6 @@
     <string name="success">Success!!</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="order">Order</string>
+    <string name="branch">Branch</string>
 </resources>

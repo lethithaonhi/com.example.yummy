@@ -29,34 +29,31 @@ public class ResetPassActivity extends AppCompatActivity {
 
         initView();
 
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String userEmail = edtResetPass.getText().toString();
-                if(TextUtils.isEmpty(userEmail)){
-                    Toast.makeText(ResetPassActivity.this,"Vui lòng nhập email của bạn",Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    mAuth.sendPasswordResetEmail(userEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                Toast.makeText(ResetPassActivity.this,"Gửi email thành công!",Toast.LENGTH_SHORT).show();
-                                Intent iLogin = new Intent(ResetPassActivity.this,LoginActivity.class);
-                                startActivity(iLogin);
-                            }
-                            else{
-                                Toast.makeText(ResetPassActivity.this, "Email không hợp lệ!", Toast.LENGTH_SHORT).show();
-                            }
+        btnSend.setOnClickListener(view -> {
+            String userEmail = edtResetPass.getText().toString();
+            if(TextUtils.isEmpty(userEmail)){
+                Toast.makeText(ResetPassActivity.this,"Vui lòng nhập email của bạn",Toast.LENGTH_SHORT).show();
+            }
+            else {
+                mAuth.sendPasswordResetEmail(userEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(ResetPassActivity.this,"Gửi email thành công!",Toast.LENGTH_SHORT).show();
+                            Intent iLogin = new Intent(ResetPassActivity.this,LoginActivity.class);
+                            startActivity(iLogin);
                         }
-                    });
-                }
+                        else{
+                            Toast.makeText(ResetPassActivity.this, "Email không hợp lệ!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
     }
 
     private void initView(){
-        edtResetPass = (EditText) findViewById(R.id.txt_pass_reset);
-        btnSend = (Button) findViewById(R.id.btn_send_pass_reset);
+        edtResetPass = findViewById(R.id.txt_pass_reset);
+        btnSend = findViewById(R.id.btn_send_pass_reset);
     }
 }

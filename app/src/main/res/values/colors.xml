@@ -27,4 +27,6 @@
     <color name="transBlack">#73000000</color>
     <color name="transWhite">#99FFFFFF</color>
     <color name="freeship">#F4F9FF</color>
+    <color name="backgroundColor">#E8E8E0</color>
+    <color name="backgroundColorPress">#DBDBD3</color>
 </resources>

@@ -142,6 +142,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 viewLanguage.setVisibility(View.VISIBLE);
             }
         });
+
+        TextView tv = findViewById(R.id.txt_policy);
+        tv.setOnClickListener(v->{
+            startActivity(new Intent(this, HomePartnerActivity.class));
+        });
     }
 
     @Override

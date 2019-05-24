@@ -190,7 +190,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         menu.setName(cursor.getString(4));
         menu.setPrices(cursor.getInt(5));
         menu.setImage(cursor.getString(6));
-        menu.setDescribe(cursor.getString(7));
+        menu.setDescribe(cursor.getString(8));
 
         return menu;
     }
@@ -234,6 +234,31 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
         return dataList;
 
+    }
+
+    public List<Restaurant> getRestaurantPartner(String idRes, String address) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Restaurant> dataList = new ArrayList<>();
+        String query = "SELECT * FROM " + RestaurantContrains.TABLE_NAME + " WHERE " + RestaurantContrains.RES_ID
+                + " = ? AND " + RestaurantContrains.CITY + " = ?";
+        String[] selectionArgs = new String[]{idRes, address};
+        List<Branch> branchList = getBranch(idRes, address);
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    Restaurant restaurant = getResFromCursor(cursor);
+                    restaurant.setBranchList(branchList);
+                    restaurant.setMenuList(getMenu(idRes, address));
+                    restaurant.setReviewList(getReview(idRes, address));
+                    dataList.add(restaurant);
+                } while (cursor.moveToNext());
+            }
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return dataList;
     }
 
     private List<Branch> getBranch(String resID, String city){

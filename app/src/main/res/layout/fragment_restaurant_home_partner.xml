@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:layout_margin="24dp"
+    android:layout_gravity="center"
     android:gravity="center"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -8,50 +8,159 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:weightSum="1"
-        android:layout_weight="1"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_marginRight="16dp"
-            android:layout_weight="0.4"
-            android:src="@drawable/order_part"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:id="@+id/v_order"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_marginLeft="16dp"
-            android:layout_weight="0.4"
-            android:src="@drawable/branch_part"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_item_part"
+                android:padding="28dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp">
+
+                <ImageView
+                    android:src="@drawable/order_part"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/aldrich"
+                android:text="@string/order"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/v_branch"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_item_part"
+                android:padding="28dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp">
+
+                <ImageView
+                    android:src="@drawable/branch_part"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/aldrich"
+                android:text="@string/branch"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="16dp"
         android:gravity="center"
-        android:weightSum="1"
-        android:layout_weight="1"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_marginRight="16dp"
-            android:layout_weight="0.4"
-            android:src="@drawable/menu_part"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:id="@+id/v_menu"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_marginLeft="16dp"
-            android:layout_weight="0.4"
-            android:src="@drawable/image_part"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_item_part"
+                android:padding="28dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp">
+
+                <ImageView
+                    android:src="@drawable/menu_part"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/aldrich"
+                android:text="@string/menu"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginLeft="20dp"
+            android:id="@+id/v_image"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_item_part"
+                android:padding="28dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp">
+
+                <ImageView
+                    android:src="@drawable/image_part"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/aldrich"
+                android:text="@string/image"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -157,4 +157,6 @@
     <string name="success">Thành công!!</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="order">Đơn hàng</string>
+    <string name="branch">Chi nhánh</string>
 </resources>

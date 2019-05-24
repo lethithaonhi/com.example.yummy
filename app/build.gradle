@@ -62,5 +62,11 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     //sign in gg
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    //swipe
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
+    implementation 'com.daimajia.easing:library:1.0.1@aar'
+    implementation 'com.daimajia.androidanimations:library:1.1.3@aar'
+    implementation 'com.nineoldandroids:library:2.4.0'
+    // This dude gave a shoutout to you (daimajia) on his github page:
+    implementation 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
 }
-apply plugin: 'com.google.gms.google-services'
