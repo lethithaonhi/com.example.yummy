@@ -270,6 +270,7 @@
             android:layout_height="wrap_content" />
 
         <EditText
+            android:inputType="number"
             android:id="@+id/ed_phone"
             android:drawablePadding="5dp"
             android:layout_weight="0.6"

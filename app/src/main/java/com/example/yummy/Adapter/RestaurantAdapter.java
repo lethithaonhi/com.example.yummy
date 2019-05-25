@@ -53,6 +53,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     @Override
     public void onBindViewHolder(@NonNull RestaurantAdapter.RestaurantHolder holder, int i) {
         Restaurant restaurant = dataFilter.get(i);
+        
         branch = getBranch(restaurant);
         holder.tvName.setText(restaurant.getName());
         holder.tvMark.setText(restaurant.getMark()+"");

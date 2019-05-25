@@ -1,6 +1,7 @@
 package com.example.yummy.Utils;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -214,6 +216,40 @@ public class UtilsBottomBar {
                     }
                 });
             }
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public static class RestaurantPartnerAsyncTask extends AsyncTask<Void, Void, Void> {
+        private String resID;
+        public RestaurantPartnerAsyncTask (String resId){
+            this.resID = resId;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Common.restaurantListCurrent = new ArrayList<>();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            if(Common.db != null) {
+                Common.restaurantListCurrent = Common.db.getRestaurantPartner(resID, Common.myAddress);
+                for (Restaurant restaurant : Common.restaurantListCurrent) {
+                    for (Branch branch : restaurant.getBranchList()) {
+                        branch.setDistance(UtilsBottomBar.getDistanceBranch(branch));
+                    }
+                }
+                Common.menuList = UtilsBottomBar.getMenuList();
+            }
+            return null;
         }
     }
 }

@@ -46,6 +46,5 @@ public class User {
     public void AddUser(User user, String uid){
         dataNode = FirebaseDatabase.getInstance().getReference().child(Node.user);
         dataNode.child(uid).setValue(user);
-
     }
 }

@@ -260,6 +260,9 @@ public class AccountFragment extends Fragment {
             EditText edRePass = dialog.findViewById(R.id.ed_re_pass);
             TextView tvEmail = dialog.findViewById(R.id.tv_email);
             TextView tvSave = dialog.findViewById(R.id.tv_save);
+            ImageView imClose = dialog.findViewById(R.id.close_dialog);
+            imClose.setOnClickListener(v-> dialog.dismiss());
+
             if(Common.accountCurrent != null) {
                 tvEmail.setText(Common.accountCurrent.getEmail());
             }else{

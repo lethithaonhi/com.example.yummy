@@ -54,32 +54,34 @@ public class MenuRestaurantDetailAdapter extends RecyclerView.Adapter<MenuRestau
     public void onBindViewHolder(@NonNull MenuRestaurantDetailHolder holder, int i) {
         Menu menu = data.get(i);
 
-        holder.tvName.setText(menu.getName());
-        holder.tvDes.setText(menu.getDescribe());
-        holder.tvPrice.setText(menu.getPrices()+" VND");
-        Picasso.get().load(menu.getImage()).into(holder.imMenu);
+        if(menu.getIsDelete() != 1) {
+            holder.tvName.setText(menu.getName());
+            holder.tvDes.setText(menu.getDescribe());
+            holder.tvPrice.setText(menu.getPrices() + " VND");
+            Picasso.get().load(menu.getImage()).into(holder.imMenu);
 
-        holder.btnAdd.setOnClickListener(v->{
-            countList[i]++;
-            holder.tvCount.setText(countList[i] +"");
-            if (holder.btnRemove.getVisibility() == View.GONE){
-                holder.btnRemove.setVisibility(View.VISIBLE);
-                holder.tvCount.setVisibility(View.VISIBLE);
-            }
-            onCountChangeListener.onCountChanged(countList[i], menu);
-        });
+            holder.btnAdd.setOnClickListener(v -> {
+                countList[i]++;
+                holder.tvCount.setText(countList[i] + "");
+                if (holder.btnRemove.getVisibility() == View.GONE) {
+                    holder.btnRemove.setVisibility(View.VISIBLE);
+                    holder.tvCount.setVisibility(View.VISIBLE);
+                }
+                onCountChangeListener.onCountChanged(countList[i], menu);
+            });
 
-        holder.btnRemove.setOnClickListener(v->{
-            if(countList[i] > 0){
-                countList[i]--;
-                holder.tvCount.setText(countList[i] +"");
-            }
-            if (countList[i] == 0){
-                holder.btnRemove.setVisibility(View.GONE);
-                holder.tvCount.setVisibility(View.GONE);
-            }
-            onCountChangeListener.onCountChanged(countList[i], menu);
-        });
+            holder.btnRemove.setOnClickListener(v -> {
+                if (countList[i] > 0) {
+                    countList[i]--;
+                    holder.tvCount.setText(countList[i] + "");
+                }
+                if (countList[i] == 0) {
+                    holder.btnRemove.setVisibility(View.GONE);
+                    holder.tvCount.setVisibility(View.GONE);
+                }
+                onCountChangeListener.onCountChanged(countList[i], menu);
+            });
+        }
     }
 
     @Override

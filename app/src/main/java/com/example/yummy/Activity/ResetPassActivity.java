@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -32,20 +33,17 @@ public class ResetPassActivity extends AppCompatActivity {
         btnSend.setOnClickListener(view -> {
             String userEmail = edtResetPass.getText().toString();
             if(TextUtils.isEmpty(userEmail)){
-                Toast.makeText(ResetPassActivity.this,"Vui lòng nhập email của bạn",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ResetPassActivity.this,R.string.empty_user,Toast.LENGTH_SHORT).show();
             }
             else {
-                mAuth.sendPasswordResetEmail(userEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(ResetPassActivity.this,"Gửi email thành công!",Toast.LENGTH_SHORT).show();
-                            Intent iLogin = new Intent(ResetPassActivity.this,LoginActivity.class);
-                            startActivity(iLogin);
-                        }
-                        else{
-                            Toast.makeText(ResetPassActivity.this, "Email không hợp lệ!", Toast.LENGTH_SHORT).show();
-                        }
+                mAuth.sendPasswordResetEmail(userEmail).addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        Toast.makeText(ResetPassActivity.this,R.string.reset_pass_succ,Toast.LENGTH_SHORT).show();
+                        Intent iLogin = new Intent(ResetPassActivity.this, LoginActivity.class);
+                        startActivity(iLogin);
+                    }
+                    else{
+                        Toast.makeText(ResetPassActivity.this, R.string.reset_pass_fail, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -55,5 +53,6 @@ public class ResetPassActivity extends AppCompatActivity {
     private void initView(){
         edtResetPass = findViewById(R.id.txt_pass_reset);
         btnSend = findViewById(R.id.btn_send_pass_reset);
+
     }
 }

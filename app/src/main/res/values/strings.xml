@@ -165,4 +165,11 @@
     <string name="branch">Branch</string>
     <string name="mess_delete">Do you want to delete?</string>
     <string name="edit_menu">Edit Menu</string>
+    <string name="menu_name">Enter Food\'s name</string>
+    <string name="menu_price">Enter Price\'s name</string>
+    <string name="menu_des">Enter Describe\'s name (optional)</string>
+    <string name="your_profile">Enter Your Profile</string>
+    <string name="login_again">Please log in again!</string>
+    <string name="reset_suc">Send email successfully!</string>
+    <string name="reset_fail">Invalid email!</string>
 </resources>

@@ -161,4 +161,11 @@
     <string name="branch">Chi nhánh</string>
     <string name="mess_delete">Bạn có chắc chắn muốn xóa?</string>
     <string name="edit_menu">Sửa thực đơn</string>
+    <string name="menu_name">Nhập tên món ăn</string>
+    <string name="menu_price">Nhập giá món ăn</string>
+    <string name="menu_des">Nhập mô tả món ăn (không bắt buộc)</string>
+    <string name="your_profile">Nhập thông tin cá nhân</string>
+    <string name="login_again">Vui lòng đăng nhập lại!</string>
+    <string name="reset_suc">Gửi email thành công!</string>
+    <string name="reset_fail">Email không hợp lệ!</string>
 </resources>

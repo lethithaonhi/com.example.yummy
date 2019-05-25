@@ -1,5 +1,6 @@
 package com.example.yummy.Activity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import com.daimajia.swipe.util.Attributes;
 import com.example.yummy.Adapter.MenuPartnerAdapter;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.UtilsBottomBar;
 
 import jp.wasabeef.recyclerview.animators.FadeInLeftAnimator;
 
@@ -38,20 +40,23 @@ public class RestaurantManageActivity extends AppCompatActivity {
         rcv.addItemDecoration(dividerItemDecoration);
 
         String name;
-        if(type == 0){
-            name = getResources().getString(R.string.order);
-        }else if(type == 1){
-            name = getResources().getString(R.string.branch);
-        }else if(type == 2){
-            name = getResources().getString(R.string.menu);
-            rcv.setItemAnimator(new FadeInLeftAnimator());
-            MenuPartnerAdapter adapter = new MenuPartnerAdapter(this, Common.restaurantListCurrent.get(0).getMenuList());
-            adapter.setMode(Attributes.Mode.Single);
-            rcv.setAdapter(adapter);
-        }else {
-            name = getResources().getString(R.string.image);
-        }
-        tvType.setText(name);
-
+            if (type == 0) {
+                name = getResources().getString(R.string.order);
+            } else if (type == 1) {
+                name = getResources().getString(R.string.branch);
+            } else if (type == 2) {
+                if(Common.restaurantListCurrent.size() == 0){
+                    UtilsBottomBar.RestaurantPartnerAsyncTask asyncTask = new UtilsBottomBar.RestaurantPartnerAsyncTask("quan1");
+                    asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }
+                name = getResources().getString(R.string.menu);
+                rcv.setItemAnimator(new FadeInLeftAnimator());
+                MenuPartnerAdapter adapter = new MenuPartnerAdapter(this, Common.restaurantListCurrent.get(0).getMenuList());
+                adapter.setMode(Attributes.Mode.Single);
+                rcv.setAdapter(adapter);
+            } else {
+                name = getResources().getString(R.string.image);
+            }
+            tvType.setText(name);
     }
 }

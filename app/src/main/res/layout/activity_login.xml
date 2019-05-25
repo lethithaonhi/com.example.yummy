@@ -190,6 +190,7 @@
                 app:layout_constraintTop_toBottomOf="@id/btn_register" />
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_marginTop="16dp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_signin_other"
@@ -197,7 +198,7 @@
                 android:id="@+id/btn_login_phone"
                 android:layout_width="0dp"
                 android:layout_height="36dp"
-                android:background="@drawable/bg_button_sign_phone"
+                android:background="@drawable/bg_button_sign_mc"
                 android:elevation="3dp"
                 android:paddingLeft="8dp"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -205,27 +206,27 @@
                 tools:ignore="MissingConstraints">
 
                 <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_phone" />
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_facebook" />
 
                 <View
-                    android:layout_width="1dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
-                    android:background="@color/white" />
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:background="@color/white" />
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingRight="8dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/sso_phone"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingRight="8dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/sso_facebook_ad"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
             </LinearLayout>
 
             <android.support.constraint.ConstraintLayout
@@ -244,7 +245,7 @@
                     android:id="@+id/btn_sso_fb"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
-                    android:background="@drawable/bg_button_sign_mc"
+                    android:background="@drawable/bg_button_sign_phone"
                     android:elevation="3dp"
                     android:paddingLeft="8dp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -255,7 +256,7 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_facebook" />
+                        android:src="@drawable/ic_phone" />
 
                     <View
                         android:layout_width="1dp"
@@ -270,7 +271,7 @@
                         android:gravity="center"
                         android:paddingRight="8dp"
                         android:fontFamily="sans-serif-medium"
-                        android:text="@string/sso_facebook_ad"
+                        android:text="@string/sso_phone"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
                 </LinearLayout>

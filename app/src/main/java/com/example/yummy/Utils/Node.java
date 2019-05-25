@@ -17,4 +17,5 @@ public class Node {
     public static String count = "count";
     public static String Review = "Review";
     public static String isStatus = "isStatus";
+    public static String isDelete = "isDelete";
 }

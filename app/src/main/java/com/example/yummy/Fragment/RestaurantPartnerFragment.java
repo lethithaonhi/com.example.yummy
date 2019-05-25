@@ -1,6 +1,5 @@
 package com.example.yummy.Fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,14 +12,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.yummy.Activity.RestaurantManageActivity;
-import com.example.yummy.Adapter.RestaurantHorizontalAdapter;
-import com.example.yummy.Model.Branch;
-import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
-import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.UtilsBottomBar;
-
-import java.util.ArrayList;
 
 public class RestaurantPartnerFragment extends Fragment {
     private String resID = "quan1";
@@ -68,39 +61,9 @@ public class RestaurantPartnerFragment extends Fragment {
             startActivity(intent);
         });
 
-        RestaurantPartnerAsyncTask asyncTask = new RestaurantPartnerAsyncTask();
+        UtilsBottomBar.RestaurantPartnerAsyncTask asyncTask = new UtilsBottomBar.RestaurantPartnerAsyncTask(resID);
         asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         return v;
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private class RestaurantPartnerAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Common.restaurantListCurrent = new ArrayList<>();
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            if(Common.db != null) {
-                Common.restaurantListCurrent = Common.db.getRestaurantPartner(resID, Common.myAddress);
-                for (Restaurant restaurant : Common.restaurantListCurrent) {
-                    for (Branch branch : restaurant.getBranchList()) {
-                        branch.setDistance(UtilsBottomBar.getDistanceBranch(branch));
-                    }
-                }
-                Common.menuList = UtilsBottomBar.getMenuList();
-            }
-            return null;
-        }
     }
 }

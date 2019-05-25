@@ -1,5 +1,8 @@
 package com.example.yummy.Activity;
 
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,8 +52,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -61,8 +67,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private CallbackManager callbackManager;
     private ImageButton btnShowPass;
     private boolean isShowPass = false;
-    private FirebaseUser user;
-    private LoginButton loginFB;
+    private int gender=0;
+    private boolean isPhone = false;
+//    private FirebaseUser user;
+//    private LoginButton loginFB;
 
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 234;
@@ -125,7 +133,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         btnShowPass = findViewById(R.id.btn_password_show);
         btnShowPass.setOnClickListener(v->{
             isShowPass = !isShowPass;
-            if(isShowPass){
+            if(!isShowPass){
                 edtPassword.setInputType(InputType.TYPE_CLASS_TEXT);
             }else {
                 edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -144,9 +152,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
 
         TextView tv = findViewById(R.id.txt_policy);
-        tv.setOnClickListener(v->{
-            startActivity(new Intent(this, HomePartnerActivity.class));
-        });
+        tv.setOnClickListener(v-> startActivity(new Intent(this, HomePartnerActivity.class)));
     }
 
     @Override
@@ -171,7 +177,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+//        callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
         //if the requestCode is the Google Sign In code that we defined at starting
         if (requestCode == RC_SIGN_IN) {
@@ -198,9 +204,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     if (task.isSuccessful()) {
                         Log.d(TAG, "signInWithCredential:success");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Intent intent = new Intent(LoginActivity.this, BottomBarActivity.class);
-                        startActivity(intent);
-                        finish();
+                        getInfoAccount();
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -228,15 +232,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Log.d("notifySignInEmail", "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             getInfoAccount();
-                            startActivity(new Intent(LoginActivity.this, BottomBarActivity.class));
-                            finish();
-                            //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("notifySignInEmail", "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
                         }
                     });
         } else {
@@ -264,54 +264,164 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Common.accountCurrent = dataSnapshot.getValue(Account.class);
-                    mDatabase.child(Node.Address).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            boolean isShow = false;
-                            List<Addresses> addresses = new ArrayList<>();
-                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                Addresses address = dataSnapshot1.getValue(Addresses.class);
-                                if(address != null) {
-                                    address.setId(dataSnapshot1.getKey());
-                                    if (address.getLongitude() == Common.myLocation.getLongitude() && address.getLatitude() == Common.myLocation.getLatitude()) {
-                                        isShow = true;
+                    if(Common.accountCurrent != null) {
+                        UtilsBottomBar.getOrderCurrent();
+                        mDatabase.child(Node.Address).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                boolean isShow = false;
+                                List<Addresses> addresses = new ArrayList<>();
+                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                    Addresses address = dataSnapshot1.getValue(Addresses.class);
+                                    if (address != null) {
+                                        address.setId(dataSnapshot1.getKey());
+                                        if (address.getLongitude() == Common.myLocation.getLongitude() && address.getLatitude() == Common.myLocation.getLatitude()) {
+                                            isShow = true;
+                                        }
+                                        addresses.add(address);
                                     }
-                                    addresses.add(address);
+                                }
+                                if (!isShow) {
+                                    mDatabase.child(Node.Address).child(mAuth.getUid()).push().setValue(Common.myLocation);
+                                    addresses.add(Common.myLocation);
+                                }
+                                Common.accountCurrent.setAddressList(addresses);
+
+                                if (Common.accountCurrent != null && Common.accountCurrent.getRole() != 1) {
+                                    startActivity(new Intent(LoginActivity.this, BottomBarActivity.class));
+                                    finish();
+                                } else {
+                                    startActivity(new Intent(LoginActivity.this, HomePartnerActivity.class));
+                                    finish();
                                 }
                             }
-                            if(!isShow){
-                                mDatabase.child(Node.Address).child(mAuth.getUid()).push().setValue(Common.myLocation);
-                                addresses.add(Common.myLocation);
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Toast.makeText(LoginActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
+                                finish();
                             }
-                            Common.accountCurrent.setAddressList(addresses);
+                        });
+                    }else {
+                        if(mAuth != null) {
+                            Account account = new Account();
+                            account.setUserId(mAuth.getUid());
+                            if (mAuth.getCurrentUser() != null) {
+                                account.setEmail(mAuth.getCurrentUser().getEmail());
+                                account.setPhone(mAuth.getCurrentUser().getPhoneNumber());
+                                account.setRole(2);
+                            }
+                            showDialogInfor(account);
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
+                    }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    if(mAuth != null) {
+                        Account account = new Account();
+                        account.setUserId(mAuth.getUid());
+                        if (mAuth.getCurrentUser() != null) {
+                            account.setEmail(mAuth.getCurrentUser().getEmail());
+                            account.setPhone(mAuth.getCurrentUser().getPhoneNumber());
+                            account.setRole(2);
+                        }
+                        showDialogInfor(account);
+                    }
                 }
             });
         }
-
-        UtilsBottomBar.getOrderCurrent();
-
     }
 
-    private void fogotPass(){
-        String email="";
-        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                Toast.makeText(LoginActivity.this, R.string.register_text, Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(LoginActivity.this, R.string.register_text, Toast.LENGTH_SHORT).show();
+    private void showDialogInfor(Account account){
+        Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.setTitle("");
+        dialog.setContentView(R.layout.view_enter_user_profile);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        EditText edName = dialog.findViewById(R.id.ed_nameinfo);
+        TextView tvDateBirth = dialog.findViewById(R.id.tv_birth);
+        Calendar c = Calendar.getInstance();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
+        tvDateBirth.setText(dateformat.format(c.getTime()));
+        tvDateBirth.setOnClickListener(v->showDatePickerDialog(tvDateBirth));
+
+        EditText edPhone = dialog.findViewById(R.id.ed_phone);
+        RadioGroup radioGroup = dialog.findViewById(R.id.radioGrp);
+        Button btnSave = dialog.findViewById(R.id.btn_save);
+        LinearLayout vTitle = dialog.findViewById(R.id.v_title);
+        ImageButton imError = dialog.findViewById(R.id.btn_error);
+
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            int checkedRadioId = group.getCheckedRadioButtonId();
+
+            if(checkedRadioId== R.id.radio_male) {
+                gender = 1;
+            } else if(checkedRadioId== R.id.radio_female ) {
+                gender = 2;
+            } else if(checkedRadioId== R.id.radio_none) {
+                gender = 3;
             }
         });
+
+        edPhone.setOnFocusChangeListener((v, hasFocus) -> {
+            String phone = edPhone.getText().toString().trim();
+            if(!hasFocus) {
+                vTitle.setVisibility(View.VISIBLE);
+                if (phone.length() > 0 && phone.length() < 11 && phone.charAt(0) == '0') {
+                    imError.setImageResource(R.drawable.ic_check_circle_24dp);
+                    isPhone = true;
+                } else {
+                    imError.setImageResource(R.drawable.ic_error_red_24dp);
+                    Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+                    isPhone = false;
+                }
+            }else {
+                vTitle.setVisibility(View.GONE);
+            }
+        });
+
+        btnSave.setOnClickListener(v->{
+            String name = edName.getText().toString().trim();
+            String date = tvDateBirth.getText().toString().trim();
+            String phone = edPhone.getText().toString().trim();
+
+            if(!name.isEmpty() && !date.isEmpty() && isPhone){
+                account.setName(name);
+                account.setPhone(phone);
+                account.setDatebirth(date);
+                account.setGender(gender);
+
+                DatabaseReference dataNode = FirebaseDatabase.getInstance().getReference();
+                dataNode.child(Node.user).child(account.getUserId()).setValue(account);
+
+                Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
+                updateUI();
+            }else {
+                Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateUI(){
+        Toast.makeText(this, R.string.success_register, Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
+
+    public void showDatePickerDialog(TextView tvBirth) {
+        @SuppressLint("SetTextI18n") DatePickerDialog.OnDateSetListener callback= (view, year, monthOfYear, dayOfMonth) -> tvBirth.setText((dayOfMonth) +"/"+(monthOfYear+1)+"/"+year);
+
+        String s=tvBirth.getText()+"";
+        String[] strArrtmp = s.split("/");
+        int ngay=Integer.parseInt(strArrtmp[0]);
+        int thang=Integer.parseInt(strArrtmp[1])-1;
+        int nam=Integer.parseInt(strArrtmp[2]);
+
+        DatePickerDialog pic=new DatePickerDialog(LoginActivity.this, callback, nam, thang, ngay);
+        pic.setTitle(R.string.address_user);
+        pic.show();
     }
 }

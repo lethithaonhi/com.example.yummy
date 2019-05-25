@@ -96,6 +96,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(MenuContrains.IMAGE, menu.getImage());
         values.put(MenuContrains.CITY, city);
         values.put(MenuContrains.DESCRIBE, menu.getDescribe() != null ? menu.getDescribe() : "");
+        values.put(MenuContrains.ISDELETE, menu.getIsDelete());
 
         db.insert(MenuContrains.TABLE_NAME, null, values);
         db.close();
@@ -191,6 +192,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         menu.setPrices(cursor.getInt(5));
         menu.setImage(cursor.getString(6));
         menu.setDescribe(cursor.getString(8));
+        menu.setIsDelete(cursor.getInt(9));
 
         return menu;
     }
@@ -206,6 +208,18 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         review.setTime(cursor.getString(8));
 
         return review;
+    }
+
+    public void updateMenu(Menu menu){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(MenuContrains.NAME, menu.getName());
+        values.put(MenuContrains.PRICES, menu.getPrices());
+        values.put(MenuContrains.ISDELETE, menu.getIsDelete());
+        // updating row
+        db.update(MenuContrains.TABLE_NAME, values, MenuContrains.RES_ID + " = ? AND "+ MenuContrains.TYPE + "=?",
+                new String[] {menu.getMenu_id(), String.valueOf(menu.getPrices())});
     }
 
     public List<Restaurant> getRestaurant(List<String> idList, String address) {

@@ -38,13 +38,15 @@ public class MenuOrderAdapter extends RecyclerView.Adapter<MenuOrderAdapter.Menu
     public void onBindViewHolder(@NonNull MenuOrderHolde holde, int i) {
         int count = 0;
         Menu menu = dataMenu.get(i);
-        if(data.get(menu) != null) {
-            count = data.get(menu);
-        }
+        if(menu != null && menu.getIsDelete() != 1) {
+            if (data.get(menu) != null) {
+                count = data.get(menu);
+            }
 
-        holde.tvCount.setText("x"+count);
-        holde.tvName.setText(menu.getName());
-        holde.tvPrice.setText(menu.getPrices()+"VND");
+            holde.tvCount.setText("x" + count);
+            holde.tvName.setText(menu.getName());
+            holde.tvPrice.setText(menu.getPrices() + "VND");
+        }
     }
 
     @Override
