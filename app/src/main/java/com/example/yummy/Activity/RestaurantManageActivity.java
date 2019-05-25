@@ -1,7 +1,6 @@
 package com.example.yummy.Activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,7 +11,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,7 +27,6 @@ import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
 import com.example.yummy.Adapter.MenuPartnerAdapter;
-import com.example.yummy.Model.Account;
 import com.example.yummy.Model.Menu;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
@@ -55,6 +52,7 @@ public class RestaurantManageActivity extends AppCompatActivity {
     private String typeMenu;
     private ImageView imgMenu;
     private Menu menu;
+    private EditText edName, edType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,7 +77,7 @@ public class RestaurantManageActivity extends AppCompatActivity {
             name = getResources().getString(R.string.order);
         } else if (type == 1) {
             name = getResources().getString(R.string.branch);
-        } else if (type == 2) {
+        } else {
             if (Common.restaurantListCurrent.size() == 0) {
                 UtilsBottomBar.RestaurantPartnerAsyncTask asyncTask = new UtilsBottomBar.RestaurantPartnerAsyncTask("quan1");
                 asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -89,9 +87,8 @@ public class RestaurantManageActivity extends AppCompatActivity {
             MenuPartnerAdapter adapter = new MenuPartnerAdapter(this, Common.restaurantListCurrent.get(0).getMenuList());
             adapter.setMode(Attributes.Mode.Single);
             rcv.setAdapter(adapter);
-        } else {
-            name = getResources().getString(R.string.image);
         }
+
         tvType.setText(name);
         imAdd.setOnClickListener(v -> {
             if (type == 2) {
@@ -106,13 +103,13 @@ public class RestaurantManageActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.view_add_menu_part);
         dialog.show();
 
-        EditText edName = dialog.findViewById(R.id.ed_name);
+        edName = dialog.findViewById(R.id.ed_name);
         EditText edPrice = dialog.findViewById(R.id.ed_price);
         EditText edDes = dialog.findViewById(R.id.ed_des);
         TextView btnCancel = dialog.findViewById(R.id.btn_cancel);
         TextView btnEdit = dialog.findViewById(R.id.btn_edit);
         Spinner spnMenu = dialog.findViewById(R.id.spn_menu);
-        EditText edType = dialog.findViewById(R.id.ed_type);
+        edType = dialog.findViewById(R.id.ed_type);
         LinearLayout btnChoosePhoto = dialog.findViewById(R.id.btn_choosePho);
         imgMenu = dialog.findViewById(R.id.im_menu_add);
         List<String> typeList = getTypeMenu();
@@ -149,8 +146,6 @@ public class RestaurantManageActivity extends AppCompatActivity {
             String name = edName.getText().toString().trim();
             String prices = edPrice.getText().toString().trim();
             String des = edDes.getText().toString().trim();
-            if (edType.getVisibility() == View.VISIBLE)
-                typeMenu = edType.getText().toString().trim();
 
             if (!name.isEmpty() && !prices.isEmpty() && !typeMenu.isEmpty() && menu.getImage() != null) {
                 menu.setName(name);
@@ -160,7 +155,10 @@ public class RestaurantManageActivity extends AppCompatActivity {
                 menu.setType(typeMenu);
 
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
+                String key = nodeRoot.child(Node.ThucDonQuanAn).child(Common.restaurantListCurrent.get(0).getRes_id()).child(menu.getType()).push().getKey();
                 nodeRoot.child(Node.ThucDonQuanAn).child(Common.restaurantListCurrent.get(0).getRes_id()).child(menu.getType()).push().setValue(menu);
+                menu.setMenu_id(key);
+                Common.restaurantListCurrent.get(0).getMenuList().add(menu);
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             } else {
@@ -220,8 +218,12 @@ public class RestaurantManageActivity extends AppCompatActivity {
         // Create a storage reference from our app
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        if(menu.getType() != null || menu.getName() != null) {
-            StorageReference mountainsRef = storageRef.child("menu").child(menu.getType() + "_" + menu.getName() + ".png");
+        if(typeMenu.equals("+ Other")){
+            typeMenu = edType.getText().toString().trim();
+        }
+
+        if(!edName.getText().toString().trim().isEmpty() && !typeMenu.isEmpty()) {
+            StorageReference mountainsRef = storageRef.child("menu").child(edName.getText().toString().trim() + "_" + typeMenu + ".png");
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
