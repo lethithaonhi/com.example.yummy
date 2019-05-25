@@ -18,6 +18,7 @@ public class Account implements Parcelable {
     private int role;
     private String password;
     private List<Addresses> addressList;
+    private Partner partner;
 
     public Account(){}
 
@@ -34,6 +35,7 @@ public class Account implements Parcelable {
         password = in.readString();
         addressList = new ArrayList<>();
         in.readList(addressList, Addresses.class.getClassLoader());
+        partner = in.readParcelable(Partner.class.getClassLoader());
     }
 
     public String getUserId() {
@@ -124,6 +126,14 @@ public class Account implements Parcelable {
         this.addressList = addressList;
     }
 
+    public Partner getPartner() {
+        return partner;
+    }
+
+    public void setPartner(Partner partner) {
+        this.partner = partner;
+    }
+
     public static final Creator<Account> CREATOR = new Creator<Account>() {
         @Override
         public Account createFromParcel(Parcel in) {
@@ -154,5 +164,6 @@ public class Account implements Parcelable {
         dest.writeInt(role);
         dest.writeString(password);
         dest.writeList(addressList);
+        dest.writeParcelable(partner, flags);
     }
 }

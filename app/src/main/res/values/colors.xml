@@ -6,6 +6,7 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="green">#37FA0C</color>
+    <color name="blue">#EE62D4FF</color>
     <color name="transparent">#00000000</color>
     <color name="color_btn_signin_microsoft">#04aef4</color>
     <color name="color_btn_signin_microsoft_pressed">#2b88ae</color>

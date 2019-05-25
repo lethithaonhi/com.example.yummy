@@ -195,7 +195,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_signin_other"
                 android:orientation="horizontal"
-                android:id="@+id/btn_login_phone"
+                android:id="@+id/btn_sso_fb"
                 android:layout_width="0dp"
                 android:layout_height="36dp"
                 android:background="@drawable/bg_button_sign_mc"
@@ -237,12 +237,12 @@
                 android:visibility="visible"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_login_phone"
+                app:layout_constraintTop_toBottomOf="@id/btn_sso_fb"
                 app:layout_constraintWidth_percent="0.67">
 
                 <LinearLayout
                     android:orientation="horizontal"
-                    android:id="@+id/btn_sso_fb"
+                    android:id="@+id/btn_login_phone"
                     android:layout_width="0dp"
                     android:layout_height="36dp"
                     android:background="@drawable/bg_button_sign_phone"

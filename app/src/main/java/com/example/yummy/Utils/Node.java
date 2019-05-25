@@ -18,4 +18,6 @@ public class Node {
     public static String Review = "Review";
     public static String isStatus = "isStatus";
     public static String isDelete = "isDelete";
+    public static String Partner = "Partner";
+
 }

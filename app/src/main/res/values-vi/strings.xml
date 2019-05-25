@@ -168,4 +168,13 @@
     <string name="login_again">Vui lòng đăng nhập lại!</string>
     <string name="reset_suc">Gửi email thành công!</string>
     <string name="reset_fail">Email không hợp lệ!</string>
+    <string name="cmnd">CMND</string>
+    <string name="bank">Ngân hàng</string>
+    <string name="stk">Số tài khoản</string>
+    <string name="owner">Cửa hàng sở hữu</string>
+    <string name="bank_account">Tài khoản ngân hàng</string>
+    <string name="add_menu">Thêm món ăn</string>
+    <string name="add">Thêm</string>
+    <string name="type_menu">Loại menu</string>
+    <string name="img_first">Vui lòng nhập thông tin trước!</string>
 </resources>

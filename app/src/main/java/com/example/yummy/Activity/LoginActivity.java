@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.yummy.Model.Account;
 import com.example.yummy.Model.Addresses;
+import com.example.yummy.Model.Partner;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
@@ -32,7 +34,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -60,7 +61,7 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private EditText edtUsername, edtPassword;
-    private FirebaseAuth mAuth;
+    public static FirebaseAuth mAuth;
     private RelativeLayout viewLanguage;
     private LinearLayout viewRoot;
 
@@ -252,8 +253,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             getInfoAccount();
-            startActivity(new Intent(LoginActivity.this, BottomBarActivity.class));
-            finish();
         }
     }
 
@@ -265,6 +264,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Common.accountCurrent = dataSnapshot.getValue(Account.class);
                     if(Common.accountCurrent != null) {
+                        if(Common.accountCurrent.getRole() == 2)
                         UtilsBottomBar.getOrderCurrent();
                         mDatabase.child(Node.Address).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
                             @Override
@@ -275,7 +275,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                     Addresses address = dataSnapshot1.getValue(Addresses.class);
                                     if (address != null) {
                                         address.setId(dataSnapshot1.getKey());
-                                        if (address.getLongitude() == Common.myLocation.getLongitude() && address.getLatitude() == Common.myLocation.getLatitude()) {
+                                        if (Common.myLocation!= null && address.getName().equals(Common.myLocation.getName())) {
                                             isShow = true;
                                         }
                                         addresses.add(address);
@@ -287,12 +287,24 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 }
                                 Common.accountCurrent.setAddressList(addresses);
 
-                                if (Common.accountCurrent != null && Common.accountCurrent.getRole() != 1) {
+                                if (Common.accountCurrent != null && Common.accountCurrent.getRole() == 2) {
                                     startActivity(new Intent(LoginActivity.this, BottomBarActivity.class));
                                     finish();
-                                } else {
-                                    startActivity(new Intent(LoginActivity.this, HomePartnerActivity.class));
-                                    finish();
+                                } else if (Common.accountCurrent != null && Common.accountCurrent.getRole() == 3){
+                                    mDatabase.child(Node.Partner).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            Partner partner = dataSnapshot.getValue(Partner.class);
+                                            Common.accountCurrent.setPartner(partner);
+                                            startActivity(new Intent(LoginActivity.this, HomePartnerActivity.class));
+                                            finish();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
                                 }
                             }
 
@@ -309,7 +321,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             account.setUserId(mAuth.getUid());
                             if (mAuth.getCurrentUser() != null) {
                                 account.setEmail(mAuth.getCurrentUser().getEmail());
-                                account.setPhone(mAuth.getCurrentUser().getPhoneNumber());
                                 account.setRole(2);
                             }
                             showDialogInfor(account);
@@ -319,16 +330,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    if(mAuth != null) {
-                        Account account = new Account();
-                        account.setUserId(mAuth.getUid());
-                        if (mAuth.getCurrentUser() != null) {
-                            account.setEmail(mAuth.getCurrentUser().getEmail());
-                            account.setPhone(mAuth.getCurrentUser().getPhoneNumber());
-                            account.setRole(2);
-                        }
-                        showDialogInfor(account);
-                    }
+                    mAuth.signOut();
+                    startActivity(new Intent(LoginActivity.this, BottomBarActivity.class));
+                    finish();
+                    Toast.makeText(LoginActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -341,6 +346,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         dialog.setCancelable(false);
         dialog.show();
 
+        LinearLayout vEmail = dialog.findViewById(R.id.v_email);
+        EditText edEmail = dialog.findViewById(R.id.ed_email);
+        EditText edCMND = dialog.findViewById(R.id.ed_cmnd);
+        EditText edBank = dialog.findViewById(R.id.ed_bank);
+        EditText edAccountNum = dialog.findViewById(R.id.ed_accountnum);
+        LinearLayout vPartner = dialog.findViewById(R.id.v_partner);
+//        vEmail.setVisibility(isPartner ? View.VISIBLE:View.GONE);
+//        vPartner.setVisibility(isPartner ? View.VISIBLE:View.GONE);
+        vEmail.setVisibility(View.VISIBLE);
+        edEmail.setText(account.getEmail());
+        edEmail.setEnabled(false);
         EditText edName = dialog.findViewById(R.id.ed_nameinfo);
         TextView tvDateBirth = dialog.findViewById(R.id.tv_birth);
         Calendar c = Calendar.getInstance();
@@ -387,6 +403,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             String name = edName.getText().toString().trim();
             String date = tvDateBirth.getText().toString().trim();
             String phone = edPhone.getText().toString().trim();
+            edPhone.clearFocus();
 
             if(!name.isEmpty() && !date.isEmpty() && isPhone){
                 account.setName(name);
@@ -395,6 +412,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 account.setGender(gender);
 
                 DatabaseReference dataNode = FirebaseDatabase.getInstance().getReference();
+//                if (isPartner) {
+//                    String accountNum = edAccountNum.getText().toString().trim();
+//                    String bank = edBank.getText().toString().trim();
+//                    String cmnd = edCMND.getText().toString().trim();
+//
+//                    if(accountNum.isEmpty() && bank.isEmpty() && cmnd.isEmpty()) {
+//                        Partner partner = new Partner();
+//                        partner.setBank(bank);
+//                        partner.setCmnd(cmnd);
+//                        partner.setStk(accountNum);
+//                        dataNode.child(Node.Partner).child(account.getUserId()).setValue(partner);
+//                    }else {
+//                        Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
+//                    }
+//                }
                 dataNode.child(Node.user).child(account.getUserId()).setValue(account);
 
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();

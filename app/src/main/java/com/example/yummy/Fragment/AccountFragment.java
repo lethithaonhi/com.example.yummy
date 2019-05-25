@@ -348,10 +348,6 @@ public class AccountFragment extends Fragment {
 
             btnChoose.setOnClickListener(v->{
                 checkPermission();
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), CHOOSE_PHOTO_CODE);
                 dialog.dismiss();
             });
 

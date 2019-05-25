@@ -157,7 +157,8 @@ public class UtilsBottomBar {
     }
 
     public static void getOrderCurrent(){
-        Common.orderListCurrent.clear();
+        if(Common.orderListCurrent != null)
+            Common.orderListCurrent.clear();
         if(Common.listResId != null && Common.listResId.size() > 0) {
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
             for (String resID : Common.listResId) {

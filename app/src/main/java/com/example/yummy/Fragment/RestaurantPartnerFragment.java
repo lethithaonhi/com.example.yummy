@@ -10,13 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
+import android.widget.Toast;
+import com.example.yummy.Activity.LoginActivity;
 import com.example.yummy.Activity.RestaurantManageActivity;
 import com.example.yummy.R;
+import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.UtilsBottomBar;
 
 public class RestaurantPartnerFragment extends Fragment {
-    private String resID = "quan1";
 
     public static RestaurantPartnerFragment newInstance() {
         Bundle args = new Bundle();
@@ -61,8 +62,16 @@ public class RestaurantPartnerFragment extends Fragment {
             startActivity(intent);
         });
 
-        UtilsBottomBar.RestaurantPartnerAsyncTask asyncTask = new UtilsBottomBar.RestaurantPartnerAsyncTask(resID);
-        asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        if(Common.accountCurrent != null && Common.accountCurrent.getPartner() != null) {
+            UtilsBottomBar.RestaurantPartnerAsyncTask asyncTask = new UtilsBottomBar.RestaurantPartnerAsyncTask(Common.accountCurrent.getPartner().getBoss());
+            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }else {
+            Toast.makeText(getContext(), R.string.login_again, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getContext(), LoginActivity.class));
+            LoginActivity.mAuth.signOut();
+            if(getActivity() != null)
+                getActivity().finish();
+        }
 
         return v;
     }
