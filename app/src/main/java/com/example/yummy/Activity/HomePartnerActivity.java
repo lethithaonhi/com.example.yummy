@@ -105,7 +105,7 @@ public class HomePartnerActivity extends AppCompatActivity {
         tvOwner.setText(getResources().getString(R.string.owner) + ": " + Common.restaurantListCurrent.get(0).getName() + " - " + Common.restaurantListCurrent.get(0).getCity());
         tvName.setText(Common.accountCurrent.getName());
 
-        LinearLayout btnSignOut = findViewById(R.id.btn_singOut);
+        LinearLayout btnSignOut = headerLayout.findViewById(R.id.btn_singOut);
         btnSignOut.setOnClickListener(v -> createDialogSignOut());
     }
 
