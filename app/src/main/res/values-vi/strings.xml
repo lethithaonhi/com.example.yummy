@@ -177,4 +177,10 @@
     <string name="add">Thêm</string>
     <string name="type_menu">Loại menu</string>
     <string name="img_first">Vui lòng nhập thông tin trước!</string>
+    <string name="restaurant">Nhà hàng</string>
+    <string name="edit_dis">Chỉnh sửa khuyến mãi</string>
+    <string name="max_discount">Giá giảm tối đa</string>
+    <string name="min_order">Giá đặt tối thiểu</string>
+    <string name="add_branch">Thêm chi nhánh</string>
+    <string name="address_branch">Nhập địa chỉ</string>
 </resources>

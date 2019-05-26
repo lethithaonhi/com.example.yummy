@@ -12,10 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.example.yummy.Fragment.InfoPartnerFragment;
 import com.example.yummy.Fragment.RestaurantPartnerFragment;
 import com.example.yummy.Fragment.SettingPartnerFragment;
 import com.example.yummy.R;
+import com.example.yummy.Utils.Common;
+import com.squareup.picasso.Picasso;
 
 public class HomePartnerActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
@@ -34,6 +40,7 @@ public class HomePartnerActivity extends AppCompatActivity {
         if(getSupportActionBar() != null) {
             setSupportActionBar(toolbar);
         }
+
         drawerLayout = findViewById(R.id.activity_main);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar ,R.string.okay, R.string.cancel);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -79,8 +86,17 @@ public class HomePartnerActivity extends AppCompatActivity {
                 setTitle(item.getTitle());
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
+
             return true;
         });
+
+            View headerLayout = navigationView.getHeaderView(0);
+            ImageView imAvatar = headerLayout.findViewById(R.id.im_avatar);
+            Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatar);
+            TextView tvOwner = headerLayout.findViewById(R.id.tv_owner);
+            TextView tvName = headerLayout.findViewById(R.id.tv_name);
+            tvOwner.setText(getResources().getString(R.string.owner) + ": "+Common.restaurantListCurrent.get(0).getName() +" - "+Common.restaurantListCurrent.get(0).getCity());
+            tvName.setText(Common.accountCurrent.getName());
     }
 
     @Override

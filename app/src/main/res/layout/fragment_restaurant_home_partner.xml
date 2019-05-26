@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/aldrich"
-                android:text="@string/branch"
+                android:text="@string/restaurant"
                 android:textColor="@color/colorAccent"
                 android:textSize="18sp" />
 

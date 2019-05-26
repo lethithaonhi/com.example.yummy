@@ -43,6 +43,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class RestaurantPartnerFragment extends Fragment {
     private int TAKE_PHOTO_CODE = 1;
+    private ImgRestaurantDetailAdapter adapter;
+    private int CHOOSE_PHOTO_CODE = 2;
 
     public static RestaurantPartnerFragment newInstance() {
         Bundle args = new Bundle();
@@ -109,11 +111,12 @@ public class RestaurantPartnerFragment extends Fragment {
             TextView tvCountImg = dialog.findViewById(R.id.tv_countImg);
             tvCountImg.setText(Common.restaurantListCurrent.get(0).getImgList().size() + " images");
             ImageView btnAdd = dialog.findViewById(R.id.btn_add);
+            btnAdd.setVisibility(View.VISIBLE);
             btnAdd.setOnClickListener(v-> createDialogChangeAvatar());
 
             RecyclerView rcvImRes = dialog.findViewById(R.id.rcv_image_res);
             rcvImRes.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            ImgRestaurantDetailAdapter adapter = new ImgRestaurantDetailAdapter(getContext(), Common.restaurantListCurrent.get(0).getImgList(), Common.restaurantListCurrent.get(0), 1);
+            adapter = new ImgRestaurantDetailAdapter(getContext(), Common.restaurantListCurrent.get(0).getImgList(), Common.restaurantListCurrent.get(0), 1);
             rcvImRes.setAdapter(adapter);
 
             ImageView btnBack = dialog.findViewById(R.id.btn_back);
@@ -135,13 +138,12 @@ public class RestaurantPartnerFragment extends Fragment {
             TextView btnChoose = dialog.findViewById(R.id.btn_choosePho);
 
             btnTake.setOnClickListener(v->{
-                checkPermission();
-                startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), TAKE_PHOTO_CODE);
+                checkPermission(false);
                 dialog.dismiss();
             });
 
             btnChoose.setOnClickListener(v->{
-                checkPermission();
+                checkPermission(true);
                 dialog.dismiss();
             });
 
@@ -149,18 +151,25 @@ public class RestaurantPartnerFragment extends Fragment {
         }
     }
 
-    private void checkPermission() {
+    private void checkPermission(boolean isChoose) {
         if (getActivity() != null && (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-                && (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA))) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.CAMERA}, TAKE_PHOTO_CODE);
+                && (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA))) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, TAKE_PHOTO_CODE);
+        }else {
+            if(isChoose) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), CHOOSE_PHOTO_CODE);
+            }else {
+                startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), TAKE_PHOTO_CODE);
+            }
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-            int CHOOSE_PHOTO_CODE = 2;
             if (requestCode == TAKE_PHOTO_CODE && data.getExtras() != null) {
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 if(bitmap != null)
@@ -181,7 +190,7 @@ public class RestaurantPartnerFragment extends Fragment {
         // Create a storage reference from our app
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        StorageReference mountainsRef = storageRef.child("avatar").child(bitmap.toString()+".png");
+        StorageReference mountainsRef = storageRef.child("image_menu").child(bitmap.toString()+".png");
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
@@ -204,6 +213,7 @@ public class RestaurantPartnerFragment extends Fragment {
                             nodeRoot.child(Node.HinhAnhQuanAn).child(Common.restaurantListCurrent.get(0).getRes_id()).push().setValue(downloadUri.toString());
                             Toast.makeText(getContext(), R.string.success, Toast.LENGTH_SHORT).show();
                             Common.restaurantListCurrent.get(0).getImgList().add(downloadUri.toString());
+                            adapter.notifyDataSetChanged();
                         }
                     } else {
                         Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();

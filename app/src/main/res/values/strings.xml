@@ -181,4 +181,10 @@
     <string name="add">Add</string>
     <string name="type_menu">Enter Type\'s menu</string>
     <string name="img_first">Please enter the information first!</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="edit_dis">Edit Discount</string>
+    <string name="max_discount">Max discount</string>
+    <string name="min_order">Min order</string>
+    <string name="add_branch">Add Branch</string>
+    <string name="address_branch">Enter Address\'s Branch</string>
 </resources>
