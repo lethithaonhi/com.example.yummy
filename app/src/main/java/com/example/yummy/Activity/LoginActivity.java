@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -89,6 +89,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void initView() {
         LinearLayout btnPhoneLogin = findViewById(R.id.btn_login_phone);
         btnPhoneLogin.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, PhoneActivity.class)));
+        ImageView btnClose = findViewById(R.id.btn_close);
+        btnClose.setOnClickListener(v->finish());
 
         LinearLayout btnFacebook = findViewById(R.id.btn_sso_fb);
         callbackManager = CallbackManager.Factory.create();
