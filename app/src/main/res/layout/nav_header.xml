@@ -2,16 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="230dp"
     android:background="@drawable/bg_header">
+
+    <LinearLayout
+        android:id="@+id/btn_singOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_margin="8dp"
+            android:src="@drawable/logoutpart"
+            android:layout_width="32dp"
+            android:layout_height="32dp" />
+
+        <TextView
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:text="@string/sign_out"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_gravity="center|center_vertical"
         android:id="@+id/im_avatar"
         android:src="@drawable/ic_person"
         android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_height="100dp" />
 
     <TextView
         android:id="@+id/tv_name"

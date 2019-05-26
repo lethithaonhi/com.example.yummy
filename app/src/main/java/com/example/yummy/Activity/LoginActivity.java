@@ -348,12 +348,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         LinearLayout vEmail = dialog.findViewById(R.id.v_email);
         EditText edEmail = dialog.findViewById(R.id.ed_email);
-        EditText edCMND = dialog.findViewById(R.id.ed_cmnd);
-        EditText edBank = dialog.findViewById(R.id.ed_bank);
-        EditText edAccountNum = dialog.findViewById(R.id.ed_accountnum);
-        LinearLayout vPartner = dialog.findViewById(R.id.v_partner);
-//        vEmail.setVisibility(isPartner ? View.VISIBLE:View.GONE);
-//        vPartner.setVisibility(isPartner ? View.VISIBLE:View.GONE);
         vEmail.setVisibility(View.VISIBLE);
         edEmail.setText(account.getEmail());
         edEmail.setEnabled(false);
@@ -403,7 +397,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             String name = edName.getText().toString().trim();
             String date = tvDateBirth.getText().toString().trim();
             String phone = edPhone.getText().toString().trim();
-            edPhone.clearFocus();
+
+            if (phone.length() > 8 && phone.length() < 12 && phone.charAt(0) == '0') {
+                imError.setImageResource(R.drawable.ic_check_circle_24dp);
+                isPhone = true;
+            } else {
+                imError.setImageResource(R.drawable.ic_error_red_24dp);
+                Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+                isPhone = false;
+            }
 
             if(!name.isEmpty() && !date.isEmpty() && isPhone){
                 account.setName(name);
@@ -412,21 +414,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 account.setGender(gender);
 
                 DatabaseReference dataNode = FirebaseDatabase.getInstance().getReference();
-//                if (isPartner) {
-//                    String accountNum = edAccountNum.getText().toString().trim();
-//                    String bank = edBank.getText().toString().trim();
-//                    String cmnd = edCMND.getText().toString().trim();
-//
-//                    if(accountNum.isEmpty() && bank.isEmpty() && cmnd.isEmpty()) {
-//                        Partner partner = new Partner();
-//                        partner.setBank(bank);
-//                        partner.setCmnd(cmnd);
-//                        partner.setStk(accountNum);
-//                        dataNode.child(Node.Partner).child(account.getUserId()).setValue(partner);
-//                    }else {
-//                        Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
-//                    }
-//                }
                 dataNode.child(Node.user).child(account.getUserId()).setValue(account);
 
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();

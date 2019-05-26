@@ -1,5 +1,7 @@
 package com.example.yummy.Activity;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -14,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.yummy.Fragment.InfoPartnerFragment;
@@ -21,6 +24,7 @@ import com.example.yummy.Fragment.RestaurantPartnerFragment;
 import com.example.yummy.Fragment.SettingPartnerFragment;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 public class HomePartnerActivity extends AppCompatActivity {
@@ -35,36 +39,40 @@ public class HomePartnerActivity extends AppCompatActivity {
         initView();
     }
 
-    private void initView(){
+    private void initView() {
         Toolbar toolbar = findViewById(R.id.toolbar);
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             setSupportActionBar(toolbar);
         }
 
         drawerLayout = findViewById(R.id.activity_main);
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar ,R.string.okay, R.string.cancel);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.okay, R.string.cancel);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
 
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
-            if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 drawerToggle.setDrawerIndicatorEnabled(false);
                 if (getSupportActionBar() != null)
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
-            else {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            } else {
                 if (getSupportActionBar() != null)
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                 drawerToggle.setDrawerIndicatorEnabled(true);
             }
         });
 
         NavigationView navigationView = findViewById(R.id.nv);
+        navigationView.setCheckedItem(R.id.nv_res);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.frame_content, RestaurantPartnerFragment.newInstance()).commit();
+        drawerLayout.closeDrawer(GravityCompat.START);
+
         navigationView.setNavigationItemSelectedListener(item -> {
             for (int i = 0; i < navigationView.getMenu().size(); i++) {
                 navigationView.getMenu().getItem(i).setChecked(false);
@@ -80,8 +88,7 @@ public class HomePartnerActivity extends AppCompatActivity {
                 fragment = InfoPartnerFragment.newInstance();
             }
 
-            if(fragment != null) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
+            if (fragment != null) {
                 fragmentManager.beginTransaction().replace(R.id.frame_content, fragment).commit();
                 setTitle(item.getTitle());
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -90,13 +97,16 @@ public class HomePartnerActivity extends AppCompatActivity {
             return true;
         });
 
-            View headerLayout = navigationView.getHeaderView(0);
-            ImageView imAvatar = headerLayout.findViewById(R.id.im_avatar);
-            Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatar);
-            TextView tvOwner = headerLayout.findViewById(R.id.tv_owner);
-            TextView tvName = headerLayout.findViewById(R.id.tv_name);
-            tvOwner.setText(getResources().getString(R.string.owner) + ": "+Common.restaurantListCurrent.get(0).getName() +" - "+Common.restaurantListCurrent.get(0).getCity());
-            tvName.setText(Common.accountCurrent.getName());
+        View headerLayout = navigationView.getHeaderView(0);
+        ImageView imAvatar = headerLayout.findViewById(R.id.im_avatar);
+        Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatar);
+        TextView tvOwner = headerLayout.findViewById(R.id.tv_owner);
+        TextView tvName = headerLayout.findViewById(R.id.tv_name);
+        tvOwner.setText(getResources().getString(R.string.owner) + ": " + Common.restaurantListCurrent.get(0).getName() + " - " + Common.restaurantListCurrent.get(0).getCity());
+        tvName.setText(Common.accountCurrent.getName());
+
+        LinearLayout btnSignOut = findViewById(R.id.btn_singOut);
+        btnSignOut.setOnClickListener(v -> createDialogSignOut());
     }
 
     @Override
@@ -116,7 +126,6 @@ public class HomePartnerActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -124,5 +133,23 @@ public class HomePartnerActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void createDialogSignOut() {
+        Dialog dialog = new Dialog(this);
+        dialog.setTitle("");
+        dialog.setContentView(R.layout.dialog_signout);
+        dialog.show();
+
+        TextView btnSignOut = dialog.findViewById(R.id.btn_signout);
+        TextView btnNo = dialog.findViewById(R.id.btn_no);
+
+        btnSignOut.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Common.accountCurrent = null;
+            startActivity(new Intent(this, BottomBarActivity.class));
+        });
+
+        btnNo.setOnClickListener(v -> dialog.dismiss());
     }
 }

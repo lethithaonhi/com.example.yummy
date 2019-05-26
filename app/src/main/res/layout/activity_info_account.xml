@@ -242,6 +242,101 @@
 
     </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/v_partner"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/grey"/>
+
+            <LinearLayout
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:weightSum="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_weight="0.3"
+                    android:text="@string/cmnd"
+                    android:textSize="14sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_weight="0.7"
+                    android:textSize="14sp"
+                    android:id="@+id/ed_cmnd"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="10dp"
+                android:background="@color/grey"
+                android:text="@string/bank_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:weightSum="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_weight="0.4"
+                    android:text="@string/stk"
+                    android:textSize="14sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_weight="0.6"
+                    android:textSize="14sp"
+                    android:id="@+id/ed_accountnum"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:weightSum="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_weight="0.4"
+                    android:text="@string/bank"
+                    android:textSize="14sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_weight="0.6"
+                    android:textSize="14sp"
+                    android:id="@+id/ed_bank"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </LinearLayout>
+
     <TextView
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
@@ -269,15 +364,29 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
-        <EditText
-            android:inputType="number"
-            android:id="@+id/ed_phone"
-            android:drawablePadding="5dp"
+        <FrameLayout
             android:layout_weight="0.6"
-            android:drawableLeft="@drawable/ic_check_circle_24dp"
-            android:text="0352715956"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:inputType="number"
+                android:id="@+id/ed_phone"
+                android:drawablePadding="5dp"
+                android:text="0352715956"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ImageButton
+                android:id="@+id/btn_error"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginRight="16dp"
+                android:background="@color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_check_circle_24dp" />
+        </FrameLayout>
     </LinearLayout>
 
     <TextView
@@ -299,6 +408,21 @@
         android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>
+
+        <Button
+            android:visibility="gone"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center"
+            android:id="@+id/btn_save"
+            android:layout_width="100dp"
+            android:layout_height="36dp"
+            android:background="@drawable/btn_register"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/save"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
 
     </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

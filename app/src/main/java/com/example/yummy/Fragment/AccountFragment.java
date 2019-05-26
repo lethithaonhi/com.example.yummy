@@ -341,13 +341,12 @@ public class AccountFragment extends Fragment {
             TextView btnChoose = dialog.findViewById(R.id.btn_choosePho);
 
             btnTake.setOnClickListener(v->{
-                checkPermission();
-                startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), TAKE_PHOTO_CODE);
+                checkPermission(false);
                 dialog.dismiss();
             });
 
             btnChoose.setOnClickListener(v->{
-                checkPermission();
+                checkPermission(true);
                 dialog.dismiss();
             });
 
@@ -355,11 +354,19 @@ public class AccountFragment extends Fragment {
         }
     }
 
-    private void checkPermission() {
-        if (getActivity() != null && (ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-                && (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA))) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.CAMERA}, TAKE_PHOTO_CODE);
+    private void checkPermission(boolean isChoose) {
+        if (getActivity() != null && (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+                && (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA))) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, TAKE_PHOTO_CODE);
+        }else {
+            if(isChoose) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), CHOOSE_PHOTO_CODE);
+            }else {
+                startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), TAKE_PHOTO_CODE);
+            }
         }
     }
 

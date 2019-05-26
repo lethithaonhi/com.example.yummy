@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class InfoUserActivity extends AppCompatActivity {
     private TextView tvBirth;
     private int gender;
+    private boolean isPhone = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class InfoUserActivity extends AppCompatActivity {
         edEmail.setText(Common.accountCurrent.getEmail());
         tvBirth = findViewById(R.id.tv_birth);
         tvBirth.setText(Common.accountCurrent.getDatebirth());
+        ImageView imError = findViewById(R.id.btn_error);
 
         RadioGroup radioGroup = findViewById(R.id.radioGrp);
         RadioButton radioMale = findViewById(R.id.radio_male);
@@ -77,8 +80,8 @@ public class InfoUserActivity extends AppCompatActivity {
         AddressAdapter addressAdapter = new AddressAdapter(this, Common.accountCurrent.getAddressList(), 1);
         rcvAddress.setAdapter(addressAdapter);
 
-        EditText tvPhone = findViewById(R.id.ed_phone);
-        tvPhone.setText(Common.accountCurrent.getPhone());
+        EditText edPhone = findViewById(R.id.ed_phone);
+        edPhone.setText(Common.accountCurrent.getPhone());
 
         ImageView imClose = findViewById(R.id.im_close);
         imClose.setOnClickListener(v->finish());
@@ -87,10 +90,19 @@ public class InfoUserActivity extends AppCompatActivity {
         btnSave.setOnClickListener(v->{
             String name = edName.getText().toString().trim();
             String email = edEmail.getText().toString().trim();
-            String phone = tvPhone.getText().toString().trim();
+            String phone = edPhone.getText().toString().trim();
             String date = tvBirth.getText().toString().trim();
 
-            if(name.isEmpty()|| email.isEmpty() || phone.isEmpty() || date.isEmpty()){
+            if (phone.length() > 8 && phone.length() < 12 && phone.charAt(0) == '0') {
+                imError.setImageResource(R.drawable.ic_check_circle_24dp);
+                isPhone = true;
+            } else {
+                imError.setImageResource(R.drawable.ic_error_red_24dp);
+                Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+                isPhone = false;
+            }
+
+            if(name.isEmpty()|| email.isEmpty() || phone.isEmpty() || date.isEmpty() || !isPhone){
                 Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
             }else{
                 Account account = Common.accountCurrent;
@@ -103,6 +115,20 @@ public class InfoUserActivity extends AppCompatActivity {
                 nodeRoot.child(Node.user).child(Common.accountCurrent.getUserId()).setValue(account);
                 Common.accountCurrent = account;
                 finish();
+            }
+        });
+
+        edPhone.setOnFocusChangeListener((vl, hasFocus) -> {
+            String phone = edPhone.getText().toString().trim();
+            if(!hasFocus) {
+                if (phone.length() > 8 && phone.length() < 12 && phone.charAt(0) == '0') {
+                    imError.setImageResource(R.drawable.ic_check_circle_24dp);
+                    isPhone = true;
+                } else {
+                    imError.setImageResource(R.drawable.ic_error_red_24dp);
+                    Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+                    isPhone = false;
+                }
             }
         });
 
