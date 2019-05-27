@@ -87,7 +87,7 @@ public class HistoryFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if(data.size() > 0) {
-                HistoryMenuAdapter adapter = new HistoryMenuAdapter(getContext(), data);
+                HistoryMenuAdapter adapter = new HistoryMenuAdapter(getContext(), data, false);
                 rcvOrderList.setAdapter(adapter);
                 viewNoOrder.setVisibility(View.GONE);
                 rcvOrderList.setVisibility(View.VISIBLE);

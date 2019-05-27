@@ -22,17 +22,24 @@ import java.util.List;
 public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.HistoryMenuHolder> {
     private Context context;
     private List<Order> data;
+    private boolean isPartner;
 
-    public HistoryMenuAdapter(Context context, List<Order> data){
+    public HistoryMenuAdapter(Context context, List<Order> data, boolean isPartner){
         this.context = context;
         this.data = data;
+        this.isPartner = isPartner;
     }
 
     @NonNull
     @Override
     public HistoryMenuAdapter.HistoryMenuHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item_history_cus, parent, false);
+        View view;
+        if(!isPartner) {
+            view = inflater.inflate(R.layout.item_history_cus, parent, false);
+        }else {
+            view = inflater.inflate(R.layout.item_order_part, parent, false);
+        }
         return new HistoryMenuHolder(view);
     }
 
@@ -55,10 +62,12 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
             status = context.getResources().getString(R.string.delivered);
         }else if (order.getIsStatus() == 3){
             status = context.getResources().getString(R.string.complete);
-            holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.bg_square_green));
+            if(!isPartner)
+                holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.bg_square_green));
         }else {
             status = context.getResources().getString(R.string.cancel);
-            holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.bg_square_red));
+            if(!isPartner)
+                holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.bg_square_red));
         }
 
         holder.tvStatus.setText(status);

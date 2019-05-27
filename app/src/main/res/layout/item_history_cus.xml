@@ -59,6 +59,8 @@
         </LinearLayout>
 
         <TextView
+            android:maxLines="1"
+            android:ellipsize="end"
             android:id="@+id/tv_status"
             android:layout_gravity="center"
             android:gravity="center"

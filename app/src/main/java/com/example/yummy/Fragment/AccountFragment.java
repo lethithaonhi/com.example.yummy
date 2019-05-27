@@ -463,7 +463,7 @@ public class AccountFragment extends Fragment {
             if(Common.orderListCurrent.size() > 0) {
                 viewNoOrder.setVisibility(View.GONE);
                 rcvOrderList.setVisibility(View.VISIBLE);
-                HistoryMenuAdapter adapter = new HistoryMenuAdapter(getContext(), Common.orderListCurrent);
+                HistoryMenuAdapter adapter = new HistoryMenuAdapter(getContext(), Common.orderListCurrent, false);
                 rcvOrderList.setAdapter(adapter);
             }
         }

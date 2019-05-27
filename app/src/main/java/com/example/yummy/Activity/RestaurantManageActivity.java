@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -30,17 +31,22 @@ import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
 import com.example.yummy.Adapter.BranchAdapter;
+import com.example.yummy.Adapter.HistoryMenuAdapter;
 import com.example.yummy.Adapter.MenuPartnerAdapter;
 import com.example.yummy.Model.Addresses;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Discounts;
 import com.example.yummy.Model.Menu;
+import com.example.yummy.Model.Order;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
 import com.example.yummy.Utils.UtilsBottomBar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -57,6 +63,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -76,6 +83,7 @@ public class RestaurantManageActivity extends AppCompatActivity {
     private Location location;
     private Branch branch;
     private BranchAdapter branchAdapter;
+    private HistoryMenuAdapter historyMenuAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,7 +96,7 @@ public class RestaurantManageActivity extends AppCompatActivity {
 
     private void initView() {
         TextView tvType = findViewById(R.id.tv_type);
-        ImageView imAdd = findViewById(R.id.btn_add);
+        LinearLayout imAdd = findViewById(R.id.btn_add);
         ImageView imClose = findViewById(R.id.im_close);
         RecyclerView rcv = findViewById(R.id.rcv_partner);
         LinearLayout vBranch = findViewById(R.id.v_branch);
@@ -106,6 +114,11 @@ public class RestaurantManageActivity extends AppCompatActivity {
         String name;
         if (type == 0) {
             name = getResources().getString(R.string.order);
+
+            List<Order> dataList = getOrder();
+            imAdd.setVisibility(View.VISIBLE);
+            historyMenuAdapter = new HistoryMenuAdapter(this,  dataList, true);
+            rcv.setAdapter(historyMenuAdapter);
         } else if (type == 1) {
             vBranch.setVisibility(View.VISIBLE);
             name = getResources().getString(R.string.restaurant);
@@ -136,6 +149,61 @@ public class RestaurantManageActivity extends AppCompatActivity {
                 showAddMenu();
             }
         });
+    }
+
+    private List<Order> getOrder(){
+        List<Order> dataList = new ArrayList<>();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child(Node.Order).child(Common.accountCurrent.getPartner().getBoss()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    Order order = dataSnapshot1.getValue(Order.class);
+                    if (order != null) {
+                        order.setId(dataSnapshot1.getKey());
+                        HashMap<Menu, Integer> menuList = new HashMap<>();
+                        mDatabase.child(Node.Order_Menu).child(Common.accountCurrent.getPartner().getBoss()).child(order.getId()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataRoot) {
+                                for (DataSnapshot dataSnapshot2 : dataRoot.getChildren()) {
+                                    Menu menu = dataSnapshot2.getValue(Menu.class);
+                                    if (menu != null && dataSnapshot2.getKey()!= null) {
+                                        mDatabase.child(Node.Order_Menu).child(Common.accountCurrent.getPartner().getBoss()).child(order.getId()).child(dataSnapshot2.getKey()).child(Node.count).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                int count = dataSnapshot.getValue(Integer.class);
+                                                menuList.put(menu, count);
+                                                order.setMenuList(menuList);
+                                                if (menuList.size() == dataRoot.getChildrenCount() && !dataList.contains(order)) {
+                                                    dataList.add(order);
+                                                    historyMenuAdapter.notifyDataSetChanged();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        return  dataList;
     }
 
     private void setDiscounts() {
