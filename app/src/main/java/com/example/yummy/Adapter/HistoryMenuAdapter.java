@@ -55,7 +55,7 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
         holder.tvDate.setText(order.getDate());
         Picasso.get().load(order.getAvatar()).into(holder.imageView);
 
-        if(isPartner && order.getIsStatus() != 2 && order.getIsStatus() != 4){
+        if(isPartner && order.getIsStatus() != 3 && order.getIsStatus() != 4){
             Animation animShake = AnimationUtils.loadAnimation(context, R.anim.shake);
             holder.imAlarm.startAnimation(animShake);
         }
@@ -71,10 +71,14 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
             status = context.getResources().getString(R.string.complete);
             if(!isPartner)
                 holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.bg_square_green));
+            else
+                holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.bg_circle_green));
         }else {
             status = context.getResources().getString(R.string.cancel);
             if(!isPartner)
                 holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.bg_square_red));
+            else
+                holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.bg_circle_red));
         }
 
         holder.tvStatus.setText(status);
