@@ -19,6 +19,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -38,6 +41,7 @@ import com.example.yummy.Activity.AddressHistoryActivity;
 import com.example.yummy.Activity.BottomBarActivity;
 import com.example.yummy.Activity.InfoUserActivity;
 import com.example.yummy.Activity.LoginActivity;
+import com.example.yummy.Adapter.HistoryMenuAdapter;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
@@ -84,6 +88,8 @@ public class AccountFragment extends Fragment {
         LinearLayout viewSignOut = v.findViewById(R.id.view_signout);
         LinearLayout viewSetting = v.findViewById(R.id.view_setting);
         LinearLayout viewAddress = v.findViewById(R.id.view_address_setting);
+        LinearLayout viewHistory = v.findViewById(R.id.view_history);
+
         layoutSetting = v.findViewById(R.id.layout_setting);
         viewSetting.setOnClickListener(vl-> dialogSetting(v));
         viewSignOut.setOnClickListener(vl->createDialogSignOut());
@@ -120,6 +126,15 @@ public class AccountFragment extends Fragment {
                 }
             }
             return false;
+        });
+
+        viewHistory.setOnClickListener(v13 -> {
+            if(Common.accountCurrent == null && mContext != null) {
+                Toast.makeText(mContext, R.string.login_first, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+            }else {
+                createDialogHistory();
+            }
         });
 
         return v;
@@ -424,5 +439,33 @@ public class AccountFragment extends Fragment {
                         Toast.makeText(mContext, R.string.error_change_avatar, Toast.LENGTH_SHORT).show();
                     }
                 }));
+    }
+
+    private void createDialogHistory() {
+        if (mContext != null) {
+            Dialog dialog = new Dialog(mContext, android.R.style.Theme_Translucent_NoTitleBar);
+            dialog.setTitle("");
+            dialog.setContentView(R.layout.fragment_history);
+            dialog.show();
+
+            LinearLayout viewNoOrder = dialog.findViewById(R.id.view_no_order);
+            LinearLayout viewBack = dialog.findViewById(R.id.v_back);
+            viewBack.setVisibility(View.VISIBLE);
+            ImageView imBack = dialog.findViewById(R.id.im_back);
+            RecyclerView rcvOrderList = dialog.findViewById(R.id.rcv_order_list);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            rcvOrderList.setLayoutManager(layoutManager);
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvOrderList.getContext(), layoutManager.getOrientation());
+            rcvOrderList.addItemDecoration(dividerItemDecoration);
+
+            imBack.setOnClickListener(v-> dialog.dismiss());
+
+            if(Common.orderListCurrent.size() > 0) {
+                viewNoOrder.setVisibility(View.GONE);
+                rcvOrderList.setVisibility(View.VISIBLE);
+                HistoryMenuAdapter adapter = new HistoryMenuAdapter(getContext(), Common.orderListCurrent);
+                rcvOrderList.setAdapter(adapter);
+            }
+        }
     }
 }

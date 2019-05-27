@@ -349,6 +349,7 @@ public class RestaurantManageActivity extends AppCompatActivity {
                 DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
                 mData.child(Node.KhuyenMai).child(Common.restaurantListCurrent.get(0).getRes_id()).setValue(discounts);
                 Common.restaurantListCurrent.get(0).setDiscounts(discounts);
+                Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
                 setDiscounts();
                 dialog.dismiss();
             } else {
@@ -394,7 +395,7 @@ public class RestaurantManageActivity extends AppCompatActivity {
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                 String key = nodeRoot.child(Node.Branch).child(Common.restaurantListCurrent.get(0).getRes_id()).push().getKey();
                 if(key != null) {
-                    nodeRoot.child(Node.Branch).child(Common.restaurantListCurrent.get(0).getRes_id()).child(key).setValue(menu);
+                    nodeRoot.child(Node.Branch).child(Common.restaurantListCurrent.get(0).getRes_id()).push().setValue(menu);
                     branch.setId(key);
                     Common.restaurantListCurrent.get(0).getBranchList().add(branch);
                     Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
@@ -517,7 +518,7 @@ public class RestaurantManageActivity extends AppCompatActivity {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
         long time= System.currentTimeMillis();
-        StorageReference mountainsRef = storageRef.child("menu").child(time + ".png");
+        StorageReference mountainsRef = storageRef.child("branch").child(time + ".png");
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);

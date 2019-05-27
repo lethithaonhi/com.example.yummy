@@ -32,4 +32,5 @@
     <color name="backgroundColorPress">#DBDBD3</color>
     <color name="mess1">#4D858484</color>
     <color name="mess2">#33979797</color>
+    <color name="res">#FF2A2A</color>
 </resources>

@@ -14,11 +14,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.yummy.Adapter.HistoryMenuAdapter;
-import com.example.yummy.Adapter.OnGoingCusAdater;
 import com.example.yummy.Model.Order;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
-import com.example.yummy.Utils.UtilsBottomBar;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
