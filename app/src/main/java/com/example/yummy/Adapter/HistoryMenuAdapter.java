@@ -58,7 +58,7 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
             holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.bg_square_green));
         }else {
             status = context.getResources().getString(R.string.cancel);
-            holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.bg_square_yellow));
+            holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.bg_square_red));
         }
 
         holder.tvStatus.setText(status);
