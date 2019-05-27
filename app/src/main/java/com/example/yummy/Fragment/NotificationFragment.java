@@ -52,6 +52,8 @@ public class NotificationFragment extends Fragment {
             return -1;
         });
 
+        Collections.reverse(Common.blogList);
+
         RecyclerView rcvNotify = v.findViewById(R.id.rcv_notify_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcvNotify.setLayoutManager(layoutManager);

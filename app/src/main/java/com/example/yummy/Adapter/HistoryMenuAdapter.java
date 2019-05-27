@@ -122,6 +122,11 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
         TextView tvPhone = dialog.findViewById(R.id.tv_phone);
         TextView tvAddress = dialog.findViewById(R.id.tv_address);
         ImageView imageView = dialog.findViewById(R.id.im_avatar);
+        ImageView imStatus = dialog.findViewById(R.id.im_status);
+
+        if(order.getIsStatus() == 4){
+            imStatus.setImageResource(R.drawable.cancel);
+        }
 
         RecyclerView rcvMenu = dialog.findViewById(R.id.rcv_menu);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);

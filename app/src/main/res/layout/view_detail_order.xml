@@ -232,6 +232,7 @@
            </LinearLayout>
 
            <ImageView
+               android:id="@+id/im_status"
                android:src="@drawable/paid"
                android:layout_gravity="center"
                android:layout_width="56dp"

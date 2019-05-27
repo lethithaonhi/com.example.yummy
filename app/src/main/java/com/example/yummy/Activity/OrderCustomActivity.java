@@ -115,7 +115,7 @@ public class OrderCustomActivity extends AppCompatActivity {
         tvTime.setText(today.format("%k:%M:%S"));
 
         Calendar c = Calendar.getInstance();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateformat = new SimpleDateFormat("dd-MMM-yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-yyyy");
         tvDate.setText(dateformat.format(c.getTime()));
 
         for (Menu menu : menuList.keySet()) {
