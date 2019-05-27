@@ -97,8 +97,8 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
     }
 
     class HistoryMenuHolder extends RecyclerView.ViewHolder {
-        TextView tvNameRes, tvAddress, tvTotal, tvCount, tvDate, tvStatus, imAlarm;
-        ImageView imageView;
+        TextView tvNameRes, tvAddress, tvTotal, tvCount, tvDate, tvStatus;
+        ImageView imageView, imAlarm;
         LinearLayout viewContainer;
         HistoryMenuHolder(@NonNull View itemView) {
             super(itemView);
