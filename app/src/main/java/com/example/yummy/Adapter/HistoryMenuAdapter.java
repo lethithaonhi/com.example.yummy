@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,6 +55,11 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
         holder.tvDate.setText(order.getDate());
         Picasso.get().load(order.getAvatar()).into(holder.imageView);
 
+        if(isPartner && order.getIsStatus() != 2 && order.getIsStatus() != 4){
+            Animation animShake = AnimationUtils.loadAnimation(context, R.anim.shake);
+            holder.imAlarm.startAnimation(animShake);
+        }
+
         String status;
         if(order.getIsStatus() == 0){
             status = context.getResources().getString(R.string.sent);
@@ -90,7 +97,7 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
     }
 
     class HistoryMenuHolder extends RecyclerView.ViewHolder {
-        TextView tvNameRes, tvAddress, tvTotal, tvCount, tvDate, tvStatus;
+        TextView tvNameRes, tvAddress, tvTotal, tvCount, tvDate, tvStatus, imAlarm;
         ImageView imageView;
         LinearLayout viewContainer;
         HistoryMenuHolder(@NonNull View itemView) {
@@ -104,6 +111,7 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
             tvDate = itemView.findViewById(R.id.tv_date);
             tvStatus = itemView.findViewById(R.id.tv_status);
             viewContainer = itemView.findViewById(R.id.view_container);
+            imAlarm = itemView.findViewById(R.id.im_alarm);
         }
     }
 

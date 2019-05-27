@@ -30,6 +30,7 @@
         android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_marginLeft="20dp"
         android:background="@drawable/border_line_black"
@@ -95,5 +96,13 @@
         android:layout_width="100dp"
         android:layout_height="100dp" />
 
+        <ImageView
+            android:id="@+id/im_alarm"
+            android:layout_marginRight="35dp"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="end|bottom"
+            android:src="@drawable/alarm"
+            android:layout_width="36dp"
+            android:layout_height="36dp" />
     </FrameLayout>
 </LinearLayout>
