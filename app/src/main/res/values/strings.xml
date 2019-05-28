@@ -188,4 +188,5 @@
     <string name="add_branch">Add Branch</string>
     <string name="address_branch">Enter Address\'s Branch</string>
     <string name="twice_exit">Please click BACK again to exit!</string>
+    <string name="date">Date</string>
 </resources>

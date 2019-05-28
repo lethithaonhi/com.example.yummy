@@ -144,6 +144,7 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
         TextView tvAddress = dialog.findViewById(R.id.tv_address);
         ImageView imageView = dialog.findViewById(R.id.im_avatar);
         ImageView imStatus = dialog.findViewById(R.id.im_status);
+        TextView tvDate = dialog.findViewById(R.id.tv_date);
 
         if(order.getIsStatus() == 4){
             imStatus.setImageResource(R.drawable.cancel);
@@ -175,5 +176,6 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
         tvPhone.setText(order.getPhone());
         tvAddress.setText(order.getAddress());
         tvCount.setText(order.getCount()+" "+context.getResources().getString(R.string.item));
+        tvDate.setText(order.getTime() + " " + order.getDate());
     }
 }
