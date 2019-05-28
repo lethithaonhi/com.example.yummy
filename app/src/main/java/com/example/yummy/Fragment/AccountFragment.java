@@ -336,6 +336,8 @@ public class AccountFragment extends Fragment {
 
             btnSignOut.setOnClickListener(v->{
                 FirebaseAuth.getInstance().signOut();
+                if(getActivity() != null)
+                    getActivity().finish();
                 Common.accountCurrent = null;
                 startActivity(new Intent(mContext, BottomBarActivity.class));
             });

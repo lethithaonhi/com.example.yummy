@@ -3,6 +3,7 @@ package com.example.yummy.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.yummy.Fragment.InfoPartnerFragment;
 import com.example.yummy.Fragment.RestaurantPartnerFragment;
@@ -30,6 +32,7 @@ import com.squareup.picasso.Picasso;
 public class HomePartnerActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,15 +113,6 @@ public class HomePartnerActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_partner, menu);
@@ -147,9 +141,25 @@ public class HomePartnerActivity extends AppCompatActivity {
         btnSignOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             Common.accountCurrent = null;
+            finish();
             startActivity(new Intent(this, BottomBarActivity.class));
         });
 
         btnNo.setOnClickListener(v -> dialog.dismiss());
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, R.string.twice_exit, Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 }

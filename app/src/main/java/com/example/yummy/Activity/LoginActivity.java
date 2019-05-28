@@ -155,7 +155,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
 
         TextView tv = findViewById(R.id.txt_policy);
-        tv.setOnClickListener(v-> startActivity(new Intent(this, HomePartnerActivity.class)));
+        tv.setOnClickListener(v-> {
+            startActivity(new Intent(this, HomePartnerActivity.class));
+            finish();
+        });
     }
 
     @Override

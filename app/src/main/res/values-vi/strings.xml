@@ -183,4 +183,6 @@
     <string name="min_order">Giá đặt tối thiểu</string>
     <string name="add_branch">Thêm chi nhánh</string>
     <string name="address_branch">Nhập địa chỉ</string>
+    <string name="twice_exit">Nhấp thêm lần nữa để thoát!</string>
+    <string name="date">Ngày đặt</string>
 </resources>
