@@ -30,8 +30,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.yummy.Activity.BottomBarActivity;
+import com.example.yummy.Activity.HomePartnerActivity;
 import com.example.yummy.Activity.InfoUserActivity;
 import com.example.yummy.Activity.LoginActivity;
 import com.example.yummy.R;
@@ -166,7 +165,7 @@ public class SettingPartnerFragment extends Fragment {
                 conf.locale = locale;
                 res.updateConfiguration(conf, dm);
 
-                Intent refresh = new Intent(getContext(), BottomBarActivity.class);
+                Intent refresh = new Intent(getContext(), HomePartnerActivity.class);
                 startActivity(refresh);
                 if (getActivity() != null)
                     getActivity().finish();
