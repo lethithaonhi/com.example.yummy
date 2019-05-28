@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:background="@color/grey"
+<LinearLayout
+    android:background="@color/grey_no"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -15,12 +16,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:src="@drawable/order_on"
-            android:layout_width="56dp"
-            android:layout_height="56dp" />
+        <pl.bclogic.pulsator4droid.library.PulsatorLayout
+            android:id="@+id/pulsator"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:gravity="center"
+            android:layout_gravity="top"
+            app:pulse_count="3"
+            app:pulse_duration="5000"
+            app:pulse_repeat="0"
+            app:pulse_color="@color/colorAccent"
+            app:pulse_startFromScratch="false"
+            app:pulse_interpolator="Decelerate">
+
+            <ImageView
+                android:id="@+id/btn_change"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/order_on" />
+
+        </pl.bclogic.pulsator4droid.library.PulsatorLayout>
 
         <LinearLayout
             android:orientation="vertical"
@@ -160,6 +177,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:textColor="@color/black"
                         android:id="@+id/tv_orderid"
                         android:textSize="14sp"
                         android:text="ID: hgashdahdga jashdjka jahdjka"
@@ -200,6 +218,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:textColor="@color/searchbox_hint_text_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/total_item"
@@ -223,6 +242,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:textColor="@color/searchbox_hint_text_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/ship_fee"
@@ -257,12 +277,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:textColor="@color/black"
                     android:fontFamily="sans-serif-medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/discount"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_discount"
@@ -271,7 +290,7 @@
                     android:gravity="end"
                     android:text="-32000đ"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -310,7 +329,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="end"
                             android:text="32000đ"
-                            android:textColor="@color/black"
+                            android:textColor="@color/blue"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
@@ -345,6 +364,7 @@
                 android:layout_height="5dp"/>
 
             <TextView
+                android:textColor="@color/color_btn_signin_microsoft_pressed"
                 android:layout_margin="8dp"
                 android:textSize="14sp"
                 android:text="@string/information_contact"
@@ -374,6 +394,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:textColor="@color/searchbox_hint_text_color"
                     android:id="@+id/tv_date"
                     android:layout_weight="0.7"
                     android:text="0365214523"
@@ -405,6 +426,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:textColor="@color/searchbox_hint_text_color"
                     android:id="@+id/tv_name"
                     android:layout_weight="0.7"
                     android:text="0365214523"
@@ -431,6 +453,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:textColor="@color/searchbox_hint_text_color"
                     android:id="@+id/tv_phone"
                     android:layout_weight="0.7"
                     android:text="0365214523"
@@ -456,6 +479,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:textColor="@color/searchbox_hint_text_color"
                     android:id="@+id/tv_address"
                     android:layout_weight="0.7"
                     android:text="0365214hsgjhgad dagd hgad ajhgd hagdj hagdhjgad hjagdhjagd hjagdhjagd hagd hjagd hg a hdga hjdga hdghadghagdhagdha 523"

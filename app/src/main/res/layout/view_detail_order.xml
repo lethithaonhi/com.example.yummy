@@ -158,21 +158,20 @@
            android:orientation="horizontal">
 
            <TextView
-               android:textColor="@color/black"
                android:fontFamily="sans-serif-medium"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:text="@string/discount"
-               android:textSize="16sp" />
+               android:textSize="14sp" />
 
            <TextView
+               android:textColor="@color/black"
                android:id="@+id/tv_discount"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:gravity="end"
                android:text="-32000đ"
-               android:textColor="@color/black"
-               android:textSize="18sp"
+               android:textSize="14sp"
                android:textStyle="bold" />
 
        </LinearLayout>

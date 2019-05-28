@@ -185,4 +185,6 @@
     <string name="address_branch">Nhập địa chỉ</string>
     <string name="twice_exit">Nhấp thêm lần nữa để thoát!</string>
     <string name="date">Ngày đặt</string>
+    <string name="mess_change_status">Bạn có chắc chắn chuyển đến giai đoạn tiếp theo của đơn hàng?</string>
+    <string name="sure">Chắc chắn</string>
 </resources>

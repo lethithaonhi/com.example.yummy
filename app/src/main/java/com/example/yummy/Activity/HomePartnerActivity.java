@@ -102,11 +102,13 @@ public class HomePartnerActivity extends AppCompatActivity {
 
         View headerLayout = navigationView.getHeaderView(0);
         ImageView imAvatar = headerLayout.findViewById(R.id.im_avatar);
-        Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatar);
         TextView tvOwner = headerLayout.findViewById(R.id.tv_owner);
         TextView tvName = headerLayout.findViewById(R.id.tv_name);
-        tvOwner.setText(getResources().getString(R.string.owner) + ": " + Common.restaurantListCurrent.get(0).getName() + " - " + Common.restaurantListCurrent.get(0).getCity());
-        tvName.setText(Common.accountCurrent.getName());
+        if(Common.accountCurrent != null && Common.restaurantListCurrent != null) {
+            Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatar);
+            tvOwner.setText(getResources().getString(R.string.owner) + ": " + Common.restaurantListCurrent.get(0).getName() + " - " + Common.restaurantListCurrent.get(0).getCity());
+            tvName.setText(Common.accountCurrent.getName());
+        }
 
         LinearLayout btnSignOut = headerLayout.findViewById(R.id.btn_singOut);
         btnSignOut.setOnClickListener(v -> createDialogSignOut());

@@ -33,4 +33,5 @@
     <color name="mess1">#4D858484</color>
     <color name="mess2">#33979797</color>
     <color name="red">#FF2127</color>
+    <color name="grey_no">#CFCECE</color>
 </resources>

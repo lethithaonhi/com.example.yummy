@@ -1,7 +1,10 @@
 package com.example.yummy.Adapter;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,12 +17,19 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Order;
 import com.example.yummy.R;
+import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.Node;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 
 public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.HistoryMenuHolder> {
     private Context context;
@@ -56,8 +66,11 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
         Picasso.get().load(order.getAvatar()).into(holder.imageView);
 
         if(isPartner && order.getIsStatus() != 3 && order.getIsStatus() != 4){
+            holder.imAlarm.setVisibility(View.VISIBLE);
             Animation animShake = AnimationUtils.loadAnimation(context, R.anim.shake);
             holder.imAlarm.startAnimation(animShake);
+        }else {
+            holder.imAlarm.setVisibility(View.GONE);
         }
 
         String status;
@@ -91,7 +104,11 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
         holder.tvCount.setText(count+" " + context.getResources().getString(R.string.item) +" - ");
 
         holder.viewContainer.setOnClickListener(v->{
-            showDiaLogMenu(order);
+            if(!isPartner)
+                showOrderCus(order);
+            else {
+                showOrderPart(order);
+            }
         });
     }
 
@@ -119,18 +136,20 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
         }
     }
 
-    private void showDiaLogMenu(Order order){
+    private void showOrderCus(Order order){
         Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setTitle("");
         dialog.setContentView(R.layout.view_detail_order);
         dialog.setCancelable(true);
         dialog.show();
+        ImageView imback = dialog.findViewById(R.id.im_back);
+        TextView tvNameRes = dialog.findViewById(R.id.tv_nameRes);
+        tvNameRes.setText(order.getName_res() +" - "+order.getAddress_res());
+        imback.setOnClickListener(v->dialog.dismiss());
         initView(dialog, order);
     }
 
     private void initView(Dialog dialog, Order order){
-        ImageView imback = dialog.findViewById(R.id.im_back);
-        TextView tvNameRes = dialog.findViewById(R.id.tv_nameRes);
         TextView tvStatus = dialog.findViewById(R.id.tv_status);
         TextView tvID = dialog.findViewById(R.id.tv_orderid);
         TextView tvCount = dialog.findViewById(R.id.tv_count);
@@ -143,11 +162,15 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
         TextView tvPhone = dialog.findViewById(R.id.tv_phone);
         TextView tvAddress = dialog.findViewById(R.id.tv_address);
         ImageView imageView = dialog.findViewById(R.id.im_avatar);
-        ImageView imStatus = dialog.findViewById(R.id.im_status);
+        imStatus = dialog.findViewById(R.id.im_status);
         TextView tvDate = dialog.findViewById(R.id.tv_date);
 
         if(order.getIsStatus() == 4){
             imStatus.setImageResource(R.drawable.cancel);
+        }else if (order.getIsStatus() == 3){
+            imStatus.setImageResource(R.drawable.paid);
+        }else {
+            imStatus.setVisibility(View.GONE);
         }
 
         RecyclerView rcvMenu = dialog.findViewById(R.id.rcv_menu);
@@ -160,14 +183,12 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
         MenuOrderAdapter adapter = new MenuOrderAdapter(context, order.getMenuList());
         rcvMenu.setAdapter(adapter);
 
-        imback.setOnClickListener(v->dialog.dismiss());
         Picasso.get().load(order.getAvatar()).into(imageView);
-        tvNameRes.setText(order.getName_res() +" - "+order.getAddress_res());
         tvStatus.setText(order.getIsStatus()==3 ? R.string.complete:R.string.cancel);
         tvID.setText(order.getId());
         if(order.getDiscount() > 400) {
             vDiscount.setVisibility(View.VISIBLE);
-            tvDiscount.setText(order.getDiscount() + "VND");
+            tvDiscount.setText("-"+order.getDiscount() + "VND");
         }
         tvDistance.setText(String.format("%.02f",order.getDistance()) + " km");
         tvShip.setText(order.getFeeShip()+"VND");
@@ -177,5 +198,88 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
         tvAddress.setText(order.getAddress());
         tvCount.setText(order.getCount()+" "+context.getResources().getString(R.string.item));
         tvDate.setText(order.getTime() + " " + order.getDate());
+    }
+
+    private TextView tvStatus, tvConfirm, tvRoute, tvComplete;
+    private ImageView imConfirm, imRoute, imComplete;
+    private View vConfirm, vRoute, vComplete;
+    private PulsatorLayout mPulsator;
+    private ImageView imStatus;
+
+    private void showOrderPart(Order order){
+        Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.setTitle("");
+        dialog.setContentView(R.layout.activity_order_detail_partner);
+        dialog.setCancelable(true);
+        dialog.show();
+        initView(dialog, order);
+        mPulsator = dialog.findViewById(R.id.pulsator);
+        if(order.getIsStatus() < 3)
+            mPulsator.start();
+
+        ImageView btnChange = dialog.findViewById(R.id.btn_change);
+        btnChange.setOnClickListener(v->{
+            int status = order.getIsStatus();
+            if(status < 3){
+                showMessChangeStatus(order, status);
+            }
+        });
+
+        tvStatus = dialog.findViewById(R.id.tv_status);
+        tvConfirm = dialog.findViewById(R.id.tv_confirm);
+        tvRoute = dialog.findViewById(R.id.tv_route);
+        tvComplete = dialog.findViewById(R.id.tv_complete);
+        imConfirm = dialog.findViewById(R.id.im_confirm);
+        imRoute = dialog.findViewById(R.id.im_route);
+        imComplete = dialog.findViewById(R.id.im_complete);
+        vConfirm = dialog.findViewById(R.id.v_confirm);
+        vRoute = dialog.findViewById(R.id.v_route);
+        vComplete = dialog.findViewById(R.id.v_complete);
+
+        setStatus(order.getIsStatus());
+    }
+
+    private void setStatus(int status){
+        if (status == 1 || status > 1){
+            tvConfirm.setTextColor(context.getResources().getColor(R.color.red));
+            imConfirm.setImageResource(R.drawable.bg_circle_green);
+            vConfirm.setBackgroundResource(R.color.bg_green);
+            tvStatus.setText(R.string.on_confirm);
+        }
+
+        if(status == 2 || status > 2){
+            tvRoute.setTextColor(context.getResources().getColor(R.color.red));
+            imRoute.setImageResource(R.drawable.bg_circle_green);
+            vRoute.setBackgroundResource(R.color.bg_green);
+            tvStatus.setText(R.string.on_dispatch);
+        }
+
+        if(status == 3 || status > 3){
+            tvComplete.setTextColor(context.getResources().getColor(R.color.red));
+            imComplete.setImageResource(R.drawable.bg_circle_green);
+            vComplete.setBackgroundResource(R.color.bg_green);
+            tvStatus.setText(R.string.on_complete);
+        }
+    }
+
+    private void showMessChangeStatus(Order order, int status){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("");
+        builder.setMessage(R.string.mess_change_status);
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.sure, (dialogInterface, i) ->{
+            order.setIsStatus(status+1);
+            DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
+            mData.child(Node.Order).child(Common.accountCurrent.getPartner().getBoss()).child(order.getId()).child(Node.isStatus).setValue(status+1);
+
+            if(status == 2){
+                mPulsator.stop();
+                imStatus.setVisibility(View.VISIBLE);
+            }
+            setStatus(status+1);
+        });
+        builder.setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss());
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

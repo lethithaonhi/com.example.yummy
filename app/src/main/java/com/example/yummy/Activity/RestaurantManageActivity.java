@@ -62,7 +62,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -84,6 +87,7 @@ public class RestaurantManageActivity extends AppCompatActivity {
     private Branch branch;
     private BranchAdapter branchAdapter;
     private HistoryMenuAdapter historyMenuAdapter;
+    private List<Order> dataList;;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,6 +95,7 @@ public class RestaurantManageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_restaurant_manage);
 
         type = getIntent().getIntExtra("type", 0);
+        dataList = new ArrayList<>();
         initView();
     }
 
@@ -116,6 +121,17 @@ public class RestaurantManageActivity extends AppCompatActivity {
             name = getResources().getString(R.string.order);
 
             List<Order> dataList = getOrder();
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+            Collections.sort(dataList, (obj1, obj2) -> {
+                try {
+                    return dateFormat.parse(obj1.getDate()+" "+obj1.getTime()).compareTo(dateFormat.parse(obj2.getTime()+" "+obj2.getTime()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return -1;
+            });
+
+            Collections.reverse(dataList);
             imAdd.setVisibility(View.VISIBLE);
             historyMenuAdapter = new HistoryMenuAdapter(this,  dataList, true);
             rcv.setAdapter(historyMenuAdapter);
@@ -141,9 +157,7 @@ public class RestaurantManageActivity extends AppCompatActivity {
 
         tvType.setText(name);
         imAdd.setOnClickListener(v -> {
-            if (type == 0) {
-
-            } else if (type == 1) {
+            if (type == 1) {
                 showAddBranch();
             } else {
                 showAddMenu();
@@ -152,11 +166,12 @@ public class RestaurantManageActivity extends AppCompatActivity {
     }
 
     private List<Order> getOrder(){
-        List<Order> dataList = new ArrayList<>();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child(Node.Order).child(Common.accountCurrent.getPartner().getBoss()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataList.size() > 0)
+                    dataList.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Order order = dataSnapshot1.getValue(Order.class);
                     if (order != null) {

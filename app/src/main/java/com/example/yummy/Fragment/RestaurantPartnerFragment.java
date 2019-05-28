@@ -89,9 +89,10 @@ public class RestaurantPartnerFragment extends Fragment {
             UtilsBottomBar.RestaurantPartnerAsyncTask asyncTask = new UtilsBottomBar.RestaurantPartnerAsyncTask(Common.accountCurrent.getPartner().getBoss());
             asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }else {
+            if(LoginActivity.mAuth != null)
+                LoginActivity.mAuth.signOut();
             Toast.makeText(getContext(), R.string.login_again, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getContext(), LoginActivity.class));
-            LoginActivity.mAuth.signOut();
             if(getActivity() != null)
                 getActivity().finish();
         }

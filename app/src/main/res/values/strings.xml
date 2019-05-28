@@ -189,4 +189,6 @@
     <string name="address_branch">Enter Address\'s Branch</string>
     <string name="twice_exit">Please click BACK again to exit!</string>
     <string name="date">Date</string>
+    <string name="mess_change_status">Are you sure of the next process?</string>
+    <string name="sure">Sure</string>
 </resources>
