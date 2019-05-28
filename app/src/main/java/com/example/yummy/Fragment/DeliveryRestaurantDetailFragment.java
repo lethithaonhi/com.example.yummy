@@ -71,6 +71,9 @@ public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRe
                 intent.putExtra("restaurant", restaurant);
                 intent.putExtra("branch", branch);
                 startActivity(intent);
+                if(getActivity() != null){
+                    getActivity().finish();
+                }
             }else {
                 Toast.makeText(getContext(), R.string.login_first, Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getContext(), LoginActivity.class));
