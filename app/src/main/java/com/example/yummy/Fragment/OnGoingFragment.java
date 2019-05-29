@@ -74,6 +74,7 @@ public class OnGoingFragment extends Fragment {
     }
 
     private void getData(){
+        data.clear();
         for (Order order : Common.orderListCurrent){
             if(order.getIsStatus() != 4 && order.getIsStatus() != 3){
                 data.add(order);

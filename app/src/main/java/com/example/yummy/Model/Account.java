@@ -15,7 +15,7 @@ public class Account implements Parcelable {
     private int gender; //1 male, 2: felmade, 3:none
     private String datebirth;
     private String avatar;
-    private int role;
+    private int role;// 1 nv, 2: user, 3: partner
     private String password;
     private List<Addresses> addressList;
     private Partner partner;

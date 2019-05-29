@@ -3,8 +3,8 @@ package com.example.yummy.Adapter;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +35,7 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
     private Context context;
     private List<Order> data;
     private boolean isPartner;
+    private MediaPlayer endPlayer;
 
     public HistoryMenuAdapter(Context context, List<Order> data, boolean isPartner){
         this.context = context;
@@ -98,7 +99,8 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
 
         int count =0;
         for(Menu menu : order.getMenuList().keySet()){
-            count += order.getMenuList().get(menu);
+            if(order.getMenuList().get(menu) != null)
+                count += order.getMenuList().get(menu);
         }
 
         holder.tvCount.setText(count+" " + context.getResources().getString(R.string.item) +" - ");
@@ -275,11 +277,27 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
             if(status == 2){
                 mPulsator.stop();
                 imStatus.setVisibility(View.VISIBLE);
+                initEndOrder();
             }
             setStatus(status+1);
         });
         builder.setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss());
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+
+    private void initEndOrder() {
+        endPlayer = MediaPlayer.create(context, R.raw.endorder);
+        if (endPlayer != null) {
+            endPlayer.setVolume(1.0f, 1.0f);
+            endPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            endPlayer.start();
+            endPlayer.setOnCompletionListener((mp) -> {
+                endPlayer.stop();
+                endPlayer.release();
+                endPlayer = null;
+            });
+        }
     }
 }

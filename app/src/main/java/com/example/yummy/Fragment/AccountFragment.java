@@ -89,6 +89,12 @@ public class AccountFragment extends Fragment {
         LinearLayout viewSetting = v.findViewById(R.id.view_setting);
         LinearLayout viewAddress = v.findViewById(R.id.view_address_setting);
         LinearLayout viewHistory = v.findViewById(R.id.view_history);
+        LinearLayout viewManage = v.findViewById(R.id.view_manage);
+
+        if(Common.accountCurrent != null && Common.accountCurrent.getRole() == 2){
+                viewSetting.setVisibility(View.GONE);
+                viewManage.setVisibility(View.VISIBLE);
+        }
 
         layoutSetting = v.findViewById(R.id.layout_setting);
         viewSetting.setOnClickListener(vl-> dialogSetting(v));

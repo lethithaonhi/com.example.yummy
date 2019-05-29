@@ -87,7 +87,7 @@ public class RestaurantManageActivity extends AppCompatActivity {
     private Branch branch;
     private BranchAdapter branchAdapter;
     private HistoryMenuAdapter historyMenuAdapter;
-    private List<Order> dataList;;
+    private List<Order> dataList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

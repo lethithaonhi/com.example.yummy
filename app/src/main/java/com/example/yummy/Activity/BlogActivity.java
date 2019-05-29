@@ -44,6 +44,8 @@ public class BlogActivity extends AppCompatActivity {
             return 1;
         });
 
+        Collections.reverse(Common.blogList);
+
         RecyclerView rcvNotify = findViewById(R.id.rcv_notify_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcvNotify.setLayoutManager(layoutManager);
@@ -53,7 +55,7 @@ public class BlogActivity extends AppCompatActivity {
         rcvNotify.setAdapter(adapter);
 
         ViewPager viewPager = findViewById(R.id.viewPager);
-        BannerAdapter bannerAdapter = new BannerAdapter(Objects.requireNonNull(this),2);
+        BannerAdapter bannerAdapter = new BannerAdapter(this,2);
         viewPager.setAdapter(bannerAdapter);
 
         TextView tvHeader = findViewById(R.id.tv_header);

@@ -90,6 +90,30 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/view_manage"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/manage"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+            <TextView
+                app:fontFamily="sans-serif-medium"
+                android:text="@string/manage"
+                android:layout_marginLeft="16dp"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/view_history"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="16dp"
@@ -137,6 +161,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="visible"
             android:id="@+id/view_setting"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="16dp"
