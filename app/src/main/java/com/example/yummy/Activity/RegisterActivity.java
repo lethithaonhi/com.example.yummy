@@ -140,7 +140,6 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
                                     Toast.LENGTH_LONG).show();
                         }
                     });
-
         }
 
     }

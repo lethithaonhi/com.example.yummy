@@ -2,6 +2,8 @@ package com.example.yummy.Fragment;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -45,6 +47,7 @@ public class OnGoingFragment extends Fragment {
     private OnGoingCusAdater adapter;
     private RecyclerView rcvOrderList;
     private LinearLayout viewNoOrder;
+    private MediaPlayer endPlayer;
 
     public static OnGoingFragment getInstance() {
         OnGoingFragment fragment = new OnGoingFragment();
@@ -122,6 +125,7 @@ public class OnGoingFragment extends Fragment {
                                         }else{
                                             showMessStatusOrder(R.string.on_complete);
                                         }
+                                        initMessOrder();
                                     }
                                     if(status == 3){
                                         Toast.makeText(getContext(), "Success!!", Toast.LENGTH_SHORT).show();
@@ -185,6 +189,20 @@ public class OnGoingFragment extends Fragment {
                 getData();
             }
             return null;
+        }
+    }
+
+    private void initMessOrder() {
+        endPlayer = MediaPlayer.create(getContext(), R.raw.endorder);
+        if (endPlayer != null) {
+            endPlayer.setVolume(1.0f, 1.0f);
+            endPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            endPlayer.start();
+            endPlayer.setOnCompletionListener((mp) -> {
+                endPlayer.stop();
+                endPlayer.release();
+                endPlayer = null;
+            });
         }
     }
 }
