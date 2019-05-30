@@ -152,8 +152,8 @@ public class UtilsBottomBar {
     }
 
     public static void getOrderCurrent(){
-        Common.orderListCurrent = new ArrayList<>();
-        if(Common.listResId != null && Common.listResId.size() > 0) {
+        if(Common.listResId != null && Common.listResId.size() > 0 && Common.accountCurrent != null) {
+            Common.orderListCurrent = new ArrayList<>();
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
             for (String resID : Common.listResId) {
                 mDatabase.child(Node.Order).child(resID).addValueEventListener(new ValueEventListener() {
@@ -180,7 +180,7 @@ public class UtilsBottomBar {
                                                                 menuIntegerHashMap.put(menu, count);
                                                                 order.setMenuList(menuIntegerHashMap);
 
-                                                                if (menuIntegerHashMap.size() == dataRoor.getChildrenCount() && !Common.orderListCurrent.contains(order)) {
+                                                                if (menuIntegerHashMap.size() == dataRoor.getChildrenCount() && !isExistOrder(order)) {
                                                                     Common.orderListCurrent.add(order);
                                                                 }
                                                             }
@@ -212,6 +212,15 @@ public class UtilsBottomBar {
                 });
             }
         }
+    }
+
+    private static boolean isExistOrder(Order order){
+        for (Order order1 : Common.orderListCurrent){
+            if(order1 == order){
+                return true;
+            }
+        }
+        return false;
     }
 
     @SuppressLint("StaticFieldLeak")

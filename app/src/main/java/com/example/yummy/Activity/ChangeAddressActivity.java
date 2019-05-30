@@ -42,6 +42,7 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
     private  MapFragment mapFragment;
     private  EditText edtSearch;
     private Marker marker;
+    private GoogleMap map;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +73,11 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        setMarker(googleMap);
+    }
+
+    private void setMarker(GoogleMap googleMap){
         googleMap.clear();
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         if(marker != null){
@@ -133,7 +139,7 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
                     location.setLongitude(lng);
 
                     Common.myLocation = addressnew;
-                    mapFragment.getMapAsync(ChangeAddressActivity.this);
+                    setMarker(map);
                     DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                     nodeRoot.child(Node.Address).child(Common.accountCurrent.getUserId()).push().setValue(addressnew);
                 }else {

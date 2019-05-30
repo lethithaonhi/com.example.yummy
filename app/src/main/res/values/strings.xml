@@ -192,4 +192,5 @@
     <string name="mess_change_status">Are you sure of the next process?</string>
     <string name="sure">Sure</string>
     <string name="manage">Management</string>
+    <string name="exit">Exit</string>
 </resources>
