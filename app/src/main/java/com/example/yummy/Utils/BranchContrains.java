@@ -11,10 +11,11 @@ public class BranchContrains {
     public static final String LONGITUDE = "Longitude";
     public static final String CITY = "City";
     public static final String DISTANCE = "Distance";
+    public static final String ISDELETE = "IsDelete";
 
     public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
             + ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "+ BRA_ID + " TEXT, " + RES_ID +" TEXT, " + AVATAR +" TEXT, "
-            + ADDESS + " TEXT, " + LATITUDE + " REAL, " + LONGITUDE + " REAL, " + CITY + " TEXT, "+ DISTANCE + " REAL" + ")";
+            + ADDESS + " TEXT, " + LATITUDE + " REAL, " + LONGITUDE + " REAL, " + CITY + " TEXT, "+ DISTANCE + " REAL, "+ ISDELETE + " INTEGER" + ")";
 
     public static final String DELETE_TABLE = "DELETE FROM " + TABLE_NAME;
 }

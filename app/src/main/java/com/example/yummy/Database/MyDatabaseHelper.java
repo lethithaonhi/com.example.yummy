@@ -79,6 +79,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(BranchContrains.LATITUDE, branch.getLatitude());
         values.put(BranchContrains.LONGITUDE, branch.getLongitude());
         values.put(BranchContrains.CITY, city);
+        values.put(BranchContrains.ISDELETE, branch.getIsDelete());
 
         return (int) db.insert(BranchContrains.TABLE_NAME, null, values);
     }
@@ -180,6 +181,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         branch.setLatitude(cursor.getDouble(5));
         branch.setLongitude(cursor.getDouble(6));
         branch.setDistance(cursor.getFloat(7));
+        branch.setIsDelete(cursor.getInt(8));
 
         return branch;
     }

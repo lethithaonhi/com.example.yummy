@@ -130,6 +130,9 @@ public class OnGoingFragment extends Fragment {
                                     int status = dataSnapshot.getValue(Integer.class);
                                     if (status != order.getIsStatus()) {
                                         order.setIsStatus(status);
+                                        int pos = adapter.getPos(order);
+                                        data.remove(pos);
+                                        data.add(pos, order);
                                         adapter.notifyDataSetChanged();
                                         if(status == 0){
                                             showMessStatusOrder(R.string.on_sent);
