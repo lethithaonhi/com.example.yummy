@@ -172,6 +172,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             if (task.isSuccessful()) {
                 FirebaseUser user = mAuth.getCurrentUser();
                 Intent intent = new Intent(LoginActivity.this, BottomBarActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
 
@@ -293,7 +294,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 Common.accountCurrent.setAddressList(addresses);
 
                                 if (Common.accountCurrent != null && Common.accountCurrent.getRole() == 2) {
-                                    startActivity(new Intent(LoginActivity.this, BottomBarActivity.class));
+                                    Intent intent = new Intent(LoginActivity.this, BottomBarActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
                                     finish();
                                 } else if (Common.accountCurrent != null && Common.accountCurrent.getRole() == 3){
                                     mDatabase.child(Node.Partner).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
@@ -301,7 +304,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             Partner partner = dataSnapshot.getValue(Partner.class);
                                             Common.accountCurrent.setPartner(partner);
-                                            startActivity(new Intent(LoginActivity.this, HomePartnerActivity.class));
+                                            Intent intent = new Intent(LoginActivity.this, HomePartnerActivity.class);
+                                            startActivity(intent);
                                             finish();
                                         }
 

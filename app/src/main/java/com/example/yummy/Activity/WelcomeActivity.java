@@ -216,7 +216,9 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                 List<String> list = new ArrayList<>();
                 list.add("quan1");
                 if(Common.db.getRestaurant(list, Common.myAddress).size() > 0){
-                    startActivity(new Intent(WelcomeActivity.this,BottomBarActivity.class));
+                    Intent intent = new Intent(WelcomeActivity.this,BottomBarActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                     finish();
                 }else{
                     getRestaurant();
