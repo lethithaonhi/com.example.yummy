@@ -190,4 +190,9 @@
     <string name="manage">Quản lý</string>
     <string name="exit">Thoát</string>
     <string name="hot">Hot</string>
+    <string name="account">Tài khoản</string>
+    <string name="statistics">Thống kê</string>
+    <string name="admin">Quản trị viên</string>
+    <string name="my_account">Tài khoản của tôi</string>
+    <string name="my_res">Nhà hàng của tôi</string>
 </resources>

@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yummy.Fragment.InfoPartnerFragment;
+import com.example.yummy.Fragment.ManageAdminFragment;
 import com.example.yummy.Fragment.RestaurantPartnerFragment;
 import com.example.yummy.Fragment.SettingPartnerFragment;
 import com.example.yummy.R;
@@ -72,8 +73,16 @@ public class HomePartnerActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nv);
         navigationView.setCheckedItem(R.id.nv_res);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.frame_content, RestaurantPartnerFragment.newInstance()).commit();
+        if(Common.accountCurrent.getRole() == 3) {
+            fragmentManager.beginTransaction().replace(R.id.frame_content, RestaurantPartnerFragment.newInstance()).commit();
+        }else {
+            fragmentManager.beginTransaction().replace(R.id.frame_content, ManageAdminFragment.newInstance()).commit();
+        }
         drawerLayout.closeDrawer(GravityCompat.START);
+
+        if(Common.accountCurrent.getRole() == 1){
+            navigationView.getMenu().getItem(0).setTitle(R.string.manage);
+        }
 
         navigationView.setNavigationItemSelectedListener(item -> {
             for (int i = 0; i < navigationView.getMenu().size(); i++) {
@@ -83,7 +92,11 @@ public class HomePartnerActivity extends AppCompatActivity {
             int id = item.getItemId();
             Fragment fragment = null;
             if (id == R.id.nv_res) {
-                fragment = RestaurantPartnerFragment.newInstance();
+                if(Common.accountCurrent.getRole() == 3) {
+                    fragment = RestaurantPartnerFragment.newInstance();
+                }else {
+                    fragment = ManageAdminFragment.newInstance();
+                }
             } else if (id == R.id.nv_settings) {
                 fragment = SettingPartnerFragment.newInstance();
             } else if (id == R.id.nv_account) {
@@ -105,7 +118,11 @@ public class HomePartnerActivity extends AppCompatActivity {
         TextView tvName = headerLayout.findViewById(R.id.tv_name);
         if(Common.accountCurrent != null && Common.restaurantListCurrent != null) {
             Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatar);
-            tvOwner.setText(getResources().getString(R.string.owner) + ": " + Common.restaurantListCurrent.get(0).getName() + " - " + Common.restaurantListCurrent.get(0).getCity());
+            if(Common.accountCurrent.getRole() == 3) {
+                tvOwner.setText(getResources().getString(R.string.owner) + ": " + Common.restaurantListCurrent.get(0).getName() + " - " + Common.restaurantListCurrent.get(0).getCity());
+            }else {
+                tvOwner.setText(R.string.add_menu);
+            }
             tvName.setText(Common.accountCurrent.getName());
         }
 

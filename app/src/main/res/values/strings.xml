@@ -194,4 +194,9 @@
     <string name="manage">Management</string>
     <string name="exit">Exit</string>
     <string name="hot">Hot</string>
+    <string name="account">Account</string>
+    <string name="statistics">Statistics</string>
+    <string name="admin">Administrator</string>
+    <string name="my_account">My Account</string>
+    <string name="my_res">My Restaurant</string>
 </resources>

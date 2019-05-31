@@ -159,6 +159,11 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
         dialog.show();
 
         EditText edName = dialog.findViewById(R.id.ed_nameinfo);
+        EditText edEmail = dialog.findViewById(R.id.ed_email);
+        if(account.getEmail() != null && !account.getEmail().isEmpty()) {
+            edEmail.setText(account.getEmail());
+            edEmail.setEnabled(false);
+        }
         TextView tvDateBirth = dialog.findViewById(R.id.tv_birth);
         Calendar c = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");

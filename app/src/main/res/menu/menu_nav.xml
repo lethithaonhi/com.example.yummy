@@ -3,14 +3,14 @@
 
     <item android:id="@+id/nv_res"
         android:icon="@drawable/ic_home"
-        android:title="My Restaurant"/>
+        android:title="@string/my_res"/>
 
     <item android:id="@+id/nv_account"
         android:checked="true"
         android:icon="@drawable/ic_person"
-        android:title="My Account"/>
+        android:title="@string/my_account"/>
 
     <item android:id="@+id/nv_settings"
         android:icon="@drawable/ic_settings"
-        android:title="Settings"/>
+        android:title="@string/setting_user"/>
 </menu>
