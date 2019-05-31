@@ -33,7 +33,7 @@ import java.util.List;
 public class RestaurantActivity extends AppCompatActivity {
     private List<Restaurant> restaurantList;
     private int type; //1: mark, 0: normal, 2: distance, 3:discount
-    private String[] typeName ={"Suggest", "Hot", "NearBy", "Discount","Food", "Drink","Cake", "Fruits", "Snack", "Vegetarian", "Handmade", "Dessert"};
+    private String[] typeName;
     private CityAdapter cityAdapter;
     private RecyclerView rcvRes;
     private Dialog dialog;
@@ -43,6 +43,10 @@ public class RestaurantActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
+
+        typeName = new String[]{getResources().getString(R.string.Exp), getResources().getString(R.string.hot), getResources().getString(R.string.nearby), getResources().getString(R.string.discount)
+                , getResources().getString(R.string.food), getResources().getString(R.string.drink), getResources().getString(R.string.cake), getResources().getString(R.string.fruits)
+                , getResources().getString(R.string.snack), getResources().getString(R.string.vegetarian_food), getResources().getString(R.string.handmade), getResources().getString(R.string.more)};
 
         type = getIntent().getIntExtra("type", 0);
         initView();

@@ -71,13 +71,25 @@ public class OnGoingFragment extends Fragment {
         rcvOrderList.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvOrderList.getContext(), layoutManager.getOrientation());
         rcvOrderList.addItemDecoration(dividerItemDecoration);
+        if(Common.orderListCurrent != null && Common.orderListCurrent.size() > 0){
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+            Collections.sort(Common.orderListCurrent, (obj1, obj2) -> {
+                try {
+                    return dateFormat.parse(obj1.getDate()+ " " + obj1.getTime()).compareTo(dateFormat.parse(obj1.getDate()+" "+obj2.getTime()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return -1;
+            });
+
+            Collections.reverse(Common.orderListCurrent);
+        }
 
         OnGoingAsyncTask myAsyncTask = new OnGoingAsyncTask();
         myAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void getData(){
-        data.clear();
         for (Order order : Common.orderListCurrent){
             if(order.getIsStatus() != 4 && order.getIsStatus() != 3){
                 data.add(order);
@@ -99,7 +111,10 @@ public class OnGoingFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(Common.accountCurrent != null && data.size() > 0) {
-            UtilsBottomBar.getOrderCurrent();
+            if(Common.orderListCurrent.size() == 0) {
+                UtilsBottomBar.getOrderCurrent();
+                getData();
+            }
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
             try {
                 timer = new Timer();
@@ -115,6 +130,9 @@ public class OnGoingFragment extends Fragment {
                                     int status = dataSnapshot.getValue(Integer.class);
                                     if (status != order.getIsStatus()) {
                                         order.setIsStatus(status);
+                                        int pos = adapter.getPos(order);
+                                        data.remove(pos);
+                                        data.add(pos, order);
                                         adapter.notifyDataSetChanged();
                                         if(status == 0){
                                             showMessStatusOrder(R.string.on_sent);
@@ -129,7 +147,6 @@ public class OnGoingFragment extends Fragment {
                                     }
                                     if(status == 3){
                                         Toast.makeText(getContext(), "Success!!", Toast.LENGTH_SHORT).show();
-                                        UtilsBottomBar.getOrderCurrent();
                                     }
 
                                     if (finalI == Common.orderListCurrent.size() && order.getIsStatus() == 3) {
@@ -150,6 +167,20 @@ public class OnGoingFragment extends Fragment {
             } catch (IllegalStateException e) {
                 Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void initMessOrder() {
+        endPlayer = MediaPlayer.create(getContext(), R.raw.newmess);
+        if (endPlayer != null) {
+            endPlayer.setVolume(1.0f, 1.0f);
+            endPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            endPlayer.start();
+            endPlayer.setOnCompletionListener((mp) -> {
+                endPlayer.stop();
+                endPlayer.release();
+                endPlayer = null;
+            });
         }
     }
 

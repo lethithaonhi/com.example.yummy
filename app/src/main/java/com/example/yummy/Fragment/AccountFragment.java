@@ -39,6 +39,7 @@ import android.widget.Toast;
 
 import com.example.yummy.Activity.AddressHistoryActivity;
 import com.example.yummy.Activity.BottomBarActivity;
+import com.example.yummy.Activity.HomePartnerActivity;
 import com.example.yummy.Activity.InfoUserActivity;
 import com.example.yummy.Activity.LoginActivity;
 import com.example.yummy.Adapter.HistoryMenuAdapter;
@@ -91,11 +92,12 @@ public class AccountFragment extends Fragment {
         LinearLayout viewHistory = v.findViewById(R.id.view_history);
         LinearLayout viewManage = v.findViewById(R.id.view_manage);
 
-        if(Common.accountCurrent != null && Common.accountCurrent.getRole() == 2){
+        if(Common.accountCurrent != null && Common.accountCurrent.getRole() == 3){
                 viewSetting.setVisibility(View.GONE);
                 viewManage.setVisibility(View.VISIBLE);
         }
 
+        viewManage.setOnClickListener(vl->startActivity(new Intent(getContext(), HomePartnerActivity.class)));
         layoutSetting = v.findViewById(R.id.layout_setting);
         viewSetting.setOnClickListener(vl-> dialogSetting(v));
         viewSignOut.setOnClickListener(vl->createDialogSignOut());

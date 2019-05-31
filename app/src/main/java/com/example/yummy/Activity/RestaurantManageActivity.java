@@ -263,7 +263,6 @@ public class RestaurantManageActivity extends AppCompatActivity {
                 if (pos < typeList.size() - 1) {
                     edType.setVisibility(View.GONE);
                     typeMenu = spnMenu.getSelectedItem().toString();
-                    Toast.makeText(RestaurantManageActivity.this, spnMenu.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
                 } else {
                     edType.setVisibility(View.VISIBLE);
                 }

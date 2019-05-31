@@ -110,7 +110,7 @@ public class HomePartnerActivity extends AppCompatActivity {
         }
 
         LinearLayout btnSignOut = headerLayout.findViewById(R.id.btn_singOut);
-        btnSignOut.setOnClickListener(v -> createDialogSignOut());
+        btnSignOut.setOnClickListener(v -> finish());
     }
 
     @Override
@@ -128,24 +128,5 @@ public class HomePartnerActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void createDialogSignOut() {
-        Dialog dialog = new Dialog(this);
-        dialog.setTitle("");
-        dialog.setContentView(R.layout.dialog_signout);
-        dialog.show();
-
-        TextView btnSignOut = dialog.findViewById(R.id.btn_signout);
-        TextView btnNo = dialog.findViewById(R.id.btn_no);
-
-        btnSignOut.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
-            Common.accountCurrent = null;
-            finish();
-            startActivity(new Intent(this, BottomBarActivity.class));
-        });
-
-        btnNo.setOnClickListener(v -> dialog.dismiss());
     }
 }

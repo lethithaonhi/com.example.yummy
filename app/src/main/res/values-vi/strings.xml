@@ -188,4 +188,6 @@
     <string name="mess_change_status">Bạn có chắc chắn chuyển đến giai đoạn tiếp theo của đơn hàng?</string>
     <string name="sure">Chắc chắn</string>
     <string name="manage">Quản lý</string>
+    <string name="exit">Thoát</string>
+    <string name="hot">Hot</string>
 </resources>

@@ -17,6 +17,7 @@ import com.example.yummy.Adapter.HistoryMenuAdapter;
 import com.example.yummy.Model.Order;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.UtilsBottomBar;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,7 +39,6 @@ public class HistoryFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_history, container, false);
-        data = new ArrayList<>();
         initView(v);
         return v;
     }
@@ -57,7 +57,6 @@ public class HistoryFragment extends Fragment {
 
 
     private void getData(){
-        data.clear();
         for (Order order : Common.orderListCurrent){
             if(order.getIsStatus() == 4 || order.getIsStatus() == 3){
                 data.add(order);

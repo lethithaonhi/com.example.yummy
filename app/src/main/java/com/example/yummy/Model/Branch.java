@@ -11,6 +11,7 @@ public class Branch implements Parcelable {
     private double latitude;
     private double longitude;
     private float distance;
+    private int isDelete; //1: delete, 0: no
 
     public Branch(){}
 
@@ -22,6 +23,7 @@ public class Branch implements Parcelable {
         latitude = in.readDouble();
         longitude = in.readDouble();
         distance = in.readFloat();
+        isDelete = in.readInt();
     }
 
     public int getId_db() {
@@ -80,6 +82,14 @@ public class Branch implements Parcelable {
         this.distance = distance;
     }
 
+    public int getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(int isDelete) {
+        this.isDelete = isDelete;
+    }
+
     public static final Creator<Branch> CREATOR = new Creator<Branch>() {
         @Override
         public Branch createFromParcel(Parcel in) {
@@ -106,5 +116,6 @@ public class Branch implements Parcelable {
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
         dest.writeFloat(distance);
+        dest.writeInt(isDelete);
     }
 }

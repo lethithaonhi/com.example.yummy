@@ -34,8 +34,8 @@ public class AddressHistoryActivity extends AppCompatActivity {
         recyclerView.setAdapter(addressAdapter);
 
         ImageView btnAdd = findViewById(R.id.btn_add);
-        btnAdd.setOnClickListener(v->{
-            startActivity(new Intent(this, ChangeAddressActivity.class));
-        });
+        ImageView imCLose = findViewById(R.id.close_dialog);
+        imCLose.setOnClickListener(v->finish());
+        btnAdd.setOnClickListener(v-> startActivity(new Intent(this, ChangeAddressActivity.class)));
     }
 }

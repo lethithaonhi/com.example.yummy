@@ -23,6 +23,10 @@ public class OnGoingCusAdater extends RecyclerView.Adapter<OnGoingCusAdater.OnGo
         this.data = data;
     }
 
+    public int getPos (Order order){
+        return data.indexOf(order) != -1 ? data.indexOf(order) : 0;
+    }
+
     @NonNull
     @Override
     public OnGoingCusHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
