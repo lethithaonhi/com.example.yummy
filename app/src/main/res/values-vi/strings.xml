@@ -195,4 +195,5 @@
     <string name="admin">Quản trị viên</string>
     <string name="my_account">Tài khoản của tôi</string>
     <string name="my_res">Nhà hàng của tôi</string>
+    <string name="role">Quyền</string>
 </resources>

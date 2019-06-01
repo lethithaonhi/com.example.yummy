@@ -1,5 +1,6 @@
 package com.example.yummy.Fragment;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.example.yummy.Model.Account;
 import com.example.yummy.R;
 
 public class ManageAdminFragment extends Fragment {
@@ -36,6 +39,18 @@ public class ManageAdminFragment extends Fragment {
         LinearLayout vBlog = v.findViewById(R.id.v_blog);
         LinearLayout vStatistic = v.findViewById(R.id.v_statistic);
 
+        vAccount.setOnClickListener(vl->showDialogInfor());
+    }
 
+    private void showDialogInfor() {
+        if(getContext() != null) {
+            Dialog dialog = new Dialog(getContext(), android.R.style.Theme_Translucent_NoTitleBar);
+            dialog.setTitle("");
+            dialog.setContentView(R.layout.view_register_account_admin);
+            dialog.setCancelable(false);
+            dialog.show();
+        }else {
+            Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
+        }
     }
 }

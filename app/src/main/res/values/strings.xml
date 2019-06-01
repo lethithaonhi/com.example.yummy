@@ -199,4 +199,5 @@
     <string name="admin">Administrator</string>
     <string name="my_account">My Account</string>
     <string name="my_res">My Restaurant</string>
+    <string name="role">Role</string>
 </resources>
