@@ -199,4 +199,7 @@
     <string name="customer">Khách hàng</string>
     <string name="partner">Đối tác</string>
     <string name="choose_role">Vui lòng cấp quyền tài khoản!</string>
+    <string name="close_branch">Bạn có muốn đóng cửa chi nhánh này?</string>
+    <string name="open_branch">Bạn có muốn mở cửa chi nhánh này?</string>
+    <string name="mess_open">Bạn có muốn mở lại?</string>
 </resources>

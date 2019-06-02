@@ -128,7 +128,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                                                                 if (review != null) {
                                                                     review.setId(dataSnapshot1.getKey());
                                                                     reviewList.add(review);
-                                                                    Common.db.addReview(review, resID, address);
+                                                                    Common.db.addReview(review, resID, Common.myAddress);
                                                                 }
                                                             }
 

@@ -15,7 +15,7 @@ public class Common {
     public static MyDatabaseHelper db;
     public static Addresses myLocation;
     public static List<String> listResId;
-    public static String myAddress;
+    public static String myAddress; //city
     public static List<Restaurant> restaurantListAll;
     public static List<Map> menuList;
     public static List<Restaurant> restaurantListCurrent;

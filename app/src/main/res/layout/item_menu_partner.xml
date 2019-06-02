@@ -42,6 +42,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
+                    android:id="@+id/im_delete"
                     android:src="@drawable/ic_delete_white_24dp"
                     android:layout_width="32dp"
                     android:layout_height="32dp" />
@@ -67,39 +68,51 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:layout_weight="0.55"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
+            <FrameLayout
+                android:layout_weight="0.55"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_nameMenu"
-                android:fontFamily="sans-serif-medium"
-                android:textSize="14sp"
-                android:text="Sua tuoi tran chau"
-                android:textColor="@color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_nameMenu"
+                        android:fontFamily="sans-serif-medium"
+                        android:textSize="14sp"
+                        android:text="Sua tuoi tran chau"
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/tv_desMenu"
-                android:ellipsize="end"
-                android:maxLines="3"
-                android:textSize="14sp"
-                android:text="mo ta jsajda asjdahdkjahd hkjh jhjsahda gshagd  ghjgasd hgasdjhagjhdgajhdgajhgdjhagdjhagjhdgajhgdjhagjhdgajhgdjhagdjhagjdgaj"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
+                    <TextView
+                        android:id="@+id/tv_desMenu"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:textSize="14sp"
+                        android:text="mo ta jsajda asjdahdkjahd hkjh jhjsahda gshagd  ghjgasd hgasdjhagjhdgajhdgajhgdjhagdjhagjhdgajhgdjhagjhdgajhgdjhagdjhagjdgaj"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
 
-            <TextView
-                android:id="@+id/tv_price"
-                android:textColor="@color/black"
-                android:layout_marginTop="8dp"
-                android:text="25,0000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_price"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="8dp"
+                        android:text="25,0000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-        </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/im_close"
+                    android:layout_gravity="center"
+                    android:src="@drawable/close"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp" />
+            </FrameLayout>
+
         </LinearLayout>
     </com.daimajia.swipe.SwipeLayout>
 </LinearLayout>
