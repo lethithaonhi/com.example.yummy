@@ -200,4 +200,7 @@
     <string name="my_account">My Account</string>
     <string name="my_res">My Restaurant</string>
     <string name="role">Role</string>
+    <string name="customer">Customer</string>
+    <string name="partner">Partner</string>
+    <string name="choose_role">Please, choose role!</string>
 </resources>

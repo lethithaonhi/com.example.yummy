@@ -227,7 +227,7 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
         });
     }
 
-    public void showDatePickerDialog(TextView tvBirth) {
+    private void showDatePickerDialog(TextView tvBirth) {
         @SuppressLint("SetTextI18n") DatePickerDialog.OnDateSetListener callback= (view, year, monthOfYear, dayOfMonth) -> tvBirth.setText((dayOfMonth) +"/"+(monthOfYear+1)+"/"+year);
 
         String s=tvBirth.getText()+"";

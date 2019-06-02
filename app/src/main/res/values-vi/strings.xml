@@ -196,4 +196,7 @@
     <string name="my_account">Tài khoản của tôi</string>
     <string name="my_res">Nhà hàng của tôi</string>
     <string name="role">Quyền</string>
+    <string name="customer">Khách hàng</string>
+    <string name="partner">Đối tác</string>
+    <string name="choose_role">Vui lòng cấp quyền tài khoản!</string>
 </resources>

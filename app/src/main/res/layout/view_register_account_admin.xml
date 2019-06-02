@@ -133,11 +133,13 @@
                     android:text="@string/role"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
-
                 <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6" />
+                    android:popupBackground="@color/black"
+                    android:id="@+id/sn_role"
+                    android:layout_weight="0.6"
+                    android:background="@drawable/bg_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
