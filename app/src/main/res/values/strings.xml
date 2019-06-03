@@ -206,4 +206,12 @@
     <string name="choose_role">Please, choose role!</string>
     <string name="close_branch">Do you want to close this branch?</string>
     <string name="open_branch">Do you want to open this branch?</string>
+    <string name="create_res">Create new restaurant</string>
+    <string name="name_res">Restaurant names</string>
+    <string name="time_open">Open time</string>
+    <string name="close_time">Close time</string>
+    <string name="fee_enter">Enter feeship (VND/1km)</string>
+    <string name="type">Type menu</string>
+    <string name="enter_video">Enter link video (get link on Youtube)</string>
+    <string name="create">Create</string>
 </resources>

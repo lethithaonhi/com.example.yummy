@@ -202,4 +202,12 @@
     <string name="close_branch">Bạn có muốn đóng cửa chi nhánh này?</string>
     <string name="open_branch">Bạn có muốn mở cửa chi nhánh này?</string>
     <string name="mess_open">Bạn có muốn mở lại?</string>
+    <string name="create_res">Tạo quán ăn mới</string>
+    <string name="name_res">Tên quán ăn</string>
+    <string name="time_open">Thời gian mở cửa</string>
+    <string name="close_time">Thời gian đóng cửa</string>
+    <string name="fee_enter">Nhập phí vận chuyển (VND/1km)</string>
+    <string name="type">Loại thực đơn</string>
+    <string name="enter_video">Nhập đường dẫn video (đường dẫn từ youtube)</string>
+    <string name="create">Tạo</string>
 </resources>

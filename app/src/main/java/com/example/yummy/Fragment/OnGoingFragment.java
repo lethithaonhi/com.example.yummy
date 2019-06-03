@@ -222,18 +222,4 @@ public class OnGoingFragment extends Fragment {
             return null;
         }
     }
-
-    private void initMessOrder() {
-        endPlayer = MediaPlayer.create(getContext(), R.raw.endorder);
-        if (endPlayer != null) {
-            endPlayer.setVolume(1.0f, 1.0f);
-            endPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            endPlayer.start();
-            endPlayer.setOnCompletionListener((mp) -> {
-                endPlayer.stop();
-                endPlayer.release();
-                endPlayer = null;
-            });
-        }
-    }
 }
