@@ -227,9 +227,9 @@ public class ManageAccountAdmin extends AppCompatActivity {
         String cmnd = edCMND.getText().toString().trim();
 
         boolean isPart = false;
+        Partner partner = new Partner();
         if (account.getRole() == 3) {
             if (!stk.isEmpty() && !cmnd.isEmpty() && !bank.isEmpty()) {
-                Partner partner = new Partner();
                 partner.setCmnd(cmnd);
                 partner.setStk(stk);
                 partner.setBank(bank);
@@ -248,7 +248,7 @@ public class ManageAccountAdmin extends AppCompatActivity {
             DatabaseReference dataNode = FirebaseDatabase.getInstance().getReference();
             dataNode.child(Node.user).child(account.getUserId()).setValue(account);
             if(account.getRole() == 3) {
-                dataNode.child(Node.Partner).child(account.getUserId()).setValue(account);
+                dataNode.child(Node.Partner).child(account.getUserId()).setValue(partner);
                 Intent intent = new Intent(this, AddRestaurantActivity.class);
                 startActivity(intent);
             }else {

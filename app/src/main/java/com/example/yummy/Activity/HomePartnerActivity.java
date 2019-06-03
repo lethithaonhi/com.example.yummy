@@ -1,9 +1,6 @@
 package com.example.yummy.Activity;
 
-import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -19,15 +16,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.yummy.Fragment.InfoPartnerFragment;
 import com.example.yummy.Fragment.ManageAdminFragment;
 import com.example.yummy.Fragment.RestaurantPartnerFragment;
 import com.example.yummy.Fragment.SettingPartnerFragment;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
-import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 public class HomePartnerActivity extends AppCompatActivity {
