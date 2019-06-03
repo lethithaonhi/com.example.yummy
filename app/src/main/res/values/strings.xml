@@ -164,6 +164,7 @@
     <string name="order">Order</string>
     <string name="branch">Branch</string>
     <string name="mess_delete">Do you want to delete?</string>
+    <string name="mess_open">Do you want to open?</string>
     <string name="edit_menu">Edit Menu</string>
     <string name="menu_name">Enter Food\'s name</string>
     <string name="menu_price">Enter Price\'s name</string>
@@ -194,4 +195,15 @@
     <string name="manage">Management</string>
     <string name="exit">Exit</string>
     <string name="hot">Hot</string>
+    <string name="account">Account</string>
+    <string name="statistics">Statistics</string>
+    <string name="admin">Administrator</string>
+    <string name="my_account">My Account</string>
+    <string name="my_res">My Restaurant</string>
+    <string name="role">Role</string>
+    <string name="customer">Customer</string>
+    <string name="partner">Partner</string>
+    <string name="choose_role">Please, choose role!</string>
+    <string name="close_branch">Do you want to close this branch?</string>
+    <string name="open_branch">Do you want to open this branch?</string>
 </resources>

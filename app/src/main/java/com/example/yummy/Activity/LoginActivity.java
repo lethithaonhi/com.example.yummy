@@ -238,6 +238,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("notifySignInEmail", "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(LoginActivity.this, R.string.success,
+                                    Toast.LENGTH_SHORT).show();
                             getInfoAccount();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -314,6 +316,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                                         }
                                     });
+                                }else {
+                                    Intent intent = new Intent(LoginActivity.this, HomePartnerActivity.class);
+                                    startActivity(intent);
+                                    finish();
                                 }
                             }
 

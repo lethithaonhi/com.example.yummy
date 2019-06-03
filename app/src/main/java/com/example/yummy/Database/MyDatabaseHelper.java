@@ -13,6 +13,7 @@ import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.Model.Review;
 import com.example.yummy.Utils.BranchContrains;
+import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.MenuContrains;
 import com.example.yummy.Utils.RestaurantContrains;
 import com.example.yummy.Utils.ReviewContrains;
@@ -68,39 +69,43 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public int addBranch(Branch branch, String resID, String city) {
+        if (checkExistBranch(branch.getAddress(), city) == 0) {
+            SQLiteDatabase db = this.getWritableDatabase();
 
-        SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(BranchContrains.BRA_ID, branch.getId());
+            values.put(BranchContrains.RES_ID, resID);
+            values.put(BranchContrains.AVATAR, branch.getAvatar());
+            values.put(BranchContrains.ADDESS, branch.getAddress());
+            values.put(BranchContrains.LATITUDE, branch.getLatitude());
+            values.put(BranchContrains.LONGITUDE, branch.getLongitude());
+            values.put(BranchContrains.CITY, city);
+            values.put(BranchContrains.ISDELETE, branch.getIsDelete());
 
-        ContentValues values = new ContentValues();
-        values.put(BranchContrains.BRA_ID, branch.getId());
-        values.put(BranchContrains.RES_ID, resID);
-        values.put(BranchContrains.AVATAR, branch.getAvatar());
-        values.put(BranchContrains.ADDESS, branch.getAddress());
-        values.put(BranchContrains.LATITUDE, branch.getLatitude());
-        values.put(BranchContrains.LONGITUDE, branch.getLongitude());
-        values.put(BranchContrains.CITY, city);
-        values.put(BranchContrains.ISDELETE, branch.getIsDelete());
-
-        return (int) db.insert(BranchContrains.TABLE_NAME, null, values);
+            return (int) db.insert(BranchContrains.TABLE_NAME, null, values);
+        }
+        return 0;
     }
 
     public void addMenu(Menu menu, String resID, String city) {
+        if(checkExistMenu(resID, menu, city) == 0) {
 
-        SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(MenuContrains.Menu_ID, menu.getMenu_id());
-        values.put(MenuContrains.TYPE, menu.getType());
-        values.put(MenuContrains.RES_ID, resID);
-        values.put(MenuContrains.NAME, menu.getName());
-        values.put(MenuContrains.PRICES, menu.getPrices());
-        values.put(MenuContrains.IMAGE, menu.getImage());
-        values.put(MenuContrains.CITY, city);
-        values.put(MenuContrains.DESCRIBE, menu.getDescribe() != null ? menu.getDescribe() : "");
-        values.put(MenuContrains.ISDELETE, menu.getIsDelete());
+            ContentValues values = new ContentValues();
+            values.put(MenuContrains.Menu_ID, menu.getMenu_id());
+            values.put(MenuContrains.TYPE, menu.getType());
+            values.put(MenuContrains.RES_ID, resID);
+            values.put(MenuContrains.NAME, menu.getName());
+            values.put(MenuContrains.PRICES, menu.getPrices());
+            values.put(MenuContrains.IMAGE, menu.getImage());
+            values.put(MenuContrains.CITY, city);
+            values.put(MenuContrains.DESCRIBE, menu.getDescribe() != null ? menu.getDescribe() : "");
+            values.put(MenuContrains.ISDELETE, menu.getIsDelete());
 
-        db.insert(MenuContrains.TABLE_NAME, null, values);
-        db.close();
+            db.insert(MenuContrains.TABLE_NAME, null, values);
+            db.close();
+        }
     }
 
     public void addReview(Review review, String resID, String city) {
@@ -124,30 +129,31 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
 
     public void addRestaurant(Restaurant restaurant) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        if (checkExistRes(restaurant.getName(), restaurant.getCity()) == 0) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(RestaurantContrains.RES_ID, restaurant.getRes_id());
+            values.put(RestaurantContrains.NAME_RES, restaurant.getName());
+            values.put(RestaurantContrains.OPEN_TIME, restaurant.getOpen_time());
+            values.put(RestaurantContrains.CLOSE_TIME, restaurant.getClose_open());
+            values.put(RestaurantContrains.VIDEO, restaurant.getVideo());
+            values.put(RestaurantContrains.IMG_LIST, convertListToString(restaurant.getImgList()));
+            values.put(RestaurantContrains.MENU_LIST, convertListToString(restaurant.getMenuIdList()));
+            values.put(RestaurantContrains.CITY, restaurant.getCity());
+            values.put(RestaurantContrains.MARK, restaurant.getMark());
+            values.put(RestaurantContrains.FREESHIP, restaurant.getFreeship());
+            values.put(RestaurantContrains.DISCOUNT, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getDiscount() : 0);
+            values.put(RestaurantContrains.MAX_DISCOUNT, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getMax_discount() : 0);
+            values.put(RestaurantContrains.MIN_ORDER, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getMin_order() : 0);
+            values.put(RestaurantContrains.CODE, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getCode() : "");
 
-        ContentValues values = new ContentValues();
-        values.put(RestaurantContrains.RES_ID, restaurant.getRes_id());
-        values.put(RestaurantContrains.NAME_RES, restaurant.getName());
-        values.put(RestaurantContrains.OPEN_TIME, restaurant.getOpen_time());
-        values.put(RestaurantContrains.CLOSE_TIME, restaurant.getClose_open());
-        values.put(RestaurantContrains.VIDEO, restaurant.getVideo());
-        values.put(RestaurantContrains.IMG_LIST, convertListToString(restaurant.getImgList()));
-        values.put(RestaurantContrains.MENU_LIST, convertListToString(restaurant.getMenuIdList()));
-        values.put(RestaurantContrains.CITY, restaurant.getCity());
-        values.put(RestaurantContrains.MARK, restaurant.getMark());
-        values.put(RestaurantContrains.FREESHIP, restaurant.getFreeship());
-        values.put(RestaurantContrains.DISCOUNT, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getDiscount():0);
-        values.put(RestaurantContrains.MAX_DISCOUNT, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getMax_discount():0);
-        values.put(RestaurantContrains.MIN_ORDER, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getMin_order():0);
-        values.put(RestaurantContrains.CODE, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getCode():"");
-
-        // Trèn một dòng dữ liệu vào bảng.
-        db.insert(RestaurantContrains.TABLE_NAME, null, values);
+            // Trèn một dòng dữ liệu vào bảng.
+            db.insert(RestaurantContrains.TABLE_NAME, null, values);
 
 
-        // Đóng kết nối database.
-        db.close();
+            // Đóng kết nối database.
+            db.close();
+        }
     }
 
     private Restaurant getResFromCursor(Cursor cursor) {
@@ -180,8 +186,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         branch.setAddress(cursor.getString(4));
         branch.setLatitude(cursor.getDouble(5));
         branch.setLongitude(cursor.getDouble(6));
-        branch.setDistance(cursor.getFloat(7));
-        branch.setIsDelete(cursor.getInt(8));
+        branch.setDistance(cursor.getFloat(8));
+        branch.setIsDelete(cursor.getInt(9));
 
         return branch;
     }
@@ -220,8 +226,20 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put(MenuContrains.PRICES, menu.getPrices());
         values.put(MenuContrains.ISDELETE, menu.getIsDelete());
         // updating row
-        db.update(MenuContrains.TABLE_NAME, values, MenuContrains.RES_ID + " = ? AND "+ MenuContrains.TYPE + "=?",
-                new String[] {menu.getMenu_id(), String.valueOf(menu.getPrices())});
+        db.update(MenuContrains.TABLE_NAME, values, MenuContrains.Menu_ID + " = ? AND "+ MenuContrains.TYPE + "=? AND "
+                        +MenuContrains.CITY+" =? AND "+MenuContrains.RES_ID +" =?",
+                new String[] {menu.getMenu_id(), menu.getType(), Common.myAddress, Common.accountCurrent.getPartner().getBoss()});
+    }
+
+    public void updateBranch(Branch branch){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(BranchContrains.ISDELETE, branch.getIsDelete());
+        // updating row
+        db.update(BranchContrains.TABLE_NAME, values, BranchContrains.ADDESS + " = ? AND "+BranchContrains.LONGITUDE
+                        + " = ? AND "+BranchContrains.LATITUDE+" =?",
+                new String[] {branch.getAddress(), String.valueOf(branch.getLongitude()), String.valueOf(branch.getLatitude())});
     }
 
     public List<Restaurant> getRestaurant(List<String> idList, String address) {
@@ -340,10 +358,42 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return dataList;
     }
 
-    public int checkExistRes(String name) {
+    private int checkExistRes(String name, String city) {
         SQLiteDatabase db = this.getReadableDatabase();
-            String query = "select count(*) from "+ RestaurantContrains.TABLE_NAME +" where "+RestaurantContrains.NAME_RES+" = ?";
-            Cursor cursor = db.rawQuery(query, new String[] {name});
+            String query = "select count(*) from "+ RestaurantContrains.TABLE_NAME +" where "+RestaurantContrains.NAME_RES+" = ? AND "+RestaurantContrains.CITY+" =?";
+            Cursor cursor = db.rawQuery(query, new String[] {name, city});
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            }
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return  0;
+    }
+
+    private int checkExistBranch(String address, String city) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "select count(*) from "+ BranchContrains.TABLE_NAME +" where "+BranchContrains.ADDESS+" = ? AND "+BranchContrains.CITY+" =?";
+        Cursor cursor = db.rawQuery(query, new String[] {address, city});
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            }
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return  0;
+    }
+
+    private int checkExistMenu(String resID, Menu menu, String city) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "select count(*) from "+ MenuContrains.TABLE_NAME +" where "+MenuContrains.RES_ID+" = ? AND "+MenuContrains.CITY +" =? AND "+MenuContrains.NAME+" =?";
+        Cursor cursor = db.rawQuery(query, new String[] {resID, city, menu.getName()});
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {

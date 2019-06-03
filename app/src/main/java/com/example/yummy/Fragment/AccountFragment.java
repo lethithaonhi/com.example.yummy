@@ -92,7 +92,7 @@ public class AccountFragment extends Fragment {
         LinearLayout viewHistory = v.findViewById(R.id.view_history);
         LinearLayout viewManage = v.findViewById(R.id.view_manage);
 
-        if(Common.accountCurrent != null && Common.accountCurrent.getRole() == 3){
+        if(Common.accountCurrent != null && Common.accountCurrent.getRole() != 2){
                 viewSetting.setVisibility(View.GONE);
                 viewManage.setVisibility(View.VISIBLE);
         }

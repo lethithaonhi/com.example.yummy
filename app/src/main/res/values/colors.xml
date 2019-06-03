@@ -34,4 +34,7 @@
     <color name="mess2">#33979797</color>
     <color name="red">#FF2127</color>
     <color name="grey_no">#CFCECE</color>
+    <color name="yellow_light">#FCEF89</color>
+    <color name="yellow">#E4E01A</color>
+    <color name="yellow_trans">#CCFFF8B3</color>
 </resources>

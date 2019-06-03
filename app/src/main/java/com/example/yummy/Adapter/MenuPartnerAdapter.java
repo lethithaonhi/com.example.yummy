@@ -50,22 +50,29 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
     public void onBindViewHolder(@NonNull MenuPartnerHolder holder, int i) {
         Menu menu = dataList.get(i);
 
-        if(menu.getIsDelete() != 1) {
-            holder.tvName.setText(menu.getName());
-            holder.tvDes.setText(menu.getDescribe());
-            holder.tvPrice.setText(menu.getPrices() + " VND");
-            Picasso.get().load(menu.getImage()).into(holder.imMenu);
+        holder.tvName.setText(menu.getName());
+        holder.tvDes.setText(menu.getDescribe());
+        holder.tvPrice.setText(menu.getPrices() + " VND");
+        Picasso.get().load(menu.getImage()).into(holder.imMenu);
 
-            holder.btnDelete.setOnClickListener(v -> showDialogDelete(menu));
-            holder.btnEdit.setOnClickListener(v->showDialogEdit(menu));
-            holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
-            holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
-                @Override
-                public void onOpen(SwipeLayout layout) {
-                    YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
-                }
-            });
-            holder.swipeLayout.setOnDoubleClickListener((layout, surface) -> Toast.makeText(context, "DoubleClick", Toast.LENGTH_SHORT).show());
+        holder.btnDelete.setOnClickListener(v -> showDialogDelete(menu));
+        holder.btnEdit.setOnClickListener(v->showDialogEdit(menu));
+        holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+        holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
+            }
+        });
+        holder.swipeLayout.setOnDoubleClickListener((layout, surface) -> Toast.makeText(context, "DoubleClick", Toast.LENGTH_SHORT).show());
+
+
+        if(menu.getIsDelete() != 1) {
+            holder.imClose.setVisibility(View.GONE);
+            holder.imDelete.setImageResource(R.drawable.ic_delete_white_24dp);
+        }else {
+            holder.imClose.setVisibility(View.VISIBLE);
+            holder.imDelete.setImageResource(R.drawable.open);
         }
     }
 
@@ -81,7 +88,7 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
 
 
     class MenuPartnerHolder extends RecyclerView.ViewHolder {
-        ImageView imMenu;
+        ImageView imMenu, imClose, imDelete;
         TextView tvName, tvDes, tvCount, tvPrice;
         SwipeLayout swipeLayout;
         LinearLayout btnEdit, btnDelete;
@@ -96,6 +103,8 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
             swipeLayout = itemView.findViewById(R.id.swipe);
             btnDelete = itemView.findViewById(R.id.btn_delete);
             btnEdit = itemView.findViewById(R.id.btn_edit);
+            imClose = itemView.findViewById(R.id.im_close);
+            imDelete = itemView.findViewById(R.id.im_delete);
 
             ViewTreeObserver vto = imMenu.getViewTreeObserver();
             vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -112,12 +121,17 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
     private void showDialogDelete(Menu menu) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder
-                .setMessage(context.getResources().getString(R.string.mess_delete))
+                .setMessage(menu.getIsDelete() == 1 ? context.getResources().getString(R.string.mess_open) : context.getResources().getString(R.string.mess_delete))
                 .setCancelable(false)
-                .setPositiveButton(context.getResources().getString(R.string.delete), ((dialog, which) -> {
+                .setPositiveButton(menu.getIsDelete() == 1 ? context.getResources().getString(R.string.yes) : context.getResources().getString(R.string.delete), ((dialog, which) -> {
                     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                    mDatabase.child(Node.ThucDonQuanAn).child("quan1").child(menu.getType()).child(menu.getMenu_id()).child(Node.isDelete).setValue(1);
-                    menu.setIsDelete(1);
+                    int isDel = menu.getIsDelete();
+                    if(isDel == 0)
+                        isDel = 1;
+                    else
+                        isDel = 0;
+                    mDatabase.child(Node.ThucDonQuanAn).child(Common.accountCurrent.getPartner().getBoss()).child(menu.getType()).child(menu.getMenu_id()).child(Node.isDelete).setValue(isDel);
+                    menu.setIsDelete(isDel);
                     Common.db.updateMenu(menu);
                     dialog.dismiss();
                     notifyDataSetChanged();
