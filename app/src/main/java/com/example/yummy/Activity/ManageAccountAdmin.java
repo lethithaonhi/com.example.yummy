@@ -68,7 +68,6 @@ public class ManageAccountAdmin extends AppCompatActivity {
         list.add(this.getResources().getString(R.string.partner));
         Spinner spinner = findViewById(R.id.sn_role);
         ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.item_spinner,list);
-//            adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

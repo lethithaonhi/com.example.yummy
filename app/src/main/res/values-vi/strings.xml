@@ -210,4 +210,5 @@
     <string name="type">Loại thực đơn</string>
     <string name="enter_video">Nhập đường dẫn video (đường dẫn từ youtube)</string>
     <string name="create">Tạo</string>
+    <string name="not_back">Bạn phải hoàn thành thông tin này!!</string>
 </resources>

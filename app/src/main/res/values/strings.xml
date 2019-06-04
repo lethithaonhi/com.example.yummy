@@ -214,4 +214,5 @@
     <string name="type">Type menu</string>
     <string name="enter_video">Enter link video (get link on Youtube)</string>
     <string name="create">Create</string>
+    <string name="not_back">You must complete this information!!</string>
 </resources>
