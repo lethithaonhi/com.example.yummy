@@ -19,5 +19,5 @@ public class Node {
     public static String isStatus = "isStatus";
     public static String isDelete = "isDelete";
     public static String Partner = "Partner";
-
+    public static String Boss = "boss";
 }

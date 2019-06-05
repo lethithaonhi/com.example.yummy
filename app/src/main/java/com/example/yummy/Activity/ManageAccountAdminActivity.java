@@ -2,7 +2,6 @@ package com.example.yummy.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class ManageAccountAdmin extends AppCompatActivity {
+public class ManageAccountAdminActivity extends AppCompatActivity {
     private boolean isShowPass = false, isShowPass1 = false;
     private int gender=0;
     private boolean isPhone = false;
@@ -203,13 +202,13 @@ public class ManageAccountAdmin extends AppCompatActivity {
                                 saveInfor(account);
 
                             }else{
-                                Toast.makeText(ManageAccountAdmin.this, R.string.failed_register,
+                                Toast.makeText(ManageAccountAdminActivity.this, R.string.failed_register,
                                         Toast.LENGTH_LONG).show();
                             }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("notify_register", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(ManageAccountAdmin.this, R.string.failed_register,
+                            Toast.makeText(ManageAccountAdminActivity.this, R.string.failed_register,
                                     Toast.LENGTH_LONG).show();
                         }
                     });
@@ -249,6 +248,7 @@ public class ManageAccountAdmin extends AppCompatActivity {
             if(account.getRole() == 3) {
                 dataNode.child(Node.Partner).child(account.getUserId()).setValue(partner);
                 Intent intent = new Intent(this, AddRestaurantActivity.class);
+                intent.putExtra("userID", account.getUserId());
                 startActivity(intent);
             }else {
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
@@ -268,7 +268,7 @@ public class ManageAccountAdmin extends AppCompatActivity {
         int nam=Integer.parseInt(strArrtmp[2]);
 
         DatePickerDialog pic=new DatePickerDialog(
-                ManageAccountAdmin.this,
+                ManageAccountAdminActivity.this,
                 callback, nam, thang, ngay);
         pic.setTitle(R.string.address_user);
         pic.show();

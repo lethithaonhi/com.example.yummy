@@ -59,7 +59,7 @@
         <activity android:name=".Activity.HomePartnerActivity" >
         </activity>
         <activity android:name=".Activity.RestaurantManageActivity" />
-        <activity android:name=".Activity.ManageAccountAdmin" />
+        <activity android:name=".Activity.ManageAccountAdminActivity" />
         <activity android:name=".Activity.AddRestaurantActivity" />
 
     </application>

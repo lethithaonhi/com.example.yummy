@@ -20,6 +20,9 @@ import android.widget.Toast;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.Node;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,6 +36,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
     private TextView tvOpen, tvClose;
     private Calendar myCalender;
     private List<String> checkList;
+    private String userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +44,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
         setContentView(R.layout.view_add_restaurant);
 
         checkList = new ArrayList<>();
+        userId = getIntent().getStringExtra("userID");
         initView();
     }
 
@@ -89,6 +94,13 @@ public class AddRestaurantActivity extends AppCompatActivity {
                 restaurant.setFreeship(freeShip);
                 restaurant.setVideo(video);
                 restaurant.setMenuIdList(checkList);
+                DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
+                String key = mData.child(Node.QuanAn).push().getKey();
+                mData.child(Node.QuanAn).push().setValue(restaurant);
+                if(userId != null){
+                    mData.child(Node.Partner).child(userId).child(Node.Boss).setValue(key);
+                }
+
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
             }
 
