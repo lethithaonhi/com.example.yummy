@@ -48,6 +48,7 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
     private EditText edCMND, edBank, edSTK;
     private FirebaseAuth mAuth;
     private int role=0;
+    private ImageButton imError;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -135,7 +136,7 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
         Button btnSave = findViewById(R.id.btn_save);
         btnSave.setText(R.string.create_user);
         LinearLayout vTitle = findViewById(R.id.v_title);
-        ImageButton imError = findViewById(R.id.btn_error);
+        imError = findViewById(R.id.btn_error);
 
         btnSave.setOnClickListener(v->registerAccount());
 
@@ -223,6 +224,15 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
         String bank = edBank.getText().toString().trim();
         String stk = edSTK.getText().toString().trim();
         String cmnd = edCMND.getText().toString().trim();
+
+        if (phone.length() > 0 && phone.length() < 11 && phone.charAt(0) == '0') {
+            imError.setImageResource(R.drawable.ic_check_circle_24dp);
+            isPhone = true;
+        } else {
+            imError.setImageResource(R.drawable.ic_error_red_24dp);
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            isPhone = false;
+        }
 
         boolean isPart = false;
         Partner partner = new Partner();
