@@ -81,7 +81,7 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
         });
 
         ImageButton btnShowPass1 = findViewById(R.id.btn_password_show);
-        btnShowPass.setOnClickListener(v -> {
+        btnShowPass1.setOnClickListener(v -> {
             isShowPass1 = !isShowPass1;
             if (!isShowPass1) {
                 edtConfirm.setInputType(InputType.TYPE_CLASS_TEXT);
