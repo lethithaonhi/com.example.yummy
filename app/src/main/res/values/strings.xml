@@ -164,6 +164,7 @@
     <string name="order">Order</string>
     <string name="branch">Branch</string>
     <string name="mess_delete">Do you want to delete?</string>
+    <string name="mess_close">Do you want to close?</string>
     <string name="mess_open">Do you want to open?</string>
     <string name="edit_menu">Edit Menu</string>
     <string name="menu_name">Enter Food\'s name</string>

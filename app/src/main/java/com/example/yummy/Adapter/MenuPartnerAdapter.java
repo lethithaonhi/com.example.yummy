@@ -64,8 +64,6 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
                 YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
             }
         });
-        holder.swipeLayout.setOnDoubleClickListener((layout, surface) -> Toast.makeText(context, "DoubleClick", Toast.LENGTH_SHORT).show());
-
 
         if(menu.getIsDelete() != 1) {
             holder.imClose.setVisibility(View.GONE);

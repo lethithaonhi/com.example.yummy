@@ -214,4 +214,5 @@
     <string name="account_admin">Tài khoản quản trị viên</string>
     <string name="account_custom">Tài khoản khách hàng</string>
     <string name="account_partner">Tài khoản đối tác</string>
+    <string name="mess_close">Bạn có muốn khóa?</string>
 </resources>

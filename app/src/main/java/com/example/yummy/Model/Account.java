@@ -19,6 +19,7 @@ public class Account implements Parcelable {
     private String password;
     private List<Addresses> addressList;
     private Partner partner;
+    private int isClose; //1:close, 0: open
 
     public Account(){}
 
@@ -36,6 +37,7 @@ public class Account implements Parcelable {
         addressList = new ArrayList<>();
         in.readList(addressList, Addresses.class.getClassLoader());
         partner = in.readParcelable(Partner.class.getClassLoader());
+        isClose = in.readInt();
     }
 
     public String getUserId() {
@@ -134,6 +136,14 @@ public class Account implements Parcelable {
         this.partner = partner;
     }
 
+    public int getIsClose() {
+        return isClose;
+    }
+
+    public void setIsClose(int isClose) {
+        this.isClose = isClose;
+    }
+
     public static final Creator<Account> CREATOR = new Creator<Account>() {
         @Override
         public Account createFromParcel(Parcel in) {
@@ -165,5 +175,6 @@ public class Account implements Parcelable {
         dest.writeString(password);
         dest.writeList(addressList);
         dest.writeParcelable(partner, flags);
+        dest.writeInt(isClose);
     }
 }

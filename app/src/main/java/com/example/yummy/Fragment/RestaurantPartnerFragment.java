@@ -24,7 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.yummy.Activity.LoginActivity;
-import com.example.yummy.Activity.RestaurantManageActivity;
+import com.example.yummy.Activity.RestaurantManagePartnerActivity;
 import com.example.yummy.Adapter.ImgRestaurantDetailAdapter;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
@@ -66,19 +66,19 @@ public class RestaurantPartnerFragment extends Fragment {
         LinearLayout vImage = v.findViewById(R.id.v_image);
 
         vOrder.setOnClickListener(vl->{
-            Intent intent = new Intent(getContext(), RestaurantManageActivity.class);
+            Intent intent = new Intent(getContext(), RestaurantManagePartnerActivity.class);
             intent.putExtra("type", 0);
             startActivity(intent);
         });
 
         vBranch.setOnClickListener(vl->{
-            Intent intent = new Intent(getContext(), RestaurantManageActivity.class);
+            Intent intent = new Intent(getContext(), RestaurantManagePartnerActivity.class);
             intent.putExtra("type", 1);
             startActivity(intent);
         });
 
         vMenu.setOnClickListener(vl->{
-            Intent intent = new Intent(getContext(), RestaurantManageActivity.class);
+            Intent intent = new Intent(getContext(), RestaurantManagePartnerActivity.class);
             intent.putExtra("type", 2);
             startActivity(intent);
         });

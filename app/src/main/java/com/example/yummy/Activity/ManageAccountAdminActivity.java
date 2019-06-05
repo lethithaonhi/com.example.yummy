@@ -13,9 +13,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.yummy.Adapter.AccountAdminAdapter;
+import com.example.yummy.Model.Account;
 import com.example.yummy.R;
+import com.example.yummy.Utils.Common;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ManageAccountAdminActivity extends AppCompatActivity {
+    private List<Account> data;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,5 +68,17 @@ public class ManageAccountAdminActivity extends AppCompatActivity {
             tvType.setText(R.string.customer);
         }
 
+        getAccountFromType(type);
+        AccountAdminAdapter accountAdminAdapter = new AccountAdminAdapter(this, data);
+        rcvAccount.setAdapter(accountAdminAdapter);
+    }
+
+    private void getAccountFromType(int type){
+        data = new ArrayList<>();
+        for(Account account : Common.accountList){
+            if(account.getRole() == type){
+                data.add(account);
+            }
+        }
     }
 }

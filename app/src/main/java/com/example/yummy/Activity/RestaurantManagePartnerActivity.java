@@ -74,7 +74,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import jp.wasabeef.recyclerview.animators.FadeInLeftAnimator;
 
-public class RestaurantManageActivity extends AppCompatActivity {
+public class RestaurantManagePartnerActivity extends AppCompatActivity {
     private int type;
     private String typeMenu;
     private ImageView imgMenu, imBranch, imCheck;
@@ -496,7 +496,7 @@ public class RestaurantManageActivity extends AppCompatActivity {
 
     @SuppressLint("StaticFieldLeak")
     private class DataLongOperationAsynchTask extends AsyncTask<String, Void, String[]> {
-        ProgressDialog dialog = new ProgressDialog(RestaurantManageActivity.this);
+        ProgressDialog dialog = new ProgressDialog(RestaurantManagePartnerActivity.this);
 
         @Override
         protected void onPreExecute() {
@@ -542,7 +542,7 @@ public class RestaurantManageActivity extends AppCompatActivity {
                     imCheck.setImageResource(R.drawable.ic_check_circle_24dp);
 
                 } else {
-                    Toast.makeText(RestaurantManageActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RestaurantManagePartnerActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
                     if (dialog.isShowing()) {
                         dialog.dismiss();
                     }
@@ -550,7 +550,7 @@ public class RestaurantManageActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
                 imCheck.setImageResource(R.drawable.click);
-                Toast.makeText(RestaurantManageActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
+                Toast.makeText(RestaurantManagePartnerActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                 }

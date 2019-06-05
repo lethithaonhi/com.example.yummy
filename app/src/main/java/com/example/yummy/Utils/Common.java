@@ -24,4 +24,5 @@ public class Common {
     public static String language;
     public static List<Blog> blogList;
     public static List<Order> orderListCurrent;
+    public static List<Account> accountList;
 }

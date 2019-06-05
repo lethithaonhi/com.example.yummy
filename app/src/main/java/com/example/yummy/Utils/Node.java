@@ -20,4 +20,5 @@ public class Node {
     public static String isDelete = "isDelete";
     public static String Partner = "Partner";
     public static String Boss = "boss";
+    public static String isClose ="isClose";
 }

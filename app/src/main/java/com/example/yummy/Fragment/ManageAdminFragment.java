@@ -10,7 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.example.yummy.Activity.ManageAccountAdminActivity;
+import com.example.yummy.Model.Account;
+import com.example.yummy.Model.Partner;
 import com.example.yummy.R;
+import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.Node;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class ManageAdminFragment extends Fragment {
 
@@ -27,6 +38,7 @@ public class ManageAdminFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_manage_home_admin, container, false);
 
+        getAccount();
         initView(v);
         return v;
     }
@@ -38,5 +50,44 @@ public class ManageAdminFragment extends Fragment {
         LinearLayout vStatistic = v.findViewById(R.id.v_statistic);
 
         vAccount.setOnClickListener(vl->startActivity(new Intent(getContext(), ManageAccountAdminActivity.class)));
+    }
+
+    private void getAccount(){
+        Common.accountList = new ArrayList<>();
+        DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
+        mData.child(Node.user).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                    Account account = dataSnapshot1.getValue(Account.class);
+                    if(account != null){
+                        if(account.getRole() == 2){
+                            mData.child(Node.Partner).child(account.getUserId()).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    Partner partner = dataSnapshot.getValue(Partner.class);
+                                    if(partner != null){
+                                        account.setPartner(partner);
+                                        Common.accountList.add(account);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }else{
+                            Common.accountList.add(account);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
