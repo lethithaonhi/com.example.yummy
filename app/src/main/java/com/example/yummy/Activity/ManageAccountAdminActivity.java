@@ -52,6 +52,7 @@ public class ManageAccountAdminActivity extends AppCompatActivity {
         dialog.show();
 
         ImageView imBack = dialog.findViewById(R.id.im_back);
+        imBack.setOnClickListener(v->finish());
         imBack.setOnClickListener(v->dialog.dismiss());
         TextView tvType = dialog.findViewById(R.id.tv_type);
         RecyclerView rcvAccount = dialog.findViewById(R.id.rcv_account);
@@ -62,7 +63,7 @@ public class ManageAccountAdminActivity extends AppCompatActivity {
 
         if(type == 1) {
             tvType.setText(R.string.admin);
-        }else if(type == 2){
+        }else if(type == 3){
             tvType.setText(R.string.partner);
         }else {
             tvType.setText(R.string.customer);

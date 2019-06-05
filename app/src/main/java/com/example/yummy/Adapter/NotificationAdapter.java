@@ -45,6 +45,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.tvTitle.setText(blog.getTitle());
         holder.tvContent.setText(blog.getContent());
         holder.tvTime.setText(blog.getTime());
+        if(!blog.getImage().isEmpty())
         Picasso.get().load(blog.getImage()).into(holder.img);
         holder.viewRoot.setOnClickListener(v-> loadWeb(blog.getUrl()));
     }

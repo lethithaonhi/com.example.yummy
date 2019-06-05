@@ -18,9 +18,7 @@ import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.example.yummy.Model.Account;
-import com.example.yummy.Model.Menu;
 import com.example.yummy.R;
-import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -37,6 +35,7 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
         this.data = data;
     }
 
+    @NonNull
     @Override
     public AccountAdminHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_account_admin_manage, parent, false);
@@ -44,13 +43,14 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
     }
 
     @Override
-    public void onBindViewHolder(AccountAdminHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AccountAdminHolder holder, int position) {
         Account account = data.get(position);
         holder.tvName.setText(account.getName());
         holder.tvUserName.setText(account.getUsername());
         holder.tvPhone.setText(account.getPhone());
         holder.tvPass.setText(account.getPhone() != null ? account.getPhone(): "Hide");
-        Picasso.get().load(account.getAvatar()).into(holder.imAvatar);
+        if(!account.getAvatar().isEmpty())
+            Picasso.get().load(account.getAvatar()).into(holder.imAvatar);
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
@@ -59,12 +59,24 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
             }
         });
         holder.btnClose.setOnClickListener(v->showDialogClose(account));
-        if(account.getIsClose() != 1) {
+        if(account.getIsClose() == 0) {
+            holder.imClose.setVisibility(View.GONE);
             holder.btnClose.setBackgroundColor(context.getResources().getColor(R.color.red));
             holder.imDelete.setImageResource(R.drawable.ic_lock);
         }else {
             holder.btnClose.setBackgroundColor(context.getResources().getColor(R.color.green));
             holder.imDelete.setImageResource(R.drawable.unlock);
+            holder.imClose.setVisibility(View.VISIBLE);
+        }
+
+        if(account.getGender() == 1){
+            holder.imSex.setVisibility(View.VISIBLE);
+            holder.imSex.setImageResource(R.drawable.boy);
+        }else if(account.getGender() == 2){
+            holder.imSex.setVisibility(View.VISIBLE);
+            holder.imSex.setImageResource(R.drawable.girl);
+        }else {
+            holder.imSex.setVisibility(View.GONE);
         }
     }
 
@@ -80,7 +92,7 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
 
     class AccountAdminHolder extends RecyclerView.ViewHolder {
         SwipeLayout swipeLayout;
-        ImageView imAvatar, imDelete;
+        ImageView imAvatar, imDelete, imClose, imSex;
         TextView tvName, tvUserName, tvPhone, tvPass;
         LinearLayout btnClose;
         AccountAdminHolder(@NonNull View itemView) {
@@ -94,6 +106,8 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
             tvPass = itemView.findViewById(R.id.tv_pass);
             btnClose = itemView.findViewById(R.id.btn_delete);
             imDelete = itemView.findViewById(R.id.im_delete);
+            imClose = itemView.findViewById(R.id.im_close);
+            imSex = itemView.findViewById(R.id.im_sex);
         }
     }
 

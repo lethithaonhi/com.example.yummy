@@ -58,6 +58,7 @@ public class MenuRestaurantDetailAdapter extends RecyclerView.Adapter<MenuRestau
             holder.tvName.setText(menu.getName());
             holder.tvDes.setText(menu.getDescribe());
             holder.tvPrice.setText(menu.getPrices() + " VND");
+            if(!menu.getImage().isEmpty())
             Picasso.get().load(menu.getImage()).into(holder.imMenu);
 
             holder.btnAdd.setOnClickListener(v -> {

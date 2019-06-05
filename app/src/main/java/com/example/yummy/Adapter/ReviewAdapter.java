@@ -41,6 +41,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewHold
         holder.tvTime.setText(review.getTime());
         holder.tvName.setText(review.getName());
         holder.tvMark.setText(review.getMark()+"");
+        if(!review.getAvatar().isEmpty())
         Picasso.get().load(review.getAvatar()).into(holder.imAvatar);
 
     }

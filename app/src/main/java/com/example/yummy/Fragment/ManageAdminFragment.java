@@ -65,10 +65,12 @@ public class ManageAdminFragment extends Fragment {
                             mData.child(Node.Partner).child(account.getUserId()).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    Partner partner = dataSnapshot.getValue(Partner.class);
-                                    if(partner != null){
-                                        account.setPartner(partner);
-                                        Common.accountList.add(account);
+                                    for(DataSnapshot dataSnap : dataSnapshot.getChildren()) {
+                                        Partner partner = dataSnap.getValue(Partner.class);
+                                        if (partner != null) {
+                                            account.setPartner(partner);
+                                            Common.accountList.add(account);
+                                        }
                                     }
                                 }
 

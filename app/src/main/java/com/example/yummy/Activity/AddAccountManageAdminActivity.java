@@ -201,6 +201,7 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
                                 account.setRole(role);
 
                                 saveInfor(account);
+                                mAuth.signOut();
 
                             }else{
                                 Toast.makeText(AddAccountManageAdminActivity.this, R.string.failed_register,
@@ -260,6 +261,7 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, AddRestaurantActivity.class);
                 intent.putExtra("userID", account.getUserId());
                 startActivity(intent);
+                finish();
             }else {
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
             }

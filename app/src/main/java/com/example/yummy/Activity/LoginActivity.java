@@ -427,6 +427,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 account.setPhone(phone);
                 account.setDatebirth(date);
                 account.setGender(gender);
+                account.setAvatar("");
 
                 DatabaseReference dataNode = FirebaseDatabase.getInstance().getReference();
                 dataNode.child(Node.user).child(account.getUserId()).setValue(account);

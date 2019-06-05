@@ -45,6 +45,7 @@ public class ImgRestaurantDetailAdapter extends RecyclerView.Adapter<ImgRestaura
     @Override
     public void onBindViewHolder(@NonNull ImgRestaurantDetailHolder holder, int i) {
         String url = data.get(i);
+        if(!url.isEmpty())
         Picasso.get().load(url).into(holder.img);
 
         if (type ==0 && (i == max - 1 || i == data.size())) {

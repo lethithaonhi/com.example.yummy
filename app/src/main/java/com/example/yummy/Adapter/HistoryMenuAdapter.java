@@ -64,6 +64,7 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
         holder.tvAddress.setText(order.getAddress());
         holder.tvTotal.setText(order.getTotal()+"VND");
         holder.tvDate.setText(order.getDate());
+        if(!order.getAvatar().isEmpty())
         Picasso.get().load(order.getAvatar()).into(holder.imageView);
 
         if(isPartner && order.getIsStatus() != 3 && order.getIsStatus() != 4){
@@ -185,6 +186,7 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
         MenuOrderAdapter adapter = new MenuOrderAdapter(context, order.getMenuList());
         rcvMenu.setAdapter(adapter);
 
+        if(!order.getAvatar().isEmpty())
         Picasso.get().load(order.getAvatar()).into(imageView);
         tvStatus.setText(order.getIsStatus()==3 ? R.string.complete:R.string.cancel);
         tvID.setText(order.getId());

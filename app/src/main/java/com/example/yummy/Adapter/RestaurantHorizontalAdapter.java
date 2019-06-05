@@ -46,6 +46,7 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
         branch = getBranch(restaurant);
         holder.tvName.setText(restaurant.getName());
         holder.tvAddress.setText(branch.getAddress());
+        if(!branch.getAvatar().isEmpty())
         Picasso.get().load(getBranch(restaurant).getAvatar()).into(holder.imgRes);
 
         holder.viewRoot.setOnClickListener(v->{

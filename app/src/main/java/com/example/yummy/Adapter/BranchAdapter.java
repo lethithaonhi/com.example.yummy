@@ -43,7 +43,8 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchHold
         Branch branch = dataList.get(i);
 
         holder.tvAddress.setText(branch.getAddress());
-        Picasso.get().load(branch.getAvatar()).into(holder.imAvatar);
+        if(!branch.getAvatar().isEmpty())
+            Picasso.get().load(branch.getAvatar()).into(holder.imAvatar);
         if(branch.getIsDelete() == 1){
             holder.imClose.setVisibility(View.VISIBLE);
             holder.btnOpen.setVisibility(View.VISIBLE);

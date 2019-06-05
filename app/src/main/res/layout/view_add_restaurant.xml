@@ -121,7 +121,7 @@
             <RadioButton
                 android:id="@+id/rdb_no"
                 android:textSize="14sp"
-                android:text="@string/no"
+                android:text="@string/yes"
                 android:textColor="@color/black"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
@@ -130,7 +130,7 @@
             <RadioButton
                 android:id="@+id/rdb_yes"
                 android:textSize="14sp"
-                android:text="@string/yes"
+                android:text="@string/no"
                 android:textColor="@color/black"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"

@@ -102,6 +102,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
                 }
 
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
+                finish();
             }
 
         });

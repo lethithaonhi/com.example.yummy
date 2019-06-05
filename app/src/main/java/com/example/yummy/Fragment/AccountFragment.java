@@ -118,7 +118,7 @@ public class AccountFragment extends Fragment {
             btnSignIn.setVisibility(View.GONE);
             tvName.setText(Common.accountCurrent.getName());
             tvInfoAccount.setText(R.string.info_account);
-            if(Common.accountCurrent.getAvatar() != null){
+            if(!Common.accountCurrent.getAvatar().isEmpty()){
                 Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatarMain);
             }
         }

@@ -61,6 +61,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
     private void initView(){
         ImageView imRes = findViewById(R.id.imgQuanAnChiTiet);
+        if(!branch.getAvatar().isEmpty())
         Picasso.get().load(branch.getAvatar()).into(imRes);
         TextView tvMark = findViewById(R.id.tv_mark);
         tvMark.setText(restaurant.getMark()+"");

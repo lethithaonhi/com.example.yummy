@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:background="@color/white"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -10,6 +11,7 @@
         android:layout_height="?attr/actionBarSize">
 
         <ImageView
+            android:id="@+id/im_back"
             android:paddingLeft="16dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_back_black"

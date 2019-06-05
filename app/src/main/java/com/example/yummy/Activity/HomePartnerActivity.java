@@ -67,14 +67,16 @@ public class HomePartnerActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nv);
         navigationView.setCheckedItem(R.id.nv_res);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if(Common.accountCurrent.getRole() == 3) {
-            fragmentManager.beginTransaction().replace(R.id.frame_content, RestaurantPartnerFragment.newInstance()).commit();
-        }else {
-            fragmentManager.beginTransaction().replace(R.id.frame_content, ManageAdminFragment.newInstance()).commit();
+        if(Common.accountCurrent != null) {
+            if (Common.accountCurrent.getRole() == 3) {
+                fragmentManager.beginTransaction().replace(R.id.frame_content, RestaurantPartnerFragment.newInstance()).commit();
+            } else {
+                fragmentManager.beginTransaction().replace(R.id.frame_content, ManageAdminFragment.newInstance()).commit();
+            }
         }
         drawerLayout.closeDrawer(GravityCompat.START);
 
-        if(Common.accountCurrent.getRole() == 1){
+        if(Common.accountCurrent != null && Common.accountCurrent.getRole() == 1){
             navigationView.getMenu().getItem(0).setTitle(R.string.manage);
         }
 
@@ -111,7 +113,8 @@ public class HomePartnerActivity extends AppCompatActivity {
         TextView tvOwner = headerLayout.findViewById(R.id.tv_owner);
         TextView tvName = headerLayout.findViewById(R.id.tv_name);
         if(Common.accountCurrent != null && Common.restaurantListCurrent != null) {
-            Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatar);
+            if(!Common.accountCurrent.getAvatar().isEmpty())
+                Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatar);
             if(Common.accountCurrent.getRole() == 3) {
                 tvOwner.setText(getResources().getString(R.string.owner) + ": " + Common.restaurantListCurrent.get(0).getName() + " - " + Common.restaurantListCurrent.get(0).getCity());
             }else {
