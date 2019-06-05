@@ -59,8 +59,9 @@
         <activity android:name=".Activity.HomePartnerActivity" >
         </activity>
         <activity android:name=".Activity.RestaurantManageActivity" />
-        <activity android:name=".Activity.ManageAccountAdminActivity" />
+        <activity android:name=".Activity.AddAccountManageAdminActivity" />
         <activity android:name=".Activity.AddRestaurantActivity" />
+        <activity android:name=".Activity.ManageAccountAdminActivity" />
 
     </application>
 

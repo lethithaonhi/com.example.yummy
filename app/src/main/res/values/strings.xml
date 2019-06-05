@@ -215,4 +215,7 @@
     <string name="enter_video">Enter link video (get link on Youtube)</string>
     <string name="create">Create</string>
     <string name="not_back">You must complete this information!!</string>
+    <string name="account_admin">Administration Account</string>
+    <string name="account_custom">Custommer Account</string>
+    <string name="account_partner">Partner Account</string>
 </resources>

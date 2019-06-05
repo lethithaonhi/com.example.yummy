@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
 import com.example.yummy.Activity.ManageAccountAdminActivity;
 import com.example.yummy.R;
 

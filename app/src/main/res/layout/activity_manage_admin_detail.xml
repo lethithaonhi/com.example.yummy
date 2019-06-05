@@ -13,6 +13,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:layout_marginBottom="24dp"
             android:background="@drawable/bg_admin"
             android:id="@+id/my_awesome_toolbar"
             android:layout_height="230dp"
@@ -67,116 +68,95 @@
 
         <LinearLayout
             android:visibility="gone"
-            android:id="@+id/v_branch"
+            android:id="@+id/v_account"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:padding="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:text="@string/discount"
-                    android:textSize="14sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                android:id="@+id/v_admin"
+                android:layout_marginTop="24dp"
+                android:gravity="center_vertical"
+                android:padding="24dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/bg_account_detail"
+                android:layout_width="350dp"
+                android:layout_height="100dp">
 
                 <ImageView
-                    android:id="@+id/im_edit"
-                    android:layout_gravity="end"
-                    android:src="@drawable/ic_edit_yellow"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp" />
+                    android:src="@drawable/admin_account"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp" />
+
+                <TextView
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginLeft="24dp"
+                    android:textColor="@color/white"
+                    android:text="@string/account_admin"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginBottom="8dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:background="@color/bg_discount"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:id="@+id/v_partner"
+                android:layout_marginTop="24dp"
+                android:gravity="center_vertical"
+                android:padding="24dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/bg_account_detail"
+                android:layout_width="350dp"
+                android:layout_height="100dp">
 
-                <LinearLayout
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/partner"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp" />
 
-                    <ImageView
-                        android:src="@drawable/ic_discount_blue"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp" />
-
-                    <LinearLayout
-                        android:layout_marginLeft="8dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/tv_discount"
-                            android:text="Discount: 30% - Code: GOT"
-                            android:textSize="12sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <View
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@color/grey"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"/>
-                <LinearLayout
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:src="@drawable/ic_ship"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp" />
-
-                    <TextView
-                        android:id="@+id/tv_freeship"
-                        android:layout_marginLeft="8dp"
-                        android:layout_weight="1"
-                        android:text="FreeShip under 2km, only 15000VND"
-                        android:textSize="12sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
+                <TextView
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginLeft="24dp"
+                    android:textColor="@color/white"
+                    android:text="@string/account_partner"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp" />
 
             </LinearLayout>
 
-            <TextView
-                android:textColor="@color/black"
-                android:text="@string/branch"
-                android:padding="8dp"
-                android:textSize="14sp"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:id="@+id/v_cus"
+                android:layout_marginTop="24dp"
+                android:gravity="center_vertical"
+                android:padding="24dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/bg_account_detail"
+                android:layout_width="350dp"
+                android:layout_height="100dp">
 
+                <ImageView
+                    android:src="@drawable/customer"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp" />
+
+                <TextView
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginLeft="24dp"
+                    android:textColor="@color/white"
+                    android:text="@string/account_custom"
+                    android:textSize="18sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:visibility="gone"
             android:id="@+id/rcv_partner"
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
