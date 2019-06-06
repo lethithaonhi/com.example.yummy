@@ -13,7 +13,6 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_marginBottom="24dp"
             android:background="@drawable/bg_admin"
             android:id="@+id/my_awesome_toolbar"
             android:layout_height="230dp"
@@ -130,6 +129,7 @@
             <LinearLayout
                 android:id="@+id/v_cus"
                 android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
                 android:gravity="center_vertical"
                 android:padding="24dp"
                 android:layout_gravity="center_horizontal"

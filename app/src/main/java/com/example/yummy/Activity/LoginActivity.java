@@ -272,64 +272,69 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Common.accountCurrent = dataSnapshot.getValue(Account.class);
                     if(Common.accountCurrent != null) {
-                        if(Common.accountCurrent.getRole() == 2)
-                        UtilsBottomBar.getOrderCurrent();
-                        mDatabase.child(Node.Address).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                boolean isShow = false;
-                                List<Addresses> addresses = new ArrayList<>();
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    Addresses address = dataSnapshot1.getValue(Addresses.class);
-                                    if (address != null) {
-                                        address.setId(dataSnapshot1.getKey());
-                                        if (Common.myLocation!= null && address.getName().equals(Common.myLocation.getName())) {
-                                            isShow = true;
+                        if(Common.accountCurrent.getIsClose() == 0) {
+                            if (Common.accountCurrent.getRole() == 2)
+                                UtilsBottomBar.getOrderCurrent();
+                            mDatabase.child(Node.Address).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    boolean isShow = false;
+                                    List<Addresses> addresses = new ArrayList<>();
+                                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                        Addresses address = dataSnapshot1.getValue(Addresses.class);
+                                        if (address != null) {
+                                            address.setId(dataSnapshot1.getKey());
+                                            if (Common.myLocation != null && address.getName().equals(Common.myLocation.getName())) {
+                                                isShow = true;
+                                            }
+                                            addresses.add(address);
                                         }
-                                        addresses.add(address);
+                                    }
+                                    if (!isShow) {
+                                        mDatabase.child(Node.Address).child(mAuth.getUid()).push().setValue(Common.myLocation);
+                                        addresses.add(Common.myLocation);
+                                    }
+                                    Common.accountCurrent.setAddressList(addresses);
+
+                                    if (Common.accountCurrent != null && Common.accountCurrent.getRole() == 2) {
+                                        Intent intent = new Intent(LoginActivity.this, BottomBarActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    } else if (Common.accountCurrent != null && Common.accountCurrent.getRole() == 3) {
+                                        mDatabase.child(Node.Partner).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                Partner partner = dataSnapshot.getValue(Partner.class);
+                                                Common.accountCurrent.setPartner(partner);
+                                                Intent intent = new Intent(LoginActivity.this, HomePartnerActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                    } else {
+                                        Intent intent = new Intent(LoginActivity.this, HomePartnerActivity.class);
+                                        startActivity(intent);
+                                        finish();
                                     }
                                 }
-                                if (!isShow) {
-                                    mDatabase.child(Node.Address).child(mAuth.getUid()).push().setValue(Common.myLocation);
-                                    addresses.add(Common.myLocation);
-                                }
-                                Common.accountCurrent.setAddressList(addresses);
 
-                                if (Common.accountCurrent != null && Common.accountCurrent.getRole() == 2) {
-                                    Intent intent = new Intent(LoginActivity.this, BottomBarActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
-                                    finish();
-                                } else if (Common.accountCurrent != null && Common.accountCurrent.getRole() == 3){
-                                    mDatabase.child(Node.Partner).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            Partner partner = dataSnapshot.getValue(Partner.class);
-                                            Common.accountCurrent.setPartner(partner);
-                                            Intent intent = new Intent(LoginActivity.this, HomePartnerActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                        }
-                                    });
-                                }else {
-                                    Intent intent = new Intent(LoginActivity.this, HomePartnerActivity.class);
-                                    startActivity(intent);
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Toast.makeText(LoginActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
                                     finish();
                                 }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-                                Toast.makeText(LoginActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
-                                finish();
-                            }
-                        });
+                            });
+                        }else {
+                            Toast.makeText(LoginActivity.this, R.string.account_lock, Toast.LENGTH_SHORT).show();
+                            mAuth.signOut();
+                        }
                     }else {
                         if(mAuth != null) {
                             Account account = new Account();

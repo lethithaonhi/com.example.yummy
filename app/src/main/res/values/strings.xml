@@ -219,4 +219,5 @@
     <string name="account_admin">Administration Account</string>
     <string name="account_custom">Custommer Account</string>
     <string name="account_partner">Partner Account</string>
+    <string name="account_lock">Your account has been locked.</string>
 </resources>
