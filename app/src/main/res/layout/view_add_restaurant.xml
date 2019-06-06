@@ -43,6 +43,22 @@
             android:textColor="@color/black"
             android:textColorHint="@color/btn_exit"/>
 
+        <TextView
+            android:layout_marginTop="16dp"
+            android:text="@string/city"
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.RecyclerView
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:id="@+id/rcv_city"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <LinearLayout
             android:layout_marginTop="16dp"
             android:layout_gravity="center_vertical"

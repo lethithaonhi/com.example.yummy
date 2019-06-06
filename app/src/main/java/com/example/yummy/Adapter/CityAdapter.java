@@ -24,11 +24,15 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> im
     private HashMap<String, Integer> dataFilter;
     private String query = "";
     private int prevSelection = -1;
+    public static String city;
+    private boolean isAdmin;
 
-    public CityAdapter (Context context, HashMap<String, Integer> data){
+    public CityAdapter (Context context, HashMap<String, Integer> data, boolean isAdmin){
         this.context = context;
         this.data = data;
         dataFilter = data;
+        this.isAdmin =isAdmin;
+        city = Common.myAddress;
     }
 
     @NonNull
@@ -58,7 +62,11 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> im
             holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
                     holder.checkBox.setChecked(true);
-                    Common.myAddress = key;
+                    if(isAdmin){
+                        city = key;
+                    }else {
+                        Common.myAddress = key;
+                    }
                     if (prevSelection >= 0 && prevSelection < dataFilter.size()) {
                         notifyItemChanged(prevSelection);
                     }

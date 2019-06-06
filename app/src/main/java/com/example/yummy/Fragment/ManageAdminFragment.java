@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.example.yummy.Activity.ManageAccountAdminActivity;
+import com.example.yummy.Activity.ManageRestaurantAdminActivity;
 import com.example.yummy.Model.Account;
 import com.example.yummy.Model.Partner;
 import com.example.yummy.R;
@@ -50,6 +51,7 @@ public class ManageAdminFragment extends Fragment {
         LinearLayout vStatistic = v.findViewById(R.id.v_statistic);
 
         vAccount.setOnClickListener(vl->startActivity(new Intent(getContext(), ManageAccountAdminActivity.class)));
+        vRestaurant.setOnClickListener(vl->startActivity(new Intent(getContext(), ManageRestaurantAdminActivity.class)));
     }
 
     private void getAccount(){

@@ -25,4 +25,5 @@ public class Common {
     public static List<Blog> blogList;
     public static List<Order> orderListCurrent;
     public static List<Account> accountList;
+    public static boolean isAdd;
 }

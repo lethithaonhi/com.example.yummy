@@ -1,6 +1,7 @@
 package com.example.yummy.Adapter;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -14,16 +15,21 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.example.yummy.Activity.RestaurantDetailActivity;
+import com.example.yummy.Model.Account;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.Node;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -84,6 +90,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             context.startActivity(intent);
         });
 
+        if(restaurant.getIsClose() == 0) {
+            holder.btnClose.setBackgroundColor(context.getResources().getColor(R.color.red));
+            holder.imDelete.setImageResource(R.drawable.ic_lock);
+        }else {
+            holder.btnClose.setBackgroundColor(context.getResources().getColor(R.color.green));
+            holder.imDelete.setImageResource(R.drawable.unlock);
+        }
+
         if(type == 0){
             if(restaurant.getIsClose() == 0){
                 holder.imClose.setVisibility(View.GONE);
@@ -92,14 +106,17 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             }
         }
 
-        holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
-        holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
-            @Override
-            public void onOpen(SwipeLayout layout) {
-                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
-            }
-        });
+        if(type == 0) {
+            holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+            holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
+                @Override
+                public void onOpen(SwipeLayout layout) {
+                    YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
+                }
+            });
+        }
 
+        holder.btnClose.setOnClickListener(v->showDialogClose(restaurant));
     }
 
     @Override
@@ -144,12 +161,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             imClose = itemView.findViewById(R.id.im_close);
             vTrash = itemView.findViewById(R.id.trash);
             if(type == 0){
-                tvDiscount.setVisibility(View.GONE);
+                tvDistance.setVisibility(View.GONE);
                 tvMark.setVisibility(View.GONE);
                 imClose.setVisibility(View.VISIBLE);
-                vTrash.setVisibility(View.VISIBLE);
-            }else {
-                vTrash.setVisibility(View.GONE);
             }
         }
     }
@@ -186,4 +200,30 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             }
         };
     }
+
+    private void showDialogClose(Restaurant restaurant) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder
+                .setMessage(restaurant.getIsClose() == 1 ? context.getResources().getString(R.string.mess_open) : context.getResources().getString(R.string.mess_close))
+                .setCancelable(false)
+                .setPositiveButton(restaurant.getIsClose()== 1 ? context.getResources().getString(R.string.yes) : context.getResources().getString(R.string.close), ((dialog, which) -> {
+                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                    int isClose = restaurant.getIsClose();
+                    if(isClose == 0)
+                        isClose = 1;
+                    else
+                        isClose = 0;
+
+                    mDatabase.child(Node.QuanAn).child(restaurant.getRes_id()).child(Node.isClose).setValue(isClose);
+
+                    restaurant.setIsClose(isClose);
+                    dialog.dismiss();
+                    notifyDataSetChanged();
+                    Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show();
+                }))
+                .setNegativeButton(context.getResources().getString(R.string.cancel), (dialogInterface, i) -> dialogInterface.dismiss());
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
 }

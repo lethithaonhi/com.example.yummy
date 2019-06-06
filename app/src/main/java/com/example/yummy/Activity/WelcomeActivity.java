@@ -66,7 +66,6 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        Common.restaurantListAll = new ArrayList<>();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         Common.listResId = new ArrayList<>();
         Common.cityList = new HashMap<>();
@@ -87,6 +86,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
         Configuration conf = res.getConfiguration();
         conf.locale = locale;
         res.updateConfiguration(conf, dm);
+        Common.isAdd = false;
     }
 
     private void getRestaurant() {
@@ -104,6 +104,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                         mDatabase.child(Node.DiaDiem).child(address).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshotRoot) {
+                                Common.restaurantListAll = new ArrayList<>();
                                 for (DataSnapshot postSnapshot : dataSnapshotRoot.getChildren()) {
                                     String resID = postSnapshot.getValue(String.class);
                                     if (resID != null) {
@@ -114,7 +115,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                 Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
-                                                if (restaurant != null) {
+                                                if (restaurant != null && !Common.isAdd) {
                                                     Common.db.clearData();
                                                     restaurant.setCity(address);
                                                     restaurant.setRes_id(dataSnapshot.getKey());
@@ -266,6 +267,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                         if (Common.restaurantListAll.size() == dataSnapshotRoot.getChildrenCount()) {
                             startActivity(new Intent(WelcomeActivity.this, BottomBarActivity.class));
                             finish();
+                            Common.isAdd = true;
                         }
                     }
 

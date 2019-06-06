@@ -182,7 +182,7 @@ public class RestaurantActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvCity.getContext(), layoutManager.getOrientation());
         rcvCity.addItemDecoration(dividerItemDecoration);
 
-        cityAdapter = new CityAdapter(this, Common.cityList);
+        cityAdapter = new CityAdapter(this, Common.cityList, false);
         rcvCity.setAdapter(cityAdapter);
 
         TextView tvDone = dialog.findViewById(R.id.tv_done);

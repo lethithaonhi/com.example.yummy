@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yummy.Adapter.CityAdapter;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
@@ -75,6 +77,16 @@ public class AddRestaurantActivity extends AppCompatActivity {
         tvOpen.setText(hour + ":" + minute);
         tvClose.setText(hour + ":" + minute);
 
+        RecyclerView rcvCity = findViewById(R.id.rcv_city);
+        LinearLayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rcvCity.setLayoutManager(layout);
+        rcvCity.setNestedScrollingEnabled(false);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvCity.getContext(), layoutManager.getOrientation());
+        rcvCity.addItemDecoration(dividerItemDecoration);
+
+        CityAdapter cityAdapter = new CityAdapter(this, Common.cityList, true);
+        rcvCity.setAdapter(cityAdapter);
+
         tvOpen.setOnClickListener(v -> openTimeDialog(tvOpen, hour, minute));
         tvClose.setOnClickListener(v -> openTimeDialog(tvClose, hour, minute));
 
@@ -99,6 +111,9 @@ public class AddRestaurantActivity extends AppCompatActivity {
                 mData.child(Node.QuanAn).push().setValue(restaurant);
                 if(userId != null){
                     mData.child(Node.Partner).child(userId).child(Node.Boss).setValue(key);
+                }
+                if(CityAdapter.city != null && !CityAdapter.city.isEmpty()){
+                    mData.child(Node.DiaDiem).child(CityAdapter.city).push().setValue(key);
                 }
 
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
