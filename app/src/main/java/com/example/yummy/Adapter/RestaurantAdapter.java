@@ -34,11 +34,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     private Context context;
     private Branch branch;
     private float min;
+    private int type; //1:cus, 0: admin
 
-    public RestaurantAdapter(List<Restaurant> restaurantList, Context context){
+    public RestaurantAdapter(List<Restaurant> restaurantList, Context context, int type){
         this.restaurantList = restaurantList;
         this.context = context;
         dataFilter = restaurantList;
+        this.type = type;
     }
 
     @NonNull
@@ -77,6 +79,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         });
+
+        if(type == 0){
+            if(restaurant.getIsClose() == 0){
+                holder.imClose.setVisibility(View.GONE);
+            }else {
+                holder.imClose.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
@@ -97,7 +107,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     }
 
     class RestaurantHolder extends RecyclerView.ViewHolder {
-        ImageView imRes;
+        ImageView imRes, imClose;
         TextView tvName, tvAddress, tvMark, tvDistance, tvDiscount;
         LinearLayout viewFreeship, viewRoot, viewDiscount;
         RestaurantHolder(@NonNull View itemView) {
@@ -112,6 +122,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             viewRoot = itemView.findViewById(R.id.view_rooot);
             viewDiscount = itemView.findViewById(R.id.view_discount);
             tvDiscount = itemView.findViewById(R.id.tv_discount);
+            imClose = itemView.findViewById(R.id.im_close);
+            if(type == 0){
+                tvDiscount.setVisibility(View.GONE);
+                tvMark.setVisibility(View.GONE);
+                imClose.setVisibility(View.VISIBLE);
+            }
         }
     }
 

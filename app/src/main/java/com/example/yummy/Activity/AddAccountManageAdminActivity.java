@@ -95,7 +95,7 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
         edtNewPass = findViewById(R.id.edt_pass);
         edtConfirm = findViewById(R.id.edt_passconfirm);
         edName = findViewById(R.id.ed_nameinfo);
-        EditText edEmail = findViewById(R.id.ed_email);
+        LinearLayout edEmail = findViewById(R.id.v_email);
         edEmail.setVisibility(View.GONE);
         tvDateBirth = findViewById(R.id.tv_birth);
         edCMND = findViewById(R.id.ed_cmnd);

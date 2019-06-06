@@ -62,6 +62,7 @@
         <activity android:name=".Activity.AddAccountManageAdminActivity" />
         <activity android:name=".Activity.AddRestaurantActivity" />
         <activity android:name=".Activity.ManageAccountAdminActivity" />
+        <activity android:name=".Activity.ManageRestaurantAdminActivity" />
 
     </application>
 

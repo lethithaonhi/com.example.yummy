@@ -146,7 +146,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             values.put(RestaurantContrains.MAX_DISCOUNT, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getMax_discount() : 0);
             values.put(RestaurantContrains.MIN_ORDER, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getMin_order() : 0);
             values.put(RestaurantContrains.CODE, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getCode() : "");
-
+            values.put(RestaurantContrains.IS_CLOSE, restaurant.getIsClose());
             // Trèn một dòng dữ liệu vào bảng.
             db.insert(RestaurantContrains.TABLE_NAME, null, values);
 
@@ -175,6 +175,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         discounts.setMin_order(cursor.getInt(13));
         discounts.setCode(cursor.getString(14));
         restaurant.setDiscounts(discounts);
+        restaurant.setIsClose(cursor.getInt(15));
 
         return restaurant;
     }
@@ -255,10 +256,12 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 if (cursor.moveToFirst()) {
                     do {
                         Restaurant restaurant = getResFromCursor(cursor);
-                        restaurant.setBranchList(branchList);
-                        restaurant.setMenuList(getMenu(id, address));
-                        restaurant.setReviewList(getReview(id, address));
-                        dataList.add(restaurant);
+                        if(restaurant.getIsClose() == 0) {
+                            restaurant.setBranchList(branchList);
+                            restaurant.setMenuList(getMenu(id, address));
+                            restaurant.setReviewList(getReview(id, address));
+                            dataList.add(restaurant);
+                        }
                     } while (cursor.moveToNext());
                 }
                 if (!cursor.isClosed()) {

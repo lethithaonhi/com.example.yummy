@@ -228,7 +228,7 @@ public class RestaurantActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            adapter = new RestaurantAdapter(restaurantList, getBaseContext());
+            adapter = new RestaurantAdapter(restaurantList, getBaseContext(), 1);
             rcvRes.setAdapter(adapter);
         }
 

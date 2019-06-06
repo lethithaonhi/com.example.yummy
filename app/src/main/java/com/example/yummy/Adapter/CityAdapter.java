@@ -42,7 +42,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> im
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull CityAdapter.CityHolder holder, @SuppressLint("RecyclerView") int i) {
-        if(dataFilter.keySet().toArray() != null) {
+        if(dataFilter.keySet().toArray() != null && i< dataFilter.size()) {
             String key = (String) Objects.requireNonNull(dataFilter.keySet().toArray())[i];
 
             if (Common.myAddress.equals(key)) {

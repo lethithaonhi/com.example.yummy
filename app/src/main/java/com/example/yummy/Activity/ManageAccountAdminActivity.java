@@ -30,6 +30,7 @@ public class ManageAccountAdminActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_admin_detail);
         initView();
     }
+
     private void initView(){
         TextView tvType = findViewById(R.id.tv_type);
         tvType.setText(R.string.account_setting);
