@@ -178,7 +178,7 @@ public class InfoPartnerFragment extends Fragment {
         return v;
     }
 
-    public void showDatePickerDialog() {
+    private void showDatePickerDialog() {
         @SuppressLint("SetTextI18n") DatePickerDialog.OnDateSetListener callback= (view, year, monthOfYear, dayOfMonth) -> tvBirth.setText((dayOfMonth) +"/"+(monthOfYear+1)+"/"+year);
 
         String s=tvBirth.getText()+"";

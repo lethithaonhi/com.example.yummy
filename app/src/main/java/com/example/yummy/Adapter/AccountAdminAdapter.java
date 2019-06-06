@@ -1,14 +1,23 @@
 package com.example.yummy.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,13 +27,16 @@ import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.example.yummy.Model.Account;
+import com.example.yummy.Model.Partner;
 import com.example.yummy.R;
+import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapter.AccountAdminHolder> {
     private Context context;
@@ -69,6 +81,10 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
             holder.imClose.setVisibility(View.VISIBLE);
         }
 
+        holder.btnEdit.setOnClickListener(v->{
+            showDialogEdit(account);
+        });
+
         if(account.getGender() == 1){
             holder.imSex.setVisibility(View.VISIBLE);
             holder.imSex.setImageResource(R.drawable.boy);
@@ -94,7 +110,7 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
         SwipeLayout swipeLayout;
         ImageView imAvatar, imDelete, imClose, imSex;
         TextView tvName, tvUserName, tvPhone, tvPass;
-        LinearLayout btnClose;
+        LinearLayout btnClose, btnEdit;
         AccountAdminHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -108,6 +124,7 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
             imDelete = itemView.findViewById(R.id.im_delete);
             imClose = itemView.findViewById(R.id.im_close);
             imSex = itemView.findViewById(R.id.im_sex);
+            btnEdit = itemView.findViewById(R.id.btn_edit);
         }
     }
 
@@ -134,5 +151,161 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
                 .setNegativeButton(context.getResources().getString(R.string.cancel), (dialogInterface, i) -> dialogInterface.dismiss());
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    private int gender;
+    private TextView tvBirth;
+    private boolean isPhone = false;
+    private void showDialogEdit(Account account){
+        Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.setTitle("");
+        dialog.setContentView(R.layout.activity_info_account);
+        dialog.show();
+
+        TextView tvName = dialog.findViewById(R.id.tv_name);
+        tvName.setText(Common.accountCurrent.getName());
+        TextView tvUsername = dialog.findViewById(R.id.tv_username);
+        tvUsername.setText(Common.accountCurrent.getUsername());
+        EditText edName = dialog.findViewById(R.id.ed_nameinfo);
+        edName.setText(Common.accountCurrent.getName());
+        EditText edEmail = dialog.findViewById(R.id.ed_email);
+        edEmail.setText(Common.accountCurrent.getEmail());
+        tvBirth = dialog.findViewById(R.id.tv_birth);
+        tvBirth.setText(Common.accountCurrent.getDatebirth());
+        LinearLayout vPartner = dialog.findViewById(R.id.v_partner);
+        EditText edCMND = dialog.findViewById(R.id.ed_cmnd);
+        EditText edBank = dialog.findViewById(R.id.ed_bank);
+        EditText edSTK = dialog.findViewById(R.id.ed_accountnum);
+        if(account.getRole() == 3) {
+            vPartner.setVisibility(View.VISIBLE);
+            edCMND.setText(Common.accountCurrent.getPartner().getCmnd());
+            edCMND.setEnabled(false);
+            edBank.setText(Common.accountCurrent.getPartner().getBank());
+            edSTK.setText(Common.accountCurrent.getPartner().getStk());
+        }else {
+            vPartner.setVisibility(View.GONE);
+        }
+
+        ImageView imError = dialog.findViewById(R.id.btn_error);
+        Button btnSave = dialog.findViewById(R.id.btn_save);
+        btnSave.setVisibility(View.VISIBLE);
+
+        RadioGroup radioGroup = dialog.findViewById(R.id.radioGrp);
+        RadioButton radioMale = dialog.findViewById(R.id.radio_male);
+        RadioButton radioFemale = dialog.findViewById(R.id.radio_female);
+        RadioButton radioNone = dialog.findViewById(R.id.radio_none);
+        gender = Common.accountCurrent.getGender();
+
+        if(gender == 1){
+            radioMale.setChecked(true);
+        }else if(gender == 2){
+            radioFemale.setChecked(true);
+        }else {
+            radioNone.setChecked(true);
+        }
+
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            int checkedRadioId = group.getCheckedRadioButtonId();
+
+            if(checkedRadioId== R.id.radio_male) {
+                gender = 1;
+            } else if(checkedRadioId== R.id.radio_female ) {
+                gender = 2;
+            } else if(checkedRadioId== R.id.radio_none) {
+                gender = 3;
+            }
+        });
+
+        RecyclerView rcvAddress = dialog.findViewById(R.id.rcv_address);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        rcvAddress.setLayoutManager(layoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvAddress.getContext(), layoutManager.getOrientation());
+        rcvAddress.addItemDecoration(dividerItemDecoration);
+        AddressAdapter addressAdapter = new AddressAdapter(context, Common.accountCurrent.getAddressList(), 1);
+        rcvAddress.setAdapter(addressAdapter);
+
+        EditText edPhone = dialog.findViewById(R.id.ed_phone);
+        edPhone.setText(Common.accountCurrent.getPhone());
+
+        edPhone.setOnFocusChangeListener((vl, hasFocus) -> {
+            String phone = edPhone.getText().toString().trim();
+            if(!hasFocus) {
+                if (phone.length() > 8 && phone.length() < 12 && phone.charAt(0) == '0') {
+                    imError.setImageResource(R.drawable.ic_check_circle_24dp);
+                    isPhone = true;
+                } else {
+                    imError.setImageResource(R.drawable.ic_error_red_24dp);
+                    Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show();
+                    isPhone = false;
+                }
+            }
+        });
+
+        ImageView imClose = dialog.findViewById(R.id.im_close);
+        imClose.setVisibility(View.GONE);
+        btnSave.setOnClickListener(vl->{
+            String name = edName.getText().toString().trim();
+            String email = edEmail.getText().toString().trim();
+            String phone = edPhone.getText().toString().trim();
+            String date = tvBirth.getText().toString().trim();
+
+            if (phone.length() > 8 && phone.length() < 12 && phone.charAt(0) == '0') {
+                imError.setImageResource(R.drawable.ic_check_circle_24dp);
+                isPhone = true;
+            } else {
+                imError.setImageResource(R.drawable.ic_error_red_24dp);
+                Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show();
+                isPhone = false;
+            }
+            if(account.getRole() == 3 && edBank.getText().toString().trim().isEmpty() || edSTK.getText().toString().trim().isEmpty()){
+                Toast.makeText(context, R.string.empty_user, Toast.LENGTH_SHORT).show();
+            } if(name.isEmpty()|| email.isEmpty() || phone.isEmpty() || date.isEmpty() || !isPhone){
+                Toast.makeText(context, R.string.empty_user, Toast.LENGTH_SHORT).show();
+            }else {
+                Partner partner = new Partner();
+                if(account.getRole() == 3) {
+                    String bank = edBank.getText().toString().trim();
+                    String stk = edSTK.getText().toString().trim();
+                    partner.setCmnd(Common.accountCurrent.getPartner().getCmnd());
+                    partner.setBoss(Common.accountCurrent.getPartner().getBoss());
+                    partner.setStk(stk);
+                    partner.setBank(bank);
+                }
+
+                account.setUserId(Common.accountCurrent.getUserId());
+                account.setUsername(Common.accountCurrent.getUsername());
+                account.setAvatar(Common.accountCurrent.getAvatar());
+                account.setRole(Common.accountCurrent.getRole());
+                account.setPassword(Common.accountCurrent.getPassword());
+                account.setName(name);
+                account.setEmail(email);
+                account.setPhone(phone);
+                account.setDatebirth(date);
+                account.setGender(gender);
+
+                DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
+                nodeRoot.child(Node.user).child(Common.accountCurrent.getUserId()).setValue(account);
+                if(account.getRole() == 3) {
+                    nodeRoot.child(Node.Partner).child(Common.accountCurrent.getUserId()).setValue(partner);
+                }
+                Common.accountCurrent = account;
+                Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        tvBirth.setOnClickListener(lv-> showDatePickerDialog());
+    }
+
+    private void showDatePickerDialog() {
+        @SuppressLint("SetTextI18n") DatePickerDialog.OnDateSetListener callback= (view, year, monthOfYear, dayOfMonth) -> tvBirth.setText((dayOfMonth) +"/"+(monthOfYear+1)+"/"+year);
+
+        String s=tvBirth.getText()+"";
+        String[] strArrtmp = s.split("/");
+        int ngay=Integer.parseInt(strArrtmp[0]);
+        int thang=Integer.parseInt(strArrtmp[1])-1;
+        int nam=Integer.parseInt(strArrtmp[2]);
+        DatePickerDialog pic=new DatePickerDialog(context, callback, nam, thang, ngay);
+        pic.setTitle(R.string.address_user);
+        pic.show();
     }
 }
