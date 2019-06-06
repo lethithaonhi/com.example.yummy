@@ -53,25 +53,23 @@ public class ManageAdminFragment extends Fragment {
     }
 
     private void getAccount(){
-        Common.accountList = new ArrayList<>();
         DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
         mData.child(Node.user).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Common.accountList = new ArrayList<>();
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                     Account account = dataSnapshot1.getValue(Account.class);
                     if(account != null){
-                        if(account.getRole() == 2){
+                        if(account.getRole() == 3){
                             mData.child(Node.Partner).child(account.getUserId()).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    for(DataSnapshot dataSnap : dataSnapshot.getChildren()) {
-                                        Partner partner = dataSnap.getValue(Partner.class);
+                                        Partner partner = dataSnapshot.getValue(Partner.class);
                                         if (partner != null) {
                                             account.setPartner(partner);
                                             Common.accountList.add(account);
                                         }
-                                    }
                                 }
 
                                 @Override

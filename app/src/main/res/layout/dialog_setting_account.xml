@@ -53,7 +53,7 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_avatar"
-            android:src="@drawable/bg_baner"
+            android:src="@drawable/ic_person"
             android:layout_width="36dp"
             android:layout_height="36dp" />
 

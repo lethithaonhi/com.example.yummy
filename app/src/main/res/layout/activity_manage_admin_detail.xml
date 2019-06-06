@@ -80,7 +80,7 @@
                 android:padding="24dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/bg_account_detail"
-                android:layout_width="350dp"
+                android:layout_width="300dp"
                 android:layout_height="100dp">
 
                 <ImageView
@@ -107,7 +107,7 @@
                 android:padding="24dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/bg_account_detail"
-                android:layout_width="350dp"
+                android:layout_width="300dp"
                 android:layout_height="100dp">
 
                 <ImageView
@@ -134,7 +134,7 @@
                 android:padding="24dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/bg_account_detail"
-                android:layout_width="350dp"
+                android:layout_width="300dp"
                 android:layout_height="100dp">
 
                 <ImageView
