@@ -15,6 +15,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
 import com.example.yummy.Activity.RestaurantDetailActivity;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
@@ -87,6 +91,15 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
                 holder.imClose.setVisibility(View.VISIBLE);
             }
         }
+
+        holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+        holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
+            }
+        });
+
     }
 
     @Override
@@ -107,9 +120,11 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     }
 
     class RestaurantHolder extends RecyclerView.ViewHolder {
-        ImageView imRes, imClose;
+        ImageView imRes, imClose, imDelete;
         TextView tvName, tvAddress, tvMark, tvDistance, tvDiscount;
         LinearLayout viewFreeship, viewRoot, viewDiscount;
+        SwipeLayout swipeLayout;
+        LinearLayout btnEdit, btnClose, vTrash;
         RestaurantHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -122,11 +137,19 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             viewRoot = itemView.findViewById(R.id.view_rooot);
             viewDiscount = itemView.findViewById(R.id.view_discount);
             tvDiscount = itemView.findViewById(R.id.tv_discount);
+            imDelete = itemView.findViewById(R.id.im_delete);
+            swipeLayout = itemView.findViewById(R.id.swipe);
+            btnClose = itemView.findViewById(R.id.btn_delete);
+            btnEdit = itemView.findViewById(R.id.btn_edit);
             imClose = itemView.findViewById(R.id.im_close);
+            vTrash = itemView.findViewById(R.id.trash);
             if(type == 0){
                 tvDiscount.setVisibility(View.GONE);
                 tvMark.setVisibility(View.GONE);
                 imClose.setVisibility(View.VISIBLE);
+                vTrash.setVisibility(View.VISIBLE);
+            }else {
+                vTrash.setVisibility(View.GONE);
             }
         }
     }
