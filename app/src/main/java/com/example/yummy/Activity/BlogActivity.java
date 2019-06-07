@@ -51,7 +51,7 @@ public class BlogActivity extends AppCompatActivity {
         rcvNotify.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvNotify.getContext(), layoutManager.getOrientation());
         rcvNotify.addItemDecoration(dividerItemDecoration);
-        NotificationAdapter adapter = new NotificationAdapter(this, Common.blogList);
+        NotificationAdapter adapter = new NotificationAdapter(this, Common.blogList, false);
         rcvNotify.setAdapter(adapter);
 
         ViewPager viewPager = findViewById(R.id.viewPager);

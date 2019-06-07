@@ -59,7 +59,7 @@ public class NotificationFragment extends Fragment {
         rcvNotify.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvNotify.getContext(), layoutManager.getOrientation());
         rcvNotify.addItemDecoration(dividerItemDecoration);
-        NotificationAdapter adapter = new NotificationAdapter(getContext(), Common.blogList);
+        NotificationAdapter adapter = new NotificationAdapter(getContext(), Common.blogList, false);
         rcvNotify.setAdapter(adapter);
 
         ViewPager viewPager = v.findViewById(R.id.viewPager);

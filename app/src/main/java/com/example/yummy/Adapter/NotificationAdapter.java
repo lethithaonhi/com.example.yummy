@@ -1,6 +1,7 @@
 package com.example.yummy.Adapter;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -15,8 +16,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
 import com.example.yummy.Model.Blog;
+import com.example.yummy.Model.Menu;
 import com.example.yummy.R;
+import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.Node;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -24,10 +34,12 @@ import java.util.List;
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationHolder> {
     private Context context;
     private List<Blog> blogList;
+    private boolean isAdmin;
 
-    public NotificationAdapter(Context context, List<Blog> blogList){
+    public NotificationAdapter(Context context, List<Blog> blogList, boolean isAdmin){
         this.blogList = blogList;
         this.context = context;
+        this.isAdmin = isAdmin;
     }
 
     @NonNull
@@ -46,8 +58,20 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.tvContent.setText(blog.getContent());
         holder.tvTime.setText(blog.getTime());
         if(!blog.getImage().isEmpty())
-        Picasso.get().load(blog.getImage()).into(holder.img);
+            Picasso.get().load(blog.getImage()).into(holder.img);
         holder.viewRoot.setOnClickListener(v-> loadWeb(blog.getUrl()));
+        if(isAdmin) {
+            holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+            holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
+                @Override
+                public void onOpen(SwipeLayout layout) {
+                    YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
+                }
+            });
+        }
+
+        holder.btnDelete.setOnClickListener(v -> showDialogDelete(blog));
+//        holder.btnEdit.setOnClickListener(v->showDialogEdit(menu));
     }
 
     @Override
@@ -59,6 +83,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         TextView tvTitle, tvContent, tvTime;
         ImageView img;
         LinearLayout viewRoot;
+        SwipeLayout swipeLayout;
+        LinearLayout btnEdit, btnDelete;
 
         NotificationHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,6 +94,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             tvTime = itemView.findViewById(R.id.tv_time);
             img = itemView.findViewById(R.id.img_notifi);
             viewRoot = itemView.findViewById(R.id.view_root);
+            swipeLayout = itemView.findViewById(R.id.swipe);
+            btnDelete = itemView.findViewById(R.id.btn_delete);
+            btnEdit = itemView.findViewById(R.id.btn_edit);
         }
     }
 
@@ -96,5 +125,22 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         }else {
             Toast.makeText(context, R.string.error_change_pass, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void showDialogDelete(Blog blog) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder
+                .setMessage(context.getResources().getString(R.string.mess_delete))
+                .setCancelable(false)
+                .setPositiveButton(context.getResources().getString(R.string.delete), ((dialog, which) -> {
+                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child(Node.Blog).child(blog.getId()).setValue(blog);
+                    dialog.dismiss();
+                    notifyDataSetChanged();
+                    Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show();
+                }))
+                .setNegativeButton(context.getResources().getString(R.string.cancel), (dialogInterface, i) -> dialogInterface.dismiss());
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

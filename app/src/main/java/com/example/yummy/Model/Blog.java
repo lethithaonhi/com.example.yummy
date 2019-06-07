@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Blog implements Parcelable {
+    private String id;
     private String title;
     private String url;
     private String time;
@@ -13,11 +14,20 @@ public class Blog implements Parcelable {
     public Blog(){}
 
     protected Blog(Parcel in) {
+        id = in.readString();
         title = in.readString();
         url = in.readString();
         time = in.readString();
         content = in.readString();
         image = in.readString();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -79,6 +89,7 @@ public class Blog implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(title);
         dest.writeString(url);
         dest.writeString(time);

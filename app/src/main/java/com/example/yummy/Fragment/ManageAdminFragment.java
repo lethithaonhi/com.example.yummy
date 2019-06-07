@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.example.yummy.Activity.ManageAccountAdminActivity;
+import com.example.yummy.Activity.ManageBlogAdminActivity;
 import com.example.yummy.Activity.ManageRestaurantAdminActivity;
 import com.example.yummy.Model.Account;
 import com.example.yummy.Model.Partner;
@@ -52,6 +53,7 @@ public class ManageAdminFragment extends Fragment {
 
         vAccount.setOnClickListener(vl->startActivity(new Intent(getContext(), ManageAccountAdminActivity.class)));
         vRestaurant.setOnClickListener(vl->startActivity(new Intent(getContext(), ManageRestaurantAdminActivity.class)));
+        vBlog.setOnClickListener(vl->startActivity(new Intent(getContext(), ManageBlogAdminActivity.class)));
     }
 
     private void getAccount(){

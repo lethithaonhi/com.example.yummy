@@ -51,14 +51,15 @@ public class BottomBarActivity extends AppCompatActivity {
     }
 
     private void getBlog(){
-        Common.blogList = new ArrayList<>();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child(Node.Blog).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Common.blogList = new ArrayList<>();
                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                    Blog blog = dataSnapshot1.getValue(Blog.class);
                    if(blog != null)
+                       blog.setId(dataSnapshot1.getKey());
                        Common.blogList.add(blog);
                }
             }
