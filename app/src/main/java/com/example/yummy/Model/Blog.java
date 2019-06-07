@@ -10,6 +10,7 @@ public class Blog implements Parcelable {
     private String time;
     private String content;
     private String image;
+    private int isClose;
 
     public Blog(){}
 
@@ -20,6 +21,7 @@ public class Blog implements Parcelable {
         time = in.readString();
         content = in.readString();
         image = in.readString();
+        isClose = in.readInt();
     }
 
     public String getId() {
@@ -70,6 +72,14 @@ public class Blog implements Parcelable {
         this.image = image;
     }
 
+    public int getIsClose() {
+        return isClose;
+    }
+
+    public void setIsClose(int isClose) {
+        this.isClose = isClose;
+    }
+
     public static final Creator<Blog> CREATOR = new Creator<Blog>() {
         @Override
         public Blog createFromParcel(Parcel in) {
@@ -95,5 +105,6 @@ public class Blog implements Parcelable {
         dest.writeString(time);
         dest.writeString(content);
         dest.writeString(image);
+        dest.writeInt(isClose);
     }
 }

@@ -59,6 +59,15 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.tvTime.setText(blog.getTime());
         if(!blog.getImage().isEmpty())
             Picasso.get().load(blog.getImage()).into(holder.img);
+
+        if(blog.getIsClose() == 0){
+            holder.imClose.setVisibility(View.VISIBLE);
+            holder.imCloseic.setImageResource(R.drawable.ic_lock);
+        }else {
+            holder.imClose.setVisibility(View.GONE);
+            holder.imCloseic.setImageResource(R.drawable.unlock);
+        }
+
         holder.viewRoot.setOnClickListener(v-> loadWeb(blog.getUrl()));
         if(isAdmin) {
             holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
@@ -80,7 +89,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     class NotificationHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvContent, tvTime;
-        ImageView img;
+        ImageView img, imClose, imCloseic;
         LinearLayout viewRoot;
         SwipeLayout swipeLayout;
         LinearLayout btnDelete;
@@ -95,6 +104,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             viewRoot = itemView.findViewById(R.id.view_root);
             swipeLayout = itemView.findViewById(R.id.swipe);
             btnDelete = itemView.findViewById(R.id.btn_delete);
+            imClose = itemView.findViewById(R.id.im_close);
+            imCloseic = itemView.findViewById(R.id.im_delete);
         }
     }
 
@@ -132,7 +143,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 .setCancelable(false)
                 .setPositiveButton(context.getResources().getString(R.string.delete), ((dialog, which) -> {
                     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                    mDatabase.child(Node.Blog).child(blog.getId()).setValue(blog);
+                    mDatabase.child(Node.Blog).child(blog.getId()).child(Node.isClose).setValue(blog);
                     dialog.dismiss();
                     notifyDataSetChanged();
                     Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show();

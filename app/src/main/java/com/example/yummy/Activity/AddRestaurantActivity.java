@@ -1,5 +1,6 @@
 package com.example.yummy.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -61,8 +62,10 @@ public class AddRestaurantActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcvType.setLayoutManager(layoutManager);
         rcvType.setNestedScrollingEnabled(false);
-        AddResMenuAdapter adapter = new AddResMenuAdapter(Common.menuList.get(0));
-        rcvType.setAdapter(adapter);
+        if(Common.menuList != null && Common.blogList.size() > 0) {
+            AddResMenuAdapter adapter = new AddResMenuAdapter();
+            rcvType.setAdapter(adapter);
+        }
         Button btnCreate = findViewById(R.id.btn_create);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rdb_no) {
@@ -118,13 +121,16 @@ public class AddRestaurantActivity extends AppCompatActivity {
 
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
                 finish();
+            }else {
+                Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
             }
+
 
         });
     }
 
     private boolean checkTime(String open, String close){
-        SimpleDateFormat inputParser = new SimpleDateFormat("HH:mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat inputParser = new SimpleDateFormat("HH:mm");
         try {
             Date dateOpen = inputParser.parse(open);
             Date dateClose = inputParser.parse(close);
@@ -161,8 +167,8 @@ public class AddRestaurantActivity extends AppCompatActivity {
         private Map<String, String> data;
         private List<String> menuList;
 
-        AddResMenuAdapter(Map<String,String> data) {
-            this.data = data;
+        AddResMenuAdapter() {
+            this.data = Common.menuList.get(0);
             menuList = new ArrayList<>(data.values());
         }
 

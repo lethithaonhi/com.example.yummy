@@ -12,11 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:background="@drawable/bg_res_cus"
-            android:id="@+id/my_awesome_toolbar"
+        <FrameLayout
             android:layout_height="230dp"
             android:layout_width="match_parent">
+
+            <ImageView
+                android:id="@+id/im_root"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg_res_cus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <LinearLayout
                 android:background="@color/trans"
@@ -63,7 +68,7 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+        </FrameLayout>
 
         <LinearLayout
             android:visibility="gone"

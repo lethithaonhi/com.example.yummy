@@ -51,13 +51,13 @@ public class UtilsBottomBar {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
     }
 
-    public static List<Map> getMenuList() {
-        List<Map> menuList = new ArrayList<>();
+    public static List<Map<String, String>> getMenuList() {
+        List<Map<String, String>> menuList = new ArrayList<>();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child(Node.ThucDon).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Map<String, Object> hashMap = (Map<String, Object>) dataSnapshot.getValue();
+                Map<String, String> hashMap = (Map<String, String>) dataSnapshot.getValue();
                 menuList.add(hashMap);
             }
 

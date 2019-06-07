@@ -106,6 +106,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
         RecyclerView rcv = findViewById(R.id.rcv_partner);
         LinearLayout vBranch = findViewById(R.id.v_branch);
         imClose.setOnClickListener(v -> finish());
+        ImageView imRoot = findViewById(R.id.im_root);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcv.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcv.getContext(), layoutManager.getOrientation());
@@ -140,12 +141,13 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
             name = getResources().getString(R.string.restaurant);
             branchAdapter = new BranchAdapter(this, Common.restaurantListCurrent.get(0).getBranchList());
             rcv.setAdapter(branchAdapter);
-
             tvDiscount = findViewById(R.id.tv_discount);
             tvFreeship = findViewById(R.id.tv_freeship);
             setDiscounts();
             ImageView imEdit = findViewById(R.id.im_edit);
             imEdit.setOnClickListener(v -> showEditDiscount());
+            if(Common.restaurantListCurrent.get(0) != null && !Common.restaurantListCurrent.get(0).getImgList().get(0).isEmpty())
+                Picasso.get().load(Common.restaurantListCurrent.get(0).getImgList().get(0)).into(imRoot);
 
         } else {
             name = getResources().getString(R.string.menu);

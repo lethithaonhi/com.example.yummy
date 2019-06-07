@@ -2,18 +2,25 @@ package com.example.yummy.Adapter;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +28,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
+import com.example.yummy.Activity.AddRestaurantActivity;
 import com.example.yummy.Activity.RestaurantDetailActivity;
 import com.example.yummy.Model.Account;
 import com.example.yummy.Model.Branch;
@@ -33,7 +41,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,6 +56,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     private Context context;
     private Branch branch;
     private float min;
+    private TextView tvOpen, tvClose;
+    private Calendar myCalender;
     private int type; //1:cus, 0: admin
 
     public RestaurantAdapter(List<Restaurant> restaurantList, Context context, int type){
@@ -117,6 +131,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         }
 
         holder.btnClose.setOnClickListener(v->showDialogClose(restaurant));
+        holder.btnEdit.setOnClickListener(v->showDialogEdit(restaurant));
     }
 
     @Override
@@ -226,4 +241,100 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         alertDialog.show();
     }
 
+    private void showDialogEdit(Restaurant restaurant){
+        Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.setTitle("");
+        dialog.setContentView(R.layout.view_add_restaurant);
+        dialog.show();
+
+        EditText edName = dialog.findViewById(R.id.edt_name);
+        edName.setText(restaurant.getName());
+        tvOpen = dialog.findViewById(R.id.tv_open);
+        tvClose.setText(restaurant.getClose_open());
+        tvClose = dialog.findViewById(R.id.tv_close);
+        tvOpen.setText(restaurant.getOpen_time());
+        RadioGroup radioGroup = dialog.findViewById(R.id.radioGrp);
+        EditText edFeeShip = dialog.findViewById(R.id.ed_ship);
+        edFeeShip.setText(restaurant.getFreeship());
+        EditText edVideo = dialog.findViewById(R.id.edt_video);
+        edVideo.setText(restaurant.getVideo());
+        RecyclerView rcvType = dialog.findViewById(R.id.rcv_type);
+        rcvType.setVisibility(View.GONE);
+        Button btnCreate = dialog.findViewById(R.id.btn_create);
+        btnCreate.setText(R.string.edit);
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rdb_no) {
+                edFeeShip.setVisibility(View.GONE);
+            } else {
+                edFeeShip.setVisibility(View.VISIBLE);
+            }
+        });
+        myCalender = Calendar.getInstance();
+        int hour = myCalender.get(Calendar.HOUR_OF_DAY);
+        int minute = myCalender.get(Calendar.MINUTE);
+        tvOpen.setText(hour + ":" + minute);
+        tvClose.setText(hour + ":" + minute);
+
+        RecyclerView rcvCity = dialog.findViewById(R.id.rcv_city);
+        rcvCity.setVisibility(View.GONE);
+
+        tvOpen.setOnClickListener(v -> openTimeDialog(tvOpen, hour, minute));
+        tvClose.setOnClickListener(v -> openTimeDialog(tvClose, hour, minute));
+
+        btnCreate.setOnClickListener(v -> {
+            String name = edName.getText().toString().trim();
+            String video = edVideo.getText().toString().trim();
+            String openTime = tvOpen.getText().toString();
+            String closeTime = tvClose.getText().toString();
+            boolean isFreeShip = edFeeShip.getVisibility() == View.GONE;
+            int freeShip = isFreeShip ? 0 : Integer.parseInt(edFeeShip.getText().toString().trim());
+
+            if(!name.isEmpty() && !video.isEmpty() && checkTime(openTime, closeTime)){
+                restaurant.setName(name);
+                restaurant.setOpen_time(openTime);
+                restaurant.setClose_open(closeTime);
+                restaurant.setFreeship(freeShip);
+                restaurant.setVideo(video);
+
+                DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
+                String key = mData.child(Node.QuanAn).push().getKey();
+                mData.child(Node.QuanAn).push().setValue(restaurant);
+                Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                notifyDataSetChanged();
+            }else {
+                Toast.makeText(context, R.string.empty_user, Toast.LENGTH_SHORT).show();
+            }
+
+        });
+    }
+
+    private boolean checkTime(String open, String close){
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat inputParser = new SimpleDateFormat("HH:mm");
+        try {
+            Date dateOpen = inputParser.parse(open);
+            Date dateClose = inputParser.parse(close);
+            if ( dateOpen.before(dateClose)) {
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private void openTimeDialog(TextView txtTime, int hour, int minute) {
+        TimePickerDialog.OnTimeSetListener myTimeListener = (view, hourOfDay, minute1) -> {
+            if (view.isShown()) {
+                myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                myCalender.set(Calendar.MINUTE, minute1);
+                txtTime.setText(hourOfDay + ":" + minute1);
+            }
+        };
+        TimePickerDialog timePickerDialog = new TimePickerDialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
+        timePickerDialog.setTitle("Choose hour:");
+        if (timePickerDialog.getWindow() != null)
+            timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        timePickerDialog.show();
+    }
 }
