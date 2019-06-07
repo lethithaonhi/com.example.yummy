@@ -19,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yummy.Adapter.AddResMenuAdapter;
 import com.example.yummy.Adapter.CityAdapter;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
@@ -35,7 +36,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class AddRestaurantActivity extends AppCompatActivity {
+public class AddRestaurantActivity extends AppCompatActivity implements AddResMenuAdapter.OnChangeListMenu{
     private TextView tvOpen, tvClose;
     private Calendar myCalender;
     private List<String> checkList;
@@ -63,8 +64,9 @@ public class AddRestaurantActivity extends AppCompatActivity {
         rcvType.setLayoutManager(layoutManager);
         rcvType.setNestedScrollingEnabled(false);
         if(Common.menuList != null && Common.blogList.size() > 0) {
-            AddResMenuAdapter adapter = new AddResMenuAdapter();
+            AddResMenuAdapter adapter = new AddResMenuAdapter(this);
             rcvType.setAdapter(adapter);
+            adapter.onChangeListMenu(this);
         }
         Button btnCreate = findViewById(R.id.btn_create);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -163,65 +165,70 @@ public class AddRestaurantActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.not_back, Toast.LENGTH_SHORT).show();
     }
 
-    public class AddResMenuAdapter extends RecyclerView.Adapter<AddResMenuAdapter.AddResMenuHolder> {
-        private Map<String, String> data;
-        private List<String> menuList;
-
-        AddResMenuAdapter() {
-            this.data = Common.menuList.get(0);
-            menuList = new ArrayList<>(data.values());
-        }
-
-        @NonNull
-        @Override
-        public AddResMenuHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            LayoutInflater inflater = LayoutInflater.from(AddRestaurantActivity.this);
-            View view = inflater.inflate(R.layout.item_city, viewGroup, false);
-            return new AddResMenuHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull AddResMenuHolder holder, int pos) {
-            String name = menuList.get(pos);
-            holder.tvName.setText(name);
-
-            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                String key = getKey(name);
-                if(isChecked){
-                    checkList.add(key);
-                }else {
-                    checkList.remove(key);
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return menuList != null ? menuList.size() : 0;
-        }
-
-        class AddResMenuHolder extends RecyclerView.ViewHolder {
-            CheckBox checkBox;
-            TextView tvName, tvCount;
-
-            AddResMenuHolder(@NonNull View itemView) {
-                super(itemView);
-
-                checkBox = itemView.findViewById(R.id.checkbox_city);
-                tvName = itemView.findViewById(R.id.tv_nameCity);
-                tvCount = itemView.findViewById(R.id.tv_countCity);
-                tvCount.setVisibility(View.GONE);
-            }
-        }
-
-        private String getKey(String menu) {
-            for (Map.Entry<String,String> entry : data.entrySet()) {
-                if (entry.getValue().contains(menu)) {
-                    return entry.getKey();
-                }
-            }
-            return "";
-        }
-
+    @Override
+    public void OnChangeListMenu(List<String> checkList) {
+        this.checkList = checkList;
     }
+
+//    public class AddResMenuAdapter extends RecyclerView.Adapter<AddResMenuAdapter.AddResMenuHolder> {
+//        private Map<String, String> data;
+//        private List<String> menuList;
+//
+//        AddResMenuAdapter() {
+//            this.data = Common.menuList.get(0);
+//            menuList = new ArrayList<>(data.values());
+//        }
+//
+//        @NonNull
+//        @Override
+//        public AddResMenuHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+//            LayoutInflater inflater = LayoutInflater.from(AddRestaurantActivity.this);
+//            View view = inflater.inflate(R.layout.item_city, viewGroup, false);
+//            return new AddResMenuHolder(view);
+//        }
+//
+//        @Override
+//        public void onBindViewHolder(@NonNull AddResMenuHolder holder, int pos) {
+//            String name = menuList.get(pos);
+//            holder.tvName.setText(name);
+//
+//            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+//                String key = getKey(name);
+//                if(isChecked){
+//                    checkList.add(key);
+//                }else {
+//                    checkList.remove(key);
+//                }
+//            });
+//        }
+//
+//        @Override
+//        public int getItemCount() {
+//            return menuList != null ? menuList.size() : 0;
+//        }
+//
+//        class AddResMenuHolder extends RecyclerView.ViewHolder {
+//            CheckBox checkBox;
+//            TextView tvName, tvCount;
+//
+//            AddResMenuHolder(@NonNull View itemView) {
+//                super(itemView);
+//
+//                checkBox = itemView.findViewById(R.id.checkbox_city);
+//                tvName = itemView.findViewById(R.id.tv_nameCity);
+//                tvCount = itemView.findViewById(R.id.tv_countCity);
+//                tvCount.setVisibility(View.GONE);
+//            }
+//        }
+//
+//        private String getKey(String menu) {
+//            for (Map.Entry<String,String> entry : data.entrySet()) {
+//                if (entry.getValue().contains(menu)) {
+//                    return entry.getKey();
+//                }
+//            }
+//            return "";
+//        }
+//
+//    }
 }

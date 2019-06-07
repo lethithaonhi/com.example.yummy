@@ -107,6 +107,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
         LinearLayout vBranch = findViewById(R.id.v_branch);
         imClose.setOnClickListener(v -> finish());
         ImageView imRoot = findViewById(R.id.im_root);
+        LinearLayout btnEdit = findViewById(R.id.btn_edit);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcv.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcv.getContext(), layoutManager.getOrientation());
@@ -138,6 +139,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
             rcv.setAdapter(historyMenuAdapter);
         } else if (type == 1) {
             vBranch.setVisibility(View.VISIBLE);
+            btnEdit.setVisibility(View.VISIBLE);
             name = getResources().getString(R.string.restaurant);
             branchAdapter = new BranchAdapter(this, Common.restaurantListCurrent.get(0).getBranchList());
             rcv.setAdapter(branchAdapter);
@@ -149,6 +151,9 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
             if(Common.restaurantListCurrent.get(0) != null && !Common.restaurantListCurrent.get(0).getImgList().get(0).isEmpty())
                 Picasso.get().load(Common.restaurantListCurrent.get(0).getImgList().get(0)).into(imRoot);
 
+            btnEdit.setOnClickListener(v->{
+
+            });
         } else {
             name = getResources().getString(R.string.menu);
             rcv.setItemAnimator(new FadeInLeftAnimator());
