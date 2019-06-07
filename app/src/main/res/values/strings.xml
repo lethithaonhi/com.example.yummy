@@ -168,7 +168,7 @@
     <string name="mess_open">Do you want to open?</string>
     <string name="edit_menu">Edit Menu</string>
     <string name="menu_name">Enter Food\'s name</string>
-    <string name="menu_price">Enter Price\'s name</string>
+    <string name="menu_price">Enter Food\'s price</string>
     <string name="menu_des">Enter Describe\'s name (optional)</string>
     <string name="your_profile">Enter Your Profile</string>
     <string name="login_again">Please log in again!</string>
@@ -220,4 +220,8 @@
     <string name="account_custom">Custommer Account</string>
     <string name="account_partner">Partner Account</string>
     <string name="account_lock">Your account has been locked.</string>
+    <string name="add_blog">Add blog</string>
+    <string name="blog_title">Enter Blog\'s title</string>
+    <string name="blog_content">Enter Blog\'s describe</string>
+    <string name="blog_url">Enter Blog\'s url</string>
 </resources>

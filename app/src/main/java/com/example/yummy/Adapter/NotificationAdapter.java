@@ -71,7 +71,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         }
 
         holder.btnDelete.setOnClickListener(v -> showDialogDelete(blog));
-//        holder.btnEdit.setOnClickListener(v->showDialogEdit(menu));
     }
 
     @Override
@@ -84,7 +83,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         ImageView img;
         LinearLayout viewRoot;
         SwipeLayout swipeLayout;
-        LinearLayout btnEdit, btnDelete;
+        LinearLayout btnDelete;
 
         NotificationHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,7 +95,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             viewRoot = itemView.findViewById(R.id.view_root);
             swipeLayout = itemView.findViewById(R.id.swipe);
             btnDelete = itemView.findViewById(R.id.btn_delete);
-            btnEdit = itemView.findViewById(R.id.btn_edit);
         }
     }
 

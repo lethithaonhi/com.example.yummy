@@ -309,7 +309,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 if (cursor.moveToFirst()) {
                     do {
                         Branch branch = getBranchFromCursor(cursor);
-                        dataList.add(branch);
+                        if(branch.getIsDelete() == 0)
+                            dataList.add(branch);
                     } while (cursor.moveToNext());
                 }
                 if (!cursor.isClosed()) {
@@ -330,7 +331,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     Menu menu = getMenuFromCursor(cursor);
-                    dataList.add(menu);
+                    if(menu.getIsDelete() == 0)
+                        dataList.add(menu);
                 } while (cursor.moveToNext());
             }
             if (!cursor.isClosed()) {
@@ -409,19 +411,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return  0;
     }
 
-//    public int updateNote(Restaurant note) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//
-//        ContentValues values = new ContentValues();
-//        values.put(RestaurantContrains, note.getVideo());
-//        values.put(COLUMN_NOTE_CONTENT, note.getNoteContent());
-//
-//        // updating row
-//        return db.update(TABLE_NOTE, values, COLUMN_NOTE_ID + " = ?",
-//                new String[]{String.valueOf(note.getNoteId())});
-//    }
-
-
     public void updateBranch(float distance, int id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -429,13 +418,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         db.update(BranchContrains.TABLE_NAME, values, BranchContrains.ID + " = ?",
                 new String[]{String.valueOf(id)});
-    }
-
-    public void deleteRes(String id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(RestaurantContrains.TABLE_NAME, RestaurantContrains.RES_ID + " = ?",
-                new String[]{id});
-        db.close();
     }
 
     private String convertListToString(List<String> list) {

@@ -71,4 +71,6 @@ dependencies {
     implementation 'jp.wasabeef:recyclerview-animators:1.0.3@aar'
     //4D button
     implementation 'pl.bclogic:pulsator4droid:1.0.3'
+    //chart
+    implementation 'im.dacer:AndroidCharts:1.0.4'
 }
