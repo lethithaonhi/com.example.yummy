@@ -87,7 +87,7 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchHold
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
             branch.setIsDelete(1);
             Common.db.updateBranch(branch);
-            mDatabase.child(Node.Branch).child(Common.restaurantListCurrent.get(0).getRes_id()).child(branch.getId()).child(Node.isDelete).setValue(1);
+            mDatabase.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).child(branch.getId()).child(Node.isDelete).setValue(1);
             Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show();
             notifyDataSetChanged();
         });
@@ -105,7 +105,7 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchHold
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
             branch.setIsDelete(0);
             Common.db.updateBranch(branch);
-            mDatabase.child(Node.Branch).child(Common.restaurantListCurrent.get(0).getRes_id()).child(branch.getId()).child(Node.isDelete).setValue(0);
+            mDatabase.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).child(branch.getId()).child(Node.isDelete).setValue(0);
             Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show();
             notifyDataSetChanged();
         });

@@ -19,6 +19,7 @@ public class Common {
     public static List<Restaurant> restaurantListAll;
     public static List<Map<String, String>> menuList;
     public static List<Restaurant> restaurantListCurrent;
+    public static Restaurant restaurantPartner;
     public static HashMap<String, Integer> cityList;
     public static Account accountCurrent;
     public static String language;

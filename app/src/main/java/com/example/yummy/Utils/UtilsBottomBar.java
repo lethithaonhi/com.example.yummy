@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -15,9 +16,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import com.example.yummy.Activity.BottomBarActivity;
+import com.example.yummy.Activity.WelcomeActivity;
 import com.example.yummy.Model.Addresses;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Menu;
@@ -223,6 +228,70 @@ public class UtilsBottomBar {
         return false;
     }
 
+    private void getRestaurantPartner(){
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child(Common.accountCurrent.getPartner().getBoss()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
+                if(restaurant != null ){
+                    restaurant.setRes_id(dataSnapshot.getKey());
+                    List<Branch> branchList = new ArrayList<>();
+                    mDatabase.child(Node.Branch).child(restaurant.getRes_id()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                Branch branch = data.getValue(Branch.class);
+                                if (branch != null) {
+                                    branch.setId(data.getKey());
+                                    branchList.add(branch);
+                                }
+                            }
+
+                            restaurant.setBranchList(branchList);
+
+                            //getMenu(resID, address, restaurant, dataSnapshotRoot);
+                            List<Menu> menuList1 = new ArrayList<>();
+                            mDatabase.child(Node.ThucDonQuanAn).child(restaurant.getRes_id()).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot menuIDSnap : dataSnapshot.getChildren()) {
+                                        for (DataSnapshot data : menuIDSnap.getChildren()) {
+                                            Menu menu = data.getValue(Menu.class);
+                                            if (menu != null) {
+                                                menu.setType(menuIDSnap.getKey());
+                                                menu.setMenu_id(data.getKey());
+                                            }
+                                            menuList1.add(menu);
+                                        }
+                                    }
+                                    restaurant.setMenuList(menuList1);
+                                    Common.restaurantPartner = restaurant;
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Log.d("databaseError FireBase", databaseError.getDetails());
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.d("databaseError FireBase", databaseError.getDetails());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     @SuppressLint("StaticFieldLeak")
     public static class RestaurantPartnerAsyncTask extends AsyncTask<Void, Void, Void> {
         private String resID;
@@ -233,7 +302,7 @@ public class UtilsBottomBar {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Common.restaurantListCurrent = new ArrayList<>();
+            Common.restaurantPartner = new Restaurant();
         }
 
         @Override
@@ -245,9 +314,12 @@ public class UtilsBottomBar {
         @Override
         protected Void doInBackground(Void... voids) {
             if(Common.db != null) {
-                Common.restaurantListCurrent = Common.db.getRestaurantPartner(resID, Common.myAddress);
-                for (Restaurant restaurant : Common.restaurantListCurrent) {
-                    for (Branch branch : restaurant.getBranchList()) {
+                Common.restaurantPartner = Common.db.getRestaurantPartner(resID, Common.myAddress);
+                if(Common.restaurantPartner == null){
+
+                }
+                if(Common.restaurantPartner != null && Common.restaurantPartner.getBranchList() != null) {
+                    for (Branch branch : Common.restaurantPartner.getBranchList()) {
                         branch.setDistance(UtilsBottomBar.getDistanceBranch(branch));
                     }
                 }

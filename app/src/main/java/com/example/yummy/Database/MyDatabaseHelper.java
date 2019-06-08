@@ -273,7 +273,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public List<Restaurant> getRestaurantPartner(String idRes, String address) {
+    public Restaurant getRestaurantPartner(String idRes, String address) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Restaurant> dataList = new ArrayList<>();
         String query = "SELECT * FROM " + RestaurantContrains.TABLE_NAME + " WHERE " + RestaurantContrains.RES_ID
@@ -295,7 +295,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 cursor.close();
             }
         }
-        return dataList;
+        return dataList.size() > 0 ? dataList.get(0):null;
     }
 
     private List<Branch> getBranch(String resID, String city){

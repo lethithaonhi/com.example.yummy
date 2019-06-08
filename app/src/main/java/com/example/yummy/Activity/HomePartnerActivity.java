@@ -112,11 +112,11 @@ public class HomePartnerActivity extends AppCompatActivity {
         ImageView imAvatar = headerLayout.findViewById(R.id.im_avatar);
         TextView tvOwner = headerLayout.findViewById(R.id.tv_owner);
         TextView tvName = headerLayout.findViewById(R.id.tv_name);
-        if(Common.accountCurrent != null && Common.restaurantListCurrent != null) {
+        if(Common.accountCurrent != null && Common.restaurantPartner != null) {
             if(!Common.accountCurrent.getAvatar().isEmpty())
                 Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatar);
             if(Common.accountCurrent.getRole() == 3) {
-                tvOwner.setText(getResources().getString(R.string.owner) + ": " + Common.restaurantListCurrent.get(0).getName() + " - " + Common.restaurantListCurrent.get(0).getCity());
+                tvOwner.setText(getResources().getString(R.string.owner) + ": " + Common.restaurantPartner.getName() + " - " + Common.restaurantPartner.getCity());
             }else {
                 tvOwner.setText(R.string.add_menu);
             }

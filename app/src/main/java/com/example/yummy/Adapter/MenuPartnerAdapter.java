@@ -168,7 +168,7 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
                 if(!des.isEmpty())
                     menu.setDescribe(des);
                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                mDatabase.child(Node.ThucDonQuanAn).child("quan1").child(menu.getType()).child(menu.getMenu_id()).setValue(menu);
+                mDatabase.child(Node.ThucDonQuanAn).child(Common.accountCurrent.getPartner().getBoss()).child(menu.getType()).child(menu.getMenu_id()).setValue(menu);
                 Common.db.updateMenu(menu);
                 dialog.dismiss();
                 notifyDataSetChanged();

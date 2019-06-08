@@ -107,17 +107,17 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
         LinearLayout vBranch = findViewById(R.id.v_branch);
         imClose.setOnClickListener(v -> finish());
         ImageView imRoot = findViewById(R.id.im_root);
+        LinearLayout vEmpty = findViewById(R.id.v_empty);
         LinearLayout btnEdit = findViewById(R.id.btn_edit);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcv.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcv.getContext(), layoutManager.getOrientation());
         rcv.addItemDecoration(dividerItemDecoration);
 
-        if (Common.restaurantListCurrent.size() == 0) {
-            UtilsBottomBar.RestaurantPartnerAsyncTask asyncTask = new UtilsBottomBar.RestaurantPartnerAsyncTask("quan1");
+        if (Common.restaurantPartner == null) {
+            UtilsBottomBar.RestaurantPartnerAsyncTask asyncTask = new UtilsBottomBar.RestaurantPartnerAsyncTask(Common.accountCurrent.getPartner().getBoss());
             asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
-
         String name;
         if (type == 0) {
             name = getResources().getString(R.string.order);
@@ -137,19 +137,35 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
             imAdd.setVisibility(View.VISIBLE);
             historyMenuAdapter = new HistoryMenuAdapter(this,  dataList, true);
             rcv.setAdapter(historyMenuAdapter);
+            if(dataList.size() == 0){
+                vEmpty.setVisibility(View.VISIBLE);
+            }else {
+                vEmpty.setVisibility(View.GONE);
+            }
         } else if (type == 1) {
             vBranch.setVisibility(View.VISIBLE);
             btnEdit.setVisibility(View.VISIBLE);
             name = getResources().getString(R.string.restaurant);
-            branchAdapter = new BranchAdapter(this, Common.restaurantListCurrent.get(0).getBranchList());
-            rcv.setAdapter(branchAdapter);
+            if(Common.restaurantPartner != null && Common.restaurantPartner.getBranchList() != null) {
+                vEmpty.setVisibility(View.GONE);
+                branchAdapter = new BranchAdapter(this, Common.restaurantPartner.getBranchList());
+                rcv.setAdapter(branchAdapter);
+            }else {
+                vEmpty.setVisibility(View.VISIBLE);
+            }
+            ImageView imEdit = findViewById(R.id.im_edit);
             tvDiscount = findViewById(R.id.tv_discount);
             tvFreeship = findViewById(R.id.tv_freeship);
-            setDiscounts();
-            ImageView imEdit = findViewById(R.id.im_edit);
+            LinearLayout vDiscount = findViewById(R.id.v_discount);
+            if(Common.restaurantPartner.getDiscounts() != null) {
+                setDiscounts();
+                vDiscount.setVisibility(View.VISIBLE);
+            }else {
+                vDiscount.setVisibility(View.GONE);
+            }
             imEdit.setOnClickListener(v -> showEditDiscount());
-            if(Common.restaurantListCurrent.get(0) != null && !Common.restaurantListCurrent.get(0).getImgList().get(0).isEmpty())
-                Picasso.get().load(Common.restaurantListCurrent.get(0).getImgList().get(0)).into(imRoot);
+            if(Common.restaurantPartner != null && Common.restaurantPartner.getImgList() != null && !Common.restaurantPartner.getImgList().get(0).isEmpty())
+                Picasso.get().load(Common.restaurantPartner.getImgList().get(0)).into(imRoot);
 
             btnEdit.setOnClickListener(v->{
 
@@ -157,9 +173,14 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
         } else {
             name = getResources().getString(R.string.menu);
             rcv.setItemAnimator(new FadeInLeftAnimator());
-            MenuPartnerAdapter adapter = new MenuPartnerAdapter(this, Common.restaurantListCurrent.get(0).getMenuList());
-            adapter.setMode(Attributes.Mode.Single);
-            rcv.setAdapter(adapter);
+            if(Common.restaurantPartner != null && Common.restaurantPartner.getMenuList() != null) {
+                vEmpty.setVisibility(View.GONE);
+                MenuPartnerAdapter adapter = new MenuPartnerAdapter(this, Common.restaurantPartner.getMenuList());
+                adapter.setMode(Attributes.Mode.Single);
+                rcv.setAdapter(adapter);
+            }else {
+                vEmpty.setVisibility(View.VISIBLE);
+            }
         }
 
         tvType.setText(name);
@@ -229,14 +250,14 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
     }
 
     private void setDiscounts() {
-        String discount = "Discount: " + Common.restaurantListCurrent.get(0).getDiscounts().getDiscount() + "% - Code: " + Common.restaurantListCurrent.get(0).getDiscounts().getCode() +
-                "\nMin order: " + Common.restaurantListCurrent.get(0).getDiscounts().getMin_order() + "VND - Max discount: " + Common.restaurantListCurrent.get(0).getDiscounts().getMax_discount() + "VND";
+        String discount = "Discount: " + Common.restaurantPartner.getDiscounts().getDiscount() + "% - Code: " + Common.restaurantPartner.getDiscounts().getCode() +
+                "\nMin order: " + Common.restaurantPartner.getDiscounts().getMin_order() + "VND - Max discount: " + Common.restaurantPartner.getDiscounts().getMax_discount() + "VND";
         tvDiscount.setText(discount);
 
         String freeship = "";
-        if (Common.restaurantListCurrent.get(0).getFreeship() == 0)
+        if (Common.restaurantPartner.getFreeship() == 0)
             freeship = "FreeShip under 2km, only 15000VND for 2km - 5km\n";
-        freeship = freeship + "Verify: " + Common.restaurantListCurrent.get(0).getFreeship() + "VND/Km";
+        freeship = freeship + "Verify: " + Common.restaurantPartner.getFreeship() + "VND/Km";
         tvFreeship.setText(freeship);
     }
 
@@ -297,10 +318,10 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
                 menu.setType(typeMenu);
 
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
-                String key = nodeRoot.child(Node.ThucDonQuanAn).child(Common.restaurantListCurrent.get(0).getRes_id()).child(menu.getType()).push().getKey();
-                nodeRoot.child(Node.ThucDonQuanAn).child(Common.restaurantListCurrent.get(0).getRes_id()).child(menu.getType()).push().setValue(menu);
+                String key = nodeRoot.child(Node.ThucDonQuanAn).child(Common.restaurantPartner.getRes_id()).child(menu.getType()).push().getKey();
+                nodeRoot.child(Node.ThucDonQuanAn).child(Common.restaurantPartner.getRes_id()).child(menu.getType()).push().setValue(menu);
                 menu.setMenu_id(key);
-                Common.restaurantListCurrent.get(0).getMenuList().add(menu);
+                Common.restaurantPartner.getMenuList().add(menu);
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -312,7 +333,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
 
     private List<String> getTypeMenu() {
         List<String> typeList = new ArrayList<>();
-        for (Menu menu : Common.restaurantListCurrent.get(0).getMenuList()) {
+        for (Menu menu : Common.restaurantPartner.getMenuList()) {
             if (!typeList.contains(menu.getType())) {
                 typeList.add(menu.getType());
             }
@@ -414,12 +435,15 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
         EditText edMin = dialog.findViewById(R.id.ed_min);
         TextView btnCancel = dialog.findViewById(R.id.btn_cancel);
         TextView btnAdd = dialog.findViewById(R.id.btn_edit);
+        discounts = new Discounts();
 
-        discounts = Common.restaurantListCurrent.get(0).getDiscounts();
-        edCode.setText(discounts.getCode());
-        edDiscount.setText(discounts.getDiscount() + "");
-        edMax.setText(discounts.getMax_discount() + "");
-        edMin.setText(discounts.getMin_order() + "");
+        if(Common.restaurantPartner != null && Common.restaurantPartner.getDiscounts() != null) {
+            discounts = Common.restaurantPartner.getDiscounts();
+            edCode.setText(discounts.getCode());
+            edDiscount.setText(discounts.getDiscount() + "");
+            edMax.setText(discounts.getMax_discount() + "");
+            edMin.setText(discounts.getMin_order() + "");
+        }
 
         btnCancel.setOnClickListener(v -> dialog.dismiss());
         btnAdd.setOnClickListener(v -> {
@@ -429,15 +453,14 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
             String min = edMin.getText().toString().trim();
 
             if (!dis.isEmpty() && !code.isEmpty() && !max.isEmpty() && !min.isEmpty()) {
-                discounts = new Discounts();
                 discounts.setDiscount(Integer.parseInt(dis));
                 discounts.setCode(code);
                 discounts.setMax_discount(Integer.parseInt(max));
                 discounts.setMin_order(Integer.parseInt(min));
 
                 DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
-                mData.child(Node.KhuyenMai).child(Common.restaurantListCurrent.get(0).getRes_id()).setValue(discounts);
-                Common.restaurantListCurrent.get(0).setDiscounts(discounts);
+                mData.child(Node.KhuyenMai).child(Common.restaurantPartner.getRes_id()).setValue(discounts);
+                Common.restaurantPartner.setDiscounts(discounts);
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
                 setDiscounts();
                 dialog.dismiss();
@@ -482,11 +505,11 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
                 branch.setLongitude(location.getLongitude());
 
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
-                String key = nodeRoot.child(Node.Branch).child(Common.restaurantListCurrent.get(0).getRes_id()).push().getKey();
+                String key = nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).push().getKey();
                 if(key != null) {
-                    nodeRoot.child(Node.Branch).child(Common.restaurantListCurrent.get(0).getRes_id()).push().setValue(menu);
+                    nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).push().setValue(menu);
                     branch.setId(key);
-                    Common.restaurantListCurrent.get(0).getBranchList().add(branch);
+                    Common.restaurantPartner.getBranchList().add(branch);
                     Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
                     branchAdapter.notifyDataSetChanged();
                     dialog.dismiss();

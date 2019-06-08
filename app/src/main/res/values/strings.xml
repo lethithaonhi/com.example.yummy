@@ -225,4 +225,5 @@
     <string name="blog_content">Enter Blog\'s describe</string>
     <string name="blog_url">Enter Blog\'s url</string>
     <string name="video">Video</string>
+    <string name="empty_list">Empty list</string>
 </resources>

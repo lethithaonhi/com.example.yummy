@@ -84,11 +84,11 @@ public class RestaurantPartnerFragment extends Fragment {
         });
 
         vImage.setOnClickListener(vl-> showImgMenu());
-
         if(Common.accountCurrent != null && Common.accountCurrent.getPartner() != null) {
             UtilsBottomBar.RestaurantPartnerAsyncTask asyncTask = new UtilsBottomBar.RestaurantPartnerAsyncTask(Common.accountCurrent.getPartner().getBoss());
             asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        }else {
+        }
+        if(Common.accountCurrent == null || Common.accountCurrent.getPartner() == null) {
             if(LoginActivity.mAuth != null)
                 LoginActivity.mAuth.signOut();
             Toast.makeText(getContext(), R.string.login_again, Toast.LENGTH_SHORT).show();
@@ -108,16 +108,16 @@ public class RestaurantPartnerFragment extends Fragment {
             dialog.show();
 
             TextView tvName = dialog.findViewById(R.id.tv_name);
-            tvName.setText(Common.restaurantListCurrent.get(0).getName());
+            tvName.setText(Common.restaurantPartner.getName());
             TextView tvCountImg = dialog.findViewById(R.id.tv_countImg);
-            tvCountImg.setText(Common.restaurantListCurrent.get(0).getImgList().size() + " images");
+            tvCountImg.setText(Common.restaurantPartner.getImgList().size() + " images");
             ImageView btnAdd = dialog.findViewById(R.id.btn_add);
             btnAdd.setVisibility(View.VISIBLE);
             btnAdd.setOnClickListener(v-> createDialogChangeAvatar());
 
             RecyclerView rcvImRes = dialog.findViewById(R.id.rcv_image_res);
             rcvImRes.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            adapter = new ImgRestaurantDetailAdapter(getContext(), Common.restaurantListCurrent.get(0).getImgList(), Common.restaurantListCurrent.get(0), 1);
+            adapter = new ImgRestaurantDetailAdapter(getContext(), Common.restaurantPartner.getImgList(), Common.restaurantPartner, 1);
             rcvImRes.setAdapter(adapter);
 
             ImageView btnBack = dialog.findViewById(R.id.btn_back);
@@ -211,9 +211,9 @@ public class RestaurantPartnerFragment extends Fragment {
                         Uri downloadUri = task.getResult();
                         if(downloadUri != null) {
                             DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
-                            nodeRoot.child(Node.HinhAnhQuanAn).child(Common.restaurantListCurrent.get(0).getRes_id()).push().setValue(downloadUri.toString());
+                            nodeRoot.child(Node.HinhAnhQuanAn).child(Common.restaurantPartner.getRes_id()).push().setValue(downloadUri.toString());
                             Toast.makeText(getContext(), R.string.success, Toast.LENGTH_SHORT).show();
-                            Common.restaurantListCurrent.get(0).getImgList().add(downloadUri.toString());
+                            Common.restaurantPartner.getImgList().add(downloadUri.toString());
                             adapter.notifyDataSetChanged();
                         }
                     } else {
