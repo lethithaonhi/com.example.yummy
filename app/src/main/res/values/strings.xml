@@ -224,4 +224,5 @@
     <string name="blog_title">Enter Blog\'s title</string>
     <string name="blog_content">Enter Blog\'s describe</string>
     <string name="blog_url">Enter Blog\'s url</string>
+    <string name="video">Video</string>
 </resources>

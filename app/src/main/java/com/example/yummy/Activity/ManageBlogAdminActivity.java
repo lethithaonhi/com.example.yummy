@@ -69,6 +69,8 @@ public class ManageBlogAdminActivity extends AppCompatActivity {
 
         adapter = new NotificationAdapter(this, Common.blogList, true);
         rcv.setAdapter(adapter);
+        ImageView imClose = findViewById(R.id.im_close);
+        imClose.setOnClickListener(v->finish());
     }
 
     private void showDialogAddBlog(){

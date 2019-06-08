@@ -15,12 +15,15 @@ import android.view.ViewGroup;
 
 import com.example.yummy.Adapter.BannerAdapter;
 import com.example.yummy.Adapter.NotificationAdapter;
+import com.example.yummy.Model.Blog;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -53,13 +56,19 @@ public class NotificationFragment extends Fragment {
         });
 
         Collections.reverse(Common.blogList);
+        List<Blog> blogList = new ArrayList<>();
+        for(Blog blog : Common.blogList){
+            if(blog.getIsClose() != 1){
+                blogList.add(blog);
+            }
+        }
 
         RecyclerView rcvNotify = v.findViewById(R.id.rcv_notify_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcvNotify.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvNotify.getContext(), layoutManager.getOrientation());
         rcvNotify.addItemDecoration(dividerItemDecoration);
-        NotificationAdapter adapter = new NotificationAdapter(getContext(), Common.blogList, false);
+        NotificationAdapter adapter = new NotificationAdapter(getContext(), blogList, false);
         rcvNotify.setAdapter(adapter);
 
         ViewPager viewPager = v.findViewById(R.id.viewPager);

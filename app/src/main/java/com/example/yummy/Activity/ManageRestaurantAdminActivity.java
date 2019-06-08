@@ -8,6 +8,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,5 +42,7 @@ public class ManageRestaurantAdminActivity extends AppCompatActivity {
 
         RestaurantAdapter adapter = new RestaurantAdapter(Common.restaurantListAll, this, 0);
         rcv.setAdapter(adapter);
+        ImageView imClose = findViewById(R.id.im_close);
+        imClose.setOnClickListener(v->finish());
     }
 }

@@ -21,6 +21,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,7 +52,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantHolder> implements Filterable {
+public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantHolder> implements Filterable, AddResMenuAdapter.OnChangeListMenu {
     private List<Restaurant> restaurantList;
     private List<Restaurant> dataFilter;
     private String query = "";
@@ -61,12 +62,15 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     private TextView tvOpen, tvClose;
     private Calendar myCalender;
     private int type; //1:cus, 0: admin
+    private Restaurant tempRes;
+    private List<String> checkList;
 
     public RestaurantAdapter(List<Restaurant> restaurantList, Context context, int type){
         this.restaurantList = restaurantList;
         this.context = context;
         dataFilter = restaurantList;
         this.type = type;
+        checkList = new ArrayList<>();
     }
 
     @NonNull
@@ -151,6 +155,11 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             }
         }
         return branch;
+    }
+
+    @Override
+    public void OnChangeListMenu(List<String> checkList) {
+        this.checkList = checkList;
     }
 
     class RestaurantHolder extends RecyclerView.ViewHolder {
@@ -249,21 +258,38 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         dialog.setContentView(R.layout.view_add_restaurant);
         dialog.show();
 
+        tempRes = restaurant;
         EditText edName = dialog.findViewById(R.id.edt_name);
         edName.setText(restaurant.getName());
+        tvClose = dialog.findViewById(R.id.tv_close);
         tvOpen = dialog.findViewById(R.id.tv_open);
         tvClose.setText(restaurant.getClose_open());
-        tvClose = dialog.findViewById(R.id.tv_close);
         tvOpen.setText(restaurant.getOpen_time());
         RadioGroup radioGroup = dialog.findViewById(R.id.radioGrp);
+        RadioButton rdYes = dialog.findViewById(R.id.rdb_no);
+        RadioButton rdNo = dialog.findViewById(R.id.rdb_yes);
         EditText edFeeShip = dialog.findViewById(R.id.ed_ship);
-        edFeeShip.setText(restaurant.getFreeship());
         EditText edVideo = dialog.findViewById(R.id.edt_video);
         edVideo.setText(restaurant.getVideo());
         RecyclerView rcvType = dialog.findViewById(R.id.rcv_type);
-        rcvType.setVisibility(View.GONE);
         Button btnCreate = dialog.findViewById(R.id.btn_create);
         btnCreate.setText(R.string.edit);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        rcvType.setLayoutManager(layoutManager);
+        rcvType.setNestedScrollingEnabled(false);
+        AddResMenuAdapter adapter = new AddResMenuAdapter(context);
+        adapter.setCheckList(restaurant.getMenuIdList());
+        rcvType.setAdapter(adapter);
+        adapter.onChangeListMenu(this);
+
+        if(restaurant.getFreeship() == 0){
+            edFeeShip.setVisibility(View.GONE);
+            rdYes.setChecked(true);
+        }else {
+            edFeeShip.setVisibility(View.VISIBLE);
+            rdNo.setChecked(true);
+            edFeeShip.setText(restaurant.getFreeship()+"");
+        }
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rdb_no) {
                 edFeeShip.setVisibility(View.GONE);
@@ -274,8 +300,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         myCalender = Calendar.getInstance();
         int hour = myCalender.get(Calendar.HOUR_OF_DAY);
         int minute = myCalender.get(Calendar.MINUTE);
-        tvOpen.setText(hour + ":" + minute);
-        tvClose.setText(hour + ":" + minute);
 
         RecyclerView rcvCity = dialog.findViewById(R.id.rcv_city);
         rcvCity.setVisibility(View.GONE);
@@ -291,16 +315,26 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             boolean isFreeShip = edFeeShip.getVisibility() == View.GONE;
             int freeShip = isFreeShip ? 0 : Integer.parseInt(edFeeShip.getText().toString().trim());
 
-            if(!name.isEmpty() && !video.isEmpty() && checkTime(openTime, closeTime)){
+            if(!name.isEmpty() && !video.isEmpty() && checkTime(openTime, closeTime) && checkList.size() > 0){
                 restaurant.setName(name);
                 restaurant.setOpen_time(openTime);
                 restaurant.setClose_open(closeTime);
                 restaurant.setFreeship(freeShip);
                 restaurant.setVideo(video);
 
+                Restaurant newRes = new Restaurant();
+                newRes.setClose_open(restaurant.getClose_open());
+                newRes.setIsClose(restaurant.getIsClose());
+                newRes.setFreeship(restaurant.getFreeship());
+                newRes.setMark(restaurant.getMark());
+                newRes.setMenuIdList(restaurant.getMenuIdList());
+                newRes.setName(restaurant.getName());
+                newRes.setOpen_time(restaurant.getOpen_time());
+                newRes.setVideo(restaurant.getVideo());
+                newRes.setMenuIdList(checkList);
+
                 DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
-                String key = mData.child(Node.QuanAn).push().getKey();
-                mData.child(Node.QuanAn).push().setValue(restaurant);
+                mData.child(Node.QuanAn).child(restaurant.getRes_id()).setValue(newRes);
                 Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
                 notifyDataSetChanged();

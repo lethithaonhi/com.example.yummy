@@ -49,6 +49,12 @@ public class AddResMenuAdapter extends RecyclerView.Adapter<AddResMenuAdapter.Ad
         String name = menuList.get(pos);
         holder.tvName.setText(name);
 
+        if(checkList != null && checkList.size() > 0 && checkList.contains(getKey(name))){
+            holder.checkBox.setChecked(true);
+        }else {
+            holder.checkBox.setChecked(false);
+        }
+
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             String key = getKey(name);
             if(isChecked){
@@ -58,6 +64,10 @@ public class AddResMenuAdapter extends RecyclerView.Adapter<AddResMenuAdapter.Ad
             }
             onChangeListMenu.OnChangeListMenu(checkList);
         });
+    }
+
+    void setCheckList(List<String> checkList){
+        this.checkList = checkList;
     }
 
     @Override

@@ -61,10 +61,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             Picasso.get().load(blog.getImage()).into(holder.img);
 
         if(blog.getIsClose() == 0){
-            holder.imClose.setVisibility(View.VISIBLE);
+            holder.btnClose.setBackgroundColor(context.getResources().getColor(R.color.red));
+            holder.imClose.setVisibility(View.GONE);
             holder.imCloseic.setImageResource(R.drawable.ic_lock);
         }else {
-            holder.imClose.setVisibility(View.GONE);
+            holder.btnClose.setBackgroundColor(context.getResources().getColor(R.color.green));
+            holder.imClose.setVisibility(View.VISIBLE);
             holder.imCloseic.setImageResource(R.drawable.unlock);
         }
 
@@ -90,7 +92,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     class NotificationHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvContent, tvTime;
         ImageView img, imClose, imCloseic;
-        LinearLayout viewRoot;
+        LinearLayout viewRoot, btnClose;
         SwipeLayout swipeLayout;
         LinearLayout btnDelete;
 
@@ -106,6 +108,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             btnDelete = itemView.findViewById(R.id.btn_delete);
             imClose = itemView.findViewById(R.id.im_close);
             imCloseic = itemView.findViewById(R.id.im_delete);
+            btnClose = itemView.findViewById(R.id.btn_delete);
         }
     }
 
@@ -139,11 +142,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private void showDialogDelete(Blog blog) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder
-                .setMessage(context.getResources().getString(R.string.mess_delete))
+                .setMessage(blog.getIsClose() == 0 ? context.getResources().getString(R.string.mess_delete):context.getResources().getString(R.string.mess_open))
                 .setCancelable(false)
-                .setPositiveButton(context.getResources().getString(R.string.delete), ((dialog, which) -> {
+                .setPositiveButton(blog.getIsClose() == 0 ? context.getResources().getString(R.string.delete):context.getResources().getString(R.string.yes), ((dialog, which) -> {
                     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                    mDatabase.child(Node.Blog).child(blog.getId()).child(Node.isClose).setValue(blog);
+                    if(blog.getIsClose() == 0){
+                       blog.setIsClose(1);
+                    }else {
+                        blog.setIsClose(0);
+                    }
+                    mDatabase.child(Node.Blog).child(blog.getId()).child(Node.isClose).setValue(blog.getIsClose());
                     dialog.dismiss();
                     notifyDataSetChanged();
                     Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show();

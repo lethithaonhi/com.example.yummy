@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -61,6 +62,7 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
     private void initView(){
         LinearLayout vPartner = findViewById(R.id.v_partner);
         NestedScrollView vProfile = findViewById(R.id.v_profile);
+        ImageView imClose = findViewById(R.id.im_close);
         List<String> list = new ArrayList<>();
         list.add(this.getResources().getString(R.string.none));
         list.add(this.getResources().getString(R.string.admin));
@@ -126,6 +128,7 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
             btnShowPass1.setImageResource(isShowPass1 ? R.drawable.ic_remove_red_eye : R.drawable.ic_hide_pass);
         });
 
+        imClose.setOnClickListener(v->finish());
         Calendar c = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
         tvDateBirth.setText(dateformat.format(c.getTime()));
