@@ -1,9 +1,7 @@
 package com.example.yummy.Fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,11 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.example.yummy.Activity.LoginActivity;
 import com.example.yummy.Activity.OrderCustomActivity;
@@ -33,7 +29,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRestaurantDetailAdapter.OnCountChangeListener {
     private Restaurant restaurant;
@@ -148,13 +143,15 @@ public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRe
                 if (count > 0) {
                     listOrderMenu.put(menu, count);
                     for (Menu menu1 : listOrderMenu.keySet()) {
-                        sum = sum + listOrderMenu.get(menu1);
+                        if(listOrderMenu.get(menu1) != null) {
+                            sum += listOrderMenu.get(menu1);
+                        }
                         moneyAll = moneyAll + menu1.getPrices() * count;
                     }
                     viewDelivery.setVisibility(View.VISIBLE);
                     if (getContext() instanceof RestaurantDetailActivity)
                         ((RestaurantDetailActivity) getContext()).setHideReview(true);
-                    tvCount.setText(sum + "");
+                    tvCount.setText(String.valueOf(sum));
                     tvMoneyAll.setText(moneyAll + " VND");
                 } else {
                     listOrderMenu.remove(menu);

@@ -18,11 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.yummy.Adapter.OnGoingCusAdater;
-import com.example.yummy.Adapter.RestaurantHorizontalAdapter;
-import com.example.yummy.Model.Branch;
-import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Order;
-import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
@@ -186,13 +182,15 @@ public class OnGoingFragment extends Fragment {
     }
 
     private void showMessStatusOrder(int id) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-        alertDialogBuilder
-                .setMessage(getContext().getResources().getString(id))
-                .setCancelable(false)
-                .setNegativeButton(getContext().getResources().getString(R.string.okay), (dialogInterface, i) -> dialogInterface.dismiss());
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+        if(getContext() != null) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+            alertDialogBuilder
+                    .setMessage(getContext().getResources().getString(id))
+                    .setCancelable(false)
+                    .setNegativeButton(getContext().getResources().getString(R.string.okay), (dialogInterface, i) -> dialogInterface.dismiss());
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
     }
 
     @SuppressLint("StaticFieldLeak")
