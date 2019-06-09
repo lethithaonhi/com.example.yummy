@@ -108,9 +108,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                                 for (DataSnapshot postSnapshot : dataSnapshotRoot.getChildren()) {
                                     String resID = postSnapshot.getValue(String.class);
                                     if (resID != null) {
-                                        if (address.equals(Common.myAddress)) {
-                                            Common.listResId.add(resID);
-                                        }
+                                        Common.listResId.add(resID);
                                         mDatabase.child(Node.QuanAn).child(resID).addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

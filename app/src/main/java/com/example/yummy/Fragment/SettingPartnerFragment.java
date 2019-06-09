@@ -115,7 +115,7 @@ public class SettingPartnerFragment extends Fragment {
         });
 
         imgAvatar = v.findViewById(R.id.img_avatar);
-        if(Common.accountCurrent != null && Common.accountCurrent.getAvatar() != null){
+        if(Common.accountCurrent != null && Common.accountCurrent.getAvatar() != null && !Common.accountCurrent.getAvatar().isEmpty()){
             Picasso.get().load(Common.accountCurrent.getAvatar()).into(imgAvatar);
         }
 

@@ -37,6 +37,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
@@ -83,7 +85,9 @@ public class RestaurantPartnerFragment extends Fragment {
             startActivity(intent);
         });
 
-        vImage.setOnClickListener(vl-> showImgMenu());
+        vImage.setOnClickListener(vl-> {
+            showImgMenu();
+        });
         if(Common.accountCurrent != null && Common.accountCurrent.getPartner() != null) {
             UtilsBottomBar.RestaurantPartnerAsyncTask asyncTask = new UtilsBottomBar.RestaurantPartnerAsyncTask(Common.accountCurrent.getPartner().getBoss());
             asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -110,15 +114,17 @@ public class RestaurantPartnerFragment extends Fragment {
             TextView tvName = dialog.findViewById(R.id.tv_name);
             tvName.setText(Common.restaurantPartner.getName());
             TextView tvCountImg = dialog.findViewById(R.id.tv_countImg);
-            tvCountImg.setText(Common.restaurantPartner.getImgList().size() + " images");
             ImageView btnAdd = dialog.findViewById(R.id.btn_add);
             btnAdd.setVisibility(View.VISIBLE);
             btnAdd.setOnClickListener(v-> createDialogChangeAvatar());
 
             RecyclerView rcvImRes = dialog.findViewById(R.id.rcv_image_res);
             rcvImRes.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            adapter = new ImgRestaurantDetailAdapter(getContext(), Common.restaurantPartner.getImgList(), Common.restaurantPartner, 1);
-            rcvImRes.setAdapter(adapter);
+            if(Common.restaurantPartner.getImgList() != null) {
+                tvCountImg.setText(Common.restaurantPartner.getImgList().size() + " images");
+                adapter = new ImgRestaurantDetailAdapter(getContext(), Common.restaurantPartner.getImgList(), Common.restaurantPartner, 1);
+                rcvImRes.setAdapter(adapter);
+            }
 
             ImageView btnBack = dialog.findViewById(R.id.btn_back);
             btnBack.setOnClickListener(v -> dialog.dismiss());

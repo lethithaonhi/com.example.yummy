@@ -257,6 +257,7 @@ public class AccountFragment extends Fragment {
 
                 Intent refresh = new Intent(getContext(), BottomBarActivity.class);
                 startActivity(refresh);
+                dialog.dismiss();
                 if (getActivity() != null)
                     getActivity().finish();
             });

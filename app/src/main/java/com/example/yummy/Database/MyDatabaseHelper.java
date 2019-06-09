@@ -260,7 +260,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                             restaurant.setBranchList(branchList);
                             restaurant.setMenuList(getMenu(id, address));
                             restaurant.setReviewList(getReview(id, address));
-                            dataList.add(restaurant);
+                            if(!dataList.contains(restaurant))
+                                dataList.add(restaurant);
                         }
                     } while (cursor.moveToNext());
                 }
@@ -288,7 +289,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                     restaurant.setBranchList(branchList);
                     restaurant.setMenuList(getMenu(idRes, address));
                     restaurant.setReviewList(getReview(idRes, address));
-                    dataList.add(restaurant);
+                    if(!dataList.contains(restaurant))
+                        dataList.add(restaurant);
                 } while (cursor.moveToNext());
             }
             if (!cursor.isClosed()) {

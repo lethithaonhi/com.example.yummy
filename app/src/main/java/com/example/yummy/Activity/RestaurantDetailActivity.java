@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
@@ -64,7 +63,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         if(!branch.getAvatar().isEmpty())
         Picasso.get().load(branch.getAvatar()).into(imRes);
         TextView tvMark = findViewById(R.id.tv_mark);
-        tvMark.setText(restaurant.getMark()+"");
+        tvMark.setText(String.valueOf(restaurant.getMark()));
         viewReview = findViewById(R.id.view_review);
 
         viewReview.setOnClickListener(v -> {
@@ -140,7 +139,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvMark.setText(((float) progress/10)+"");
+                tvMark.setText(String.valueOf((float) progress/10));
             }
 
             @Override
@@ -165,7 +164,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             @SuppressLint("SimpleDateFormat") SimpleDateFormat dateformat = new SimpleDateFormat("dd/MMM/yyyy");
             String date = dateformat.format(c.getTime()) +" " +today.format("%k:%M:%S");
 
-            if(content.length() > 50 && !date.isEmpty()){
+            if(content.length() > 50 && !date.isEmpty() && mark > 0){
                 Review review = new Review();
                 review.setId_user(Common.accountCurrent.getUserId());
                 review.setContent(content);
@@ -177,11 +176,25 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                 nodeRoot.child(Node.Review).child(restaurant.getRes_id()).push().setValue(review);
+                restaurant.getReviewList().add(review);
+                nodeRoot.child(Node.QuanAn).child(restaurant.getRes_id()).child(Node.mark).setValue(caculatorMark());
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }else {
                 Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private float caculatorMark() {
+        float mark = (float) 5.0;
+        if (restaurant.getReviewList().size() > 0) {
+            for (Review review : restaurant.getReviewList()) {
+                mark += review.getMark();
+            }
+            mark = mark/(restaurant.getReviewList().size()+1);
+            restaurant.setMark(mark);
+        }
+        return mark;
     }
 }

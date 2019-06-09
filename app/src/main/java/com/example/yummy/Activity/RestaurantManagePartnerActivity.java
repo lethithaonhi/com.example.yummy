@@ -134,7 +134,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
             });
 
             Collections.reverse(dataList);
-            imAdd.setVisibility(View.VISIBLE);
+            imAdd.setVisibility(View.GONE);
             historyMenuAdapter = new HistoryMenuAdapter(this,  dataList, true);
             rcv.setAdapter(historyMenuAdapter);
             if(dataList.size() == 0){
@@ -145,13 +145,17 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
         } else if (type == 1) {
             vBranch.setVisibility(View.VISIBLE);
             btnEdit.setVisibility(View.VISIBLE);
-            name = getResources().getString(R.string.restaurant);
             if(Common.restaurantPartner != null && Common.restaurantPartner.getBranchList() != null) {
                 vEmpty.setVisibility(View.GONE);
                 branchAdapter = new BranchAdapter(this, Common.restaurantPartner.getBranchList());
                 rcv.setAdapter(branchAdapter);
             }else {
                 vEmpty.setVisibility(View.VISIBLE);
+            }
+            if(Common.restaurantPartner != null && Common.restaurantPartner.getName() != null){
+                name = Common.restaurantPartner.getName();
+            }else {
+                name = getResources().getString(R.string.restaurant);
             }
             ImageView imEdit = findViewById(R.id.im_edit);
             tvDiscount = findViewById(R.id.tv_discount);
@@ -279,6 +283,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
         List<String> typeList = getTypeMenu();
         typeList.add("+ Other");
         menu = new Menu();
+        typeMenu = "+ Other";
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, typeList);
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
@@ -306,6 +311,10 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
 
         btnCancel.setOnClickListener(v -> dialog.dismiss());
         btnAdd.setOnClickListener(v -> {
+            if (typeMenu == null || typeMenu.equals("+ Other")) {
+                typeMenu = edType.getText().toString().trim();
+            }
+
             String name = edName.getText().toString().trim();
             String prices = edPrice.getText().toString().trim();
             String des = edDes.getText().toString().trim();
@@ -333,6 +342,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
 
     private List<String> getTypeMenu() {
         List<String> typeList = new ArrayList<>();
+        if(Common.restaurantPartner.getMenuList() != null)
         for (Menu menu : Common.restaurantPartner.getMenuList()) {
             if (!typeList.contains(menu.getType())) {
                 typeList.add(menu.getType());
@@ -386,41 +396,35 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
         // Create a storage reference from our app
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        if (typeMenu.equals("+ Other")) {
-            typeMenu = edType.getText().toString().trim();
-        }
 
-        if (!edName.getText().toString().trim().isEmpty() && !typeMenu.isEmpty()) {
-            StorageReference mountainsRef = storageRef.child("menu").child(edName.getText().toString().trim() + "_" + typeMenu + ".png");
+        long millis = System.currentTimeMillis();
+        StorageReference mountainsRef = storageRef.child("menu").child(millis+ ".png");
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-            byte[] data = baos.toByteArray();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] data = baos.toByteArray();
 
-            UploadTask uploadTask = mountainsRef.putBytes(data);
-            uploadTask.addOnFailureListener(exception -> Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show())
-                    .addOnSuccessListener(taskSnapshot -> uploadTask.continueWithTask(task -> {
-                        if (!task.isSuccessful()) {
-                            throw Objects.requireNonNull(task.getException());
+        UploadTask uploadTask = mountainsRef.putBytes(data);
+        uploadTask.addOnFailureListener(exception -> Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(taskSnapshot -> uploadTask.continueWithTask(task -> {
+                    if (!task.isSuccessful()) {
+                        throw Objects.requireNonNull(task.getException());
+                    }
+
+                    // Continue with the task to get the download URL
+                    return mountainsRef.getDownloadUrl();
+                }).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        if (downloadUri != null) {
+                            runOnUiThread(() -> Picasso.get().load(downloadUri).into(imgMenu));
+                            menu.setImage(downloadUri.toString());
+                            Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
                         }
-
-                        // Continue with the task to get the download URL
-                        return mountainsRef.getDownloadUrl();
-                    }).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Uri downloadUri = task.getResult();
-                            if (downloadUri != null) {
-                                runOnUiThread(() -> Picasso.get().load(downloadUri).into(imgMenu));
-                                menu.setImage(downloadUri.toString());
-                                Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(this, R.string.error_change_avatar, Toast.LENGTH_SHORT).show();
-                        }
-                    }));
-        } else {
-            Toast.makeText(this, R.string.img_first, Toast.LENGTH_SHORT).show();
-        }
+                    } else {
+                        Toast.makeText(this, R.string.error_change_avatar, Toast.LENGTH_SHORT).show();
+                    }
+                }));
     }
 
     private void showEditDiscount() {

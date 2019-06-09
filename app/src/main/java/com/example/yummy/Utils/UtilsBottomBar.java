@@ -315,9 +315,6 @@ public class UtilsBottomBar {
         protected Void doInBackground(Void... voids) {
             if(Common.db != null) {
                 Common.restaurantPartner = Common.db.getRestaurantPartner(resID, Common.myAddress);
-                if(Common.restaurantPartner == null){
-
-                }
                 if(Common.restaurantPartner != null && Common.restaurantPartner.getBranchList() != null) {
                     for (Branch branch : Common.restaurantPartner.getBranchList()) {
                         branch.setDistance(UtilsBottomBar.getDistanceBranch(branch));

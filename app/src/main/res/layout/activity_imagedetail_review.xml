@@ -48,7 +48,7 @@
                     android:id="@+id/tv_countImg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="19 images"
+                    android:text="0 images"
                     android:textSize="14sp" />
             </LinearLayout>
 
