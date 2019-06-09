@@ -13,11 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.example.yummy.Adapter.HistoryMenuAdapter;
+import com.example.yummy.Adapter.HistoryOrderAdapter;
 import com.example.yummy.Model.Order;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
-import com.example.yummy.Utils.UtilsBottomBar;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -57,6 +56,7 @@ public class HistoryFragment extends Fragment {
 
 
     private void getData(){
+        data = new ArrayList<>();
         for (Order order : Common.orderListCurrent){
             if(order.getIsStatus() == 4 || order.getIsStatus() == 3){
                 data.add(order);
@@ -87,7 +87,7 @@ public class HistoryFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if(data.size() > 0) {
-                HistoryMenuAdapter adapter = new HistoryMenuAdapter(getContext(), data, false);
+                HistoryOrderAdapter adapter = new HistoryOrderAdapter(getContext(), data, false);
                 rcvOrderList.setAdapter(adapter);
                 viewNoOrder.setVisibility(View.GONE);
                 rcvOrderList.setVisibility(View.VISIBLE);

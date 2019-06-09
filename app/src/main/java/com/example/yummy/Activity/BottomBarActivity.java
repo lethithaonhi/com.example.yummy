@@ -48,6 +48,10 @@ public class BottomBarActivity extends AppCompatActivity {
         bottomNavigation.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
         Common.blogList = new ArrayList<>();
         getBlog();
+        if(Common.accountCurrent != null && Common.orderListCurrent == null) {
+            Common.orderListCurrent = new ArrayList<>();
+            UtilsBottomBar.getOrderCurrent();
+        }
     }
 
     private void getBlog(){

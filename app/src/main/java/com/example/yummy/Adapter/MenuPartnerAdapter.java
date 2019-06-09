@@ -53,10 +53,11 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
         holder.tvName.setText(menu.getName());
         holder.tvDes.setText(menu.getDescribe());
         holder.tvPrice.setText(menu.getPrices() + " VND");
-        Picasso.get().load(menu.getImage()).into(holder.imMenu);
+        if (!menu.getImage().isEmpty())
+            Picasso.get().load(menu.getImage()).into(holder.imMenu);
 
         holder.btnDelete.setOnClickListener(v -> showDialogDelete(menu));
-        holder.btnEdit.setOnClickListener(v->showDialogEdit(menu));
+        holder.btnEdit.setOnClickListener(v -> showDialogEdit(menu));
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
@@ -65,10 +66,10 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
             }
         });
 
-        if(menu.getIsDelete() != 1) {
+        if (menu.getIsDelete() != 1) {
             holder.imClose.setVisibility(View.GONE);
             holder.imDelete.setImageResource(R.drawable.ic_delete_white_24dp);
-        }else {
+        } else {
             holder.imClose.setVisibility(View.VISIBLE);
             holder.imDelete.setImageResource(R.drawable.open);
         }

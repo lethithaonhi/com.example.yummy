@@ -2,6 +2,8 @@ package com.example.yummy.Fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRestaurantDetailAdapter.OnCountChangeListener {
     private Restaurant restaurant;
@@ -94,7 +97,7 @@ public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRe
             tvTime.setText(restaurant.getOpen_time() +" - "+restaurant.getClose_open());
             setStatusActive();
 
-            MenuRestaurantDetailAdapter adapter = new MenuRestaurantDetailAdapter(getContext(), restaurant.getMenuList());
+            MenuRestaurantDetailAdapter adapter = new MenuRestaurantDetailAdapter(getContext(), restaurant.getMenuList(), tvStatus.getText().equals(getResources().getString(R.string.close)));
             rvMenu.setAdapter(adapter);
             adapter.setOnCountChangeListener(this);
         }
@@ -139,26 +142,35 @@ public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRe
     @Override
     public void onCountChanged(int count, Menu menu) {
         if (Common.accountCurrent != null) {
-            int sum = 0;
-            long moneyAll = 0;
-            if (count > 0) {
-                listOrderMenu.put(menu, count);
-                for (Menu menu1 : listOrderMenu.keySet()) {
-                    sum = sum + listOrderMenu.get(menu1);
-                    moneyAll = moneyAll + menu1.getPrices()*count;
+            if(tvStatus.getText().equals(getResources().getString(R.string.open_time))) {
+                int sum = 0;
+                long moneyAll = 0;
+                if (count > 0) {
+                    listOrderMenu.put(menu, count);
+                    for (Menu menu1 : listOrderMenu.keySet()) {
+                        sum = sum + listOrderMenu.get(menu1);
+                        moneyAll = moneyAll + menu1.getPrices() * count;
+                    }
+                    viewDelivery.setVisibility(View.VISIBLE);
+                    if (getContext() instanceof RestaurantDetailActivity)
+                        ((RestaurantDetailActivity) getContext()).setHideReview(true);
+                    tvCount.setText(sum + "");
+                    tvMoneyAll.setText(moneyAll + " VND");
+                } else {
+                    listOrderMenu.remove(menu);
                 }
-                viewDelivery.setVisibility(View.VISIBLE);
-                if (getContext() instanceof RestaurantDetailActivity)
-                    ((RestaurantDetailActivity) getContext()).setHideReview(true);
-                tvCount.setText(sum + "");
-                tvMoneyAll.setText(moneyAll + " VND");
-            } else {
-                listOrderMenu.remove(menu);
-            }
-            if (sum == 0) {
-                viewDelivery.setVisibility(View.GONE);
-                if (getContext() instanceof RestaurantDetailActivity)
-                    ((RestaurantDetailActivity) getContext()).setHideReview(false);
+                if (sum == 0) {
+                    viewDelivery.setVisibility(View.GONE);
+                    if (getContext() instanceof RestaurantDetailActivity)
+                        ((RestaurantDetailActivity) getContext()).setHideReview(false);
+                }
+            }else {
+                new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.warning)
+                        .setMessage(R.string.res_close)
+                        .setPositiveButton(android.R.string.yes, (dialog, which) -> dialog.dismiss())
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
             }
         } else {
             Toast.makeText(getContext(), R.string.login_first, Toast.LENGTH_SHORT).show();

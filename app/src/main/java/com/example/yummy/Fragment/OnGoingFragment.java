@@ -90,6 +90,7 @@ public class OnGoingFragment extends Fragment {
     }
 
     private void getData(){
+        data = new ArrayList<>();
         for (Order order : Common.orderListCurrent){
             if(order.getIsStatus() != 4 && order.getIsStatus() != 3){
                 data.add(order);
@@ -144,9 +145,9 @@ public class OnGoingFragment extends Fragment {
                                             showMessStatusOrder(R.string.on_complete);
                                         }
                                         initMessOrder();
-                                    }
-                                    if(status == 3){
-                                        Toast.makeText(getContext(), "Success!!", Toast.LENGTH_SHORT).show();
+                                        if(status == 3){
+                                            Toast.makeText(getContext(), "Success!!", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
 
                                     if (finalI == Common.orderListCurrent.size() && order.getIsStatus() == 3) {

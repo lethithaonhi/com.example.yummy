@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -64,7 +65,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public static FirebaseAuth mAuth;
     private RelativeLayout viewLanguage;
     private LinearLayout viewRoot;
-
+    private ProgressBar progressBar;
     private CallbackManager callbackManager;
     private ImageButton btnShowPass;
     private boolean isShowPass = false;
@@ -91,7 +92,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         btnPhoneLogin.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, PhoneActivity.class)));
         ImageView btnClose = findViewById(R.id.btn_close);
         btnClose.setOnClickListener(v->finish());
-
+        progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleSmall);
+        progressBar.setVisibility(View.GONE);
         LinearLayout btnFacebook = findViewById(R.id.btn_sso_fb);
         callbackManager = CallbackManager.Factory.create();
         btnFacebook.setOnClickListener(view -> {
@@ -228,6 +230,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void signinWithEmail() {
+        progressBar.setVisibility(View.VISIBLE);
         String email = edtUsername.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
 
@@ -301,6 +304,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();
+                                        progressBar.setVisibility(View.GONE);
                                     } else if (Common.accountCurrent != null && Common.accountCurrent.getRole() == 3) {
                                         mDatabase.child(Node.Partner).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
                                             @Override
@@ -310,6 +314,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                 Intent intent = new Intent(LoginActivity.this, HomePartnerActivity.class);
                                                 startActivity(intent);
                                                 finish();
+                                                progressBar.setVisibility(View.GONE);
                                             }
 
                                             @Override
@@ -321,6 +326,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                         Intent intent = new Intent(LoginActivity.this, HomePartnerActivity.class);
                                         startActivity(intent);
                                         finish();
+                                        progressBar.setVisibility(View.GONE);
                                     }
                                 }
 
@@ -329,14 +335,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                     Toast.makeText(LoginActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
                                     finish();
+                                    progressBar.setVisibility(View.GONE);
                                 }
                             });
                         }else {
                             Toast.makeText(LoginActivity.this, R.string.account_lock, Toast.LENGTH_SHORT).show();
                             mAuth.signOut();
+                            progressBar.setVisibility(View.GONE);
                         }
                     }else {
                         if(mAuth != null) {
+                            progressBar.setVisibility(View.GONE);
                             Account account = new Account();
                             account.setUserId(mAuth.getUid());
                             if (mAuth.getCurrentUser() != null) {

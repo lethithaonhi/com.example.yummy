@@ -35,9 +35,32 @@
                 android:layout_gravity="center"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:src="@drawable/order_on" />
+                android:src="@drawable/press_btn" />
 
         </pl.bclogic.pulsator4droid.library.PulsatorLayout>
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/ic_cancel"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"
+                android:layout_width="32dp"
+                android:layout_height="32dp" />
+
+            <TextView
+                android:layout_marginTop="4dp"
+                android:text="@string/cancel"
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
@@ -180,14 +203,12 @@
                         android:textColor="@color/black"
                         android:id="@+id/tv_orderid"
                         android:textSize="14sp"
-                        android:text="ID: hgashdahdga jashdjka jahdjka"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/tv_status"
                         android:layout_marginTop="8dp"
-                        android:text="Complete"
                         android:textColor="@color/bg_green"
                         android:textSize="14sp"
                         android:layout_width="wrap_content"
@@ -229,7 +250,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="1 phần"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -254,15 +274,14 @@
                     android:textColor="@color/red"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2.2 km"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginStart="8dp" />
 
                 <TextView
                     android:id="@+id/tv_ship"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="1 phần"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -288,7 +307,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="-32000đ"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -328,7 +346,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="end"
-                            android:text="32000đ"
                             android:textColor="@color/blue"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -397,7 +414,6 @@
                     android:textColor="@color/searchbox_hint_text_color"
                     android:id="@+id/tv_date"
                     android:layout_weight="0.7"
-                    android:text="0365214523"
                     android:textSize="14sp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" />
@@ -429,7 +445,6 @@
                     android:textColor="@color/searchbox_hint_text_color"
                     android:id="@+id/tv_name"
                     android:layout_weight="0.7"
-                    android:text="0365214523"
                     android:textSize="14sp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" />
@@ -456,7 +471,6 @@
                     android:textColor="@color/searchbox_hint_text_color"
                     android:id="@+id/tv_phone"
                     android:layout_weight="0.7"
-                    android:text="0365214523"
                     android:textSize="14sp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" />
@@ -482,7 +496,6 @@
                     android:textColor="@color/searchbox_hint_text_color"
                     android:id="@+id/tv_address"
                     android:layout_weight="0.7"
-                    android:text="0365214hsgjhgad dagd hgad ajhgd hagdj hagdhjgad hjagdhjagd hjagdhjagd hagd hjagd hg a hdga hjdga hdghadghagdhagdha 523"
                     android:textSize="14sp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" />

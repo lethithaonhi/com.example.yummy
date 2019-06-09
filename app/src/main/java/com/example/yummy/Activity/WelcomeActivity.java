@@ -67,9 +67,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        Common.listResId = new ArrayList<>();
         Common.cityList = new HashMap<>();
-        Common.orderListCurrent = new ArrayList<>();
         registerService();
         db = new MyDatabaseHelper(this);
         doSaveLang();
@@ -90,6 +88,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
     }
 
     private void getRestaurant() {
+        Common.listResId = new ArrayList<>();
         mDatabase.child(Node.DiaDiem).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -118,10 +117,10 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                                                     restaurant.setCity(address);
                                                     restaurant.setRes_id(dataSnapshot.getKey());
 
-                                                    List<Review> reviewList = new ArrayList<>();
                                                     mDatabase.child(Node.Review).child(resID).addValueEventListener(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                            List<Review> reviewList = new ArrayList<>();
                                                             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                                                                 Review review = dataSnapshot1.getValue(Review.class);
                                                                 if (review != null) {
@@ -140,10 +139,10 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                                                         }
                                                     });
 
-                                                    List<String> imgList = new ArrayList<>();
                                                     mDatabase.child(Node.HinhAnhQuanAn).child(resID).addValueEventListener(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                            List<String> imgList = new ArrayList<>();
                                                             for (DataSnapshot data : dataSnapshot.getChildren())
                                                                 imgList.add(data.getValue(String.class));
                                                             restaurant.setImgList(imgList);
@@ -227,10 +226,10 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
     }
 
     private void getBranch(String resID, String address, Restaurant restaurant, DataSnapshot dataSnapshotRoot){
-        List<Branch> branchList = new ArrayList<>();
         mDatabase.child(Node.Branch).child(resID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Branch> branchList = new ArrayList<>();
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     Branch branch = data.getValue(Branch.class);
                     if (branch != null) {
@@ -244,10 +243,10 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                 restaurant.setBranchList(branchList);
 
                 //getMenu(resID, address, restaurant, dataSnapshotRoot);
-                List<Menu> menuList1 = new ArrayList<>();
                 mDatabase.child(Node.ThucDonQuanAn).child(resID).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<Menu> menuList1 = new ArrayList<>();
                         for (DataSnapshot menuIDSnap : dataSnapshot.getChildren()) {
                             for (DataSnapshot data : menuIDSnap.getChildren()) {
                                 Menu menu = data.getValue(Menu.class);

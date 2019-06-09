@@ -31,7 +31,7 @@ import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
 import com.example.yummy.Adapter.BranchAdapter;
-import com.example.yummy.Adapter.HistoryMenuAdapter;
+import com.example.yummy.Adapter.HistoryOrderAdapter;
 import com.example.yummy.Adapter.MenuPartnerAdapter;
 import com.example.yummy.Model.Addresses;
 import com.example.yummy.Model.Branch;
@@ -86,7 +86,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
     private Location location;
     private Branch branch;
     private BranchAdapter branchAdapter;
-    private HistoryMenuAdapter historyMenuAdapter;
+    private HistoryOrderAdapter historyMenuAdapter;
     private List<Order> dataList;
 
     @Override
@@ -135,7 +135,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
 
             Collections.reverse(dataList);
             imAdd.setVisibility(View.GONE);
-            historyMenuAdapter = new HistoryMenuAdapter(this,  dataList, true);
+            historyMenuAdapter = new HistoryOrderAdapter(this,  dataList, true);
             rcv.setAdapter(historyMenuAdapter);
             if(dataList.size() == 0){
                 vEmpty.setVisibility(View.VISIBLE);
@@ -439,6 +439,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
         EditText edMin = dialog.findViewById(R.id.ed_min);
         TextView btnCancel = dialog.findViewById(R.id.btn_cancel);
         TextView btnAdd = dialog.findViewById(R.id.btn_edit);
+        EditText edFeeShip = dialog.findViewById(R.id.ed_feeship);
         discounts = new Discounts();
 
         if(Common.restaurantPartner != null && Common.restaurantPartner.getDiscounts() != null) {
@@ -449,14 +450,18 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
             edMin.setText(discounts.getMin_order() + "");
         }
 
+        if(Common.restaurantPartner != null)
+            edFeeShip.setText(String.valueOf(Common.restaurantPartner.getFreeship()));
+
         btnCancel.setOnClickListener(v -> dialog.dismiss());
         btnAdd.setOnClickListener(v -> {
             String dis = edDiscount.getText().toString().trim();
             String code = edCode.getText().toString().trim();
             String max = edMax.getText().toString().trim();
             String min = edMin.getText().toString().trim();
+            String fee = edFeeShip.getText().toString().trim();
 
-            if (!dis.isEmpty() && !code.isEmpty() && !max.isEmpty() && !min.isEmpty()) {
+            if (!dis.isEmpty() && !code.isEmpty() && !max.isEmpty() && !min.isEmpty() && !fee.isEmpty()) {
                 discounts.setDiscount(Integer.parseInt(dis));
                 discounts.setCode(code);
                 discounts.setMax_discount(Integer.parseInt(max));
@@ -465,6 +470,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
                 DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
                 mData.child(Node.KhuyenMai).child(Common.restaurantPartner.getRes_id()).setValue(discounts);
                 Common.restaurantPartner.setDiscounts(discounts);
+                mData.child(Node.QuanAn).child(Common.restaurantPartner.getRes_id()).child(Node.freeship).setValue(fee);
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
                 setDiscounts();
                 dialog.dismiss();

@@ -1,5 +1,6 @@
 package com.example.yummy.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,8 +15,11 @@ import com.example.yummy.Model.Menu;
 import com.example.yummy.R;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class MenuRestaurantDetailAdapter extends RecyclerView.Adapter<MenuRestaurantDetailAdapter.MenuRestaurantDetailHolder> {
@@ -23,6 +27,7 @@ public class MenuRestaurantDetailAdapter extends RecyclerView.Adapter<MenuRestau
     private Context context;
     private int[] countList;
     private OnCountChangeListener onCountChangeListener;
+    private boolean isClose;
 
     public void setOnCountChangeListener(OnCountChangeListener onCountChangeListener) {
         this.onCountChangeListener = onCountChangeListener;
@@ -32,9 +37,10 @@ public class MenuRestaurantDetailAdapter extends RecyclerView.Adapter<MenuRestau
         void onCountChanged(int count, Menu menu);
     }
 
-    public MenuRestaurantDetailAdapter (Context context, List<Menu> data){
+    public MenuRestaurantDetailAdapter (Context context, List<Menu> data, boolean isClose){
         this.context = context;
         this.data = data;
+        this.isClose = isClose;
         countList = new int [data.size()];
         for (int i=0;i<data.size();i++){
             countList[i] = 0;
@@ -58,27 +64,31 @@ public class MenuRestaurantDetailAdapter extends RecyclerView.Adapter<MenuRestau
             holder.tvName.setText(menu.getName());
             holder.tvDes.setText(menu.getDescribe());
             holder.tvPrice.setText(menu.getPrices() + " VND");
-            if(!menu.getImage().isEmpty())
-            Picasso.get().load(menu.getImage()).into(holder.imMenu);
+            if (!menu.getImage().isEmpty())
+                Picasso.get().load(menu.getImage()).into(holder.imMenu);
 
             holder.btnAdd.setOnClickListener(v -> {
-                countList[i]++;
-                holder.tvCount.setText(countList[i] + "");
-                if (holder.btnRemove.getVisibility() == View.GONE) {
-                    holder.btnRemove.setVisibility(View.VISIBLE);
-                    holder.tvCount.setVisibility(View.VISIBLE);
+                if (!isClose) {
+                    countList[i]++;
+                    holder.tvCount.setText(countList[i] + "");
+                    if (holder.btnRemove.getVisibility() == View.GONE) {
+                        holder.btnRemove.setVisibility(View.VISIBLE);
+                        holder.tvCount.setVisibility(View.VISIBLE);
+                    }
                 }
                 onCountChangeListener.onCountChanged(countList[i], menu);
             });
 
             holder.btnRemove.setOnClickListener(v -> {
-                if (countList[i] > 0) {
-                    countList[i]--;
-                    holder.tvCount.setText(countList[i] + "");
-                }
-                if (countList[i] == 0) {
-                    holder.btnRemove.setVisibility(View.GONE);
-                    holder.tvCount.setVisibility(View.GONE);
+                if (!isClose) {
+                    if (countList[i] > 0) {
+                        countList[i]--;
+                        holder.tvCount.setText(countList[i] + "");
+                    }
+                    if (countList[i] == 0) {
+                        holder.btnRemove.setVisibility(View.GONE);
+                        holder.tvCount.setVisibility(View.GONE);
+                    }
                 }
                 onCountChangeListener.onCountChanged(countList[i], menu);
             });

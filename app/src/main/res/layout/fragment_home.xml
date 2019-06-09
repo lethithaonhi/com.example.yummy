@@ -474,7 +474,7 @@
                             <ImageView
                                 android:layout_gravity="center"
                                 android:padding="10dp"
-                                android:src="@drawable/more"
+                                android:src="@drawable/dessert"
                                 android:layout_width="45dp"
                                 android:layout_height="45dp" />
                         </FrameLayout>
@@ -512,7 +512,7 @@
                 <TextView
                     android:id="@+id/tv_more"
                     android:textColor="@color/searchbox_hint_text_color"
-                    android:text="@string/more"
+                    android:text="@string/more_1"
                     android:textSize="14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

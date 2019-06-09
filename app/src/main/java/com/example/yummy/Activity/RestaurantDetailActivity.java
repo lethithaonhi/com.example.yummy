@@ -61,9 +61,10 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private void initView(){
         ImageView imRes = findViewById(R.id.imgQuanAnChiTiet);
         if(!branch.getAvatar().isEmpty())
-        Picasso.get().load(branch.getAvatar()).into(imRes);
+            Picasso.get().load(branch.getAvatar()).into(imRes);
         TextView tvMark = findViewById(R.id.tv_mark);
-        tvMark.setText(String.valueOf(restaurant.getMark()));
+        @SuppressLint("DefaultLocale") String test = String.format("%.02f", restaurant.getMark());
+        tvMark.setText(test);
         viewReview = findViewById(R.id.view_review);
 
         viewReview.setOnClickListener(v -> {
@@ -187,13 +188,15 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     }
 
     private float caculatorMark() {
-        float mark = (float) 5.0;
+        float mark = 0;
         if (restaurant.getReviewList().size() > 0) {
             for (Review review : restaurant.getReviewList()) {
                 mark += review.getMark();
             }
-            mark = mark/(restaurant.getReviewList().size()+1);
+            mark = mark/restaurant.getReviewList().size();
             restaurant.setMark(mark);
+        }else {
+            mark = (float) 5.0;
         }
         return mark;
     }

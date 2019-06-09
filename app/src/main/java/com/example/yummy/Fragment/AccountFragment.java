@@ -42,7 +42,7 @@ import com.example.yummy.Activity.BottomBarActivity;
 import com.example.yummy.Activity.HomePartnerActivity;
 import com.example.yummy.Activity.InfoUserActivity;
 import com.example.yummy.Activity.LoginActivity;
-import com.example.yummy.Adapter.HistoryMenuAdapter;
+import com.example.yummy.Adapter.HistoryOrderAdapter;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
@@ -199,7 +199,7 @@ public class AccountFragment extends Fragment {
             imClose.setOnClickListener(vl->layoutSetting.setVisibility(View.GONE));
 
             imgAvatar = v.findViewById(R.id.img_avatar);
-            if(Common.accountCurrent != null && Common.accountCurrent.getAvatar() != null){
+            if(Common.accountCurrent != null && Common.accountCurrent.getAvatar() != null &&  !Common.accountCurrent.getAvatar().isEmpty()){
                 Picasso.get().load(Common.accountCurrent.getAvatar()).into(imgAvatar);
             }
         }
@@ -474,7 +474,7 @@ public class AccountFragment extends Fragment {
             if(Common.orderListCurrent.size() > 0) {
                 viewNoOrder.setVisibility(View.GONE);
                 rcvOrderList.setVisibility(View.VISIBLE);
-                HistoryMenuAdapter adapter = new HistoryMenuAdapter(getContext(), Common.orderListCurrent, false);
+                HistoryOrderAdapter adapter = new HistoryOrderAdapter(getContext(), Common.orderListCurrent, false);
                 rcvOrderList.setAdapter(adapter);
             }
         }

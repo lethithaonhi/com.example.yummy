@@ -222,4 +222,6 @@
     <string name="blog_url">Nhập đường dẫn của blog</string>
     <string name="video">Video</string>
     <string name="empty_list">Danh sách trống</string>
+    <string name="more_1">Xem thêm</string>
+    <string name="res_close">Cuarwhangf này đã đóng cửa, vui lòng đặt hàng vào ngày mai, cảm ơn!</string>
 </resources>

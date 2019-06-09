@@ -187,7 +187,6 @@ public class OrderCustomActivity extends AppCompatActivity {
                         String keyMenu = nodeRoot.child(Node.Order).child(restaurant.getRes_id()).child(key).push().getKey();
                         if (keyMenu != null) {
                             nodeRoot.child(Node.Order_Menu).child(restaurant.getRes_id()).child(key).child(keyMenu).setValue(menu);
-
                             nodeRoot.child(Node.Order_Menu).child(restaurant.getRes_id()).child(key).child(keyMenu).child(Node.count).setValue(menuList.get(menu));
                         }
                     }

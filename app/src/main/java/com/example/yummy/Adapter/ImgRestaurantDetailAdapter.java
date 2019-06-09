@@ -86,9 +86,10 @@ public class ImgRestaurantDetailAdapter extends RecyclerView.Adapter<ImgRestaura
             createDialog();
         }
 
-        private void setDialog(String url){
+        private void setDialog(String url) {
             dialog.show();
-            Picasso.get().load(url).into(imageView);
+            if (!url.isEmpty())
+                Picasso.get().load(url).into(imageView);
         }
     }
 

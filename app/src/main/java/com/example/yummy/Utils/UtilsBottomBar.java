@@ -158,22 +158,22 @@ public class UtilsBottomBar {
 
     public static void getOrderCurrent(){
         if(Common.listResId != null && Common.listResId.size() > 0 && Common.accountCurrent != null) {
-            Common.orderListCurrent = new ArrayList<>();
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
             for (String resID : Common.listResId) {
                 mDatabase.child(Node.Order).child(resID).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Common.orderListCurrent = new ArrayList<>();
                         if(Common.orderListCurrent.size() < dataSnapshot.getChildrenCount()) {
                             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                 Order order = dataSnapshot1.getValue(Order.class);
                                 if (order != null && order.getId_user().equals(Common.accountCurrent.getUserId())) {
                                     order.setId(dataSnapshot1.getKey());
                                     order.setId_res(resID);
-                                    HashMap<Menu, Integer> menuIntegerHashMap = new HashMap<>();
                                     mDatabase.child(Node.Order_Menu).child(resID).child(order.getId()).addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataRoor) {
+                                            HashMap<Menu, Integer> menuIntegerHashMap = new HashMap<>();
                                             for (DataSnapshot dataSnapshot2 : dataRoor.getChildren()) {
                                                 Menu menu = dataSnapshot2.getValue(Menu.class);
                                                 if (menu != null && dataSnapshot2.getKey() != null) {
@@ -221,7 +221,7 @@ public class UtilsBottomBar {
 
     private static boolean isExistOrder(Order order){
         for (Order order1 : Common.orderListCurrent){
-            if(order1 == order){
+            if(order1.getTime().equals(order.getTime()) && order.getDate().equals(order1.getDate())){
                 return true;
             }
         }

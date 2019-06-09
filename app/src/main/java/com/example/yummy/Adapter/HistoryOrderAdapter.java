@@ -31,13 +31,13 @@ import java.util.List;
 
 import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 
-public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.HistoryMenuHolder> {
+public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapter.HistoryMenuHolder> {
     private Context context;
     private List<Order> data;
     private boolean isPartner;
     private MediaPlayer endPlayer;
 
-    public HistoryMenuAdapter(Context context, List<Order> data, boolean isPartner){
+    public HistoryOrderAdapter(Context context, List<Order> data, boolean isPartner){
         this.context = context;
         this.data = data;
         this.isPartner = isPartner;
@@ -45,7 +45,7 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
 
     @NonNull
     @Override
-    public HistoryMenuAdapter.HistoryMenuHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+    public HistoryOrderAdapter.HistoryMenuHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view;
         if(!isPartner) {
@@ -57,7 +57,7 @@ public class HistoryMenuAdapter extends RecyclerView.Adapter<HistoryMenuAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HistoryMenuAdapter.HistoryMenuHolder holder, int i) {
+    public void onBindViewHolder(@NonNull HistoryOrderAdapter.HistoryMenuHolder holder, int i) {
         Order order = data.get(i);
 
         holder.tvNameRes.setText(order.getName_res());
