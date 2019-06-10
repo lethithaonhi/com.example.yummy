@@ -74,8 +74,8 @@ public class HomePartnerActivity extends AppCompatActivity {
         });
 
         NavigationView navigationView = findViewById(R.id.nv);
-        navigationView.setCheckedItem(R.id.nv_res);
         FragmentManager fragmentManager = getSupportFragmentManager();
+        navigationView.getMenu().getItem(0).setChecked(true);
         if(Common.accountCurrent != null) {
             if (Common.accountCurrent.getRole() == 3) {
                 fragmentManager.beginTransaction().replace(R.id.frame_content, RestaurantPartnerFragment.newInstance()).commit();

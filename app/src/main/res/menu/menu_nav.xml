@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/nv_res"
+        android:checked="true"
         android:icon="@drawable/ic_home"
         android:title="@string/my_res"/>
 
     <item android:id="@+id/nv_account"
-        android:checked="true"
         android:icon="@drawable/ic_person"
         android:title="@string/my_account"/>
 
