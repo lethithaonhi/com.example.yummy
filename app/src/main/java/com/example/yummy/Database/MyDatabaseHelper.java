@@ -252,7 +252,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             String[] selectionArgs = new String[]{id, address};
             List<Branch> branchList = getBranch(id, address);
             Cursor cursor = db.rawQuery(query, selectionArgs);
-            if (cursor != null) {
+            if (cursor != null && cursor.getCount() != 0) {
                 if (cursor.moveToFirst()) {
                     do {
                         Restaurant restaurant = getResFromCursor(cursor);
@@ -274,6 +274,39 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public List<Restaurant> getRestaurantAll(List<String> idList, List<String> addressList) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Restaurant> dataList = new ArrayList<>();
+        String query = "SELECT * FROM " + RestaurantContrains.TABLE_NAME + " WHERE " + RestaurantContrains.RES_ID
+                + " = ? AND "+ RestaurantContrains.CITY +" = ?";
+        for(String address : addressList) {
+            for (String id : idList) {
+                String[] selectionArgs = new String[]{id, address};
+                List<Branch> branchList = getBranch(id, address);
+                Cursor cursor = db.rawQuery(query, selectionArgs);
+                if (cursor != null && cursor.getCount() != 0) {
+                    if (cursor.moveToFirst()) {
+                        do {
+                            Restaurant restaurant = getResFromCursor(cursor);
+                            if (restaurant.getIsClose() == 0) {
+                                restaurant.setBranchList(branchList);
+                                restaurant.setMenuList(getMenu(id, address));
+                                restaurant.setReviewList(getReview(id, address));
+                                if (!dataList.contains(restaurant))
+                                    dataList.add(restaurant);
+                            }
+                        } while (cursor.moveToNext());
+                    }
+                    if (!cursor.isClosed()) {
+                        cursor.close();
+                    }
+                }
+            }
+        }
+        return dataList;
+
+    }
+
     public Restaurant getRestaurantPartner(String idRes, String address) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Restaurant> dataList = new ArrayList<>();
@@ -282,7 +315,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         String[] selectionArgs = new String[]{idRes, address};
         List<Branch> branchList = getBranch(idRes, address);
         Cursor cursor = db.rawQuery(query, selectionArgs);
-        if (cursor != null) {
+        if (cursor != null && cursor.getCount() != 0) {
             if (cursor.moveToFirst()) {
                 do {
                     Restaurant restaurant = getResFromCursor(cursor);
@@ -307,7 +340,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 + " = ? AND " + BranchContrains.CITY +" = ?";
             String[] selectionArgs = new String[]{resID, city};
             Cursor cursor = db.rawQuery(query, selectionArgs);
-            if (cursor != null) {
+            if (cursor != null && cursor.getCount() != 0) {
                 if (cursor.moveToFirst()) {
                     do {
                         Branch branch = getBranchFromCursor(cursor);
@@ -329,7 +362,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 + " = ? AND " + MenuContrains.CITY + " = ?";
         String[] selectionArgs = new String[]{resID, city};
         Cursor cursor = db.rawQuery(query, selectionArgs);
-        if (cursor != null) {
+        if (cursor != null && cursor.getCount() != 0) {
             if (cursor.moveToFirst()) {
                 do {
                     Menu menu = getMenuFromCursor(cursor);
@@ -351,7 +384,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 + " = ? AND " + ReviewContrains.CITY + " = ?";
         String[] selectionArgs = new String[]{resID, city};
         Cursor cursor = db.rawQuery(query, selectionArgs);
-        if (cursor != null) {
+        if (cursor != null && cursor.getCount() != 0) {
             if (cursor.moveToFirst()) {
                 do {
                     Review review = getReviewFromCursor(cursor);
@@ -370,7 +403,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             String query = "select count(*) from "+ RestaurantContrains.TABLE_NAME +" where "+RestaurantContrains.NAME_RES+" = ? AND "+RestaurantContrains.CITY+" =?";
             Cursor cursor = db.rawQuery(query, new String[] {name, city});
 
-        if (cursor != null) {
+        if (cursor != null && cursor.getCount() != 0) {
             if (cursor.moveToFirst()) {
                 return cursor.getInt(0);
             }

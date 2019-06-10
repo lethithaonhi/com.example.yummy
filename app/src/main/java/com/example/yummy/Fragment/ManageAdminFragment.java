@@ -9,10 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import com.example.yummy.Activity.ManageAccountAdminActivity;
 import com.example.yummy.Activity.ManageBlogAdminActivity;
 import com.example.yummy.Activity.ManageRestaurantAdminActivity;
 import com.example.yummy.Activity.ManageStatisticAdminActivity;
+import com.example.yummy.Activity.WelcomeActivity;
 import com.example.yummy.Model.Account;
 import com.example.yummy.Model.Partner;
 import com.example.yummy.R;
@@ -41,9 +44,15 @@ public class ManageAdminFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_manage_home_admin, container, false);
-
-        getAccount();
-        initView(v);
+        if(Common.restaurantListAll == null || Common.restaurantListAll.size() == 0){
+            Intent intent = new Intent(getContext(), WelcomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+            Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
+        }else {
+            getAccount();
+            initView(v);
+        }
         return v;
     }
 

@@ -18,7 +18,7 @@
 
             <TextView
                 android:background="@color/defaultColor"
-                android:padding="8dp"
+                android:padding="16dp"
                 android:text="@string/chart_order"
                 android:fontFamily="sans-serif-medium"
                 android:textColor="@color/black"
@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:text="@string/order_by_month"
@@ -38,101 +38,23 @@
                 android:layout_height="wrap_content" />
 
             <LinearLayout
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/bg_statistic"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_marginTop="8dp"
-                    android:text="@string/restaurant"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content" />
-
-                <Spinner
-                    android:layout_weight="1"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:id="@+id/sp_res_1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp" />
-
-            </LinearLayout>
-
             <LinearLayout
+                android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
                 <TextView
-                    android:text="@string/year"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content" />
-
-                <Spinner
-                    android:layout_weight="1"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:id="@+id/sp_year_1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp" />
-
-                <Button
-                    android:id="@+id/show_year_1"
-                    android:layout_marginLeft="16dp"
-                    android:text="@string/show"
-                    android:background="@color/colorPrimary"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="8dp" />
-
-            </LinearLayout>
-
-            <HorizontalScrollView
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:id="@+id/horizontalScrollView"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-                <view
-                    class="im.dacer.androidcharts.LineView"
-                    android:id="@+id/line_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="200dp"
-                    />
-            </HorizontalScrollView>
-
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:text="@string/order_by_day"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <LinearLayout
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_marginTop="8dp"
                     android:text="@string/restaurant"
                     android:textColor="@color/black"
                     android:textSize="14sp"
@@ -151,27 +73,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="8dp"
                 android:gravity="center_vertical"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:text="@string/month"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content" />
-
-                <Spinner
-                    android:layout_weight="1"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:id="@+id/sp_month"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp" />
 
                 <TextView
                     android:text="@string/year"
@@ -189,8 +97,146 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp" />
 
+            </LinearLayout>
+
                 <Button
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_gravity="center"
                     android:id="@+id/show_year"
+                    android:layout_marginLeft="16dp"
+                    android:text="@string/show"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="8dp" />
+
+        </LinearLayout>
+
+            <HorizontalScrollView
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:id="@+id/horizontalScrollView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <view
+                    class="im.dacer.androidcharts.LineView"
+                    android:id="@+id/line_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    />
+            </HorizontalScrollView>
+
+            <View
+                android:layout_marginTop="16dp"
+                android:background="@color/grey"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/order_by_day"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/bg_statistic"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="@string/restaurant"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content" />
+
+                    <Spinner
+                        android:layout_weight="1"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:id="@+id/sp_res_1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="@string/month"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content" />
+
+                    <Spinner
+                        android:layout_weight="1"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:id="@+id/sp_month"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="@string/year"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content" />
+
+                    <Spinner
+                        android:layout_weight="1"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:id="@+id/sp_year_1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp" />
+
+                </LinearLayout>
+
+                <Button
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/show_year_1"
                     android:layout_marginLeft="16dp"
                     android:text="@string/show"
                     android:background="@color/colorPrimary"

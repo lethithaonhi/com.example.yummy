@@ -1,5 +1,7 @@
 package com.example.yummy.Activity;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -16,12 +18,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.yummy.Fragment.InfoPartnerFragment;
 import com.example.yummy.Fragment.ManageAdminFragment;
 import com.example.yummy.Fragment.RestaurantPartnerFragment;
 import com.example.yummy.Fragment.SettingPartnerFragment;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.UtilsBottomBar;
 import com.squareup.picasso.Picasso;
 
 public class HomePartnerActivity extends AppCompatActivity {
@@ -32,6 +37,10 @@ public class HomePartnerActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_partner);
+        if(Common.accountCurrent != null && Common.accountCurrent.getPartner() != null) {
+            UtilsBottomBar.RestaurantPartnerAsyncTask asyncTask = new UtilsBottomBar.RestaurantPartnerAsyncTask(Common.accountCurrent.getPartner().getBoss());
+            asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
 
         initView();
     }
@@ -112,15 +121,20 @@ public class HomePartnerActivity extends AppCompatActivity {
         ImageView imAvatar = headerLayout.findViewById(R.id.im_avatar);
         TextView tvOwner = headerLayout.findViewById(R.id.tv_owner);
         TextView tvName = headerLayout.findViewById(R.id.tv_name);
-        if(Common.accountCurrent != null && Common.restaurantPartner != null) {
+        if(Common.accountCurrent != null) {
             if(!Common.accountCurrent.getAvatar().isEmpty())
                 Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatar);
-            if(Common.accountCurrent.getRole() == 3) {
+            if(Common.accountCurrent.getRole() == 3 && Common.restaurantPartner != null) {
                 tvOwner.setText(getResources().getString(R.string.owner) + ": " + Common.restaurantPartner.getName() + " - " + Common.restaurantPartner.getCity());
             }else {
-                tvOwner.setText(R.string.add_menu);
+                tvOwner.setText(R.string.admin);
             }
             tvName.setText(Common.accountCurrent.getName());
+        }else {
+            Intent intent = new Intent(this, WelcomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
         }
 
         LinearLayout btnSignOut = headerLayout.findViewById(R.id.btn_singOut);

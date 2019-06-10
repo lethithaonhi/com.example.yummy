@@ -62,15 +62,17 @@ public class InfoPartnerFragment extends Fragment {
         tvBirth.setText(Common.accountCurrent.getDatebirth());
 
         LinearLayout vPartner = v.findViewById(R.id.v_partner);
-        vPartner.setVisibility(View.VISIBLE);
         EditText edCMND = v.findViewById(R.id.ed_cmnd);
         EditText edBank =v.findViewById(R.id.ed_bank);
         EditText edSTK = v.findViewById(R.id.ed_accountnum);
         ImageView imError = v.findViewById(R.id.btn_error);
-        edCMND.setText(Common.accountCurrent.getPartner().getCmnd());
-        edCMND.setEnabled(false);
-        edBank.setText(Common.accountCurrent.getPartner().getBank());
-        edSTK.setText(Common.accountCurrent.getPartner().getStk());
+        if(Common.accountCurrent.getPartner() != null) {
+            edCMND.setText(Common.accountCurrent.getPartner().getCmnd());
+            edCMND.setEnabled(false);
+            edBank.setText(Common.accountCurrent.getPartner().getBank());
+            edSTK.setText(Common.accountCurrent.getPartner().getStk());
+            vPartner.setVisibility(View.VISIBLE);
+        }
         Button btnSave = v.findViewById(R.id.btn_save);
         btnSave.setVisibility(View.VISIBLE);
 

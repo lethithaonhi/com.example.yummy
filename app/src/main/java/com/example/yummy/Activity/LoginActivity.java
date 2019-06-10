@@ -249,6 +249,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Log.w("notifySignInEmail", "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }
                     });
         } else {
@@ -270,6 +271,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void getInfoAccount() {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         if (mAuth.getUid() != null) {
+            if(Common.restaurantListAll == null || Common.restaurantListAll.size() == 0){
+                if(Common.listResId != null && Common.listResId.size() > 0 && Common.cityList != null && Common.cityList.size() > 0) {
+                    Common.restaurantListAll = Common.db.getRestaurantAll(Common.listResId, (List<String>) Common.cityList.keySet());
+                }else {
+                    Intent intent = new Intent(this, WelcomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
+                    Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+                }
+            }
+
             mDatabase.child(Node.user).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -287,7 +299,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                         Addresses address = dataSnapshot1.getValue(Addresses.class);
                                         if (address != null) {
                                             address.setId(dataSnapshot1.getKey());
-                                            if (Common.myLocation != null && address.getName().equals(Common.myLocation.getName())) {
+                                            if (Common.myLocation != null && address.getName() != null &&address.getName().equals(Common.myLocation.getName())) {
                                                 isShow = true;
                                             }
                                             addresses.add(address);
