@@ -26,9 +26,11 @@ import im.dacer.androidcharts.LineView;
 
 public class ManageStatisticAdminActivity extends AppCompatActivity {
     private HashMap<String, String> resList = new HashMap<>();
-    private String resID="";
-    private int year;
-    private LineView lvOrder;
+    private String resID="", resIDMonth;
+    private int year, yearMonth, month;
+    private LineView lvOrder, lvOrderMonth;
+    private ArrayList<Integer> dataCurrentList, dataCurrentListMonth;
+    private ArrayList<String> dataBottomList, dataBottomListMonth;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,10 +46,15 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
     private void initView(){
         Spinner spResYear = findViewById(R.id.sp_res);
         Spinner spYear = findViewById(R.id.sp_year);
+        Spinner spResMont = findViewById(R.id.sp_res_1);
+        Spinner spYearMonth = findViewById(R.id.sp_year_1);
+        Spinner spMonth = findViewById(R.id.sp_month);
+        Button btnShowYearMonth = findViewById(R.id.show_year_1);
         Button btnShowYear = findViewById(R.id.show_year);
         Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
 
+        //init Statistic by year
         year = today.year;
         resList = getRestaurant();
         List<String> resSPList = new ArrayList<>();
@@ -58,6 +65,12 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
         spResYear.setAdapter(adapter);
         spResYear.setSelection(0);
+
+        List<String> yearSPList = getBottomSPMonth(today.year - 10, today.year);
+        ArrayAdapter adtYear = new ArrayAdapter(this, android.R.layout.simple_spinner_item, yearSPList);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+        spYear.setAdapter(adtYear);
+        spYear.setSelection(yearSPList.size() - 1);
 
         spResYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -77,12 +90,6 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
 
             }
         });
-
-        List<String> yearSPList = getBottomSPMonth(today.year - 10, today.year);
-        ArrayAdapter adtYear = new ArrayAdapter(this, android.R.layout.simple_spinner_item, yearSPList);
-        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-        spYear.setAdapter(adtYear);
-        spYear.setSelection(yearSPList.size() - 1);
 
         spYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -104,12 +111,12 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
                 }else {
                     sum =12;
                 }
-                ArrayList<String> dataBottomList = getBottomTextInYear(year, sum);
+                dataBottomList = getBottomTextInYear(year, today.month, sum);
                 if(resID.isEmpty()){
                     ArrayList<Integer> dataCurrentList = getOrderListInYear(Common.orderListAll, year,sum);
                     initLineView(lvOrder, dataCurrentList, dataBottomList);
                 }else if(Common.orderListRes != null){
-                    ArrayList<Integer> dataCurrentList = getOrderListInYear(Common.orderListRes, year,sum);
+                    dataCurrentList = getOrderListInYear(Common.orderListRes, year,sum);
                     initLineView(lvOrder, dataCurrentList, dataBottomList);
                 }else {
                     Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
@@ -119,28 +126,104 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
             }
         });
 
-        ArrayList<Integer> dataCurrentList = getOrderListInYear(Common.orderListAll, today.year, today.month+1);
-        ArrayList<String> dataBottomList = getBottomTextInYear(today.year, today.month+1);
+        dataCurrentList = getOrderListInYear(Common.orderListAll, today.year, today.month+1);
+        dataBottomList = getBottomTextInYear(today.year, today.month, today.month+1);
         lvOrder = findViewById(R.id.line_view);
         lvOrder.setColorArray(new int[] {
                 Color.parseColor("#F44336"), Color.parseColor("#9C27B0")
-//                Color.parseColor("#2196F3"), Color.parseColor("#009688")
         });
-        initLineView(lvOrder, dataCurrentList, dataBottomList);
 
+        //init Statistic by month
+        dataCurrentListMonth = getOrderListInMonth(Common.orderListAll, today.year, getDaysInMonth(today.year, today.month),today.month+1);
+        dataBottomListMonth = getBottomTextInYear(today.year,today.month, getDaysInMonth(today.year, today.month+1));
+        lvOrderMonth = findViewById(R.id.line_view_month);
+        lvOrder.setColorArray(new int[] {
+                Color.parseColor("#2196F3"), Color.parseColor("#009688")
+        });
+
+        spResMont.setAdapter(adapter);
+        spResYear.setSelection(0);
+        spYearMonth.setAdapter(adtYear);
+        spYearMonth.setSelection(yearSPList.size() - 1);
+
+        List<String> monthList = getBottomSPMonth(1, 12);
+        ArrayAdapter adtMonth = new ArrayAdapter(this, android.R.layout.simple_spinner_item, monthList);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+        spMonth.setAdapter(adtMonth);
+        spMonth.setSelection(yearSPList.size() - 1);
+
+        spResMont.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                if(pos == 0){
+                    resIDMonth ="";
+                }else {
+                    resIDMonth = resList.get(resSPList.get(pos));
+                    if(resIDMonth != null){
+                        UtilsBottomBar.getOrderRes(resIDMonth);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spYearMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                yearMonth = Integer.parseInt(yearSPList.get(pos));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                month = Integer.parseInt(monthList.get(pos));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        btnShowYearMonth.setOnClickListener(v->{
+            if(yearMonth > 0 && resIDMonth != null && month > 0){
+                int sum;
+                if(yearMonth == today.year){
+                    sum = today.month + 1;
+                }else {
+                    sum =12;
+                }
+                dataBottomListMonth = getBottomTextInYear(yearMonth, month, sum);
+                if(resID.isEmpty()){
+                    dataCurrentListMonth = getOrderListInMonth(Common.orderListAll, yearMonth,sum, month);
+                    initLineView(lvOrderMonth, dataCurrentListMonth, dataBottomListMonth);
+                }else if(Common.orderListRes != null){
+                    dataCurrentListMonth = getOrderListInMonth(Common.orderListRes, yearMonth,sum, month);
+                    initLineView(lvOrderMonth, dataCurrentListMonth, dataBottomListMonth);
+                }else {
+                    Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+                }
+            }else {
+                Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        initLineView(lvOrder, dataCurrentList, dataBottomList);
+        initLineView(lvOrderMonth, dataCurrentListMonth, dataBottomListMonth);
     }
 
     private void initLineView(LineView lineView, ArrayList<Integer> dataCurrentList, ArrayList<String> dataBottomList) {
-//        int lastMonth = today.month - 1;
-//        if(today.month == 1){
-//            lastMonth = 12;
-//        }
-//        ArrayList<String> lastList = new ArrayList<>();
-//        dataLastList = getOrderList(Common.orderListAll, today.year, lastMonth);
-//        for (int i = 0; i < getDaysInMonth(today.year, lastMonth); i++) {
-//            lastList.add((i+1) + "-"+today.month);
-//        }
-
         lineView.setBottomTextList(dataBottomList);
         lineView.setDrawDotLine(true);
         lineView.setShowPopup(LineView.LAYER_TYPE_NONE);
@@ -159,7 +242,7 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
     private List<String> getBottomSPMonth(int begin, int end){
         List<String> list = new ArrayList<>();
         for(int i=begin; i <= end; i++){
-            list.add(String.valueOf(i+1));
+            list.add(String.valueOf(i));
         }
         return list;
     }
@@ -180,12 +263,37 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
         return dataList;
     }
 
-    private ArrayList<String> getBottomTextInYear(int year, int sum){
+    private ArrayList<Integer> getOrderListInMonth(List<Order> orderList, int year, int sum, int month){
+        ArrayList<Integer> dataList = new ArrayList<>();
+        if(orderList != null && orderList.size() > 0) {
+            for (int i = 0; i < sum; i++) {
+                int count = 0;
+                for(Order order : orderList){
+                    if((i+1) == getDayhOrder(order.getDate()) && year == getYearOrder(order.getDate()) && month == getMonthOrder(order.getDate())){
+                        count++;
+                    }
+                }
+                dataList.add(count);
+            }
+        }
+        return dataList;
+    }
+
+    private ArrayList<String> getBottomTextInYear(int year, int month, int sum){
         ArrayList<String> currentList = new ArrayList<>();
         for (int i = 0; i < sum; i++) {
-            currentList.add((i+1) + "-"+year);
+            if(sum <= 12) {
+                currentList.add((i + 1) + "-" + year);
+            }else {
+                currentList.add((i+1) + "-" + month);
+            }
         }
         return currentList;
+    }
+
+    private int getDayhOrder(String date){
+        String[] dateArr = date.split("-");
+        return Integer.parseInt(dateArr[0]);
     }
 
     private int getMonthOrder(String date){
