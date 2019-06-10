@@ -12,11 +12,13 @@ import android.widget.LinearLayout;
 import com.example.yummy.Activity.ManageAccountAdminActivity;
 import com.example.yummy.Activity.ManageBlogAdminActivity;
 import com.example.yummy.Activity.ManageRestaurantAdminActivity;
+import com.example.yummy.Activity.ManageStatisticAdminActivity;
 import com.example.yummy.Model.Account;
 import com.example.yummy.Model.Partner;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
+import com.example.yummy.Utils.UtilsBottomBar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,9 +53,14 @@ public class ManageAdminFragment extends Fragment {
         LinearLayout vBlog = v.findViewById(R.id.v_blog);
         LinearLayout vStatistic = v.findViewById(R.id.v_statistic);
 
+        if(Common.orderListAll == null || Common.orderListAll.size() == 0){
+            UtilsBottomBar.getOrderListAll();
+        }
+
         vAccount.setOnClickListener(vl->startActivity(new Intent(getContext(), ManageAccountAdminActivity.class)));
         vRestaurant.setOnClickListener(vl->startActivity(new Intent(getContext(), ManageRestaurantAdminActivity.class)));
         vBlog.setOnClickListener(vl->startActivity(new Intent(getContext(), ManageBlogAdminActivity.class)));
+        vStatistic.setOnClickListener(vl->startActivity(new Intent(getContext(), ManageStatisticAdminActivity.class)));
     }
 
     private void getAccount(){

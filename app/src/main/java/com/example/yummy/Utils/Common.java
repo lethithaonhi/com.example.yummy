@@ -25,6 +25,8 @@ public class Common {
     public static String language;
     public static List<Blog> blogList;
     public static List<Order> orderListCurrent;
+    public static List<Order> orderListAll;
     public static List<Account> accountList;
     public static boolean isAdd;
+    public static List<Order> orderListRes;
 }

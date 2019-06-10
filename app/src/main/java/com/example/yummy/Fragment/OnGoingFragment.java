@@ -79,16 +79,18 @@ public class OnGoingFragment extends Fragment {
             });
 
             Collections.reverse(Common.orderListCurrent);
+        }else {
+            UtilsBottomBar.getOrderCurrent();
         }
 
         OnGoingAsyncTask myAsyncTask = new OnGoingAsyncTask();
         myAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private void getData(){
+    private void getData() {
         data = new ArrayList<>();
-        for (Order order : Common.orderListCurrent){
-            if(order.getIsStatus() != 4 && order.getIsStatus() != 3){
+        for (Order order : Common.orderListCurrent) {
+            if (order.getIsStatus() != 4 && order.getIsStatus() != 3) {
                 data.add(order);
             }
         }
@@ -96,7 +98,7 @@ public class OnGoingFragment extends Fragment {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss dd-MM-yyyy");
         Collections.sort(data, (obj1, obj2) -> {
             try {
-                return dateFormat.parse(obj1.getTime()+" "+obj1.getDate()).compareTo(dateFormat.parse(obj2.getTime() +" "+obj2.getDate()));
+                return dateFormat.parse(obj1.getTime() + " " + obj1.getDate()).compareTo(dateFormat.parse(obj2.getTime() + " " + obj2.getDate()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -108,7 +110,7 @@ public class OnGoingFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(Common.accountCurrent != null && data.size() > 0) {
-            if(Common.orderListCurrent.size() == 0) {
+            if(Common.orderListCurrent == null || Common.orderListCurrent.size() == 0) {
                 UtilsBottomBar.getOrderCurrent();
                 getData();
             }

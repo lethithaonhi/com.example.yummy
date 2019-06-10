@@ -64,6 +64,7 @@
         <activity android:name=".Activity.ManageAccountAdminActivity" />
         <activity android:name=".Activity.ManageRestaurantAdminActivity" />
         <activity android:name=".Activity.ManageBlogAdminActivity" />
+        <activity android:name=".Activity.ManageStatisticAdminActivity" />
 
     </application>
 

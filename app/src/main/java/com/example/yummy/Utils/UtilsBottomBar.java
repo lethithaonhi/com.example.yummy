@@ -181,7 +181,7 @@ public class UtilsBottomBar {
                                                                 menuIntegerHashMap.put(menu, count);
                                                                 order.setMenuList(menuIntegerHashMap);
 
-                                                                if (menuIntegerHashMap.size() == dataRoor.getChildrenCount() && !isExistOrder(order)) {
+                                                                if (menuIntegerHashMap.size() == dataRoor.getChildrenCount() && !isExistOrder(order, Common.orderListCurrent)) {
                                                                     Common.orderListCurrent.add(order);
                                                                 }
                                                             }
@@ -215,13 +215,74 @@ public class UtilsBottomBar {
         }
     }
 
-    private static boolean isExistOrder(Order order){
-        for (Order order1 : Common.orderListCurrent){
+    private static boolean isExistOrder(Order order, List<Order> orderList){
+        for (Order order1 : orderList){
             if(order1.getTime().equals(order.getTime()) && order.getDate().equals(order1.getDate())){
                 return true;
             }
         }
         return false;
+    }
+
+    public static void getOrderRes(String resID){
+        if(Common.accountCurrent != null) {
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                mDatabase.child(Node.Order).child(resID).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Common.orderListRes = new ArrayList<>();
+                        if(Common.orderListRes.size() < dataSnapshot.getChildrenCount()) {
+                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                Order order = dataSnapshot1.getValue(Order.class);
+                                if (order != null) {
+                                    order.setId(dataSnapshot1.getKey());
+                                    order.setId_res(resID);
+                                    mDatabase.child(Node.Order_Menu).child(resID).child(order.getId()).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataRoor) {
+                                            HashMap<Menu, Integer> menuIntegerHashMap = new HashMap<>();
+                                            for (DataSnapshot dataSnapshot2 : dataRoor.getChildren()) {
+                                                Menu menu = dataSnapshot2.getValue(Menu.class);
+                                                if (menu != null && dataSnapshot2.getKey() != null) {
+                                                    mDatabase.child(Node.Order_Menu).child(resID).child(order.getId()).child(dataSnapshot2.getKey()).child("count").addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                            if (dataSnapshot.getValue(Integer.class) != null) {
+                                                                int count = dataSnapshot.getValue(Integer.class);
+                                                                menuIntegerHashMap.put(menu, count);
+                                                                order.setMenuList(menuIntegerHashMap);
+
+                                                                if (menuIntegerHashMap.size() == dataRoor.getChildrenCount() && !isExistOrder(order, Common.orderListRes)) {
+                                                                    Common.orderListRes.add(order);
+                                                                }
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+        }
     }
 
     private void getRestaurantPartner(){
@@ -319,6 +380,67 @@ public class UtilsBottomBar {
                 Common.menuList = UtilsBottomBar.getMenuList();
             }
             return null;
+        }
+    }
+
+    public static void getOrderListAll() {
+        if (Common.listResId != null && Common.listResId.size() > 0 && Common.accountCurrent != null) {
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            for (String resID : Common.listResId) {
+                mDatabase.child(Node.Order).child(resID).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Common.orderListAll = new ArrayList<>();
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            Order order = dataSnapshot1.getValue(Order.class);
+                            if (order != null) {
+                                order.setId(dataSnapshot1.getKey());
+                                order.setId_res(resID);
+                                mDatabase.child(Node.Order_Menu).child(resID).child(order.getId()).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataRoor) {
+                                        HashMap<Menu, Integer> menuIntegerHashMap = new HashMap<>();
+                                        for (DataSnapshot dataSnapshot2 : dataRoor.getChildren()) {
+                                            Menu menu = dataSnapshot2.getValue(Menu.class);
+                                            if (menu != null && dataSnapshot2.getKey() != null) {
+                                                mDatabase.child(Node.Order_Menu).child(resID).child(order.getId()).child(dataSnapshot2.getKey()).child("count").addValueEventListener(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        if (dataSnapshot.getValue(Integer.class) != null) {
+                                                            int count = dataSnapshot.getValue(Integer.class);
+                                                            menuIntegerHashMap.put(menu, count);
+                                                            order.setMenuList(menuIntegerHashMap);
+
+                                                            if (menuIntegerHashMap.size() == dataRoor.getChildrenCount() && !isExistOrder(order, Common.orderListAll)) {
+                                                                Common.orderListAll.add(order);
+                                                            }
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
         }
     }
 }
