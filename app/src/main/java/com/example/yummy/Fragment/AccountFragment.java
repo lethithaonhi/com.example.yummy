@@ -471,7 +471,7 @@ public class AccountFragment extends Fragment {
 
             imBack.setOnClickListener(v-> dialog.dismiss());
 
-            if(Common.orderListCurrent.size() > 0) {
+            if(Common.orderListCurrent != null && Common.orderListCurrent.size() > 0) {
                 viewNoOrder.setVisibility(View.GONE);
                 rcvOrderList.setVisibility(View.VISIBLE);
                 HistoryOrderAdapter adapter = new HistoryOrderAdapter(getContext(), Common.orderListCurrent, false);

@@ -251,6 +251,20 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
         getResOpenClose();
         getAccountOpenClose();
         getBlogOpenClose();
+
+        TextView tvDetailRes = findViewById(R.id.tv_detail_res);
+        TextView tvDetailAc = findViewById(R.id.tv_detail_ac);
+        TextView tvDetailBlog = findViewById(R.id.tv_detail_blog);
+
+        tvDetailAc.setOnClickListener(v-> startActivity(new Intent(this, ManageAccountAdminActivity.class)));
+        tvDetailRes.setOnClickListener(v-> startActivity(new Intent(this, ManageRestaurantAdminActivity.class)));
+        tvDetailBlog.setOnClickListener(v-> startActivity(new Intent(this, ManageBlogAdminActivity.class)));
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    protected void onResume() {
+        super.onResume();
         TextView tvActiveRes = findViewById(R.id.tv_active_res);
         TextView tvNotActiveRes = findViewById(R.id.tv_notac_res);
         TextView tvActiveAc = findViewById(R.id.tv_active_ac);
@@ -263,13 +277,6 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
         tvNotActiveAc.setText(closeAc + " " +getResources().getString(R.string.account));
         tvActiveBlog.setText(openBlog + " " +getResources().getString(R.string.blog));
         tvNotActiveBlog.setText(closeBlog + " " +getResources().getString(R.string.blog));
-        TextView tvDetailRes = findViewById(R.id.tv_detail_res);
-        TextView tvDetailAc = findViewById(R.id.tv_detail_ac);
-        TextView tvDetailBlog = findViewById(R.id.tv_detail_blog);
-
-        tvDetailAc.setOnClickListener(v-> startActivity(new Intent(this, ManageAccountAdminActivity.class)));
-        tvDetailRes.setOnClickListener(v-> startActivity(new Intent(this, ManageRestaurantAdminActivity.class)));
-        tvDetailBlog.setOnClickListener(v-> startActivity(new Intent(this, ManageBlogAdminActivity.class)));
     }
 
     private void initLineView(LineView lineView, ArrayList<Integer> dataCurrentList, ArrayList<String> dataBottomList) {
