@@ -230,4 +230,10 @@
     <string name="year">Năm</string>
     <string name="month">Tháng</string>
     <string name="show">Xem</string>
+    <string name="total_res">Tổng số quán ăn</string>
+    <string name="total_ac">Tổng số tài khoản</string>
+    <string name="total_blog">Tổng số Blog</string>
+    <string name="active">*Kích hoạt</string>
+    <string name="nt_acvtive">*Không được kích hoạt</string>
+    <string name="detail">Chi tiết</string>
 </resources>

@@ -44,6 +44,8 @@ public class ManageAccountAdminActivity extends AppCompatActivity {
         vAdmin.setOnClickListener(v->showViewAccount(1));
         vPartner.setOnClickListener(v->showViewAccount(2));
         vCus.setOnClickListener(v->showViewAccount(3));
+        ImageView imClose = findViewById(R.id.im_close);
+        imClose.setOnClickListener(v->finish());
     }
 
     private void showViewAccount(int type){ //1: admin, 2: partner, 3: customer

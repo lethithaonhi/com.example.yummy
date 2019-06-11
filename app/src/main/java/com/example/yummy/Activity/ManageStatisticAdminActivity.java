@@ -1,5 +1,7 @@
 package com.example.yummy.Activity;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,8 +12,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yummy.Model.Account;
+import com.example.yummy.Model.Blog;
 import com.example.yummy.Model.Order;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
@@ -32,6 +37,7 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
     private List<String> monthList;
     private ArrayList<Integer> dataCurrentList, dataCurrentListMonth;
     private ArrayList<String> dataBottomList, dataBottomListMonth;
+    private int countOpenRes, countCloseRes, openAc, closeAc, openBlog, closeBlog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,6 +50,7 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
         initView();
     }
 
+    @SuppressLint("SetTextI18n")
     private void initView(){
         Spinner spResYear = findViewById(R.id.sp_res);
         Spinner spYear = findViewById(R.id.sp_year);
@@ -240,6 +247,29 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
 
         initLineView(lvOrder, dataCurrentList, dataBottomList);
         initLineView(lvOrderMonth, dataCurrentListMonth, dataBottomListMonth);
+
+        getResOpenClose();
+        getAccountOpenClose();
+        getBlogOpenClose();
+        TextView tvActiveRes = findViewById(R.id.tv_active_res);
+        TextView tvNotActiveRes = findViewById(R.id.tv_notac_res);
+        TextView tvActiveAc = findViewById(R.id.tv_active_ac);
+        TextView tvNotActiveAc = findViewById(R.id.tv_notac_ac);
+        TextView tvActiveBlog = findViewById(R.id.tv_active_blog);
+        TextView tvNotActiveBlog = findViewById(R.id.tv_notac_blog);
+        tvActiveRes.setText(countOpenRes+" " + getResources().getString(R.string.restaurant));
+        tvNotActiveRes.setText(countCloseRes+" " + getResources().getString(R.string.restaurant));
+        tvActiveAc.setText(openAc + " " +getResources().getString(R.string.account));
+        tvNotActiveAc.setText(closeAc + " " +getResources().getString(R.string.account));
+        tvActiveBlog.setText(openBlog + " " +getResources().getString(R.string.blog));
+        tvNotActiveBlog.setText(closeBlog + " " +getResources().getString(R.string.blog));
+        TextView tvDetailRes = findViewById(R.id.tv_detail_res);
+        TextView tvDetailAc = findViewById(R.id.tv_detail_ac);
+        TextView tvDetailBlog = findViewById(R.id.tv_detail_blog);
+
+        tvDetailAc.setOnClickListener(v-> startActivity(new Intent(this, ManageAccountAdminActivity.class)));
+        tvDetailRes.setOnClickListener(v-> startActivity(new Intent(this, ManageRestaurantAdminActivity.class)));
+        tvDetailBlog.setOnClickListener(v-> startActivity(new Intent(this, ManageBlogAdminActivity.class)));
     }
 
     private void initLineView(LineView lineView, ArrayList<Integer> dataCurrentList, ArrayList<String> dataBottomList) {
@@ -335,5 +365,35 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
         }
 
         return data;
+    }
+
+    private void getResOpenClose(){
+        for(Restaurant restaurant: Common.restaurantListAll){
+            if(restaurant.getIsClose() == 1){
+                countCloseRes ++;
+            }else {
+                countOpenRes++;
+            }
+        }
+    }
+
+    private void getAccountOpenClose(){
+        for(Account account : Common.accountList){
+            if(account.getIsClose() == 1){
+                closeAc++;
+            }else {
+                openAc++;
+            }
+        }
+    }
+
+    private void getBlogOpenClose(){
+        for(Blog blog : Common.blogList){
+            if(blog.getIsClose() == 1){
+                closeBlog++;
+            }else {
+                openBlog++;
+            }
+        }
     }
 }
