@@ -248,10 +248,6 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
         initLineView(lvOrder, dataCurrentList, dataBottomList);
         initLineView(lvOrderMonth, dataCurrentListMonth, dataBottomListMonth);
 
-        getResOpenClose();
-        getAccountOpenClose();
-        getBlogOpenClose();
-
         TextView tvDetailRes = findViewById(R.id.tv_detail_res);
         TextView tvDetailAc = findViewById(R.id.tv_detail_ac);
         TextView tvDetailBlog = findViewById(R.id.tv_detail_blog);
@@ -265,6 +261,9 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        getResOpenClose();
+        getAccountOpenClose();
+        getBlogOpenClose();
         TextView tvActiveRes = findViewById(R.id.tv_active_res);
         TextView tvNotActiveRes = findViewById(R.id.tv_notac_res);
         TextView tvActiveAc = findViewById(R.id.tv_active_ac);
@@ -375,6 +374,8 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
     }
 
     private void getResOpenClose(){
+        countOpenRes = 0;
+        countCloseRes = 0;
         for(Restaurant restaurant: Common.restaurantListAll){
             if(restaurant.getIsClose() == 1){
                 countCloseRes ++;
@@ -385,6 +386,8 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
     }
 
     private void getAccountOpenClose(){
+        openAc = 0;
+        closeAc = 0;
         for(Account account : Common.accountList){
             if(account.getIsClose() == 1){
                 closeAc++;
@@ -395,6 +398,8 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
     }
 
     private void getBlogOpenClose(){
+        openBlog = 0;
+        closeBlog = 0;
         for(Blog blog : Common.blogList){
             if(blog.getIsClose() == 1){
                 closeBlog++;

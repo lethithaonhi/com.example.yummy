@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
+<LinearLayout android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -17,6 +17,20 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/tv_header"
+                android:visibility="visible"
+                android:textSize="22sp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:gravity="center"
+                app:fontFamily="@font/audiowide"
+                android:text="@string/statistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="24dp"
                 android:background="@color/defaultColor"
                 android:padding="16dp"
                 android:text="@string/chart_order"
