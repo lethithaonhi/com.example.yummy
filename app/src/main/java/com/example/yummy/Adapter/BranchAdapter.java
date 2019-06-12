@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,10 +25,12 @@ import java.util.List;
 public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchHolder> {
     private Context context;
     private List<Branch> dataList;
+    private boolean isAdmin;
 
-    public BranchAdapter(Context context, List<Branch> dataList){
+    public BranchAdapter(Context context, List<Branch> dataList, boolean isAdmin){
         this.context = context;
         this.dataList = dataList;
+        this.isAdmin = isAdmin;
     }
 
     @NonNull
@@ -67,6 +70,7 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchHold
     class BranchHolder extends RecyclerView.ViewHolder {
         ImageView imAvatar, imClose, btnClose, btnOpen;
         TextView tvAddress;
+        LinearLayout vAction;
         BranchHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -75,6 +79,12 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchHold
             imClose = itemView.findViewById(R.id.im_close);
             btnClose = itemView.findViewById(R.id.btn_close);
             btnOpen = itemView.findViewById(R.id.btn_open);
+            vAction = itemView.findViewById(R.id.v_action);
+            if(isAdmin){
+                vAction.setVisibility(View.VISIBLE);
+            }else {
+                vAction.setVisibility(View.GONE);
+            }
         }
     }
 

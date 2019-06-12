@@ -1,13 +1,19 @@
 package com.example.yummy.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.yummy.Adapter.BranchAdapter;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
@@ -50,6 +56,7 @@ public class InfoRestaurantDetailFragment extends Fragment implements OnMapReady
         return v;
     }
 
+    @SuppressLint("SetTextI18n")
     private void initView(View v){
         TextView tvBranchs = v.findViewById(R.id.tv_branch);
         TextView tvType = v.findViewById(R.id.tv_typeRes);
@@ -60,11 +67,11 @@ public class InfoRestaurantDetailFragment extends Fragment implements OnMapReady
         }
         TextView tvAddressMap = v.findViewById(R.id.tvAddressMap);
         tvAddressMap.setText(branch.getAddress());
-        tvBranchs.setText(restaurant.getBranchList().size()+" braches");
-        String type="";
+        tvBranchs.setText(restaurant.getBranchList().size()+" "+getResources().getString(R.string.branch));
+        StringBuilder type= new StringBuilder();
         if(restaurant.getMenuIdList() != null && Common.menuList != null) {
             for (String key : restaurant.getMenuIdList()) {
-                type += "\\" + getStringMenuList(key);
+                type.append("\\").append(getStringMenuList(key));
             }
             tvType.setText(type.substring(1));
         }else{
@@ -72,12 +79,26 @@ public class InfoRestaurantDetailFragment extends Fragment implements OnMapReady
         }
 
         YouTubePlayerSupportFragment youTubePlayerView = (YouTubePlayerSupportFragment) this.getChildFragmentManager().findFragmentById(R.id.videoTrailer);
-        youTubePlayerView.initialize(getResources().getString(R.string.Your_API_KEY), this);
+        if (youTubePlayerView != null) {
+            youTubePlayerView.initialize(getResources().getString(R.string.Your_API_KEY), this);
+        }
+
+        RecyclerView rcvBranch= v.findViewById(R.id.rcv_branch);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        rcvBranch.setLayoutManager(layoutManager);
+
+        BranchAdapter adapter = new BranchAdapter(getContext(), restaurant.getBranchList(), false);
+        rcvBranch.setAdapter(adapter);
+
+        ImageView btnHide = v.findViewById(R.id.btn_hide);
+        btnHide.setOnClickListener(vl->{
+            boolean isHide = rcvBranch.getVisibility() == View.GONE;
+            rcvBranch.setVisibility(isHide ? View.VISIBLE:View.GONE);
+        });
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        GoogleMap mMap = googleMap;
         LatLng latLng = new LatLng(branch.getLatitude(), branch.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
