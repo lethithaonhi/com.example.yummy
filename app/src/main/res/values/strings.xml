@@ -236,4 +236,10 @@
     <string name="show">Show</string>
     <string name="freeship_noti">FreeShip under 2km, only 15000VND for 2km - 5km\n</string>
     <string name="verify">Verify: </string>
+    <string name="total_res">Total Restaurant</string>
+    <string name="total_ac">Total Account</string>
+    <string name="total_blog">Total Blog</string>
+    <string name="active">*Activated</string>
+    <string name="nt_acvtive">*Not activated</string>
+    <string name="detail">Detail</string>
 </resources>

@@ -147,7 +147,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
             btnEdit.setVisibility(View.VISIBLE);
             if(Common.restaurantPartner != null && Common.restaurantPartner.getBranchList() != null) {
                 vEmpty.setVisibility(View.GONE);
-                branchAdapter = new BranchAdapter(this, Common.restaurantPartner.getBranchList());
+                branchAdapter = new BranchAdapter(this, Common.restaurantPartner.getBranchList(), true);
                 rcv.setAdapter(branchAdapter);
             }else {
                 vEmpty.setVisibility(View.VISIBLE);
