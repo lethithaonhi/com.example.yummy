@@ -108,7 +108,7 @@ public class OrderCustomActivity extends AppCompatActivity {
 
         tvDistance.setText(String.format("%.02f", branch.getDistance() / 1000) + " km");
 
-        tvFeeShip.setText(feeShip + "VND");
+        tvFeeShip.setText(UtilsBottomBar.convertStringToMoney(feeShip));
 
         Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
@@ -147,7 +147,7 @@ public class OrderCustomActivity extends AppCompatActivity {
         tvAddress.setText(Common.myLocation.getName());
         tvEdit.setOnClickListener(v -> startActivity(new Intent(this, ChangeAddressActivity.class)));
         tvCount.setText(menuList.size() + " " + getResources().getString(R.string.item));
-        tvTotal.setText(count + " VND");
+        tvTotal.setText(UtilsBottomBar.convertStringToMoney((int) count));
         edName.setText(Common.accountCurrent.getName());
         edPhone.setText(Common.accountCurrent.getPhone());
 

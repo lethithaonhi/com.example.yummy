@@ -24,6 +24,7 @@ import com.example.yummy.Model.Menu;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
+import com.example.yummy.Utils.UtilsBottomBar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -52,7 +53,7 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
 
         holder.tvName.setText(menu.getName());
         holder.tvDes.setText(menu.getDescribe());
-        holder.tvPrice.setText(menu.getPrices() + " VND");
+        holder.tvPrice.setText(UtilsBottomBar.convertStringToMoney(menu.getPrices()));
         if (!menu.getImage().isEmpty())
             Picasso.get().load(menu.getImage()).into(holder.imMenu);
 

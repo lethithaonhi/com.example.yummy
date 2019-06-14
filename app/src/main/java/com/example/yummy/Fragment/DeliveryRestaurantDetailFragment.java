@@ -24,6 +24,7 @@ import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.UtilsBottomBar;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -98,14 +99,14 @@ public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRe
         }
 
         TextView tvDiscount = v.findViewById(R.id.tv_discount);
-        String discount = "Discount: "+restaurant.getDiscounts().getDiscount()+"% - Code: "+restaurant.getDiscounts().getCode()+
-                "\nMin order: "+restaurant.getDiscounts().getMin_order() +"VND - Max discount: "+restaurant.getDiscounts().getMax_discount()+"VND";
+        String discount = getString(R.string.discount) + ": "+restaurant.getDiscounts().getDiscount()+"% - "+ R.string.code+": "+restaurant.getDiscounts().getCode()+
+                "\n"+R.string.min_order+": "+UtilsBottomBar.convertStringToMoney(restaurant.getDiscounts().getMin_order()) +" - "+R.string.max_discount+": "+UtilsBottomBar.convertStringToMoney(restaurant.getDiscounts().getMax_discount());
         tvDiscount.setText(discount);
 
         String freeship = "";
         if(restaurant.getFreeship() == 0)
-            freeship = "FreeShip under 2km, only 15000VND for 2km - 5km\n";
-        freeship =  freeship + "Verify: "+restaurant.getFreeship() +"VND/Km";
+            freeship = getString(R.string.freeship_noti);
+        freeship =  freeship + getString(R.string.verify)+restaurant.getFreeship() +"VND/Km";
         TextView tvFreeship = v.findViewById(R.id.tv_freeship);
         tvFreeship.setText(freeship);
     }
@@ -152,7 +153,7 @@ public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRe
                     if (getContext() instanceof RestaurantDetailActivity)
                         ((RestaurantDetailActivity) getContext()).setHideReview(true);
                     tvCount.setText(String.valueOf(sum));
-                    tvMoneyAll.setText(moneyAll + " VND");
+                    tvMoneyAll.setText(UtilsBottomBar.convertStringToMoney((int) moneyAll));
                 } else {
                     listOrderMenu.remove(menu);
                 }

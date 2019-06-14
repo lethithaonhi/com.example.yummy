@@ -33,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,11 @@ public class UtilsBottomBar {
     public static void startFragment(FragmentManager manager, Fragment fragment) {
         final FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.frame_layout, fragment).commit();
+    }
+
+    public static String convertStringToMoney(int result){
+        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
+        return format.format(result);
     }
 
     public static float dpToPx(Context context, float valueInDp) {

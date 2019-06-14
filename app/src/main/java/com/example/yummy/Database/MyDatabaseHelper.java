@@ -417,14 +417,16 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     private int checkExistBranch(String address, String city) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "select count(*) from "+ BranchContrains.TABLE_NAME +" where "+BranchContrains.ADDESS+" = ? AND "+BranchContrains.CITY+" =?";
-        Cursor cursor = db.rawQuery(query, new String[] {address, city});
+        if(address != null && city != null) {
+            Cursor cursor = db.rawQuery(query, new String[]{address, city});
 
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                return cursor.getInt(0);
-            }
-            if (!cursor.isClosed()) {
-                cursor.close();
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    return cursor.getInt(0);
+                }
+                if (!cursor.isClosed()) {
+                    cursor.close();
+                }
             }
         }
         return  0;

@@ -234,4 +234,6 @@
     <string name="year">Year</string>
     <string name="month">Month</string>
     <string name="show">Show</string>
+    <string name="freeship_noti">FreeShip under 2km, only 15000VND for 2km - 5km\n</string>
+    <string name="verify">Verify: </string>
 </resources>

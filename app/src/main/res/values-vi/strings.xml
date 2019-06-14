@@ -230,4 +230,6 @@
     <string name="year">Năm</string>
     <string name="month">Tháng</string>
     <string name="show">Xem</string>
+    <string name="freeship_noti">Miễn phí vận chuyển 2km, chỉ 15000VND từ 2km - 5km\n</string>
+    <string name="verify">Phí vận chuyển: </string>
 </resources>

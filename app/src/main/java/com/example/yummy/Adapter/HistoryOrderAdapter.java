@@ -1,5 +1,6 @@
 package com.example.yummy.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -23,6 +24,7 @@ import com.example.yummy.Model.Order;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
+import com.example.yummy.Utils.UtilsBottomBar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -62,7 +64,7 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
 
         holder.tvNameRes.setText(order.getName_res());
         holder.tvAddress.setText(order.getAddress());
-        holder.tvTotal.setText(order.getTotal()+"VND");
+        holder.tvTotal.setText(UtilsBottomBar.convertStringToMoney((int) order.getTotal()));
         holder.tvDate.setText(order.getDate());
         if(!order.getAvatar().isEmpty())
         Picasso.get().load(order.getAvatar()).into(holder.imageView);
@@ -152,6 +154,7 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
         initView(dialog, order);
     }
 
+    @SuppressLint("SetTextI18n")
     private void initView(Dialog dialog, Order order){
         TextView tvStatus = dialog.findViewById(R.id.tv_status);
         TextView tvID = dialog.findViewById(R.id.tv_orderid);
@@ -192,11 +195,11 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
         tvID.setText(order.getId());
         if(order.getDiscount() > 400) {
             vDiscount.setVisibility(View.VISIBLE);
-            tvDiscount.setText("-"+order.getDiscount() + "VND");
+            tvDiscount.setText("-"+ UtilsBottomBar.convertStringToMoney(order.getDiscount()));
         }
         tvDistance.setText(String.format("%.02f",order.getDistance()) + " km");
-        tvShip.setText(order.getFeeShip()+"VND");
-        tvTotal.setText(order.getTotal()+"VND");
+        tvShip.setText(UtilsBottomBar.convertStringToMoney(order.getFeeShip()));
+        tvTotal.setText(UtilsBottomBar.convertStringToMoney((int) order.getTotal()));
         tvName.setText(order.getName());
         tvPhone.setText(order.getPhone());
         tvAddress.setText(order.getAddress());

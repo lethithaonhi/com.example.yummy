@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.yummy.Model.Menu;
 import com.example.yummy.R;
+import com.example.yummy.Utils.UtilsBottomBar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +46,7 @@ public class MenuOrderAdapter extends RecyclerView.Adapter<MenuOrderAdapter.Menu
 
             holde.tvCount.setText("x" + count);
             holde.tvName.setText(menu.getName());
-            holde.tvPrice.setText(menu.getPrices() + "VND");
+            holde.tvPrice.setText(UtilsBottomBar.convertStringToMoney(menu.getPrices()));
         }
     }
 
