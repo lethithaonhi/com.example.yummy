@@ -23,6 +23,7 @@
         app:fontFamily="@font/capriola" />
 
     <TextView
+        android:id="@+id/mess_no_order"
         android:gravity="center"
         android:layout_marginTop="8dp"
         android:text="@string/contect_order"

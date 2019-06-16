@@ -1,118 +1,136 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.daimajia.swipe.SwipeLayout
-        android:background="@color/white"
-        xmlns:swipe="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/swipe"
+    <TextView
+        android:visibility="gone"
+        android:id="@id/tv_title"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textAllCaps="true"
+        android:textSize="16sp"
+        android:padding="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        swipe:leftEdgeSwipeOffset="0dp"
-        swipe:rightEdgeSwipeOffset="0dp">
+        android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:id="@+id/trash"
-            android:layout_gravity="end"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:tag="Bottom3">
-
-        <LinearLayout
-            android:id="@+id/btn_edit"
-            android:gravity="center"
-            android:background="@color/colorPrimary"
-            android:layout_width="60dp"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:src="@drawable/ic_edit_white_24dp"
-                android:layout_width="32dp"
-                android:layout_height="32dp" />
-
-        </LinearLayout>
-            <LinearLayout
-                android:id="@+id/btn_delete"
-                android:gravity="center"
-                android:background="@color/red"
-                android:layout_width="60dp"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/im_delete"
-                    android:src="@drawable/ic_delete_white_24dp"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.daimajia.swipe.SwipeLayout
+            android:background="@color/white"
+            xmlns:swipe="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/swipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/item_selector"
-            android:elevation="5dp"
-            android:padding="10dp">
+            swipe:leftEdgeSwipeOffset="0dp"
+            swipe:rightEdgeSwipeOffset="0dp">
 
-        <ImageView
-            android:id="@+id/im_menu"
-            android:layout_gravity="center"
-            android:scaleType="fitCenter"
-            android:layout_marginRight="8dp"
-            android:layout_weight="0.2"
-            android:src="@drawable/address"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:id="@+id/trash"
+                android:layout_gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:tag="Bottom3">
 
-            <FrameLayout
-                android:layout_weight="0.55"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:id="@+id/btn_edit"
+                    android:gravity="center"
+                    android:background="@color/colorPrimary"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/tv_nameMenu"
-                        android:fontFamily="sans-serif-medium"
-                        android:textSize="14sp"
-                        android:text="Sua tuoi tran chau"
-                        android:textColor="@color/black"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:src="@drawable/ic_edit_white_24dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp" />
 
-                    <TextView
-                        android:id="@+id/tv_desMenu"
-                        android:ellipsize="end"
-                        android:maxLines="3"
-                        android:textSize="14sp"
-                        android:text="mo ta jsajda asjdahdkjahd hkjh jhjsahda gshagd  ghjgasd hgasdjhagjhdgajhdgajhgdjhagdjhagjhdgajhgdjhagjhdgajhgdjhagdjhagjdgaj"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/btn_delete"
+                    android:gravity="center"
+                    android:background="@color/red"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/tv_price"
-                        android:textColor="@color/black"
-                        android:layout_marginTop="8dp"
-                        android:text="25,0000"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:id="@+id/im_delete"
+                        android:src="@drawable/ic_delete_white_24dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp" />
 
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/im_close"
-                    android:layout_gravity="center"
-                    android:src="@drawable/close"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp" />
-            </FrameLayout>
+            </LinearLayout>
 
-        </LinearLayout>
-    </com.daimajia.swipe.SwipeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_selector"
+                android:elevation="5dp"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/im_menu"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="0.2"
+                    android:src="@drawable/address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+                <FrameLayout
+                    android:layout_weight="0.55"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_nameMenu"
+                            android:fontFamily="sans-serif-medium"
+                            android:textSize="14sp"
+                            android:text="Sua tuoi tran chau"
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/tv_desMenu"
+                            android:ellipsize="end"
+                            android:maxLines="3"
+                            android:textSize="14sp"
+                            android:text="mo ta jsajda asjdahdkjahd hkjh jhjsahda gshagd  ghjgasd hgasdjhagjhdgajhdgajhgdjhagdjhagjhdgajhgdjhagjhdgajhgdjhagdjhagjdgaj"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:id="@+id/tv_price"
+                            android:textColor="@color/black"
+                            android:layout_marginTop="8dp"
+                            android:text="25,0000"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/im_close"
+                        android:layout_gravity="center"
+                        android:src="@drawable/close"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp" />
+                </FrameLayout>
+
+            </LinearLayout>
+        </com.daimajia.swipe.SwipeLayout>
+
+    </LinearLayout>
 </LinearLayout>

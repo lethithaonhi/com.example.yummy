@@ -25,198 +25,132 @@
         app:layout_constraintBottom_toTopOf="@id/content" />
 
     <LinearLayout
+        android:visibility="visible"
+        android:id="@+id/v_send"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
-            <com.hbb20.CountryCodePicker
-                android:id="@+id/ccp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:ccp_defaultNameCode="VN" />
-            <EditText
-                android:layout_weight="1"
-                android:id="@+id/phoneText"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/bg_ed_register"
-                android:fontFamily="sans-serif"
-                android:hint="Phone Number"
-                android:imeOptions="actionNext"
-                android:inputType="phone"
-                android:paddingLeft="16dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/btn_exit"
-                android:textSize="14sp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <Button
-        android:layout_marginTop="16dp"
-        android:id="@+id/sendButton"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:background="@drawable/btn_register"
-        android:elevation="3dp"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:text="@string/send_code"
-        android:onClick="sendCode"
-        android:textAllCaps="true"
-        android:textColor="@color/white"
-        android:textSize="14sp"/>
-
-    <Button
-        android:layout_marginTop="16dp"
-        android:id="@+id/resendButton"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:background="@drawable/btn_register"
-        android:elevation="3dp"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:text="@string/resend_code"
-        android:onClick="resendCode"
-        android:textAllCaps="true"
-        android:textColor="@color/white"
-        android:textSize="14sp"/>
-
-    <EditText
-        android:layout_below="@+id/codeText"
-        android:id="@+id/codeText"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/bg_ed_register"
-        android:fontFamily="sans-serif"
-        android:hint="@string/code"
-        android:imeOptions="actionNext"
-        android:inputType="number"
-        android:paddingLeft="16dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/btn_exit"
-        android:textSize="14sp" />
-
-    <Button
-        android:layout_marginTop="16dp"
-        android:id="@+id/verifyButton"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:background="@drawable/btn_register"
-        android:elevation="3dp"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:text="@string/verifyCode"
-        android:onClick="verifyCode"
-        android:textAllCaps="true"
-        android:textColor="@color/white"
-        android:textSize="14sp"/>
-
-</LinearLayout>
-
-<!--<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <RelativeLayout
-        android:id="@+id/phoneAuth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="16dp"
-        android:padding="8dp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Phone number"
-                android:textSize="18sp" />
-
             <LinearLayout
+                android:weightSum="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical">
-
                 <com.hbb20.CountryCodePicker
+                    android:layout_weight="0.3"
                     android:id="@+id/ccp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:ccp_defaultNameCode="VN" />
-
                 <EditText
+                    android:layout_weight="0.7"
                     android:id="@+id/phoneText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_ed_register"
+                    android:fontFamily="sans-serif"
+                    android:hint="Phone Number"
+                    android:imeOptions="actionNext"
                     android:inputType="phone"
-                    android:singleLine="true" />
+                    android:paddingLeft="16dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/btn_exit"
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
-    </RelativeLayout>
 
-    <Button
-        android:id="@+id/sendButton"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/phoneAuth"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:onClick="sendCode"
-        android:background="@drawable/btn_register"
-        android:text="Send Code"
-        android:textColor="#FFF" />
+        <Button
+            android:layout_marginTop="16dp"
+            android:id="@+id/sendButton"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="@drawable/btn_register"
+            android:elevation="3dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/send_code"
+            android:onClick="sendCode"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/resendButton"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/sendButton"
-        android:layout_centerHorizontal="true"
-        android:onClick="resendCode"
-        android:layout_marginTop="29dp"
-        android:background="@drawable/btn_register"
-        android:text="Resend Code"
-        android:textColor="#FFF" />
+    <LinearLayout
+        android:id="@+id/v_code"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/codeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/resendButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="47dp"
-        android:ems="10"
-        android:hint="Code"
-        android:inputType="number"
-        android:textColor="#000"
-        android:textColorHint="#000" />
+        <EditText
+            android:id="@+id/codeText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_ed_register"
+            android:fontFamily="sans-serif"
+            android:hint="@string/code"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:paddingLeft="16dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/btn_exit"
+            android:textSize="14sp"
+            android:paddingStart="16dp" />
 
-    <Button
-        android:id="@+id/verifyButton"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/codeText"
-        android:layout_alignLeft="@+id/codeText"
-        android:layout_alignRight="@+id/codeText"
-        android:layout_alignStart="@+id/codeText"
-        android:layout_below="@+id/codeText"
-        android:layout_marginTop="20dp"
-        android:onClick="verifyCode"
-        android:background="@color/colorPrimary"
-        android:text="Verify Code"
-        android:textColor="#FFF" />
-</RelativeLayout>-->
+        <Button
+            android:layout_marginTop="16dp"
+            android:id="@+id/verifyButton"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="@drawable/btn_register"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/verifyCode"
+            android:onClick="verifyCode"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+
+        <LinearLayout
+            android:layout_marginTop="32dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="@string/send_code_again"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:layout_marginLeft="16dp"
+                android:layout_weight="1"
+                android:id="@+id/resendButton"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:background="@drawable/btn_register_microsoft"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:text="@string/resend_code"
+                android:onClick="resendCode"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

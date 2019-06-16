@@ -93,7 +93,7 @@ public class InfoUserActivity extends AppCompatActivity {
             String phone = edPhone.getText().toString().trim();
             String date = tvBirth.getText().toString().trim();
 
-            if (phone.length() > 8 && phone.length() < 12 && phone.charAt(0) == '0') {
+            if (phone.length() > 8 && phone.length() < 13) {
                 imError.setImageResource(R.drawable.ic_check_circle_24dp);
                 isPhone = true;
             } else {
@@ -121,7 +121,7 @@ public class InfoUserActivity extends AppCompatActivity {
         edPhone.setOnFocusChangeListener((vl, hasFocus) -> {
             String phone = edPhone.getText().toString().trim();
             if(!hasFocus) {
-                if (phone.length() > 8 && phone.length() < 12 && phone.charAt(0) == '0') {
+                if (phone.length() > 8 && phone.length() < 12) {
                     imError.setImageResource(R.drawable.ic_check_circle_24dp);
                     isPhone = true;
                 } else {

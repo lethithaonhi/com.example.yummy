@@ -37,9 +37,20 @@
                 android:layout_height="56dp"
                 android:src="@drawable/press_btn" />
 
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/btn_change"
+                android:text="@string/mess_press"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
         </pl.bclogic.pulsator4droid.library.PulsatorLayout>
 
         <LinearLayout
+            android:id="@+id/btn_cancel"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="12dp"
             android:layout_gravity="center"
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -64,7 +75,7 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

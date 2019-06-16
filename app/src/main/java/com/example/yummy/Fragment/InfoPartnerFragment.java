@@ -28,6 +28,7 @@ import com.example.yummy.Model.Partner;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
+import com.example.yummy.Utils.UtilsBottomBar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -171,7 +172,7 @@ public class InfoPartnerFragment extends Fragment {
                 nodeRoot.child(Node.user).child(Common.accountCurrent.getUserId()).setValue(account);
                 nodeRoot.child(Node.Partner).child(Common.accountCurrent.getUserId()).setValue(partner);
                 Common.accountCurrent = account;
-                Toast.makeText(getContext(), R.string.success, Toast.LENGTH_SHORT).show();
+                UtilsBottomBar.showSuccessView(getContext(), getString(R.string.success), false);
             }
         });
 

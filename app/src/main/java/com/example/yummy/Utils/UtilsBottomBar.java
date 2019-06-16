@@ -3,12 +3,14 @@ package com.example.yummy.Utils;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,9 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.TextView;
+
 import com.example.yummy.Model.Addresses;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Menu;
@@ -161,11 +166,11 @@ public class UtilsBottomBar {
     public static void getOrderCurrent(){
         if(Common.listResId != null && Common.listResId.size() > 0 && Common.accountCurrent != null) {
             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            Common.orderListCurrent = new ArrayList<>();
             for (String resID : Common.listResId) {
                 mDatabase.child(Node.Order).child(resID).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Common.orderListCurrent = new ArrayList<>();
                         if(Common.orderListCurrent.size() < dataSnapshot.getChildrenCount()) {
                             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                                 Order order = dataSnapshot1.getValue(Order.class);
@@ -448,5 +453,26 @@ public class UtilsBottomBar {
                 });
             }
         }
+    }
+
+    public static void showSuccessView(Context context, String mess, boolean isFinish){
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_success);
+        dialog.show();
+
+        TextView tvMess = dialog.findViewById(R.id.tv_mess);
+        tvMess.setText(mess);
+        Button btOkay = dialog.findViewById(R.id.btn_ok);
+        btOkay.setOnClickListener(v->{
+            dialog.dismiss();
+            if(isFinish){
+                ((Activity)context).finish();
+            }
+        });
+
+       if(isFinish){
+           Handler handler = new Handler();
+           handler.postDelayed(((Activity) context)::finish, 5000);
+       }
     }
 }

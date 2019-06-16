@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yummy.Adapter.OnGoingCusAdater;
@@ -37,7 +38,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class OnGoingFragment extends Fragment {
+public class OnGoingFragment extends Fragment{
     private List<Order> data;
     private Timer timer;
     private OnGoingCusAdater adapter;
@@ -85,6 +86,11 @@ public class OnGoingFragment extends Fragment {
 
         OnGoingAsyncTask myAsyncTask = new OnGoingAsyncTask();
         myAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        TextView tvMessNoOrder = v.findViewById(R.id.mess_no_order);
+        if(Common.accountCurrent == null){
+            tvMessNoOrder.setText(R.string.login_first);
+        }
     }
 
     private void getData() {
@@ -139,13 +145,12 @@ public class OnGoingFragment extends Fragment {
                                             showMessStatusOrder(R.string.on_confirm);
                                         }else if(status == 2){
                                             showMessStatusOrder(R.string.on_dispatch);
-                                        }else{
-                                            showMessStatusOrder(R.string.on_complete);
+                                        }
+                                        if(status == 3){
+                                            UtilsBottomBar.showSuccessView(getContext(), getString(R.string.on_complete), false);
                                         }
                                         initMessOrder();
-                                        if(status == 3){
-                                            Toast.makeText(getContext(), "Success!!", Toast.LENGTH_SHORT).show();
-                                        }
+                                        adapter.notifyDataSetChanged();
                                     }
 
                                     if (finalI == Common.orderListCurrent.size() && order.getIsStatus() == 3) {

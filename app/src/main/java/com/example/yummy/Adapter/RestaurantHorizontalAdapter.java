@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.yummy.Activity.RestaurantActivity;
 import com.example.yummy.Activity.RestaurantDetailActivity;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
@@ -42,6 +43,12 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantHorizontalHolder holder, int i) {
+        if(i==7){
+            holder.vMore.setVisibility(View.VISIBLE);
+        }else {
+            holder.vMore.setVisibility(View.GONE);
+        }
+
         Restaurant restaurant = data.get(i);
         branch = getBranch(restaurant);
         holder.tvName.setText(restaurant.getName());
@@ -55,6 +62,12 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
             branch = getBranch(restaurant);
             intent.putExtra("branch", branch);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        });
+
+        holder.vMore.setOnClickListener(v->{
+            Intent intent = new Intent(context, RestaurantActivity.class);
+            intent.putExtra("type", 0);
             context.startActivity(intent);
         });
     }
@@ -85,13 +98,15 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
     class RestaurantHorizontalHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvAddress;
         ImageView imgRes;
-        LinearLayout viewRoot;
+        LinearLayout viewRoot, vMore;
+
         RestaurantHorizontalHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_name);
             tvAddress = itemView.findViewById(R.id.tv_address);
             imgRes = itemView.findViewById(R.id.img_res);
             viewRoot= itemView.findViewById(R.id.viewRoot);
+            vMore = itemView.findViewById(R.id.v_more);
         }
     }
 

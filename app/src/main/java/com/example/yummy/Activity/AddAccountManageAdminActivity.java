@@ -26,6 +26,7 @@ import com.example.yummy.Model.Account;
 import com.example.yummy.Model.Partner;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Node;
+import com.example.yummy.Utils.UtilsBottomBar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -266,7 +267,7 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }else {
-                Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
+                UtilsBottomBar.showSuccessView(this, getString(R.string.success), false);
             }
         } else {
             Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -22,14 +23,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
+import com.example.yummy.Adapter.AddResMenuAdapter;
 import com.example.yummy.Adapter.BranchAdapter;
 import com.example.yummy.Adapter.HistoryOrderAdapter;
 import com.example.yummy.Adapter.MenuPartnerAdapter;
@@ -38,6 +43,7 @@ import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Discounts;
 import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Order;
+import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
@@ -65,7 +71,10 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -74,7 +83,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import jp.wasabeef.recyclerview.animators.FadeInLeftAnimator;
 
-public class RestaurantManagePartnerActivity extends AppCompatActivity {
+public class RestaurantManagePartnerActivity extends AppCompatActivity implements  AddResMenuAdapter.OnChangeListMenu{
     private int type;
     private String typeMenu;
     private ImageView imgMenu, imBranch, imCheck;
@@ -88,6 +97,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
     private BranchAdapter branchAdapter;
     private HistoryOrderAdapter historyMenuAdapter;
     private List<Order> dataList;
+    private LinearLayout vEmpty;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,7 +117,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
         LinearLayout vBranch = findViewById(R.id.v_branch);
         imClose.setOnClickListener(v -> finish());
         ImageView imRoot = findViewById(R.id.im_root);
-        LinearLayout vEmpty = findViewById(R.id.v_empty);
+        vEmpty = findViewById(R.id.v_empty);
         LinearLayout btnEdit = findViewById(R.id.btn_edit);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcv.setLayoutManager(layoutManager);
@@ -172,13 +182,14 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
                 Picasso.get().load(Common.restaurantPartner.getImgList().get(0)).into(imRoot);
 
             btnEdit.setOnClickListener(v->{
-
+                showDialogEdit(Common.restaurantPartner);
             });
         } else {
             name = getResources().getString(R.string.menu);
             rcv.setItemAnimator(new FadeInLeftAnimator());
             if(Common.restaurantPartner != null && Common.restaurantPartner.getMenuList() != null) {
                 vEmpty.setVisibility(View.GONE);
+                Collections.sort(Common.restaurantPartner.getMenuList(), (o1, o2) -> o1.getType().compareTo(o2.getType()));
                 MenuPartnerAdapter adapter = new MenuPartnerAdapter(this, Common.restaurantPartner.getMenuList());
                 adapter.setMode(Attributes.Mode.Single);
                 rcv.setAdapter(adapter);
@@ -224,6 +235,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
                                                 if (menuList.size() == dataRoot.getChildrenCount() && !dataList.contains(order)) {
                                                     dataList.add(order);
                                                     historyMenuAdapter.notifyDataSetChanged();
+                                                    vEmpty.setVisibility(View.GONE);
                                                 }
                                             }
 
@@ -459,9 +471,9 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
             String code = edCode.getText().toString().trim();
             String max = edMax.getText().toString().trim();
             String min = edMin.getText().toString().trim();
-            String fee = edFeeShip.getText().toString().trim();
+            int fee = Integer.parseInt(edFeeShip.getText().toString().trim());
 
-            if (!dis.isEmpty() && !code.isEmpty() && !max.isEmpty() && !min.isEmpty() && !fee.isEmpty()) {
+            if (!dis.isEmpty() && !code.isEmpty() && !max.isEmpty() && !min.isEmpty() && !edFeeShip.getText().toString().trim().isEmpty()) {
                 discounts.setDiscount(Integer.parseInt(dis));
                 discounts.setCode(code);
                 discounts.setMax_discount(Integer.parseInt(max));
@@ -666,5 +678,139 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity {
                         Toast.makeText(this, R.string.error_change_avatar, Toast.LENGTH_SHORT).show();
                     }
                 }));
+    }
+
+    private TextView tvClose, tvOpen;
+    private Calendar myCalender;
+    private List<String> checkList;
+
+    private void showDialogEdit(Restaurant restaurant){
+        Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
+        dialog.setTitle("");
+        dialog.setContentView(R.layout.view_add_restaurant);
+        dialog.show();
+
+        checkList = new ArrayList<>();
+        EditText edName = dialog.findViewById(R.id.edt_name);
+        edName.setText(restaurant.getName());
+        tvClose = dialog.findViewById(R.id.tv_close);
+        tvOpen = dialog.findViewById(R.id.tv_open);
+        tvClose.setText(restaurant.getClose_open());
+        tvOpen.setText(restaurant.getOpen_time());
+        TextView tvTitle = dialog.findViewById(R.id.tv_title);
+        tvTitle.setText(R.string.edit_res);
+        RadioGroup radioGroup = dialog.findViewById(R.id.radioGrp);
+        RadioButton rdYes = dialog.findViewById(R.id.rdb_no);
+        RadioButton rdNo = dialog.findViewById(R.id.rdb_yes);
+        EditText edFeeShip = dialog.findViewById(R.id.ed_ship);
+        EditText edVideo = dialog.findViewById(R.id.edt_video);
+        edVideo.setText(restaurant.getVideo());
+        RecyclerView rcvType = dialog.findViewById(R.id.rcv_type);
+        Button btnCreate = dialog.findViewById(R.id.btn_create);
+        btnCreate.setText(R.string.edit);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rcvType.setLayoutManager(layoutManager);
+        rcvType.setNestedScrollingEnabled(false);
+        AddResMenuAdapter adapter = new AddResMenuAdapter(this);
+        adapter.setCheckList(restaurant.getMenuIdList());
+        rcvType.setAdapter(adapter);
+        adapter.onChangeListMenu(this);
+
+        if(restaurant.getFreeship() == 0){
+            edFeeShip.setVisibility(View.GONE);
+            rdYes.setChecked(true);
+        }else {
+            edFeeShip.setVisibility(View.VISIBLE);
+            rdNo.setChecked(true);
+            edFeeShip.setText(restaurant.getFreeship()+"");
+        }
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rdb_no) {
+                edFeeShip.setVisibility(View.GONE);
+            } else {
+                edFeeShip.setVisibility(View.VISIBLE);
+            }
+        });
+        myCalender = Calendar.getInstance();
+        int hour = myCalender.get(Calendar.HOUR_OF_DAY);
+        int minute = myCalender.get(Calendar.MINUTE);
+
+        RecyclerView rcvCity = dialog.findViewById(R.id.rcv_city);
+        rcvCity.setVisibility(View.GONE);
+
+        tvOpen.setOnClickListener(v -> openTimeDialog(tvOpen, hour, minute));
+        tvClose.setOnClickListener(v -> openTimeDialog(tvClose, hour, minute));
+
+        btnCreate.setOnClickListener(v -> {
+            String name = edName.getText().toString().trim();
+            String video = edVideo.getText().toString().trim();
+            String openTime = tvOpen.getText().toString();
+            String closeTime = tvClose.getText().toString();
+            boolean isFreeShip = edFeeShip.getVisibility() == View.GONE;
+            int freeShip = isFreeShip ? 0 : Integer.parseInt(edFeeShip.getText().toString().trim());
+
+            if(!name.isEmpty() && !video.isEmpty() && checkTime(openTime, closeTime) && checkList.size() > 0){
+                restaurant.setName(name);
+                restaurant.setOpen_time(openTime);
+                restaurant.setClose_open(closeTime);
+                restaurant.setFreeship(freeShip);
+                restaurant.setVideo(video);
+
+                Restaurant newRes = new Restaurant();
+                newRes.setClose_open(restaurant.getClose_open());
+                newRes.setIsClose(restaurant.getIsClose());
+                newRes.setFreeship(restaurant.getFreeship());
+                newRes.setMark(restaurant.getMark());
+                newRes.setMenuIdList(restaurant.getMenuIdList());
+                newRes.setName(restaurant.getName());
+                newRes.setOpen_time(restaurant.getOpen_time());
+                newRes.setVideo(restaurant.getVideo());
+                newRes.setMenuIdList(checkList);
+
+                DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
+                mData.child(Node.QuanAn).child(restaurant.getRes_id()).setValue(newRes);
+                Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                adapter.notifyDataSetChanged();
+            }else {
+                Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
+            }
+
+        });
+    }
+
+    private boolean checkTime(String open, String close){
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat inputParser = new SimpleDateFormat("HH:mm");
+        try {
+            Date dateOpen = inputParser.parse(open);
+            Date dateClose = inputParser.parse(close);
+            if ( dateOpen.before(dateClose)) {
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private void openTimeDialog(TextView txtTime, int hour, int minute) {
+        TimePickerDialog.OnTimeSetListener myTimeListener = (view, hourOfDay, minute1) -> {
+            if (view.isShown()) {
+                myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                myCalender.set(Calendar.MINUTE, minute1);
+                txtTime.setText(hourOfDay + ":" + minute1);
+            }
+        };
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
+        timePickerDialog.setTitle("Choose hour:");
+        if (timePickerDialog.getWindow() != null)
+            timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        timePickerDialog.show();
+    }
+
+
+    @Override
+    public void OnChangeListMenu(List<String> checkList) {
+        this.checkList = checkList;
     }
 }

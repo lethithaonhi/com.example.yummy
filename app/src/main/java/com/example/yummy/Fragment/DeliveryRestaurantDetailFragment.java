@@ -60,6 +60,7 @@ public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRe
 
     private void initView(View v){
         viewDelivery = v.findViewById(R.id.view_delivery);
+        LinearLayout vDiscount = v.findViewById(R.id.view_discount);
         tvCount = v.findViewById(R.id.tv_count);
         tvMoneyAll = v.findViewById(R.id.tv_moneyAll);
         TextView btnDelivery = v.findViewById(R.id.btn_delivery);
@@ -98,9 +99,12 @@ public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRe
             adapter.setOnCountChangeListener(this);
         }
 
+        if(restaurant.getDiscounts() == null || restaurant.getDiscounts().getDiscount() <=0 ){
+            vDiscount.setVisibility(View.GONE);
+        }
         TextView tvDiscount = v.findViewById(R.id.tv_discount);
-        String discount = getString(R.string.discount) + ": "+restaurant.getDiscounts().getDiscount()+"% - "+ R.string.code+": "+restaurant.getDiscounts().getCode()+
-                "\n"+R.string.min_order+": "+UtilsBottomBar.convertStringToMoney(restaurant.getDiscounts().getMin_order()) +" - "+R.string.max_discount+": "+UtilsBottomBar.convertStringToMoney(restaurant.getDiscounts().getMax_discount());
+        String discount = getString(R.string.discount) + ": "+restaurant.getDiscounts().getDiscount()+"% - "+ getString(R.string.code)+": "+restaurant.getDiscounts().getCode()+
+                "\n"+getString(R.string.min_order)+": "+UtilsBottomBar.convertStringToMoney(restaurant.getDiscounts().getMin_order()) +" - "+getString(R.string.max_discount)+": "+UtilsBottomBar.convertStringToMoney(restaurant.getDiscounts().getMax_discount());
         tvDiscount.setText(discount);
 
         String freeship = "";
@@ -171,6 +175,7 @@ public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRe
                         .show();
             }
         } else {
+
             Toast.makeText(getContext(), R.string.login_first, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getContext(), LoginActivity.class));
         }

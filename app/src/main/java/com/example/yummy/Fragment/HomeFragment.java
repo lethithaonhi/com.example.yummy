@@ -112,12 +112,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         BannerAdapter bannerAdapter = new BannerAdapter(Objects.requireNonNull(getContext()),1);
         viewPager.setAdapter(bannerAdapter);
 
-        viewPager.setOnClickListener(v1 -> {
-            Intent intent = new Intent(getContext(), RestaurantActivity.class);
-            intent.putExtra("type", 3);
-            startActivity(intent);
-        });
-
         /*After setting the adapter use the timer */
         final Handler handler = new Handler();
         final Runnable Update = () -> {
@@ -155,7 +149,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 Common.cityList.put(key, count);
             }
         }else {
-            getActivity().finish();
+            if(getActivity() != null)
+                getActivity().finish();
             startActivity(new Intent(getContext(), WelcomeActivity.class));
         }
     }

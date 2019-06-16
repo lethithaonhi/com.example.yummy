@@ -222,7 +222,9 @@
     <string name="blog_url">Nhập đường dẫn của blog</string>
     <string name="video">Video</string>
     <string name="empty_list">Danh sách trống</string>
+    <string name="mess_cancel_status">Bạn có chắc chắn muốn hủy đơn hàng?</string>
     <string name="more_1">Xem thêm</string>
+    <string name="edit_res">Sửa thông tin quán ăn</string>
     <string name="res_close">Cửa hàng này đã đóng cửa, vui lòng đặt hàng vào ngày mai, cảm ơn!</string>
     <string name="chart_order">Thống kê đơn hàng</string>
     <string name="order_by_month">* Thống theo tháng</string>
@@ -238,4 +240,7 @@
     <string name="active">*Kích hoạt</string>
     <string name="nt_acvtive">*Không được kích hoạt</string>
     <string name="detail">Chi tiết</string>
+    <string name="please_wait">Vui lòng đợi trong giây lát…</string>
+    <string name="mess_press">Nhấn để chuyển trạng thái của đơn hàng</string>
+    <string name="send_code_again">Gửi lại mã code</string>
 </resources>

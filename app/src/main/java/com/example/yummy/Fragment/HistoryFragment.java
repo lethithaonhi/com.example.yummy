@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.yummy.Adapter.HistoryOrderAdapter;
 import com.example.yummy.Model.Order;
@@ -52,6 +53,11 @@ public class HistoryFragment extends Fragment {
 
         HistoryAsyncTask myAsyncTask = new HistoryAsyncTask();
         myAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        TextView tvMessNoOrder = v.findViewById(R.id.mess_no_order);
+        if(Common.accountCurrent == null){
+            tvMessNoOrder.setText(R.string.login_first);
+        }
     }
 
 

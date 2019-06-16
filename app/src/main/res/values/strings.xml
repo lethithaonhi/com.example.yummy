@@ -185,6 +185,7 @@
     <string name="img_first">Please enter the information first!</string>
     <string name="restaurant">Restaurant</string>
     <string name="edit_dis">Edit Discount</string>
+    <string name="edit_res">Edit Restaurant</string>
     <string name="max_discount">Max discount</string>
     <string name="min_order">Min order</string>
     <string name="add_branch">Add Branch</string>
@@ -192,6 +193,7 @@
     <string name="twice_exit">Please click BACK again to exit!</string>
     <string name="date">Date</string>
     <string name="mess_change_status">Are you sure of the next process?</string>
+    <string name="mess_cancel_status">Are you sure cancel this order?</string>
     <string name="sure">Sure</string>
     <string name="manage">Management</string>
     <string name="exit">Exit</string>
@@ -242,4 +244,7 @@
     <string name="active">*Activated</string>
     <string name="nt_acvtive">*Not activated</string>
     <string name="detail">Detail</string>
+    <string name="please_wait">Please waiting…</string>
+    <string name="mess_press">Tap to change the next status of this order</string>
+    <string name="send_code_again">Send code again </string>
 </resources>

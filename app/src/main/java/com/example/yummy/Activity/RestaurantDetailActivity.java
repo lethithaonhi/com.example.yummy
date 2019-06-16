@@ -181,7 +181,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 nodeRoot.child(Node.Review).child(restaurant.getRes_id()).push().setValue(review);
                 restaurant.getReviewList().add(review);
                 nodeRoot.child(Node.QuanAn).child(restaurant.getRes_id()).child(Node.mark).setValue(caculatorMark());
-                Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
+                UtilsBottomBar.showSuccessView(this, getString(R.string.success), false);
                 dialog.dismiss();
             }else {
                 Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();

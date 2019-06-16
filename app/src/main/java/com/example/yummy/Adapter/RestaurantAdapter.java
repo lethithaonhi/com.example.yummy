@@ -62,7 +62,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     private TextView tvOpen, tvClose;
     private Calendar myCalender;
     private int type; //1:cus, 0: admin
-    private Restaurant tempRes;
     private List<String> checkList;
 
     public RestaurantAdapter(List<Restaurant> restaurantList, Context context, int type){
@@ -93,7 +92,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         holder.tvAddress.setText(branch.getAddress());
         if(!branch.getAvatar().isEmpty())
             Picasso.get().load(branch.getAvatar()).into(holder.imRes);
-        if(restaurant.getFreeship() == 1){
+        if(restaurant.getFreeship() == 0){
             holder.viewFreeship.setVisibility(View.VISIBLE);
         }
 
@@ -258,13 +257,14 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         dialog.setContentView(R.layout.view_add_restaurant);
         dialog.show();
 
-        tempRes = restaurant;
         EditText edName = dialog.findViewById(R.id.edt_name);
         edName.setText(restaurant.getName());
         tvClose = dialog.findViewById(R.id.tv_close);
         tvOpen = dialog.findViewById(R.id.tv_open);
         tvClose.setText(restaurant.getClose_open());
         tvOpen.setText(restaurant.getOpen_time());
+        TextView tvTitle = dialog.findViewById(R.id.tv_title);
+        tvTitle.setText(R.string.edit_res);
         RadioGroup radioGroup = dialog.findViewById(R.id.radioGrp);
         RadioButton rdYes = dialog.findViewById(R.id.rdb_no);
         RadioButton rdNo = dialog.findViewById(R.id.rdb_yes);

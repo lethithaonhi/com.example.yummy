@@ -1,8 +1,10 @@
 package com.example.yummy.Activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -84,20 +86,21 @@ public class OrderCustomActivity extends AppCompatActivity {
         TextView tvDistance = findViewById(R.id.tv_distance);
         Button btnSubmit = findViewById(R.id.btn_submit);
         TextView tvDiscount = findViewById(R.id.tv_discount);
+        TextView tvCode = findViewById(R.id.tv_code);
         LinearLayout viewDiscount = findViewById(R.id.view_discount);
 
         if (restaurant.getFreeship() == 0) {
             if (branch.getDistance() <= 2000) {
                 feeShip = 0;
             } else if (branch.getDistance() <= 5000)
-                feeShip = 150000;
+                feeShip = 15000;
             else
-                feeShip = (int) (restaurant.getFreeship() * (branch.getDistance() / 1000));
+                feeShip = (int) (5000 * (branch.getDistance() / 1000));
         } else {
             feeShip = (int) (restaurant.getFreeship() * (branch.getDistance() / 1000));
         }
 
-        if (restaurant.getFreeship() != 0 || branch.getDistance() / 1000 > 5000) {
+        if (feeShip > 0) {
             if (feeShip / 100 > 5) {
                 feeShip = (feeShip / 1000 + 1) * 1000;
             } else {
@@ -135,8 +138,9 @@ public class OrderCustomActivity extends AppCompatActivity {
             if(discount != 0 && discount > restaurant.getDiscounts().getMax_discount())
                 discount = restaurant.getDiscounts().getMax_discount();
 
-                tvDiscount.setText("-"+discount);
+                tvDiscount.setText("-"+UtilsBottomBar.convertStringToMoney(discount));
                 viewDiscount.setVisibility(View.VISIBLE);
+                tvCode.setText(restaurant.getDiscounts().getCode());
 
         }
 
@@ -191,9 +195,9 @@ public class OrderCustomActivity extends AppCompatActivity {
                         }
                     }
 
-                    Toast.makeText(this, R.string.order_success, Toast.LENGTH_SHORT).show();
-                    finish();
-                    startActivity(new Intent(this, BottomBarActivity.class));
+                    UtilsBottomBar.showSuccessView(this, getString(R.string.order_success), true);
+                    Handler handler = new Handler();
+                    handler.postDelayed(() -> startActivity(new Intent(OrderCustomActivity.this, BottomBarActivity.class)), 5000);
                     UtilsBottomBar.getOrderCurrent();
                 }else {
                     Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();

@@ -65,12 +65,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public static FirebaseAuth mAuth;
     private RelativeLayout viewLanguage;
     private LinearLayout viewRoot;
-    private ProgressBar progressBar;
     private CallbackManager callbackManager;
     private ImageButton btnShowPass;
     private boolean isShowPass = false;
-    private int gender=0;
+    private int gender = 1;
     private boolean isPhone = false;
+    private Dialog dialog;
 //    private FirebaseUser user;
 //    private LoginButton loginFB;
 
@@ -92,8 +92,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         btnPhoneLogin.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, PhoneActivity.class)));
         ImageView btnClose = findViewById(R.id.btn_close);
         btnClose.setOnClickListener(v->finish());
-        progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleSmall);
-        progressBar.setVisibility(View.GONE);
         LinearLayout btnFacebook = findViewById(R.id.btn_sso_fb);
         callbackManager = CallbackManager.Factory.create();
         btnFacebook.setOnClickListener(view -> {
@@ -230,7 +228,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void signinWithEmail() {
-        progressBar.setVisibility(View.VISIBLE);
+        showProgress();
         String email = edtUsername.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
 
@@ -249,7 +247,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Log.w("notifySignInEmail", "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
+                            if(dialog != null && dialog.isShowing())
+                                dialog.dismiss();
                         }
                     });
         } else {
@@ -316,7 +315,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();
-                                        progressBar.setVisibility(View.GONE);
+                                        if(dialog != null && dialog.isShowing())
+                                            dialog.dismiss();
                                     } else if (Common.accountCurrent != null && Common.accountCurrent.getRole() == 3) {
                                         mDatabase.child(Node.Partner).child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
                                             @Override
@@ -326,7 +326,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                 Intent intent = new Intent(LoginActivity.this, HomePartnerActivity.class);
                                                 startActivity(intent);
                                                 finish();
-                                                progressBar.setVisibility(View.GONE);
+                                                if(dialog != null && dialog.isShowing())
+                                                    dialog.dismiss();
                                             }
 
                                             @Override
@@ -338,7 +339,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                         Intent intent = new Intent(LoginActivity.this, HomePartnerActivity.class);
                                         startActivity(intent);
                                         finish();
-                                        progressBar.setVisibility(View.GONE);
+                                        if(dialog != null && dialog.isShowing())
+                                            dialog.dismiss();
                                     }
                                 }
 
@@ -347,17 +349,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                     Toast.makeText(LoginActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
                                     finish();
-                                    progressBar.setVisibility(View.GONE);
+                                    if(dialog != null && dialog.isShowing())
+                                        dialog.dismiss();
                                 }
                             });
                         }else {
                             Toast.makeText(LoginActivity.this, R.string.account_lock, Toast.LENGTH_SHORT).show();
                             mAuth.signOut();
-                            progressBar.setVisibility(View.GONE);
+                            if(dialog != null && dialog.isShowing())
+                                dialog.dismiss();
                         }
                     }else {
                         if(mAuth != null) {
-                            progressBar.setVisibility(View.GONE);
+                            if(dialog != null && dialog.isShowing())
+                                dialog.dismiss();
                             Account account = new Account();
                             account.setUserId(mAuth.getUid());
                             if (mAuth.getCurrentUser() != null) {
@@ -421,7 +426,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             String phone = edPhone.getText().toString().trim();
             if(!hasFocus) {
                 vTitle.setVisibility(View.VISIBLE);
-                if (phone.length() > 0 && phone.length() < 11 && phone.charAt(0) == '0') {
+                if (phone.length() > 0 && phone.length() < 13) {
                     imError.setImageResource(R.drawable.ic_check_circle_24dp);
                     isPhone = true;
                 } else {
@@ -439,7 +444,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             String date = tvDateBirth.getText().toString().trim();
             String phone = edPhone.getText().toString().trim();
 
-            if (phone.length() > 8 && phone.length() < 12 && phone.charAt(0) == '0') {
+            if (phone.length() > 8 && phone.length() < 13) {
                 imError.setImageResource(R.drawable.ic_check_circle_24dp);
                 isPhone = true;
             } else {
@@ -484,5 +489,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         DatePickerDialog pic=new DatePickerDialog(LoginActivity.this, callback, nam, thang, ngay);
         pic.setTitle(R.string.address_user);
         pic.show();
+    }
+
+    private void showProgress(){
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_process);
+        dialog.setCancelable(false);
+        dialog.show();
     }
 }

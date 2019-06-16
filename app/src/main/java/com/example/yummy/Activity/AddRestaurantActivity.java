@@ -21,6 +21,7 @@ import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
+import com.example.yummy.Utils.UtilsBottomBar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -116,8 +117,7 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
                     mData.child(Node.DiaDiem).child(CityAdapter.city).push().setValue(key);
                 }
 
-                Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
-                finish();
+                UtilsBottomBar.showSuccessView(this, getString(R.string.success),true);
             }else {
                 Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
             }

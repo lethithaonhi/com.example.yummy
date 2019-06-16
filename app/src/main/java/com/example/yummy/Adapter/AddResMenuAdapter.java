@@ -66,7 +66,7 @@ public class AddResMenuAdapter extends RecyclerView.Adapter<AddResMenuAdapter.Ad
         });
     }
 
-    void setCheckList(List<String> checkList){
+    public void setCheckList(List<String> checkList){
         this.checkList = checkList;
     }
 

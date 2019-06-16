@@ -15,12 +15,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_date"
-            android:text="12/12/2018"
-            android:textColor="@color/black"
+        <LinearLayout
+            android:gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/tv_date"
+                android:text="12/12/2018"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/btn_cancel"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ic_cancel"
+                android:layout_gravity="center"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp" />
+
+        </LinearLayout>
 
         <ImageView
             android:layout_marginTop="20dp"

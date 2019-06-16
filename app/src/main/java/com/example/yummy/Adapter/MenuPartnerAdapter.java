@@ -74,6 +74,18 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
             holder.imClose.setVisibility(View.VISIBLE);
             holder.imDelete.setImageResource(R.drawable.open);
         }
+
+        if(i == 0){
+            holder.tvTitle.setVisibility(View.VISIBLE);
+            holder.tvTitle.setText(menu.getType());
+        }else {
+            if(!menu.getType().equals(dataList.get(i-1).getType())){
+                holder.tvTitle.setVisibility(View.VISIBLE);
+                holder.tvTitle.setText(menu.getType());
+            }else {
+                holder.tvTitle.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override
@@ -89,7 +101,7 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
 
     class MenuPartnerHolder extends RecyclerView.ViewHolder {
         ImageView imMenu, imClose, imDelete;
-        TextView tvName, tvDes, tvCount, tvPrice;
+        TextView tvName, tvDes, tvCount, tvPrice, tvTitle;
         SwipeLayout swipeLayout;
         LinearLayout btnEdit, btnDelete;
         MenuPartnerHolder(@NonNull View itemView) {
@@ -105,6 +117,7 @@ public class MenuPartnerAdapter extends RecyclerSwipeAdapter<MenuPartnerAdapter.
             btnEdit = itemView.findViewById(R.id.btn_edit);
             imClose = itemView.findViewById(R.id.im_close);
             imDelete = itemView.findViewById(R.id.im_delete);
+            tvTitle = itemView.findViewById(R.id.tv_title);
 
             ViewTreeObserver vto = imMenu.getViewTreeObserver();
             vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {

@@ -11,6 +11,10 @@ import android.widget.TextView;
 
 import com.example.yummy.Model.Order;
 import com.example.yummy.R;
+import com.example.yummy.Utils.Common;
+import com.example.yummy.Utils.Node;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -41,7 +45,12 @@ public class OnGoingCusAdater extends RecyclerView.Adapter<OnGoingCusAdater.OnGo
 
         holder.tvNameRes.setText(order.getName_res());
         holder.tvDate.setText(order.getTime() + " - " + order.getDate());
+        holder.btnCancel.setVisibility(order.getIsStatus() !=0 ? View.GONE:View.VISIBLE);
 
+        holder.btnCancel.setOnClickListener(v-> {
+            DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
+            mData.child(Node.Order).child(Common.restaurantPartner.getRes_id()).child(order.getId()).child(Node.isStatus).setValue(4);
+        });
         if (order.getIsStatus() == 1 || order.getIsStatus() > 1){
             holder.tvConfirm.setTextColor(context.getResources().getColor(R.color.red));
             holder.imConfirm.setImageResource(R.drawable.bg_circle_green);
@@ -71,7 +80,7 @@ public class OnGoingCusAdater extends RecyclerView.Adapter<OnGoingCusAdater.OnGo
 
     class OnGoingCusHolder extends RecyclerView.ViewHolder {
         TextView tvStatus, tvSent, tvConfirm, tvRoute, tvComplete, tvNameRes, tvDate;
-        ImageView imSent, imConfirm, imRoute, imComplete;
+        ImageView imSent, imConfirm, imRoute, imComplete, btnCancel;
         View vConfirm, vRoute, vComplete;
 
         OnGoingCusHolder(@NonNull View itemView) {
@@ -91,6 +100,7 @@ public class OnGoingCusAdater extends RecyclerView.Adapter<OnGoingCusAdater.OnGo
             vRoute = itemView.findViewById(R.id.v_route);
             vComplete = itemView.findViewById(R.id.v_complete);
             tvDate = itemView.findViewById(R.id.tv_date);
+            btnCancel = itemView.findViewById(R.id.btn_cancel);
         }
     }
 }

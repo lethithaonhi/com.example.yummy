@@ -38,6 +38,7 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
     private List<Order> data;
     private boolean isPartner;
     private MediaPlayer endPlayer;
+    private LinearLayout btnCancelOrder;
 
     public HistoryOrderAdapter(Context context, List<Order> data, boolean isPartner){
         this.context = context;
@@ -226,9 +227,8 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
 
         ImageView btnChange = dialog.findViewById(R.id.btn_change);
         btnChange.setOnClickListener(v->{
-            int status = order.getIsStatus();
-            if(status < 3){
-                showMessChangeStatus(order, status);
+            if(order.getIsStatus() < 3){
+                showMessChangeStatus(order, order.getIsStatus());
             }
         });
 
@@ -242,7 +242,11 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
         vConfirm = dialog.findViewById(R.id.v_confirm);
         vRoute = dialog.findViewById(R.id.v_route);
         vComplete = dialog.findViewById(R.id.v_complete);
-
+        btnCancelOrder = dialog.findViewById(R.id.btn_cancel);
+        btnCancelOrder.setOnClickListener(v-> {
+            if(order.getIsStatus() < 4)
+                showMessChangeStatus(order, 3);
+        });
         setStatus(order.getIsStatus());
     }
 
@@ -272,17 +276,21 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
     private void showMessChangeStatus(Order order, int status){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("");
-        builder.setMessage(R.string.mess_change_status);
+        builder.setMessage(status != 3 ? R.string.mess_change_status : R.string.mess_cancel_status);
         builder.setCancelable(false);
         builder.setPositiveButton(R.string.sure, (dialogInterface, i) ->{
             order.setIsStatus(status+1);
             DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
             mData.child(Node.Order).child(Common.accountCurrent.getPartner().getBoss()).child(order.getId()).child(Node.isStatus).setValue(status+1);
 
-            if(status == 2){
+            if(status >= 2){
                 mPulsator.stop();
-                imStatus.setVisibility(View.VISIBLE);
                 initEndOrder();
+                imStatus.setVisibility(View.VISIBLE);
+                if(status == 3){
+                    imStatus.setImageResource(R.drawable.cancel);
+                    btnCancelOrder.setVisibility(View.GONE);
+                }
             }
             setStatus(status+1);
         });

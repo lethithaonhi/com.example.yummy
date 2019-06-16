@@ -1,6 +1,7 @@
 package com.example.yummy.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.yummy.Activity.RestaurantActivity;
 import com.example.yummy.R;
 
 public class BannerAdapter extends PagerAdapter {
@@ -47,6 +49,11 @@ public class BannerAdapter extends PagerAdapter {
             imageView.setImageResource(image2s[position]);
 
         container.addView(itemView);
+        imageView.setOnClickListener(v->{
+            Intent intent = new Intent(context, RestaurantActivity.class);
+            intent.putExtra("type", 3);
+            context.startActivity(intent);
+        });
 
         return itemView;
     }

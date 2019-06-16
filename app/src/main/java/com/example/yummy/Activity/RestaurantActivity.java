@@ -121,7 +121,8 @@ public class RestaurantActivity extends AppCompatActivity {
 
     private void setRestaurantList(){
         if(type == 1){
-            Collections.sort(restaurantList, (obj1, obj2) -> (int) (obj1.getMark() - obj2.getMark()));
+            Collections.sort(restaurantList, (obj1, obj2) -> Float.compare(obj1.getMark(), obj2.getMark()));
+            Collections.reverse(restaurantList);
         }else if(type == 2){
             for (Restaurant restaurant : restaurantList){
                 Collections.sort(restaurant.getBranchList(), (obj1, obj2) -> Float.compare(obj1.getDistance(), obj2.getDistance()));
@@ -129,6 +130,13 @@ public class RestaurantActivity extends AppCompatActivity {
 
             Collections.sort(restaurantList, (obj1, obj2) -> Float.compare(obj1.getBranchList().get(0).getDistance(), obj2.getBranchList().get(0).getDistance()));
         }else if(type== 3){
+            List<Restaurant> restaurantListNew = new ArrayList<>();
+            for(Restaurant restaurant : restaurantList){
+                if(restaurant.getDiscounts() != null && restaurant.getDiscounts().getDiscount()  > 0 ){
+                    restaurantListNew.add(restaurant);
+                }
+            }
+            restaurantList = restaurantListNew;
             Collections.sort(restaurantList, (ob1, ob2) -> ob2.getDiscounts().getDiscount() - ob1.getDiscounts().getDiscount());
         }else if(type == 4){
             getResFromMenu("mathucdon1");

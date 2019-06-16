@@ -50,7 +50,7 @@ public class PhoneActivity extends AppCompatActivity {
     private Button btnSendCode;
     private Button btnResendCode;
     private String number;
-    private int gender;
+    private int gender = 1;
 
     private String phoneVerificationId;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks
@@ -59,6 +59,7 @@ public class PhoneActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private CountryCodePicker ccp;
     private FirebaseUser user;
+    private LinearLayout vPhone, vCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,18 +71,19 @@ public class PhoneActivity extends AppCompatActivity {
         btnVerifyCode = findViewById(R.id.verifyButton);
         btnSendCode = findViewById(R.id.sendButton);
         btnResendCode = findViewById(R.id.resendButton);
+        vPhone = findViewById(R.id.v_send);
+        vCode = findViewById(R.id.v_code);
 
         ccp = findViewById(R.id.ccp);
         ccp.registerCarrierNumberEditText(edtPhoneNumber);
 
-        btnVerifyCode.setEnabled(false);
-        btnResendCode.setEnabled(false);
         mAuth = FirebaseAuth.getInstance();
 
     }
 
     public void sendCode(View view) {
-
+        vCode.setVisibility(View.VISIBLE);
+        vPhone.setVisibility(View.GONE);
         number = ccp.getFullNumberWithPlus();
 
         setUpVerificatonCallbacks();
@@ -142,8 +144,6 @@ public class PhoneActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         edtCodeText.setText("");
-                        btnResendCode.setEnabled(false);
-                        btnVerifyCode.setEnabled(false);
                         if(task.getResult() != null) {
                             user = task.getResult().getUser();
                             getInfoAccount();
@@ -159,7 +159,8 @@ public class PhoneActivity extends AppCompatActivity {
     }
 
     public void resendCode(View view) {
-
+        vPhone.setVisibility(View.VISIBLE);
+        vCode.setVisibility(View.GONE);
         number = ccp.getFullNumberWithPlus();
         setUpVerificatonCallbacks();
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
