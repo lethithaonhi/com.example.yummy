@@ -110,7 +110,7 @@ public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRe
         String freeship = "";
         if(restaurant.getFreeship() == 0)
             freeship = getString(R.string.freeship_noti);
-        freeship =  freeship + getString(R.string.verify)+restaurant.getFreeship() +"VND/Km";
+        freeship =  freeship + getString(R.string.verify)+UtilsBottomBar.convertStringToMoney(restaurant.getFreeship()) +"/Km";
         TextView tvFreeship = v.findViewById(R.id.tv_freeship);
         tvFreeship.setText(freeship);
     }

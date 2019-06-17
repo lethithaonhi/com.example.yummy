@@ -73,14 +73,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-
 import javax.net.ssl.HttpsURLConnection;
-
 import jp.wasabeef.recyclerview.animators.FadeInLeftAnimator;
 
 public class RestaurantManagePartnerActivity extends AppCompatActivity implements  AddResMenuAdapter.OnChangeListMenu{
@@ -143,7 +140,6 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
                 return -1;
             });
 
-            Collections.reverse(dataList);
             imAdd.setVisibility(View.GONE);
             historyMenuAdapter = new HistoryOrderAdapter(this,  dataList, true);
             rcv.setAdapter(historyMenuAdapter);
@@ -267,13 +263,13 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
 
     private void setDiscounts() {
         String discount = "Discount: " + Common.restaurantPartner.getDiscounts().getDiscount() + "% - Code: " + Common.restaurantPartner.getDiscounts().getCode() +
-                "\nMin order: " + Common.restaurantPartner.getDiscounts().getMin_order() + "VND - Max discount: " + Common.restaurantPartner.getDiscounts().getMax_discount() + "VND";
+                "\nMin order: " + UtilsBottomBar.convertStringToMoney(Common.restaurantPartner.getDiscounts().getMin_order()) + " - Max discount: " + UtilsBottomBar.convertStringToMoney(Common.restaurantPartner.getDiscounts().getMax_discount());
         tvDiscount.setText(discount);
 
         String freeship = "";
         if (Common.restaurantPartner.getFreeship() == 0)
             freeship = "FreeShip under 2km, only 15000VND for 2km - 5km\n";
-        freeship = freeship + "Verify: " + Common.restaurantPartner.getFreeship() + "VND/Km";
+        freeship = freeship + "Verify: " + UtilsBottomBar.convertStringToMoney(Common.restaurantPartner.getFreeship()) + "/Km";
         tvFreeship.setText(freeship);
     }
 
@@ -457,9 +453,9 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
         if(Common.restaurantPartner != null && Common.restaurantPartner.getDiscounts() != null) {
             discounts = Common.restaurantPartner.getDiscounts();
             edCode.setText(discounts.getCode());
-            edDiscount.setText(discounts.getDiscount() + "");
-            edMax.setText(discounts.getMax_discount() + "");
-            edMin.setText(discounts.getMin_order() + "");
+            edDiscount.setText(discounts.getDiscount() + "%");
+            edMax.setText(UtilsBottomBar.convertStringToMoney(discounts.getMax_discount()));
+            edMin.setText(UtilsBottomBar.convertStringToMoney(discounts.getMin_order()));
         }
 
         if(Common.restaurantPartner != null)
@@ -482,6 +478,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
                 DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
                 mData.child(Node.KhuyenMai).child(Common.restaurantPartner.getRes_id()).setValue(discounts);
                 Common.restaurantPartner.setDiscounts(discounts);
+                Common.restaurantPartner.setFreeship(fee);
                 mData.child(Node.QuanAn).child(Common.restaurantPartner.getRes_id()).child(Node.freeship).setValue(fee);
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
                 setDiscounts();
