@@ -87,6 +87,18 @@ public class MenuRestaurantDetailAdapter extends RecyclerView.Adapter<MenuRestau
                 onCountChangeListener.onCountChanged(countList[i], menu);
             });
         }
+
+        if(i == 0){
+            holder.tvTitle.setVisibility(View.VISIBLE);
+            holder.tvTitle.setText(menu.getType());
+        }else {
+            if(!menu.getType().equals(data.get(i-1).getType())){
+                holder.tvTitle.setVisibility(View.VISIBLE);
+                holder.tvTitle.setText(menu.getType());
+            }else {
+                holder.tvTitle.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override
@@ -96,7 +108,7 @@ public class MenuRestaurantDetailAdapter extends RecyclerView.Adapter<MenuRestau
 
     class MenuRestaurantDetailHolder extends RecyclerView.ViewHolder {
         ImageView imMenu, btnRemove, btnAdd;
-        TextView tvName, tvDes, tvCount, tvPrice;
+        TextView tvName, tvDes, tvCount, tvPrice, tvTitle;
 
         MenuRestaurantDetailHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,6 +119,7 @@ public class MenuRestaurantDetailAdapter extends RecyclerView.Adapter<MenuRestau
             tvCount = itemView.findViewById(R.id.tv_countMenu);
             btnRemove = itemView.findViewById(R.id.btn_remove);
             btnAdd = itemView.findViewById(R.id.btn_plus);
+            tvTitle = itemView.findViewById(R.id.tv_title);
 
             ViewTreeObserver vto = imMenu.getViewTreeObserver();
             vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {

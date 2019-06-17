@@ -48,7 +48,6 @@ public class BlogActivity extends AppCompatActivity {
         });
 
         Collections.reverse(Common.blogList);
-        Collections.reverse(Common.blogList);
         List<Blog> blogList = new ArrayList<>();
         for(Blog blog : Common.blogList){
             if(blog.getIsClose() != 1){

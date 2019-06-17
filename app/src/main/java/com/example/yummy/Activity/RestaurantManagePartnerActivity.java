@@ -73,6 +73,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -129,16 +130,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
         if (type == 0) {
             name = getResources().getString(R.string.order);
 
-            List<Order> dataList = getOrder();
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-            Collections.sort(dataList, (obj1, obj2) -> {
-                try {
-                    return dateFormat.parse(obj1.getDate()+" "+obj1.getTime()).compareTo(dateFormat.parse(obj2.getTime()+" "+obj2.getTime()));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                return -1;
-            });
+            dataList = getOrder();
 
             imAdd.setVisibility(View.GONE);
             historyMenuAdapter = new HistoryOrderAdapter(this,  dataList, true);
@@ -232,6 +224,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
                                                     dataList.add(order);
                                                     historyMenuAdapter.notifyDataSetChanged();
                                                     vEmpty.setVisibility(View.GONE);
+                                                    sortData();
                                                 }
                                             }
 
@@ -259,6 +252,20 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
             }
         });
         return  dataList;
+    }
+
+    private void sortData(){
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Collections.sort(dataList, (obj1, obj2) -> {
+            try {
+                return dateFormat.parse(obj1.getDate()).compareTo(dateFormat.parse(obj2.getDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return -1;
+        });
+
+        Collections.reverse(dataList);
     }
 
     private void setDiscounts() {
