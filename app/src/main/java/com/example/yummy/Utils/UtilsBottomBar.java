@@ -306,7 +306,7 @@ public class UtilsBottomBar {
         }
     }
 
-    private void getRestaurantPartner(){
+    public static void getRestaurantPartner(){
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child(Common.accountCurrent.getPartner().getBoss()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -550,7 +550,7 @@ public class UtilsBottomBar {
 
     private static void createNotification(Context context){
         notBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_access_alarms_24dp)
+                .setSmallIcon(R.drawable.ic_notifi)
                 .setContentTitle(context.getString(R.string.new_order))
                 .setContentText(context.getString(R.string.receive_order))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);

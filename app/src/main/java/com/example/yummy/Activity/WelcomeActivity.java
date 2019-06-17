@@ -311,13 +311,12 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
         public void onReceive(Context context, Intent intent) {
             ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             if (connMgr != null) {
-                NetworkInfo wifi = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-                boolean isConnected = wifi != null && wifi.isConnectedOrConnecting();
+                boolean isConnected = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                        connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
                 if (!isConnected) {
                     showDialog();
                 } else {
-                    if (dialog!= null && dialog.isShowing()) {
+                    if (dialog != null && dialog.isShowing()) {
                         dialog.dismiss();
                     }
                     checkServiceGG();

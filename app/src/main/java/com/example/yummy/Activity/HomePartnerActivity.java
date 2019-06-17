@@ -122,7 +122,7 @@ public class HomePartnerActivity extends AppCompatActivity {
         TextView tvOwner = headerLayout.findViewById(R.id.tv_owner);
         TextView tvName = headerLayout.findViewById(R.id.tv_name);
         if(Common.accountCurrent != null) {
-            if(!Common.accountCurrent.getAvatar().isEmpty())
+            if(Common.accountCurrent.getAvatar()!= null && !Common.accountCurrent.getAvatar().isEmpty())
                 Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatar);
             if(Common.accountCurrent.getRole() == 3 && Common.restaurantPartner != null) {
                 tvOwner.setText(getResources().getString(R.string.owner) + ": " + Common.restaurantPartner.getName() + " - " + Common.restaurantPartner.getCity());
@@ -142,6 +142,7 @@ public class HomePartnerActivity extends AppCompatActivity {
 
         if(Common.accountCurrent.getRole() == 3){
             UtilsBottomBar.getOrderPartner(this);
+            UtilsBottomBar.getRestaurantPartner();
         }
     }
 
