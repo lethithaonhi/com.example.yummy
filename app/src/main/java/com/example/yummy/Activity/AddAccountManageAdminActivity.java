@@ -39,7 +39,7 @@ import java.util.List;
 
 public class AddAccountManageAdminActivity extends AppCompatActivity {
     private boolean isShowPass = false, isShowPass1 = false;
-    private int gender=0;
+    private int gender=1;
     private boolean isPhone = false;
     private EditText edtUsername;
     private EditText edtNewPass;
@@ -142,7 +142,29 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
         LinearLayout vTitle = findViewById(R.id.v_title);
         imError = findViewById(R.id.btn_error);
 
-        btnSave.setOnClickListener(v->registerAccount());
+        btnSave.setOnClickListener(v-> {
+            String name = edName.getText().toString().trim();
+            String date = tvDateBirth.getText().toString().trim();
+            String phone = edPhone.getText().toString().trim();
+            String bank = edBank.getText().toString().trim();
+            String stk = edSTK.getText().toString().trim();
+            String cmnd = edCMND.getText().toString().trim();
+
+            if (phone.length() > 0 && phone.length() < 13) {
+                imError.setImageResource(R.drawable.ic_check_circle_24dp);
+                isPhone = true;
+            } else {
+                imError.setImageResource(R.drawable.ic_error_red_24dp);
+                Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+                isPhone = false;
+            }
+
+            if (!name.isEmpty() && !date.isEmpty() && isPhone) {
+                registerAccount();
+            }else {
+                Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             int checkedRadioId = group.getCheckedRadioButtonId();

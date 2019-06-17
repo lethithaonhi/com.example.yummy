@@ -24,6 +24,7 @@ import com.example.yummy.Fragment.InfoPartnerFragment;
 import com.example.yummy.Fragment.ManageAdminFragment;
 import com.example.yummy.Fragment.RestaurantPartnerFragment;
 import com.example.yummy.Fragment.SettingPartnerFragment;
+import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.UtilsBottomBar;
@@ -85,6 +86,12 @@ public class HomePartnerActivity extends AppCompatActivity {
         }
         drawerLayout.closeDrawer(GravityCompat.START);
 
+        if(Common.accountCurrent.getRole() == 3){
+            UtilsBottomBar.getOrderPartner(this);
+//            UtilsBottomBar.getRestaurantPartner();
+            getRestaurantPartner();
+        }
+
         if(Common.accountCurrent != null && Common.accountCurrent.getRole() == 1){
             navigationView.getMenu().getItem(0).setTitle(R.string.manage);
         }
@@ -124,8 +131,10 @@ public class HomePartnerActivity extends AppCompatActivity {
         if(Common.accountCurrent != null) {
             if(Common.accountCurrent.getAvatar()!= null && !Common.accountCurrent.getAvatar().isEmpty())
                 Picasso.get().load(Common.accountCurrent.getAvatar()).into(imAvatar);
-            if(Common.accountCurrent.getRole() == 3 && Common.restaurantPartner != null) {
-                tvOwner.setText(getResources().getString(R.string.owner) + ": " + Common.restaurantPartner.getName() + " - " + Common.restaurantPartner.getCity());
+            if(Common.accountCurrent.getRole() == 3 ) {
+                if(Common.restaurantPartner != null) {
+                    tvOwner.setText(getResources().getString(R.string.owner) + ": " + Common.restaurantPartner.getName() + " - " + Common.restaurantPartner.getCity());
+                }
             }else {
                 tvOwner.setText(R.string.admin);
             }
@@ -139,11 +148,6 @@ public class HomePartnerActivity extends AppCompatActivity {
 
         LinearLayout btnSignOut = headerLayout.findViewById(R.id.btn_singOut);
         btnSignOut.setOnClickListener(v -> finish());
-
-        if(Common.accountCurrent.getRole() == 3){
-            UtilsBottomBar.getOrderPartner(this);
-            UtilsBottomBar.getRestaurantPartner();
-        }
     }
 
     @Override
@@ -161,5 +165,13 @@ public class HomePartnerActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void getRestaurantPartner(){
+        for(Restaurant restaurant : Common.restaurantListAll){
+            if(restaurant.getRes_id().equals(Common.accountCurrent.getPartner().getBoss())){
+                Common.restaurantPartner = restaurant;
+            }
+        }
     }
 }

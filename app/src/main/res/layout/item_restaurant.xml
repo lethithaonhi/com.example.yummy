@@ -64,13 +64,28 @@
             android:elevation="5dp"
             android:padding="10dp">
 
-            <ImageView
-                android:scaleType="fitCenter"
+            <FrameLayout
                 android:layout_weight="0.3"
-                android:id="@+id/im_restaurant"
-                android:src="@drawable/bg_circle_green"
                 android:layout_width="0dp"
-                android:layout_height="72dp" />
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:scaleType="fitCenter"
+                    android:id="@+id/im_restaurant"
+                    android:src="@drawable/bg_circle_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp" />
+
+                <TextView
+                    android:id="@+id/close_res"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/red"
+                    android:text="@string/close"
+                    android:background="@color/trans"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_weight="0.65"

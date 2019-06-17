@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,6 +138,15 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
         holder.btnClose.setOnClickListener(v->showDialogClose(restaurant));
         holder.btnEdit.setOnClickListener(v->showDialogEdit(restaurant));
+
+        Time today = new Time(Time.getCurrentTimezone());
+        today.setToNow();
+
+        if(!checkTimeCloses(restaurant.getOpen_time(),today.format("%k:%M"),  restaurant.getClose_open())){
+            holder.tvClosed.setVisibility(View.VISIBLE);
+        }else {
+            holder.tvClosed.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -163,7 +173,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
     class RestaurantHolder extends RecyclerView.ViewHolder {
         ImageView imRes, imClose, imDelete;
-        TextView tvName, tvAddress, tvMark, tvDistance, tvDiscount;
+        TextView tvName, tvAddress, tvMark, tvDistance, tvDiscount, tvClosed;
         LinearLayout viewFreeship, viewRoot, viewDiscount;
         SwipeLayout swipeLayout;
         LinearLayout btnEdit, btnClose, vTrash;
@@ -185,6 +195,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             btnEdit = itemView.findViewById(R.id.btn_edit);
             imClose = itemView.findViewById(R.id.im_close);
             vTrash = itemView.findViewById(R.id.trash);
+            tvClosed = itemView.findViewById(R.id.close_res);
+
             if(type == 0){
                 tvDistance.setVisibility(View.GONE);
                 tvMark.setVisibility(View.GONE);
@@ -351,6 +363,21 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             Date dateOpen = inputParser.parse(open);
             Date dateClose = inputParser.parse(close);
             if ( dateOpen.before(dateClose)) {
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean checkTimeCloses(String open, String timeRes, String close){
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat inputParser = new SimpleDateFormat("HH:mm");
+        try {
+            Date dateOpen = inputParser.parse(open);
+            Date dateClose = inputParser.parse(close);
+            Date time = inputParser.parse(timeRes);
+            if ( dateOpen.before(time) && dateClose.after(time)) {
                 return true;
             }
         } catch (ParseException e) {

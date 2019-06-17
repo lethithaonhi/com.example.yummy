@@ -110,6 +110,8 @@ public class OnGoingFragment extends Fragment{
             }
             return -1;
         });
+
+        Collections.reverse(data);
     }
 
     @Override
@@ -136,9 +138,10 @@ public class OnGoingFragment extends Fragment{
                                     if (status != order.getIsStatus()) {
                                         order.setIsStatus(status);
                                         int pos = adapter.getPos(order);
-                                        data.remove(pos);
-                                        data.add(pos, order);
-                                        adapter.notifyDataSetChanged();
+//                                        data.remove(pos);
+//                                        data.add(pos, order);
+                                        data.get(pos).setIsStatus(status);
+                                        setAdapter();
                                         if(status == 0){
                                             showMessStatusOrder(R.string.on_sent);
                                         }else if(status == 1){
@@ -150,7 +153,6 @@ public class OnGoingFragment extends Fragment{
                                             UtilsBottomBar.showSuccessView(getContext(), getString(R.string.on_complete), false);
                                         }
                                         initMessOrder();
-                                        adapter.notifyDataSetChanged();
                                     }
 
                                     if (finalI == Common.orderListCurrent.size() && order.getIsStatus() == 3) {
@@ -167,7 +169,7 @@ public class OnGoingFragment extends Fragment{
                         }
                     }
                 };
-                timer.schedule(timerTask, 30000, 30000);
+                timer.schedule(timerTask, 3000, 30000);
             } catch (IllegalStateException e) {
                 Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
             }
@@ -213,10 +215,7 @@ public class OnGoingFragment extends Fragment{
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if(data.size() > 0) {
-                adapter = new OnGoingCusAdater(getContext(), data);
-                rcvOrderList.setAdapter(adapter);
-                viewNoOrder.setVisibility(View.GONE);
-                rcvOrderList.setVisibility(View.VISIBLE);
+                setAdapter();
             }
         }
 
@@ -227,5 +226,12 @@ public class OnGoingFragment extends Fragment{
             }
             return null;
         }
+    }
+
+    private void setAdapter(){
+        adapter = new OnGoingCusAdater(getContext(), data);
+        rcvOrderList.setAdapter(adapter);
+        viewNoOrder.setVisibility(View.GONE);
+        rcvOrderList.setVisibility(View.VISIBLE);
     }
 }

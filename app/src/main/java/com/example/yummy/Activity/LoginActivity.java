@@ -302,7 +302,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                             if (Common.myLocation != null && address.getName() != null &&address.getName().equals(Common.myLocation.getName())) {
                                                 isShow = true;
                                             }
-                                            addresses.add(address);
+                                            if(address.getName() == null || address.getName().isEmpty()){
+                                                isShow = true;
+                                            }else {
+                                                addresses.add(address);
+                                            }
                                         }
                                     }
                                     if (!isShow) {

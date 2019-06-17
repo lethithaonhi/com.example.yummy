@@ -308,7 +308,7 @@ public class UtilsBottomBar {
 
     public static void getRestaurantPartner(){
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child(Common.accountCurrent.getPartner().getBoss()).addValueEventListener(new ValueEventListener() {
+        mDatabase.child(Node.QuanAn).child(Common.accountCurrent.getPartner().getBoss()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Restaurant restaurant = dataSnapshot.getValue(Restaurant.class);
@@ -554,7 +554,7 @@ public class UtilsBottomBar {
                 .setContentTitle(context.getString(R.string.new_order))
                 .setContentText(context.getString(R.string.receive_order))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
+        notBuilder.setAutoCancel(true);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         notBuilder.setSound(alarmSound);
     }

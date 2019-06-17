@@ -78,6 +78,8 @@ public class HistoryFragment extends Fragment {
             }
             return -1;
         });
+
+        Collections.reverse(data);
     }
 
     @SuppressLint("StaticFieldLeak")

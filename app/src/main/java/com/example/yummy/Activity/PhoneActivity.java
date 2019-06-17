@@ -193,7 +193,11 @@ public class PhoneActivity extends AppCompatActivity {
                                         if (address.getLongitude() == Common.myLocation.getLongitude() && address.getLatitude() == Common.myLocation.getLatitude()) {
                                             isShow = true;
                                         }
-                                        addresses.add(address);
+                                        if(address.getName() == null || address.getName().isEmpty()){
+                                            isShow = true;
+                                        }else {
+                                            addresses.add(address);
+                                        }
                                     }
                                 }
                                 if (!isShow) {

@@ -36,7 +36,7 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
     private EditText edtUsername, edtNewPass, edtConfirm;
     private FirebaseAuth mAuth;
     private LinearLayout viewRoot;
-    private int gender=0;
+    private int gender = 1;
     private boolean isPhone = false;
     private boolean isShowPass = false;
     private boolean isShowPass1 = false;

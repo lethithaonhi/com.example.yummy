@@ -1,7 +1,9 @@
 package com.example.yummy.Adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.yummy.Activity.AddressHistoryActivity;
 import com.example.yummy.Model.Addresses;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
@@ -74,6 +78,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressH
         builder.setNegativeButton(R.string.delete, (dialogInterface, i) -> {
             DatabaseReference driverRef = FirebaseDatabase.getInstance().getReference().child(Node.Address).child(Common.accountCurrent.getUserId()).child(id);
             driverRef.removeValue();
+            ((Activity)context).finish();
+            context.startActivity(new Intent(context, AddressHistoryActivity.class));
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();

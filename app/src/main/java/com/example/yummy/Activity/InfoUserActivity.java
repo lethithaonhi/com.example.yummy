@@ -26,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class InfoUserActivity extends AppCompatActivity {
     private TextView tvBirth;
-    private int gender;
+    private int gender = 1;
     private boolean isPhone = false;
 
     @Override
