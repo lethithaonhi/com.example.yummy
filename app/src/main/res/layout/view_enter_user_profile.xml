@@ -357,6 +357,7 @@
     </LinearLayout>
 
     <Button
+        android:layout_marginBottom="24dp"
         android:layout_marginTop="24dp"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"

@@ -62,7 +62,7 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
         holder.tvUserName.setText(account.getUsername());
         holder.tvPhone.setText(account.getPhone());
         holder.tvPass.setText(account.getPhone() != null ? account.getPhone(): "Hide");
-        if(!account.getAvatar().isEmpty())
+        if(account.getAvatar() != null && !account.getAvatar().isEmpty())
             Picasso.get().load(account.getAvatar()).into(holder.imAvatar);
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
         holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
