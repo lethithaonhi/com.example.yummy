@@ -11,6 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ImageView
+            android:id="@+id/im_close"
+            android:padding="8dp"
+            android:src="@drawable/ic_back_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints" />
+
         <LinearLayout
             android:id="@+id/v_register"
             android:layout_width="match_parent"

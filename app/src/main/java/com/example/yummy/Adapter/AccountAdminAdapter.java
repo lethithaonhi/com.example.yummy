@@ -31,6 +31,7 @@ import com.example.yummy.Model.Partner;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
+import com.example.yummy.Utils.UtilsBottomBar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -163,25 +164,27 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
         dialog.show();
 
         TextView tvName = dialog.findViewById(R.id.tv_name);
-        tvName.setText(Common.accountCurrent.getName());
+        tvName.setText(account.getName());
         TextView tvUsername = dialog.findViewById(R.id.tv_username);
-        tvUsername.setText(Common.accountCurrent.getUsername());
+        tvUsername.setText(account.getUsername());
         EditText edName = dialog.findViewById(R.id.ed_nameinfo);
-        edName.setText(Common.accountCurrent.getName());
+        edName.setText(account.getName());
         EditText edEmail = dialog.findViewById(R.id.ed_email);
-        edEmail.setText(Common.accountCurrent.getEmail());
+        edEmail.setText(account.getEmail());
         tvBirth = dialog.findViewById(R.id.tv_birth);
-        tvBirth.setText(Common.accountCurrent.getDatebirth());
+        tvBirth.setText(account.getDatebirth());
         LinearLayout vPartner = dialog.findViewById(R.id.v_partner);
         EditText edCMND = dialog.findViewById(R.id.ed_cmnd);
         EditText edBank = dialog.findViewById(R.id.ed_bank);
         EditText edSTK = dialog.findViewById(R.id.ed_accountnum);
         if(account.getRole() == 3) {
             vPartner.setVisibility(View.VISIBLE);
-            edCMND.setText(Common.accountCurrent.getPartner().getCmnd());
-            edCMND.setEnabled(false);
-            edBank.setText(Common.accountCurrent.getPartner().getBank());
-            edSTK.setText(Common.accountCurrent.getPartner().getStk());
+            if(account.getPartner() != null ) {
+                edCMND.setText(account.getPartner().getCmnd());
+                edCMND.setEnabled(false);
+                edBank.setText(account.getPartner().getBank());
+                edSTK.setText(account.getPartner().getStk());
+            }
         }else {
             vPartner.setVisibility(View.GONE);
         }
@@ -194,7 +197,7 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
         RadioButton radioMale = dialog.findViewById(R.id.radio_male);
         RadioButton radioFemale = dialog.findViewById(R.id.radio_female);
         RadioButton radioNone = dialog.findViewById(R.id.radio_none);
-        gender = Common.accountCurrent.getGender();
+        gender = account.getGender();
 
         if(gender == 1){
             radioMale.setChecked(true);
@@ -221,11 +224,11 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
         rcvAddress.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvAddress.getContext(), layoutManager.getOrientation());
         rcvAddress.addItemDecoration(dividerItemDecoration);
-        AddressAdapter addressAdapter = new AddressAdapter(context, Common.accountCurrent.getAddressList(), 1);
+        AddressAdapter addressAdapter = new AddressAdapter(context, account.getAddressList(), 1);
         rcvAddress.setAdapter(addressAdapter);
 
         EditText edPhone = dialog.findViewById(R.id.ed_phone);
-        edPhone.setText(Common.accountCurrent.getPhone());
+        edPhone.setText(account.getPhone());
 
         edPhone.setOnFocusChangeListener((vl, hasFocus) -> {
             String phone = edPhone.getText().toString().trim();
@@ -249,7 +252,7 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
             String phone = edPhone.getText().toString().trim();
             String date = tvBirth.getText().toString().trim();
 
-            if (phone.length() > 8 && phone.length() < 12 && phone.charAt(0) == '0') {
+            if (phone.length() > 8 && phone.length() < 13) {
                 imError.setImageResource(R.drawable.ic_check_circle_24dp);
                 isPhone = true;
             } else {
@@ -257,7 +260,7 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
                 Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show();
                 isPhone = false;
             }
-            if(account.getRole() == 3 && edBank.getText().toString().trim().isEmpty() || edSTK.getText().toString().trim().isEmpty()){
+            if(account.getRole() == 3 && (edBank.getText().toString().trim().isEmpty() || edSTK.getText().toString().trim().isEmpty())){
                 Toast.makeText(context, R.string.empty_user, Toast.LENGTH_SHORT).show();
             } if(name.isEmpty()|| email.isEmpty() || phone.isEmpty() || date.isEmpty() || !isPhone){
                 Toast.makeText(context, R.string.empty_user, Toast.LENGTH_SHORT).show();
@@ -266,17 +269,17 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
                 if(account.getRole() == 3) {
                     String bank = edBank.getText().toString().trim();
                     String stk = edSTK.getText().toString().trim();
-                    partner.setCmnd(Common.accountCurrent.getPartner().getCmnd());
-                    partner.setBoss(Common.accountCurrent.getPartner().getBoss());
+                    partner.setCmnd(account.getPartner().getCmnd());
+                    partner.setBoss(account.getPartner().getBoss());
                     partner.setStk(stk);
                     partner.setBank(bank);
                 }
 
-                account.setUserId(Common.accountCurrent.getUserId());
-                account.setUsername(Common.accountCurrent.getUsername());
-                account.setAvatar(Common.accountCurrent.getAvatar());
-                account.setRole(Common.accountCurrent.getRole());
-                account.setPassword(Common.accountCurrent.getPassword());
+                account.setUserId(account.getUserId());
+                account.setUsername(account.getUsername());
+                account.setAvatar(account.getAvatar());
+                account.setRole(account.getRole());
+                account.setPassword(account.getPassword());
                 account.setName(name);
                 account.setEmail(email);
                 account.setPhone(phone);
@@ -284,12 +287,15 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
                 account.setGender(gender);
 
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
-                nodeRoot.child(Node.user).child(Common.accountCurrent.getUserId()).setValue(account);
+                nodeRoot.child(Node.user).child(account.getUserId()).setValue(account);
                 if(account.getRole() == 3) {
-                    nodeRoot.child(Node.Partner).child(Common.accountCurrent.getUserId()).setValue(partner);
+                    nodeRoot.child(Node.Partner).child(account.getUserId()).setValue(partner);
                 }
-                Common.accountCurrent = account;
-                Toast.makeText(context, R.string.success, Toast.LENGTH_SHORT).show();
+
+                if(account.getUserId().equals(Common.accountCurrent.getUserId()))
+                    Common.accountCurrent = account;
+                UtilsBottomBar.showSuccessView(context, context.getString(R.string.success), false);
+                dialog.dismiss();
             }
         });
 

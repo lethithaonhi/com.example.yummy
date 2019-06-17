@@ -139,6 +139,10 @@ public class HomePartnerActivity extends AppCompatActivity {
 
         LinearLayout btnSignOut = headerLayout.findViewById(R.id.btn_singOut);
         btnSignOut.setOnClickListener(v -> finish());
+
+        if(Common.accountCurrent.getRole() == 3){
+            UtilsBottomBar.getOrderPartner(this);
+        }
     }
 
     @Override

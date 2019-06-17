@@ -4,11 +4,17 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -16,6 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -24,6 +31,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.yummy.Activity.RestaurantManagePartnerActivity;
 import com.example.yummy.Model.Addresses;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Menu;
@@ -48,6 +56,8 @@ import java.util.Map;
 import static com.example.yummy.Activity.WelcomeActivity.gac;
 
 public class UtilsBottomBar {
+    private static NotificationCompat.Builder notBuilder;
+
     public static void startFragment(FragmentManager manager, Fragment fragment) {
         final FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.frame_layout, fragment).commit();
@@ -455,6 +465,64 @@ public class UtilsBottomBar {
         }
     }
 
+    public static void getOrderPartner(Context context){
+        createNotification(context);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child(Node.Order).child(Common.accountCurrent.getPartner().getBoss()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Common.orderListPartner = new ArrayList<>();
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    Order order = dataSnapshot1.getValue(Order.class);
+                    if (order != null) {
+                        if(order.getIsStatus() < 3){
+                            sendNotification(context);
+                        }
+                        order.setId(dataSnapshot1.getKey());
+                        HashMap<Menu, Integer> menuList = new HashMap<>();
+                        mDatabase.child(Node.Order_Menu).child(Common.accountCurrent.getPartner().getBoss()).child(order.getId()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataRoot) {
+                                for (DataSnapshot dataSnapshot2 : dataRoot.getChildren()) {
+                                    Menu menu = dataSnapshot2.getValue(Menu.class);
+                                    if (menu != null && dataSnapshot2.getKey()!= null) {
+                                        mDatabase.child(Node.Order_Menu).child(Common.accountCurrent.getPartner().getBoss()).child(order.getId()).child(dataSnapshot2.getKey()).child(Node.count).addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                int count = dataSnapshot.getValue(Integer.class);
+                                                menuList.put(menu, count);
+                                                order.setMenuList(menuList);
+                                                if (menuList.size() == dataRoot.getChildrenCount() && !Common.orderListPartner.contains(order)) {
+                                                    Common.orderListPartner.add(order);
+
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public static void showSuccessView(Context context, String mess, boolean isFinish){
         Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_success);
@@ -474,5 +542,31 @@ public class UtilsBottomBar {
            Handler handler = new Handler();
            handler.postDelayed(((Activity) context)::finish, 5000);
        }
+    }
+
+    private static final String CHANNEL_ID = "12345";
+    private static final int MY_NOTIFICATION_ID = 12345;
+    private static final int MY_REQUEST_CODE = 100;
+
+    private static void createNotification(Context context){
+        notBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_access_alarms_24dp)
+                .setContentTitle(context.getString(R.string.new_order))
+                .setContentText(context.getString(R.string.receive_order))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        notBuilder.setSound(alarmSound);
+    }
+
+    private static void sendNotification(Context context){
+        Intent intent = new Intent(context, RestaurantManagePartnerActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, MY_REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        notBuilder.setContentIntent(pendingIntent);
+        NotificationManager notificationService  =
+                (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notification =  notBuilder.build();
+        notificationService.notify(MY_NOTIFICATION_ID, notification);
     }
 }

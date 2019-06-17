@@ -243,4 +243,6 @@
     <string name="please_wait">Vui lòng đợi trong giây lát…</string>
     <string name="mess_press">Nhấn để chuyển trạng thái của đơn hàng</string>
     <string name="send_code_again">Gửi lại mã code</string>
+    <string name="new_order">Đơn hàng mới</string>
+    <string name="receive_order">Cửa hàng của bạn nhận được đơn hàng mới!</string>
 </resources>

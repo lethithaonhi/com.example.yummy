@@ -42,8 +42,8 @@ public class ManageAccountAdminActivity extends AppCompatActivity {
         LinearLayout btnAdd = findViewById(R.id.btn_add);
         btnAdd.setOnClickListener(v->startActivity(new Intent(this,AddAccountManageAdminActivity.class)));
         vAdmin.setOnClickListener(v->showViewAccount(1));
-        vPartner.setOnClickListener(v->showViewAccount(2));
-        vCus.setOnClickListener(v->showViewAccount(3));
+        vPartner.setOnClickListener(v->showViewAccount(3));
+        vCus.setOnClickListener(v->showViewAccount(2));
         ImageView imClose = findViewById(R.id.im_close);
         imClose.setOnClickListener(v->finish());
     }
@@ -54,6 +54,7 @@ public class ManageAccountAdminActivity extends AppCompatActivity {
         dialog.setTitle("");
         dialog.show();
 
+        getAccountFromType(type);
         ImageView imBack = dialog.findViewById(R.id.im_back);
         imBack.setOnClickListener(v->finish());
         imBack.setOnClickListener(v->dialog.dismiss());
@@ -72,7 +73,6 @@ public class ManageAccountAdminActivity extends AppCompatActivity {
             tvType.setText(R.string.customer);
         }
 
-        getAccountFromType(type);
         AccountAdminAdapter accountAdminAdapter = new AccountAdminAdapter(this, data);
         rcvAccount.setAdapter(accountAdminAdapter);
     }

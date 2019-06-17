@@ -1,7 +1,6 @@
 package com.example.yummy.Activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,7 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
-@SuppressLint("Registered")
 public class OrderCustomActivity extends AppCompatActivity {
     private Restaurant restaurant;
     private HashMap<Menu, Integer> menuList = new HashMap<>();

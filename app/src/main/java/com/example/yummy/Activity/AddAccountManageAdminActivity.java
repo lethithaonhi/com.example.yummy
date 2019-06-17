@@ -160,7 +160,7 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
             String phone = edPhone.getText().toString().trim();
             if(!hasFocus) {
                 vTitle.setVisibility(View.VISIBLE);
-                if (phone.length() > 0 && phone.length() < 11 && phone.charAt(0) == '0') {
+                if (phone.length() > 0 && phone.length() < 13) {
                     imError.setImageResource(R.drawable.ic_check_circle_24dp);
                     isPhone = true;
                 } else {
@@ -230,7 +230,7 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
         String stk = edSTK.getText().toString().trim();
         String cmnd = edCMND.getText().toString().trim();
 
-        if (phone.length() > 0 && phone.length() < 11 && phone.charAt(0) == '0') {
+        if (phone.length() > 0 && phone.length() < 13) {
             imError.setImageResource(R.drawable.ic_check_circle_24dp);
             isPhone = true;
         } else {
@@ -267,7 +267,7 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }else {
-                UtilsBottomBar.showSuccessView(this, getString(R.string.success), false);
+                UtilsBottomBar.showSuccessView(this, getString(R.string.success), true);
             }
         } else {
             Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();

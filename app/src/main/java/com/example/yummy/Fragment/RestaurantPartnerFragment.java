@@ -41,6 +41,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import okhttp3.internal.Util;
+
 import static android.app.Activity.RESULT_OK;
 
 public class RestaurantPartnerFragment extends Fragment {
@@ -66,7 +68,6 @@ public class RestaurantPartnerFragment extends Fragment {
         LinearLayout vBranch = v.findViewById(R.id.v_branch);
         LinearLayout vMenu = v.findViewById(R.id.v_menu);
         LinearLayout vImage = v.findViewById(R.id.v_image);
-
         vOrder.setOnClickListener(vl->{
             Intent intent = new Intent(getContext(), RestaurantManagePartnerActivity.class);
             intent.putExtra("type", 0);

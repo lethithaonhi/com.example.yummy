@@ -29,4 +29,5 @@ public class Common {
     public static List<Account> accountList;
     public static boolean isAdd;
     public static List<Order> orderListRes;
+    public static List<Order> orderListPartner;
 }

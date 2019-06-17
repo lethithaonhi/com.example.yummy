@@ -3,12 +3,17 @@ package com.example.yummy.Activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +21,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -73,9 +79,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import javax.net.ssl.HttpsURLConnection;
@@ -94,7 +98,6 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
     private Branch branch;
     private BranchAdapter branchAdapter;
     private HistoryOrderAdapter historyMenuAdapter;
-    private List<Order> dataList;
     private LinearLayout vEmpty;
 
     @Override
@@ -103,7 +106,6 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
         setContentView(R.layout.activity_restaurant_manage);
 
         type = getIntent().getIntExtra("type", 0);
-        dataList = new ArrayList<>();
         initView();
     }
 
@@ -129,17 +131,21 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
         String name;
         if (type == 0) {
             name = getResources().getString(R.string.order);
-
-            dataList = getOrder();
+            if(Common.orderListPartner.size() > 0){
+                sortData();
+            }else {
+                UtilsBottomBar.getOrderPartner(this);
+            }
 
             imAdd.setVisibility(View.GONE);
-            historyMenuAdapter = new HistoryOrderAdapter(this,  dataList, true);
+            historyMenuAdapter = new HistoryOrderAdapter(this,  Common.orderListPartner, true);
             rcv.setAdapter(historyMenuAdapter);
-            if(dataList.size() == 0){
+            if(Common.orderListPartner.size() == 0){
                 vEmpty.setVisibility(View.VISIBLE);
             }else {
                 vEmpty.setVisibility(View.GONE);
             }
+
         } else if (type == 1) {
             vBranch.setVisibility(View.VISIBLE);
             btnEdit.setVisibility(View.VISIBLE);
@@ -196,67 +202,11 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
         });
     }
 
-    private List<Order> getOrder(){
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child(Node.Order).child(Common.accountCurrent.getPartner().getBoss()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataList.size() > 0)
-                    dataList.clear();
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    Order order = dataSnapshot1.getValue(Order.class);
-                    if (order != null) {
-                        order.setId(dataSnapshot1.getKey());
-                        HashMap<Menu, Integer> menuList = new HashMap<>();
-                        mDatabase.child(Node.Order_Menu).child(Common.accountCurrent.getPartner().getBoss()).child(order.getId()).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataRoot) {
-                                for (DataSnapshot dataSnapshot2 : dataRoot.getChildren()) {
-                                    Menu menu = dataSnapshot2.getValue(Menu.class);
-                                    if (menu != null && dataSnapshot2.getKey()!= null) {
-                                        mDatabase.child(Node.Order_Menu).child(Common.accountCurrent.getPartner().getBoss()).child(order.getId()).child(dataSnapshot2.getKey()).child(Node.count).addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                int count = dataSnapshot.getValue(Integer.class);
-                                                menuList.put(menu, count);
-                                                order.setMenuList(menuList);
-                                                if (menuList.size() == dataRoot.getChildrenCount() && !dataList.contains(order)) {
-                                                    dataList.add(order);
-                                                    historyMenuAdapter.notifyDataSetChanged();
-                                                    vEmpty.setVisibility(View.GONE);
-                                                    sortData();
-                                                }
-                                            }
 
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                            }
-                                        });
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        return  dataList;
-    }
 
     private void sortData(){
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        Collections.sort(dataList, (obj1, obj2) -> {
+        Collections.sort(Common.orderListPartner, (obj1, obj2) -> {
             try {
                 return dateFormat.parse(obj1.getDate()).compareTo(dateFormat.parse(obj2.getDate()));
             } catch (ParseException e) {
@@ -265,7 +215,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
             return -1;
         });
 
-        Collections.reverse(dataList);
+        Collections.reverse(Common.orderListPartner);
     }
 
     private void setDiscounts() {
