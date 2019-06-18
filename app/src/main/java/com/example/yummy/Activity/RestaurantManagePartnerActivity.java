@@ -162,9 +162,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
             if(Common.restaurantPartner != null && Common.restaurantPartner.getImgList() != null && !Common.restaurantPartner.getImgList().get(0).isEmpty())
                 Picasso.get().load(Common.restaurantPartner.getImgList().get(0)).into(imRoot);
 
-            btnEdit.setOnClickListener(v->{
-                showDialogEdit(Common.restaurantPartner);
-            });
+            btnEdit.setOnClickListener(v-> showDialogEdit(Common.restaurantPartner));
         } else {
             name = getResources().getString(R.string.menu);
             rcv.setItemAnimator(new FadeInLeftAnimator());
@@ -280,13 +278,17 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
 
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                 String key = nodeRoot.child(Node.ThucDonQuanAn).child(Common.restaurantPartner.getRes_id()).child(menu.getType()).push().getKey();
-                nodeRoot.child(Node.ThucDonQuanAn).child(Common.restaurantPartner.getRes_id()).child(menu.getType()).child(key).setValue(menu);
-                nodeRoot.child(Node.ThucDonQuanAn).child(Common.restaurantPartner.getRes_id()).child(menu.getType()).child(key).child("type").removeValue();
-                menu.setMenu_id(key);
-                Common.restaurantPartner.getMenuList().add(menu);
-                Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
-                adapter.notifyDataSetChanged();
-                dialog.dismiss();
+                if(key != null ) {
+                    nodeRoot.child(Node.ThucDonQuanAn).child(Common.restaurantPartner.getRes_id()).child(menu.getType()).child(key).setValue(menu);
+                    nodeRoot.child(Node.ThucDonQuanAn).child(Common.restaurantPartner.getRes_id()).child(menu.getType()).child(key).child("type").removeValue();
+                    menu.setMenu_id(key);
+                    Common.restaurantPartner.getMenuList().add(menu);
+                    Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
+                    adapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                }else {
+                    Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
             }
@@ -380,6 +382,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
                 }));
     }
 
+    @SuppressLint("SetTextI18n")
     private void showEditDiscount() {
         Dialog dialog = new Dialog(this);
         dialog.setTitle("");
@@ -470,15 +473,18 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
 
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                 String key = nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).push().getKey();
-                nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).child(key).setValue(branch);
-                nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).child(key).child("distance").removeValue();
-                nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).child(key).child("id_db").removeValue();
-                branch.setId(key);
-                Common.restaurantPartner.getBranchList().add(branch);
-                Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
-                branchAdapter.notifyDataSetChanged();
-                dialog.dismiss();
-
+                if(key != null) {
+                    nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).child(key).setValue(branch);
+                    nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).child(key).child("distance").removeValue();
+                    nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).child(key).child("id_db").removeValue();
+                    branch.setId(key);
+                    Common.restaurantPartner.getBranchList().add(branch);
+                    Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
+                    branchAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                }else {
+                    Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
             }
@@ -663,7 +669,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
         }else {
             edFeeShip.setVisibility(View.VISIBLE);
             rdNo.setChecked(true);
-            edFeeShip.setText(restaurant.getFreeship()+"");
+            edFeeShip.setText(String.valueOf(restaurant.getFreeship()));
         }
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rdb_no) {
@@ -735,7 +741,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
     }
 
     private void openTimeDialog(TextView txtTime, int hour, int minute) {
-        TimePickerDialog.OnTimeSetListener myTimeListener = (view, hourOfDay, minute1) -> {
+        @SuppressLint("SetTextI18n") TimePickerDialog.OnTimeSetListener myTimeListener = (view, hourOfDay, minute1) -> {
             if (view.isShown()) {
                 myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 myCalender.set(Calendar.MINUTE, minute1);

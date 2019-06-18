@@ -20,8 +20,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.yummy.Activity.InfoUserActivity;
 import com.example.yummy.Adapter.AddressAdapter;
 import com.example.yummy.Model.Account;
 import com.example.yummy.Model.Partner;
@@ -74,7 +72,7 @@ public class InfoPartnerFragment extends Fragment {
             edSTK.setText(Common.accountCurrent.getPartner().getStk());
             vPartner.setVisibility(View.VISIBLE);
         }
-        TextView btnSave = v.findViewById(R.id.tv_save);
+        Button btnSave = v.findViewById(R.id.btn_save);
         btnSave.setVisibility(View.VISIBLE);
 
         RadioGroup radioGroup = v.findViewById(R.id.radioGrp);

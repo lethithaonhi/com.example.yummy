@@ -58,6 +58,7 @@ public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRe
         return v;
     }
 
+    @SuppressLint("SetTextI18n")
     private void initView(View v){
         viewDelivery = v.findViewById(R.id.view_delivery);
         LinearLayout vDiscount = v.findViewById(R.id.view_discount);
@@ -99,7 +100,7 @@ public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRe
             adapter.setOnCountChangeListener(this);
         }
 
-        if(restaurant.getDiscounts() == null || restaurant.getDiscounts().getDiscount() <=0 ){
+        if(restaurant != null && (restaurant.getDiscounts() == null || restaurant.getDiscounts().getDiscount() <=0 )){
             vDiscount.setVisibility(View.GONE);
         }
         TextView tvDiscount = v.findViewById(R.id.tv_discount);
@@ -110,8 +111,10 @@ public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRe
         }
 
         String freeship = "";
-        if(restaurant.getFreeship() == 0)
+        if(restaurant.getFreeship() == 0) {
             freeship = getString(R.string.freeship_noti);
+            restaurant.setFreeship(5000);
+        }
         freeship =  freeship + getString(R.string.verify)+UtilsBottomBar.convertStringToMoney(restaurant.getFreeship()) +"/Km";
         TextView tvFreeship = v.findViewById(R.id.tv_freeship);
         tvFreeship.setText(freeship);

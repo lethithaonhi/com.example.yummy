@@ -1,5 +1,6 @@
 package com.example.yummy.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ public class HomePartnerActivity extends AppCompatActivity {
         initView();
     }
 
+    @SuppressLint("SetTextI18n")
     private void initView() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         if (getSupportActionBar() != null) {

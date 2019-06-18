@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="12dp"
             android:layout_marginLeft="16dp"
             android:src="@drawable/logoutpart"
             android:layout_width="32dp"
