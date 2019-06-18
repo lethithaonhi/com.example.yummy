@@ -137,6 +137,7 @@
             android:layout_height="wrap_content">
 
             <RadioButton
+                android:checked="true"
                 android:id="@+id/rdb_no"
                 android:textSize="14sp"
                 android:text="@string/yes"

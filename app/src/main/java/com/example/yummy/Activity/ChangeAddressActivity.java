@@ -109,7 +109,7 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
             try {
                 address = edtSearch.getText().toString().trim();
                 address = address.replaceAll("\\s", "+");
-                response = getLatLongByURL("https://maps.google.com/maps/api/geocode/json?address="+address+"&sensor=false&key="+getResources().getString(R.string.Your_API_KEY));
+                response = getLatLongByURL("https://maps.google.com/maps/api/geocode/json?address="+address+"&sensor=false&key="+getResources().getString(R.string.api_key_map));
                 return new String[]{response};
             } catch (Exception e) {
                 return new String[]{"error"};

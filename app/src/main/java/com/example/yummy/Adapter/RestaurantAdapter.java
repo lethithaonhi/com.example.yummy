@@ -87,65 +87,67 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         Restaurant restaurant = dataFilter.get(i);
         
         branch = getBranch(restaurant);
-        holder.tvName.setText(restaurant.getName());
-        holder.tvMark.setText(restaurant.getMark()+"");
-        holder.tvDistance.setText(new DecimalFormat("##.##").format(min/1000)+" km");
-        holder.tvAddress.setText(branch.getAddress());
-        if(!branch.getAvatar().isEmpty())
-            Picasso.get().load(branch.getAvatar()).into(holder.imRes);
-        if(restaurant.getFreeship() == 0){
-            holder.viewFreeship.setVisibility(View.VISIBLE);
-        }
-
-        if(restaurant.getDiscounts()!= null && restaurant.getDiscounts().getDiscount() != 0){
-            holder.viewDiscount.setVisibility(View.VISIBLE);
-            holder.tvDiscount.setText(restaurant.getDiscounts().getDiscount() + "%");
-        }
-        holder.viewRoot.setOnClickListener(v->{
-            Intent intent = new Intent(context, RestaurantDetailActivity.class);
-            intent.putExtra("restaurant", restaurant);
-            branch = getBranch(restaurant);
-            intent.putExtra("branch", branch);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-        });
-
-        if(restaurant.getIsClose() == 0) {
-            holder.btnClose.setBackgroundColor(context.getResources().getColor(R.color.red));
-            holder.imDelete.setImageResource(R.drawable.ic_lock);
-        }else {
-            holder.btnClose.setBackgroundColor(context.getResources().getColor(R.color.green));
-            holder.imDelete.setImageResource(R.drawable.unlock);
-        }
-
-        if(type == 0){
-            if(restaurant.getIsClose() == 0){
-                holder.imClose.setVisibility(View.GONE);
-            }else {
-                holder.imClose.setVisibility(View.VISIBLE);
+        if(branch != null) {
+            holder.tvName.setText(restaurant.getName());
+            holder.tvMark.setText(restaurant.getMark() + "");
+            holder.tvDistance.setText(new DecimalFormat("##.##").format(min / 1000) + " km");
+            holder.tvAddress.setText(branch.getAddress());
+            if (!branch.getAvatar().isEmpty())
+                Picasso.get().load(branch.getAvatar()).into(holder.imRes);
+            if (restaurant.getFreeship() == 0) {
+                holder.viewFreeship.setVisibility(View.VISIBLE);
             }
-        }
 
-        if(type == 0) {
-            holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
-            holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
-                @Override
-                public void onOpen(SwipeLayout layout) {
-                    YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
-                }
+            if (restaurant.getDiscounts() != null && restaurant.getDiscounts().getDiscount() != 0) {
+                holder.viewDiscount.setVisibility(View.VISIBLE);
+                holder.tvDiscount.setText(restaurant.getDiscounts().getDiscount() + "%");
+            }
+            holder.viewRoot.setOnClickListener(v -> {
+                Intent intent = new Intent(context, RestaurantDetailActivity.class);
+                intent.putExtra("restaurant", restaurant);
+                branch = getBranch(restaurant);
+                intent.putExtra("branch", branch);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             });
-        }
 
-        holder.btnClose.setOnClickListener(v->showDialogClose(restaurant));
-        holder.btnEdit.setOnClickListener(v->showDialogEdit(restaurant));
+            if (restaurant.getIsClose() == 0) {
+                holder.btnClose.setBackgroundColor(context.getResources().getColor(R.color.red));
+                holder.imDelete.setImageResource(R.drawable.ic_lock);
+            } else {
+                holder.btnClose.setBackgroundColor(context.getResources().getColor(R.color.green));
+                holder.imDelete.setImageResource(R.drawable.unlock);
+            }
 
-        Time today = new Time(Time.getCurrentTimezone());
-        today.setToNow();
+            if (type == 0) {
+                if (restaurant.getIsClose() == 0) {
+                    holder.imClose.setVisibility(View.GONE);
+                } else {
+                    holder.imClose.setVisibility(View.VISIBLE);
+                }
+            }
 
-        if(!checkTimeCloses(restaurant.getOpen_time(),today.format("%k:%M"),  restaurant.getClose_open())){
-            holder.tvClosed.setVisibility(View.VISIBLE);
-        }else {
-            holder.tvClosed.setVisibility(View.GONE);
+            if (type == 0) {
+                holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+                holder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
+                    @Override
+                    public void onOpen(SwipeLayout layout) {
+                        YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.trash));
+                    }
+                });
+            }
+
+            holder.btnClose.setOnClickListener(v -> showDialogClose(restaurant));
+            holder.btnEdit.setOnClickListener(v -> showDialogEdit(restaurant));
+
+            Time today = new Time(Time.getCurrentTimezone());
+            today.setToNow();
+
+            if (!checkTimeCloses(restaurant.getOpen_time(), today.format("%k:%M"), restaurant.getClose_open())) {
+                holder.tvClosed.setVisibility(View.VISIBLE);
+            } else {
+                holder.tvClosed.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -155,15 +157,18 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     }
 
     private Branch getBranch(Restaurant restaurant){
-        branch = restaurant.getBranchList().get(0);
-        min = branch.getDistance();
-        for(Branch branchNew : restaurant.getBranchList()){
-            if(min > branchNew.getDistance()){
-                min = branchNew.getDistance();
-                branch = branchNew;
+        if(restaurant.getBranchList() != null && restaurant.getBranchList().size() > 0) {
+            branch = restaurant.getBranchList().get(0);
+            min = branch.getDistance();
+            for (Branch branchNew : restaurant.getBranchList()) {
+                if (min > branchNew.getDistance()) {
+                    min = branchNew.getDistance();
+                    branch = branchNew;
+                }
             }
+            return branch;
         }
-        return branch;
+        return null;
     }
 
     @Override

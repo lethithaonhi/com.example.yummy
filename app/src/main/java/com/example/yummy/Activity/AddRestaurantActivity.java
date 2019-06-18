@@ -109,7 +109,7 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
                 restaurant.setMenuIdList(checkList);
                 DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
                 String key = mData.child(Node.QuanAn).push().getKey();
-                mData.child(Node.QuanAn).push().setValue(restaurant);
+                mData.child(Node.QuanAn).child(key).setValue(restaurant);
                 if(userId != null){
                     mData.child(Node.Partner).child(userId).child(Node.Boss).setValue(key);
                 }
@@ -165,65 +165,4 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
         this.checkList = checkList;
     }
 
-//    public class AddResMenuAdapter extends RecyclerView.Adapter<AddResMenuAdapter.AddResMenuHolder> {
-//        private Map<String, String> data;
-//        private List<String> menuList;
-//
-//        AddResMenuAdapter() {
-//            this.data = Common.menuList.get(0);
-//            menuList = new ArrayList<>(data.values());
-//        }
-//
-//        @NonNull
-//        @Override
-//        public AddResMenuHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-//            LayoutInflater inflater = LayoutInflater.from(AddRestaurantActivity.this);
-//            View view = inflater.inflate(R.layout.item_city, viewGroup, false);
-//            return new AddResMenuHolder(view);
-//        }
-//
-//        @Override
-//        public void onBindViewHolder(@NonNull AddResMenuHolder holder, int pos) {
-//            String name = menuList.get(pos);
-//            holder.tvName.setText(name);
-//
-//            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-//                String key = getKey(name);
-//                if(isChecked){
-//                    checkList.add(key);
-//                }else {
-//                    checkList.remove(key);
-//                }
-//            });
-//        }
-//
-//        @Override
-//        public int getItemCount() {
-//            return menuList != null ? menuList.size() : 0;
-//        }
-//
-//        class AddResMenuHolder extends RecyclerView.ViewHolder {
-//            CheckBox checkBox;
-//            TextView tvName, tvCount;
-//
-//            AddResMenuHolder(@NonNull View itemView) {
-//                super(itemView);
-//
-//                checkBox = itemView.findViewById(R.id.checkbox_city);
-//                tvName = itemView.findViewById(R.id.tv_nameCity);
-//                tvCount = itemView.findViewById(R.id.tv_countCity);
-//                tvCount.setVisibility(View.GONE);
-//            }
-//        }
-//
-//        private String getKey(String menu) {
-//            for (Map.Entry<String,String> entry : data.entrySet()) {
-//                if (entry.getValue().contains(menu)) {
-//                    return entry.getKey();
-//                }
-//            }
-//            return "";
-//        }
-//
-//    }
 }

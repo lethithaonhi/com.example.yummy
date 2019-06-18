@@ -3,25 +3,18 @@ package com.example.yummy.Activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -48,17 +41,13 @@ import com.example.yummy.Model.Addresses;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Discounts;
 import com.example.yummy.Model.Menu;
-import com.example.yummy.Model.Order;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
 import com.example.yummy.Utils.UtilsBottomBar;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -475,24 +464,23 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
 
         btnAdd.setOnClickListener(v -> {
             address = edAddress.getText().toString().trim();
-            if(!address.isEmpty() && location != null && location.getLatitude() != 0 && location.getLongitude() != 0 && !branch.getAvatar().isEmpty()){
+            if (!address.isEmpty() && branch.getAvatar() != null && !branch.getAvatar().isEmpty() && location != null && location.getLatitude() != 0 && location.getLongitude() != 0) {
                 branch.setAddress(address);
                 branch.setLatitude(location.getLatitude());
                 branch.setLongitude(location.getLongitude());
 
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                 String key = nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).push().getKey();
-                if(key != null) {
-                    nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).push().setValue(menu);
-                    branch.setId(key);
-                    Common.restaurantPartner.getBranchList().add(branch);
-                    Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
-                    branchAdapter.notifyDataSetChanged();
-                    dialog.dismiss();
-                }else {
-                    Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
-                }
-            }else {
+                nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).child(key).setValue(branch);
+                nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).child(key).child(Node.isDelete).removeValue();
+                nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).child(key).child("id_db").removeValue();
+                branch.setId(key);
+                Common.restaurantPartner.getBranchList().add(branch);
+                Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
+                branchAdapter.notifyDataSetChanged();
+                dialog.dismiss();
+
+            } else {
                 Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
             }
         });
@@ -517,7 +505,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
             String response;
             try {
                 address = address.replaceAll("\\s", "+");
-                response = getLatLongByURL("https://maps.google.com/maps/api/geocode/json?address=" + address + "&sensor=false&key=" + getResources().getString(R.string.Your_API_KEY));
+                response = getLatLongByURL("https://maps.google.com/maps/api/geocode/json?address=" + address + "&sensor=false&key=" + getResources().getString(R.string.api_key_map));
                 return new String[]{response};
             } catch (Exception e) {
                 return new String[]{"error"};
