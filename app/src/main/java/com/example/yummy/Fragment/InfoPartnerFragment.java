@@ -35,7 +35,7 @@ import java.util.Objects;
 public class InfoPartnerFragment extends Fragment {
     private int gender;
     private TextView tvBirth;
-    private boolean isPhone = false;
+    private boolean isPhone = true;
 
     public static InfoPartnerFragment newInstance() {
         Bundle args = new Bundle();
@@ -145,7 +145,9 @@ public class InfoPartnerFragment extends Fragment {
                 isPhone = false;
             }
 
-            if(name.isEmpty()|| email.isEmpty() || phone.isEmpty() || date.isEmpty() || bank.isEmpty() || stk.isEmpty() || !isPhone){
+            if(name.isEmpty()|| email.isEmpty() || phone.isEmpty() || date.isEmpty() || !isPhone){
+                Toast.makeText(getContext(), R.string.empty_user, Toast.LENGTH_SHORT).show();
+            }else if(Common.accountCurrent.getRole() == 3 && (bank.isEmpty() || stk.isEmpty())) {
                 Toast.makeText(getContext(), R.string.empty_user, Toast.LENGTH_SHORT).show();
             }else{
                 Account account = new Account();
@@ -160,15 +162,17 @@ public class InfoPartnerFragment extends Fragment {
                 account.setDatebirth(date);
                 account.setGender(gender);
 
-                Partner partner = new Partner();
-                partner.setCmnd(Common.accountCurrent.getPartner().getCmnd());
-                partner.setBoss(Common.accountCurrent.getPartner().getBoss());
-                partner.setStk(stk);
-                partner.setBank(bank);
-
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
+
+                if(Common.accountCurrent.getRole() == 3) {
+                    Partner partner = new Partner();
+                    partner.setCmnd(Common.accountCurrent.getPartner().getCmnd());
+                    partner.setBoss(Common.accountCurrent.getPartner().getBoss());
+                    partner.setStk(stk);
+                    partner.setBank(bank);
+                    nodeRoot.child(Node.Partner).child(Common.accountCurrent.getUserId()).setValue(partner);
+                }
                 nodeRoot.child(Node.user).child(Common.accountCurrent.getUserId()).setValue(account);
-                nodeRoot.child(Node.Partner).child(Common.accountCurrent.getUserId()).setValue(partner);
                 Common.accountCurrent = account;
                 UtilsBottomBar.showSuccessView(getContext(), getString(R.string.success), false);
             }

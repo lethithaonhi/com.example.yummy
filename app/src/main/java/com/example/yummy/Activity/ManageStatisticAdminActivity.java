@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.Time;
+import android.util.MonthDisplayHelper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,8 +23,11 @@ import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.UtilsBottomBar;
+
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,6 +42,7 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
     private ArrayList<Integer> dataCurrentList, dataCurrentListMonth;
     private ArrayList<String> dataBottomList, dataBottomListMonth;
     private int countOpenRes, countCloseRes, openAc, closeAc, openBlog, closeBlog;
+    private Spinner spMonth;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +61,7 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
         Spinner spYear = findViewById(R.id.sp_year);
         Spinner spResMont = findViewById(R.id.sp_res_1);
         Spinner spYearMonth = findViewById(R.id.sp_year_1);
-        Spinner spMonth = findViewById(R.id.sp_month);
+        spMonth = findViewById(R.id.sp_month);
         Button btnShowYearMonth = findViewById(R.id.show_year_1);
         Button btnShowYear = findViewById(R.id.show_year);
         Time today = new Time(Time.getCurrentTimezone());
@@ -129,6 +134,11 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
                         initLineView(lvOrder, dataCurrentList, dataBottomList);
                     }else {
                         Toast.makeText(this, R.string.empty_list, Toast.LENGTH_SHORT).show();
+                        spResYear.setSelection(0);
+                        spYear.setSelection(yearSPList.size() - 1);
+                        dataCurrentList = getOrderListInYear(Common.orderListAll, today.year, today.month+1);
+                        dataBottomList = getBottomTextInYear(today.year, today.month, today.month+1, true);
+                        initLineView(lvOrder, dataCurrentList, dataBottomList);
                     }
                 }else {
                     Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
@@ -163,10 +173,7 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
         spYearMonth.setSelection(yearSPList.size() - 1);
 
         monthList = getBottomSPMonth(1, today.month+1);
-        ArrayAdapter adtMonth = new ArrayAdapter(this, android.R.layout.simple_spinner_item, monthList);
-        adtMonth.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-        spMonth.setAdapter(adtMonth);
-        spMonth.setSelection(monthList.size() - 1);
+        setSPMonthAdapter();
 
         spResMont.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -190,13 +197,14 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
         spYearMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                yearMonth = Integer.parseInt(yearSPList.get(pos));
+
                 if(yearMonth == today.year){
                     monthList = getBottomSPMonth(1, today.month + 1);
                 }else {
                     monthList = getBottomSPMonth(1, 12);
                 }
-                adtMonth.notifyDataSetChanged();
-                yearMonth = Integer.parseInt(yearSPList.get(pos));
+                setSPMonthAdapter();
             }
 
             @Override
@@ -257,6 +265,13 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
         tvDetailBlog.setOnClickListener(v-> startActivity(new Intent(this, ManageBlogAdminActivity.class)));
     }
 
+    private void setSPMonthAdapter(){
+        ArrayAdapter adtMonth = new ArrayAdapter(this, android.R.layout.simple_spinner_item, monthList);
+        adtMonth.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+        spMonth.setAdapter(adtMonth);
+        spMonth.setSelection(monthList.size() - 1);
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onResume() {
@@ -288,10 +303,8 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
     }
 
     private int getDaysInMonth(int year, int month){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        return calendar.getActualMaximum(Calendar.DATE);
+        MonthDisplayHelper monthDisplayHelper = new MonthDisplayHelper(year,month - 1);
+        return monthDisplayHelper.getNumberOfDaysInMonth();
     }
 
     private List<String> getBottomSPMonth(int begin, int end){

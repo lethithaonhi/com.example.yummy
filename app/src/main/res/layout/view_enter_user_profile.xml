@@ -64,12 +64,14 @@
                 android:layout_height="wrap_content" />
 
             <EditText
+                android:paddingLeft="8dp"
+                android:background="@drawable/bg_ed_register"
                 android:maxLines="1"
                 android:layout_weight="0.7"
                 android:textSize="14sp"
                 android:id="@+id/ed_nameinfo"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="40dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -101,11 +103,13 @@
                     android:layout_height="wrap_content" />
 
                 <EditText
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/bg_ed_register"
                     android:layout_weight="0.7"
                     android:textSize="14sp"
                     android:id="@+id/ed_email"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="40dp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -236,11 +240,13 @@
                     android:layout_height="wrap_content" />
 
                 <EditText
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/bg_ed_register"
                     android:layout_weight="0.7"
                     android:textSize="14sp"
                     android:id="@+id/ed_cmnd"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="40dp" />
             </LinearLayout>
 
             <TextView
@@ -264,6 +270,8 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="0.3"
                     android:text="@string/stk"
                     android:textSize="14sp"
@@ -271,14 +279,17 @@
                     android:layout_height="wrap_content" />
 
                 <EditText
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/bg_ed_register"
                     android:layout_weight="0.7"
                     android:textSize="14sp"
                     android:id="@+id/ed_accountnum"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="40dp" />
             </LinearLayout>
 
             <LinearLayout
+                android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:weightSum="1"
@@ -293,11 +304,13 @@
                     android:layout_height="wrap_content" />
 
                 <EditText
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/bg_ed_register"
                     android:layout_weight="0.7"
                     android:textSize="14sp"
                     android:id="@+id/ed_bank"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="40dp" />
             </LinearLayout>
 
     </LinearLayout>
@@ -334,6 +347,7 @@
             android:layout_height="wrap_content">
 
             <EditText
+                android:paddingLeft="8dp"
                 android:maxLines="1"
                 android:background="@drawable/bg_ed_register"
                 android:fontFamily="sans-serif"
