@@ -87,7 +87,7 @@ public class InfoRestaurantDetailFragment extends Fragment implements OnMapReady
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rcvBranch.setLayoutManager(layoutManager);
 
-        BranchAdapter adapter = new BranchAdapter(getContext(), restaurant.getBranchList(), false);
+        BranchAdapter adapter = new BranchAdapter(getContext(), restaurant.getBranchList(), false, restaurant);
         rcvBranch.setAdapter(adapter);
 
         ImageView btnHide = v.findViewById(R.id.btn_hide);

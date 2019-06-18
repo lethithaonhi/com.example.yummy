@@ -569,4 +569,13 @@ public class UtilsBottomBar {
         Notification notification =  notBuilder.build();
         notificationService.notify(MY_NOTIFICATION_ID, notification);
     }
+
+    public static String getRestaurantName(String resID){
+        for(Restaurant restaurant : Common.restaurantListAll){
+            if(restaurant.getRes_id().equals(resID)){
+                return restaurant.getName();
+            }
+        }
+        return "";
+    }
 }

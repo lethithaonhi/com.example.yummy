@@ -213,6 +213,7 @@
             android:orientation="horizontal">
 
             <RadioButton
+                android:textColor="@color/black"
                 android:id="@+id/radio_male"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -223,6 +224,7 @@
                 android:textSize="14sp" />
 
             <RadioButton
+                android:textColor="@color/black"
                 android:id="@+id/radio_female"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -233,6 +235,7 @@
                 android:textSize="14sp" />
 
             <RadioButton
+                android:textColor="@color/black"
                 android:id="@+id/radio_none"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -412,7 +415,7 @@
 
         <Button
             android:layout_marginBottom="24dp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_marginTop="24dp"
             android:layout_gravity="center"
             android:id="@+id/btn_save"

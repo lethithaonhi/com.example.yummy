@@ -19,9 +19,9 @@
         <pl.bclogic.pulsator4droid.library.PulsatorLayout
             android:id="@+id/pulsator"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="120dp"
             android:gravity="center"
-            android:layout_gravity="top"
+            android:layout_gravity="center"
             app:pulse_count="3"
             app:pulse_duration="5000"
             app:pulse_repeat="0"
@@ -30,40 +30,39 @@
             app:pulse_interpolator="Decelerate">
 
             <ImageView
+                android:paddingTop="16dp"
                 android:id="@+id/btn_change"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
                 android:src="@drawable/press_btn" />
-
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_below="@+id/btn_change"
-                android:text="@string/mess_press"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
         </pl.bclogic.pulsator4droid.library.PulsatorLayout>
 
         <LinearLayout
             android:id="@+id/btn_cancel"
             android:layout_marginBottom="16dp"
-            android:layout_marginTop="12dp"
             android:layout_gravity="center"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:textColor="@color/black"
+                android:text="@string/mess_press"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
             <ImageView
+                android:layout_marginTop="32dp"
                 android:src="@drawable/ic_cancel"
-                android:layout_marginTop="8dp"
                 android:layout_gravity="center"
                 android:layout_width="32dp"
                 android:layout_height="32dp" />
 
             <TextView
+                android:layout_gravity="center"
                 android:layout_marginTop="4dp"
                 android:text="@string/cancel"
                 android:textColor="@color/red"
@@ -213,6 +212,21 @@
                     <TextView
                         android:textColor="@color/black"
                         android:id="@+id/tv_orderid"
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/black"
+                        android:id="@+id/tv_address_res"
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_marginTop="8dp"
+                        android:id="@+id/tv_describe"
                         android:textSize="14sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />

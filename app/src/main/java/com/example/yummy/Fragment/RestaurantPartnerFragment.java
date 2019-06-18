@@ -122,7 +122,7 @@ public class RestaurantPartnerFragment extends Fragment {
             RecyclerView rcvImRes = dialog.findViewById(R.id.rcv_image_res);
             rcvImRes.setLayoutManager(new GridLayoutManager(getContext(), 3));
             if(Common.restaurantPartner.getImgList() != null) {
-                tvCountImg.setText(Common.restaurantPartner.getImgList().size() + " images");
+                tvCountImg.setText(Common.restaurantPartner.getImgList().size()+" " + getContext().getString(R.string.image));
                 adapter = new ImgRestaurantDetailAdapter(getContext(), Common.restaurantPartner.getImgList(), Common.restaurantPartner, 1);
                 rcvImRes.setAdapter(adapter);
             }

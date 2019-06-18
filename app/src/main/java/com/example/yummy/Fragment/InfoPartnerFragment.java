@@ -74,7 +74,7 @@ public class InfoPartnerFragment extends Fragment {
             edSTK.setText(Common.accountCurrent.getPartner().getStk());
             vPartner.setVisibility(View.VISIBLE);
         }
-        Button btnSave = v.findViewById(R.id.btn_save);
+        TextView btnSave = v.findViewById(R.id.tv_save);
         btnSave.setVisibility(View.VISIBLE);
 
         RadioGroup radioGroup = v.findViewById(R.id.radioGrp);

@@ -19,7 +19,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="24dp"
             android:layout_gravity="center"
             android:textSize="20sp"
             android:textColor="@color/black"
@@ -33,7 +33,7 @@
             android:drawablePadding="8dp"
             android:drawableLeft="@drawable/ic_camera_alt_black_24dp"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:text="@string/take_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -42,9 +42,9 @@
             android:id="@+id/btn_choosePho"
             android:drawablePadding="8dp"
             android:drawableLeft="@drawable/ic_photo_library_black_24dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:text="@string/choose_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

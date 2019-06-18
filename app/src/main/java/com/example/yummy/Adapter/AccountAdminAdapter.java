@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -61,7 +62,7 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
         holder.tvName.setText(account.getName());
         holder.tvUserName.setText(account.getUsername());
         holder.tvPhone.setText(account.getPhone());
-        holder.tvPass.setText(account.getPhone() != null ? account.getPhone(): "Hide");
+        holder.tvPass.setText(account.getPhone() != null ? context.getString(R.string.pass) + ": "+account.getPassword(): "Hide");
         if(account.getAvatar() != null && !account.getAvatar().isEmpty())
             Picasso.get().load(account.getAvatar()).into(holder.imAvatar);
         holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
@@ -82,9 +83,7 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
             holder.imClose.setVisibility(View.VISIBLE);
         }
 
-        holder.btnEdit.setOnClickListener(v->{
-            showDialogEdit(account);
-        });
+        holder.btnEdit.setOnClickListener(v-> showDialogEdit(account));
 
         if(account.getGender() == 1){
             holder.imSex.setVisibility(View.VISIBLE);
@@ -95,6 +94,15 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
         }else {
             holder.imSex.setVisibility(View.GONE);
         }
+
+        if(account.getRole() == 3 && account.getPartner() != null){
+            holder.tvBoss.setText(context.getString(R.string.owner) + ": "+UtilsBottomBar.getRestaurantName(account.getPartner().getBoss()));
+            holder.tvBoss.setVisibility(View.VISIBLE);
+        }else {
+            holder.tvBoss.setVisibility(View.GONE);
+        }
+
+        holder.rootView.setOnClickListener(v-> showDialogEdit(account));
     }
 
     @Override
@@ -110,8 +118,9 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
     class AccountAdminHolder extends RecyclerView.ViewHolder {
         SwipeLayout swipeLayout;
         ImageView imAvatar, imDelete, imClose, imSex;
-        TextView tvName, tvUserName, tvPhone, tvPass;
+        TextView tvName, tvUserName, tvPhone, tvPass, tvBoss;
         LinearLayout btnClose, btnEdit;
+        FrameLayout rootView;
         AccountAdminHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -126,6 +135,8 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
             imClose = itemView.findViewById(R.id.im_close);
             imSex = itemView.findViewById(R.id.im_sex);
             btnEdit = itemView.findViewById(R.id.btn_edit);
+            tvBoss = itemView.findViewById(R.id.tv_boss);
+            rootView = itemView.findViewById(R.id.root_view);
         }
     }
 
@@ -165,6 +176,8 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
 
         TextView tvName = dialog.findViewById(R.id.tv_name);
         tvName.setText(account.getName());
+        TextView tvSave = dialog.findViewById(R.id.tv_save);
+        tvSave.setVisibility(View.VISIBLE);
         TextView tvUsername = dialog.findViewById(R.id.tv_username);
         tvUsername.setText(account.getUsername());
         EditText edName = dialog.findViewById(R.id.ed_nameinfo);
@@ -191,7 +204,7 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
 
         ImageView imError = dialog.findViewById(R.id.btn_error);
         Button btnSave = dialog.findViewById(R.id.btn_save);
-        btnSave.setVisibility(View.VISIBLE);
+        btnSave.setVisibility(View.GONE);
 
         RadioGroup radioGroup = dialog.findViewById(R.id.radioGrp);
         RadioButton radioMale = dialog.findViewById(R.id.radio_male);
@@ -246,7 +259,7 @@ public class AccountAdminAdapter  extends RecyclerSwipeAdapter<AccountAdminAdapt
 
         ImageView imClose = dialog.findViewById(R.id.im_close);
         imClose.setVisibility(View.GONE);
-        btnSave.setOnClickListener(vl->{
+        tvSave.setOnClickListener(vl->{
             String name = edName.getText().toString().trim();
             String email = edEmail.getText().toString().trim();
             String phone = edPhone.getText().toString().trim();

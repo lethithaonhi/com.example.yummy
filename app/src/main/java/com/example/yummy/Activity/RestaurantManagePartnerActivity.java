@@ -86,8 +86,6 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
     private Location location;
     private Branch branch;
     private BranchAdapter branchAdapter;
-    private HistoryOrderAdapter historyMenuAdapter;
-    private LinearLayout vEmpty;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,7 +104,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
         LinearLayout vBranch = findViewById(R.id.v_branch);
         imClose.setOnClickListener(v -> finish());
         ImageView imRoot = findViewById(R.id.im_root);
-        vEmpty = findViewById(R.id.v_empty);
+        LinearLayout vEmpty = findViewById(R.id.v_empty);
         LinearLayout btnEdit = findViewById(R.id.btn_edit);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcv.setLayoutManager(layoutManager);
@@ -127,7 +125,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
             }
 
             imAdd.setVisibility(View.GONE);
-            historyMenuAdapter = new HistoryOrderAdapter(this,  Common.orderListPartner, true);
+            HistoryOrderAdapter historyMenuAdapter = new HistoryOrderAdapter(this, Common.orderListPartner, true);
             rcv.setAdapter(historyMenuAdapter);
             if(Common.orderListPartner.size() == 0){
                 vEmpty.setVisibility(View.VISIBLE);
@@ -140,7 +138,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
             btnEdit.setVisibility(View.VISIBLE);
             if(Common.restaurantPartner != null && Common.restaurantPartner.getBranchList() != null) {
                 vEmpty.setVisibility(View.GONE);
-                branchAdapter = new BranchAdapter(this, Common.restaurantPartner.getBranchList(), true);
+                branchAdapter = new BranchAdapter(this, Common.restaurantPartner.getBranchList(), true, null);
                 rcv.setAdapter(branchAdapter);
             }else {
                 vEmpty.setVisibility(View.VISIBLE);
@@ -282,7 +280,8 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
 
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                 String key = nodeRoot.child(Node.ThucDonQuanAn).child(Common.restaurantPartner.getRes_id()).child(menu.getType()).push().getKey();
-                nodeRoot.child(Node.ThucDonQuanAn).child(Common.restaurantPartner.getRes_id()).child(menu.getType()).push().setValue(menu);
+                nodeRoot.child(Node.ThucDonQuanAn).child(Common.restaurantPartner.getRes_id()).child(menu.getType()).child(key).setValue(menu);
+                nodeRoot.child(Node.ThucDonQuanAn).child(Common.restaurantPartner.getRes_id()).child(menu.getType()).child(key).child("type").removeValue();
                 menu.setMenu_id(key);
                 Common.restaurantPartner.getMenuList().add(menu);
                 Toast.makeText(this, R.string.success, Toast.LENGTH_SHORT).show();
@@ -472,7 +471,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                 String key = nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).push().getKey();
                 nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).child(key).setValue(branch);
-                nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).child(key).child(Node.isDelete).removeValue();
+                nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).child(key).child("distance").removeValue();
                 nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).child(key).child("id_db").removeValue();
                 branch.setId(key);
                 Common.restaurantPartner.getBranchList().add(branch);

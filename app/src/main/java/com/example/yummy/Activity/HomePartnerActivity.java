@@ -86,9 +86,8 @@ public class HomePartnerActivity extends AppCompatActivity {
         }
         drawerLayout.closeDrawer(GravityCompat.START);
 
-        if(Common.accountCurrent.getRole() == 3){
+        if(Common.accountCurrent != null && Common.accountCurrent.getRole() == 3){
             UtilsBottomBar.getOrderPartner(this);
-//            UtilsBottomBar.getRestaurantPartner();
             getRestaurantPartner();
         }
 

@@ -92,7 +92,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             holder.tvMark.setText(restaurant.getMark() + "");
             holder.tvDistance.setText(new DecimalFormat("##.##").format(min / 1000) + " km");
             holder.tvAddress.setText(branch.getAddress());
-            if (!branch.getAvatar().isEmpty())
+            if (branch.getAvatar() != null && !branch.getAvatar().isEmpty())
                 Picasso.get().load(branch.getAvatar()).into(holder.imRes);
             if (restaurant.getFreeship() == 0) {
                 holder.viewFreeship.setVisibility(View.VISIBLE);

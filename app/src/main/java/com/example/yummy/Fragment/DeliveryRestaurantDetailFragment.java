@@ -103,9 +103,11 @@ public class DeliveryRestaurantDetailFragment extends Fragment implements MenuRe
             vDiscount.setVisibility(View.GONE);
         }
         TextView tvDiscount = v.findViewById(R.id.tv_discount);
-        String discount = getString(R.string.discount) + ": "+restaurant.getDiscounts().getDiscount()+"% - "+ getString(R.string.code)+": "+restaurant.getDiscounts().getCode()+
-                "\n"+getString(R.string.min_order)+": "+UtilsBottomBar.convertStringToMoney(restaurant.getDiscounts().getMin_order()) +" - "+getString(R.string.max_discount)+": "+UtilsBottomBar.convertStringToMoney(restaurant.getDiscounts().getMax_discount());
-        tvDiscount.setText(discount);
+        if(restaurant.getDiscounts() != null){
+            String discount = getString(R.string.discount) + ": "+restaurant.getDiscounts().getDiscount()+"% - "+ getString(R.string.code)+": "+restaurant.getDiscounts().getCode()+
+                    "\n"+getString(R.string.min_order)+": "+UtilsBottomBar.convertStringToMoney(restaurant.getDiscounts().getMin_order()) +" - "+getString(R.string.max_discount)+": "+UtilsBottomBar.convertStringToMoney(restaurant.getDiscounts().getMax_discount());
+            tvDiscount.setText(discount);
+        }
 
         String freeship = "";
         if(restaurant.getFreeship() == 0)

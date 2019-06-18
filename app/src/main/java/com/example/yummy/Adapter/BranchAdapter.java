@@ -2,6 +2,7 @@ package com.example.yummy.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,7 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yummy.Activity.RestaurantDetailActivity;
 import com.example.yummy.Model.Branch;
+import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
@@ -26,11 +29,13 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchHold
     private Context context;
     private List<Branch> dataList;
     private boolean isAdmin;
+    private Restaurant restaurant;
 
-    public BranchAdapter(Context context, List<Branch> dataList, boolean isAdmin){
+    public BranchAdapter(Context context, List<Branch> dataList, boolean isAdmin, Restaurant restaurant){
         this.context = context;
         this.dataList = dataList;
         this.isAdmin = isAdmin;
+        this.restaurant = restaurant;
     }
 
     @NonNull
@@ -46,7 +51,7 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchHold
         Branch branch = dataList.get(i);
 
         holder.tvAddress.setText(branch.getAddress());
-        if(!branch.getAvatar().isEmpty())
+        if(branch.getAvatar()!= null && !branch.getAvatar().isEmpty())
             Picasso.get().load(branch.getAvatar()).into(holder.imAvatar);
         if(branch.getIsDelete() == 1){
             holder.imClose.setVisibility(View.VISIBLE);
@@ -60,6 +65,15 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchHold
 
         holder.btnClose.setOnClickListener(v-> showDialogClose(branch));
         holder.btnOpen.setOnClickListener(v->showDialogOpen(branch));
+
+        holder.vRoot.setOnClickListener(v->{
+            if(!isAdmin){
+                Intent intent = new Intent(context, RestaurantDetailActivity.class);
+                intent.putExtra("restaurant", restaurant);
+                intent.putExtra("branch", branch);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -70,7 +84,7 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchHold
     class BranchHolder extends RecyclerView.ViewHolder {
         ImageView imAvatar, imClose, btnClose, btnOpen;
         TextView tvAddress;
-        LinearLayout vAction;
+        LinearLayout vAction, vRoot;
         BranchHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -80,6 +94,7 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchHold
             btnClose = itemView.findViewById(R.id.btn_close);
             btnOpen = itemView.findViewById(R.id.btn_open);
             vAction = itemView.findViewById(R.id.v_action);
+            vRoot = itemView.findViewById(R.id.root_view);
             if(isAdmin){
                 vAction.setVisibility(View.VISIBLE);
             }else {

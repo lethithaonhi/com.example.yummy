@@ -172,6 +172,12 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
         imStatus = dialog.findViewById(R.id.im_status);
         TextView tvDate = dialog.findViewById(R.id.tv_date);
 
+        TextView tvAddressRes = dialog.findViewById(R.id.tv_address_res);
+        tvAddressRes.setText(order.getAddress_res());
+
+        TextView tvDescribe = dialog.findViewById(R.id.tv_describe);
+        tvDescribe.setText(order.getNode());
+
         if(order.getIsStatus() == 4){
             imStatus.setImageResource(R.drawable.cancel);
         }else if (order.getIsStatus() == 3){
@@ -232,6 +238,12 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
             }
         });
 
+        TextView tvAddressRes = dialog.findViewById(R.id.tv_address_res);
+        tvAddressRes.setText(order.getAddress_res());
+
+        TextView tvDescribe = dialog.findViewById(R.id.tv_describe);
+        tvDescribe.setText(order.getNode());
+
         tvStatus = dialog.findViewById(R.id.tv_status);
         tvConfirm = dialog.findViewById(R.id.tv_confirm);
         tvRoute = dialog.findViewById(R.id.tv_route);
@@ -244,7 +256,7 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
         vComplete = dialog.findViewById(R.id.v_complete);
         btnCancelOrder = dialog.findViewById(R.id.btn_cancel);
         btnCancelOrder.setOnClickListener(v-> {
-            if(order.getIsStatus() < 4)
+            if(order.getIsStatus() < 3)
                 showMessChangeStatus(order, 3);
         });
         setStatus(order.getIsStatus());
