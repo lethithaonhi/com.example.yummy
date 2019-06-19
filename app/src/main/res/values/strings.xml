@@ -135,7 +135,7 @@
     <string name="total_item">Total Items</string>
     <string name="item">items</string>
     <string name="recipient">Recipient</string>
-    <string name="nodes">  Nodes</string>
+    <string name="nodes">  Node</string>
     <string name="edit">Edit</string>
     <string name="submit_order">Submit Order</string>
     <string name="ship_fee">Ship fee: </string>
@@ -148,6 +148,7 @@
     <string name="on_confirm">The store is preparing</string>
     <string name="on_dispatch">The restaurant has dispatched your order</string>
     <string name="on_complete">Your order has arrived at your address</string>
+    <string name="on_cancel">Your order has canceled because of some reasons!</string>
     <string name="sent">SENT</string>
     <string name="confirmed">CONFIRMED</string>
     <string name="enroute">EN ROUTE</string>

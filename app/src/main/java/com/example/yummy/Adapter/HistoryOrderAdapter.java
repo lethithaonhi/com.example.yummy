@@ -173,10 +173,11 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
         TextView tvDate = dialog.findViewById(R.id.tv_date);
 
         TextView tvAddressRes = dialog.findViewById(R.id.tv_address_res);
-        tvAddressRes.setText(order.getAddress_res());
+        tvAddressRes.setText(context.getString(R.string.restaurant)+": "+order.getAddress_res());
 
         TextView tvDescribe = dialog.findViewById(R.id.tv_describe);
-        tvDescribe.setText(order.getNode());
+        if(!order.getNode().isEmpty())
+            tvDescribe.setText(context.getString(R.string.nodes)+": "+order.getNode());
 
         if(order.getIsStatus() == 4){
             imStatus.setImageResource(R.drawable.cancel);
@@ -198,7 +199,13 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
 
         if(!order.getAvatar().isEmpty())
         Picasso.get().load(order.getAvatar()).into(imageView);
-        tvStatus.setText(order.getIsStatus()==3 ? R.string.complete:R.string.cancel);
+        if(order.getIsStatus() == 3){
+            tvStatus.setText(R.string.complete);
+            tvStatus.setTextColor(context.getResources().getColor(R.color.bg_green));
+        }else {
+            tvStatus.setText(R.string.cancel);
+            tvStatus.setTextColor(context.getResources().getColor(R.color.red));
+        }
         tvID.setText(order.getId());
         if(order.getDiscount() > 400) {
             vDiscount.setVisibility(View.VISIBLE);
@@ -214,11 +221,11 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
         tvDate.setText(order.getTime() + " " + order.getDate());
     }
 
-    private TextView tvStatus, tvConfirm, tvRoute, tvComplete;
-    private ImageView imConfirm, imRoute, imComplete;
+    private TextView tvStatus, tvConfirm, tvRoute, tvComplete, tvSent;
+    private ImageView imConfirm, imRoute, imComplete, imSent;
     private View vConfirm, vRoute, vComplete;
     private PulsatorLayout mPulsator;
-    private ImageView imStatus;
+    private ImageView imStatus, vClose;
 
     private void showOrderPart(Order order){
         Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
@@ -239,10 +246,11 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
         });
 
         TextView tvAddressRes = dialog.findViewById(R.id.tv_address_res);
-        tvAddressRes.setText(order.getAddress_res());
+            tvAddressRes.setText(context.getString(R.string.restaurant)+": "+order.getAddress_res());
 
         TextView tvDescribe = dialog.findViewById(R.id.tv_describe);
-        tvDescribe.setText(order.getNode());
+        if(!order.getNode().isEmpty())
+            tvDescribe.setText(context.getString(R.string.nodes)+": "+order.getNode());
 
         tvStatus = dialog.findViewById(R.id.tv_status);
         tvConfirm = dialog.findViewById(R.id.tv_confirm);
@@ -255,6 +263,9 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
         vRoute = dialog.findViewById(R.id.v_route);
         vComplete = dialog.findViewById(R.id.v_complete);
         btnCancelOrder = dialog.findViewById(R.id.btn_cancel);
+        vClose = dialog.findViewById(R.id.close);
+        imSent = dialog.findViewById(R.id.im_sent);
+        tvSent = dialog.findViewById(R.id.tv_sent);
         btnCancelOrder.setOnClickListener(v-> {
             if(order.getIsStatus() < 3)
                 showMessChangeStatus(order, 3);
@@ -263,25 +274,53 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
     }
 
     private void setStatus(int status){
-        if (status == 1 || status > 1){
+        if(status == 4){
+            tvSent.setTextColor(context.getResources().getColor(R.color.red));
             tvConfirm.setTextColor(context.getResources().getColor(R.color.red));
-            imConfirm.setImageResource(R.drawable.bg_circle_green);
-            vConfirm.setBackgroundResource(R.color.bg_green);
-            tvStatus.setText(R.string.on_confirm);
-        }
-
-        if(status == 2 || status > 2){
             tvRoute.setTextColor(context.getResources().getColor(R.color.red));
-            imRoute.setImageResource(R.drawable.bg_circle_green);
-            vRoute.setBackgroundResource(R.color.bg_green);
-            tvStatus.setText(R.string.on_dispatch);
-        }
-
-        if(status == 3 || status > 3){
             tvComplete.setTextColor(context.getResources().getColor(R.color.red));
-            imComplete.setImageResource(R.drawable.bg_circle_green);
-            vComplete.setBackgroundResource(R.color.bg_green);
-            tvStatus.setText(R.string.on_complete);
+            imSent.setImageResource(R.drawable.bg_circle_red);
+            imConfirm.setImageResource(R.drawable.bg_circle_red);
+            vConfirm.setBackgroundResource(R.color.red);
+            imRoute.setImageResource(R.drawable.bg_circle_red);
+            vRoute.setBackgroundResource(R.color.red);
+            imComplete.setImageResource(R.drawable.bg_circle_red);
+            vComplete.setBackgroundResource(R.color.red);
+            tvStatus.setText(R.string.on_cancel);
+            tvStatus.setTextColor(context.getResources().getColor(R.color.red));
+            mPulsator.setVisibility(View.GONE);
+            btnCancelOrder.setVisibility(View.GONE);
+            vClose.setVisibility(View.VISIBLE);
+        }else {
+            if(status == 0){
+                tvStatus.setText(R.string.on_sent);
+                tvStatus.setTextColor(context.getResources().getColor(R.color.bg_green));
+            }
+            if (status == 1 || status > 1) {
+                tvConfirm.setTextColor(context.getResources().getColor(R.color.red));
+                imConfirm.setImageResource(R.drawable.bg_circle_green);
+                vConfirm.setBackgroundResource(R.color.bg_green);
+                tvStatus.setText(R.string.on_confirm);
+                tvStatus.setTextColor(context.getResources().getColor(R.color.bg_green));
+            }
+
+            if (status == 2 || status > 2) {
+                tvRoute.setTextColor(context.getResources().getColor(R.color.red));
+                imRoute.setImageResource(R.drawable.bg_circle_green);
+                vRoute.setBackgroundResource(R.color.bg_green);
+                tvStatus.setText(R.string.on_dispatch);
+                tvStatus.setTextColor(context.getResources().getColor(R.color.bg_green));
+            }
+
+            if (status == 3 || status > 3) {
+                tvComplete.setTextColor(context.getResources().getColor(R.color.red));
+                imComplete.setImageResource(R.drawable.bg_circle_green);
+                vComplete.setBackgroundResource(R.color.bg_green);
+                tvStatus.setText(R.string.on_complete);
+                tvStatus.setTextColor(context.getResources().getColor(R.color.bg_green));
+                mPulsator.setVisibility(View.GONE);
+                btnCancelOrder.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -302,9 +341,11 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
                 if(status == 3){
                     imStatus.setImageResource(R.drawable.cancel);
                     btnCancelOrder.setVisibility(View.GONE);
+                    vClose.setVisibility(View.VISIBLE);
                 }
             }
             setStatus(status+1);
+            notifyDataSetChanged();
         });
         builder.setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss());
         AlertDialog alertDialog = builder.create();

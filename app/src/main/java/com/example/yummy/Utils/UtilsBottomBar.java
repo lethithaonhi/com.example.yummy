@@ -492,7 +492,7 @@ public class UtilsBottomBar {
                                                 int count = dataSnapshot.getValue(Integer.class);
                                                 menuList.put(menu, count);
                                                 order.setMenuList(menuList);
-                                                if (menuList.size() == dataRoot.getChildrenCount() && !Common.orderListPartner.contains(order)) {
+                                                if (menuList.size() == dataRoot.getChildrenCount() && !isExitOrderPart(order.getId())) {
                                                     Common.orderListPartner.add(order);
 
                                                 }
@@ -521,6 +521,16 @@ public class UtilsBottomBar {
 
             }
         });
+    }
+
+    private static boolean isExitOrderPart(String id){
+        if(Common.orderListPartner.size() > 0) {
+            for (Order order : Common.orderListPartner) {
+                if(order.getId().equals(id))
+                    return true;
+            }
+        }
+        return false;
     }
 
     public static void showSuccessView(Context context, String mess, boolean isFinish){

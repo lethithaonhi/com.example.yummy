@@ -226,6 +226,7 @@
     <string name="more_1">Xem thêm</string>
     <string name="edit_res">Sửa thông tin quán ăn</string>
     <string name="res_close">Cửa hàng này đã đóng cửa, vui lòng đặt hàng vào ngày mai, cảm ơn!</string>
+    <string name="on_cancel">Đơn hàng của bạn đã bị hủy vì một vài ý do, trân thành xin lỗi!</string>
     <string name="chart_order">Thống kê đơn hàng</string>
     <string name="order_by_month">* Thống theo tháng</string>
     <string name="order_by_day">* Thống kê theo ngày</string>

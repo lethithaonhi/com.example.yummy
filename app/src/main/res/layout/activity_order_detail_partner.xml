@@ -72,107 +72,121 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
+        <FrameLayout
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv_sent"
-                    android:textColor="@color/red"
-                    android:textSize="12sp"
-                    android:text="@string/sent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv_confirm"
-                    android:layout_marginRight="20dp"
-                    android:gravity="right"
-                    android:layout_weight="1"
-                    android:textSize="12sp"
-                    android:text="@string/confirmed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_sent"
+                        android:textColor="@color/red"
+                        android:textSize="12sp"
+                        android:text="@string/sent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/tv_route"
+                    <TextView
+                        android:id="@+id/tv_confirm"
+                        android:layout_marginRight="20dp"
+                        android:gravity="right"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        android:text="@string/confirmed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tv_route"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        android:text="@string/enroute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tv_complete"
+                        android:layout_gravity="end"
+                        android:textSize="12sp"
+                        android:text="@string/delivered"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:gravity="center"
-                    android:layout_weight="1"
-                    android:textSize="12sp"
-                    android:text="@string/enroute"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv_complete"
-                    android:layout_gravity="end"
-                    android:textSize="12sp"
-                    android:text="@string/delivered"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    <ImageView
+                        android:id="@+id/im_sent"
+                        android:src="@drawable/bg_circle_green"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp" />
+
+                    <View
+                        android:id="@+id/v_confirm"
+                        android:layout_gravity="center"
+                        android:background="@color/grey"
+                        android:layout_width="75dp"
+                        android:layout_height="5dp"/>
+
+                    <ImageView
+                        android:id="@+id/im_confirm"
+                        android:src="@drawable/bg_circle_grey"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp" />
+
+                    <View
+                        android:id="@+id/v_route"
+                        android:layout_gravity="center"
+                        android:background="@color/grey"
+                        android:layout_width="75dp"
+                        android:layout_height="5dp"/>
+
+                    <ImageView
+                        android:id="@+id/im_route"
+                        android:src="@drawable/bg_circle_grey"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp" />
+                    <View
+                        android:id="@+id/v_complete"
+                        android:layout_gravity="center"
+                        android:background="@color/grey"
+                        android:layout_width="75dp"
+                        android:layout_height="5dp"/>
+
+                    <ImageView
+                        android:id="@+id/im_complete"
+                        android:src="@drawable/bg_circle_grey"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp" />
+
+                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:gravity="center"
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/close"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/ic_close_red_24dp"
                 android:layout_gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/im_sent"
-                    android:src="@drawable/bg_circle_green"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp" />
-
-                <View
-                    android:id="@+id/v_confirm"
-                    android:layout_gravity="center"
-                    android:background="@color/grey"
-                    android:layout_width="75dp"
-                    android:layout_height="5dp"/>
-
-                <ImageView
-                    android:id="@+id/im_confirm"
-                    android:src="@drawable/bg_circle_grey"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp" />
-
-                <View
-                    android:id="@+id/v_route"
-                    android:layout_gravity="center"
-                    android:background="@color/grey"
-                    android:layout_width="75dp"
-                    android:layout_height="5dp"/>
-
-                <ImageView
-                    android:id="@+id/im_route"
-                    android:src="@drawable/bg_circle_grey"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp" />
-                <View
-                    android:id="@+id/v_complete"
-                    android:layout_gravity="center"
-                    android:background="@color/grey"
-                    android:layout_width="75dp"
-                    android:layout_height="5dp"/>
-
-                <ImageView
-                    android:id="@+id/im_complete"
-                    android:src="@drawable/bg_circle_grey"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp" />
-
-            </LinearLayout>
-        </LinearLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </FrameLayout>
     </LinearLayout>
 
     <android.support.v4.widget.NestedScrollView
@@ -396,8 +410,8 @@
                     android:id="@+id/im_status"
                     android:src="@drawable/paid"
                     android:layout_gravity="center"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp" />
+                    android:layout_width="72dp"
+                    android:layout_height="72dp" />
             </FrameLayout>
 
             <View

@@ -243,8 +243,8 @@
                android:id="@+id/im_status"
                android:src="@drawable/paid"
                android:layout_gravity="center"
-               android:layout_width="56dp"
-               android:layout_height="56dp" />
+               android:layout_width="72dp"
+               android:layout_height="72dp" />
        </FrameLayout>
 
        <View

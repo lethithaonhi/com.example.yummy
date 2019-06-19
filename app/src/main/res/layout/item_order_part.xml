@@ -97,9 +97,9 @@
         android:layout_height="100dp" />
 
         <ImageView
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/im_alarm"
-            android:layout_marginRight="35dp"
+            android:layout_marginRight="45dp"
             android:layout_marginBottom="8dp"
             android:layout_gravity="end|bottom"
             android:src="@drawable/alarm"

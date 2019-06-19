@@ -1,5 +1,6 @@
 package com.example.yummy.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -47,30 +48,48 @@ public class OnGoingCusAdater extends RecyclerView.Adapter<OnGoingCusAdater.OnGo
         holder.tvDate.setText(order.getTime() + " - " + order.getDate());
         holder.btnCancel.setVisibility(order.getIsStatus() !=0 ? View.GONE:View.VISIBLE);
 
-        holder.btnCancel.setOnClickListener(v-> {
-            DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
-            mData.child(Node.Order).child(Common.restaurantPartner.getRes_id()).child(order.getId()).child(Node.isStatus).setValue(4);
-        });
-        if (order.getIsStatus() == 1 || order.getIsStatus() > 1){
-            holder.tvConfirm.setTextColor(context.getResources().getColor(R.color.red));
-            holder.imConfirm.setImageResource(R.drawable.bg_circle_green);
-            holder.vConfirm.setBackgroundResource(R.color.bg_green);
-            holder.tvStatus.setText(R.string.on_confirm);
-        }
+        holder.btnCancel.setOnClickListener(v-> showMessChangeStatus(order, holder));
 
-        if(order.getIsStatus() == 2 || order.getIsStatus() > 2){
-            holder.tvRoute.setTextColor(context.getResources().getColor(R.color.red));
-            holder.imRoute.setImageResource(R.drawable.bg_circle_green);
-            holder.vRoute.setBackgroundResource(R.color.bg_green);
-            holder.tvStatus.setText(R.string.on_dispatch);
-        }
+        if(order.getIsStatus() == 4){
+           setCancel(holder);
+        }else {
+            if (order.getIsStatus() == 1 || order.getIsStatus() > 1) {
+                holder.tvConfirm.setTextColor(context.getResources().getColor(R.color.red));
+                holder.imConfirm.setImageResource(R.drawable.bg_circle_green);
+                holder.vConfirm.setBackgroundResource(R.color.bg_green);
+                holder.tvStatus.setText(R.string.on_confirm);
+            }
 
-        if(order.getIsStatus() == 3 || order.getIsStatus() > 3){
-            holder.tvComplete.setTextColor(context.getResources().getColor(R.color.red));
-            holder.imComplete.setImageResource(R.drawable.bg_circle_green);
-            holder.vComplete.setBackgroundResource(R.color.bg_green);
-            holder.tvStatus.setText(R.string.on_complete);
+            if (order.getIsStatus() == 2 || order.getIsStatus() > 2) {
+                holder.tvRoute.setTextColor(context.getResources().getColor(R.color.red));
+                holder.imRoute.setImageResource(R.drawable.bg_circle_green);
+                holder.vRoute.setBackgroundResource(R.color.bg_green);
+                holder.tvStatus.setText(R.string.on_dispatch);
+            }
+
+            if (order.getIsStatus() == 3 || order.getIsStatus() > 3) {
+                holder.tvComplete.setTextColor(context.getResources().getColor(R.color.red));
+                holder.imComplete.setImageResource(R.drawable.bg_circle_green);
+                holder.vComplete.setBackgroundResource(R.color.bg_green);
+                holder.tvStatus.setText(R.string.on_complete);
+            }
         }
+    }
+
+    private void setCancel(OnGoingCusHolder holder){
+        holder.tvConfirm.setTextColor(context.getResources().getColor(R.color.red));
+        holder.tvRoute.setTextColor(context.getResources().getColor(R.color.red));
+        holder.tvComplete.setTextColor(context.getResources().getColor(R.color.red));
+        holder.imSent.setImageResource(R.drawable.bg_circle_red);
+        holder.imConfirm.setImageResource(R.drawable.bg_circle_red);
+        holder.vConfirm.setBackgroundResource(R.color.red);
+        holder.imRoute.setImageResource(R.drawable.bg_circle_red);
+        holder.vRoute.setBackgroundResource(R.color.red);
+        holder.imComplete.setImageResource(R.drawable.bg_circle_red);
+        holder.vComplete.setBackgroundResource(R.color.red);
+        holder.tvStatus.setText(R.string.on_cancel);
+        holder.vClose.setVisibility(View.VISIBLE);
+        holder.tvFinish.setVisibility(View.GONE);
     }
 
     @Override
@@ -79,8 +98,8 @@ public class OnGoingCusAdater extends RecyclerView.Adapter<OnGoingCusAdater.OnGo
     }
 
     class OnGoingCusHolder extends RecyclerView.ViewHolder {
-        TextView tvStatus, tvSent, tvConfirm, tvRoute, tvComplete, tvNameRes, tvDate;
-        ImageView imSent, imConfirm, imRoute, imComplete, btnCancel;
+        TextView tvStatus, tvSent, tvConfirm, tvRoute, tvComplete, tvNameRes, tvDate, tvFinish;
+        ImageView imSent, imConfirm, imRoute, imComplete, btnCancel, vClose;
         View vConfirm, vRoute, vComplete;
 
         OnGoingCusHolder(@NonNull View itemView) {
@@ -101,6 +120,23 @@ public class OnGoingCusAdater extends RecyclerView.Adapter<OnGoingCusAdater.OnGo
             vComplete = itemView.findViewById(R.id.v_complete);
             tvDate = itemView.findViewById(R.id.tv_date);
             btnCancel = itemView.findViewById(R.id.btn_cancel);
+            vClose = itemView.findViewById(R.id.close);
+            tvFinish = itemView.findViewById(R.id.tv_finish);
         }
+    }
+
+    private void showMessChangeStatus(Order order, OnGoingCusHolder holder){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("");
+        builder.setMessage(R.string.mess_cancel_status);
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.sure, (dialogInterface, i) ->{
+            setCancel(holder);
+            DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
+            mData.child(Node.Order).child(order.getId_res()).child(order.getId()).child(Node.isStatus).setValue(4);
+        });
+        builder.setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss());
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

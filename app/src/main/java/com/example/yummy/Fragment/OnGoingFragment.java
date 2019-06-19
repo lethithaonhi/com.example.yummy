@@ -1,6 +1,7 @@
 package com.example.yummy.Fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -138,16 +139,18 @@ public class OnGoingFragment extends Fragment{
                                     if (status != order.getIsStatus()) {
                                         order.setIsStatus(status);
                                         int pos = adapter.getPos(order);
-//                                        data.remove(pos);
-//                                        data.add(pos, order);
                                         data.get(pos).setIsStatus(status);
-                                        setAdapter();
+                                        if(getContext() != null)
+//                                        ((Activity)getContext()).runOnUiThread(OnGoingFragment.this::setAdapter);
+                                            ((Activity)getContext()).runOnUiThread(()->adapter.notifyDataSetChanged());
                                         if(status == 0){
                                             showMessStatusOrder(R.string.on_sent);
                                         }else if(status == 1){
                                             showMessStatusOrder(R.string.on_confirm);
                                         }else if(status == 2){
                                             showMessStatusOrder(R.string.on_dispatch);
+                                        }else if(status == 4){
+                                            showMessStatusOrder(R.string.on_cancel);
                                         }
                                         if(status == 3){
                                             UtilsBottomBar.showSuccessView(getContext(), getString(R.string.on_complete), false);

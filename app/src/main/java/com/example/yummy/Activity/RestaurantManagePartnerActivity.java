@@ -190,17 +190,15 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
 
 
     private void sortData(){
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy %k:%M:%S");
         Collections.sort(Common.orderListPartner, (obj1, obj2) -> {
             try {
-                return dateFormat.parse(obj1.getDate()).compareTo(dateFormat.parse(obj2.getDate()));
+                return dateFormat.parse(obj1.getDate()+" "+obj1.getTime()).compareTo(dateFormat.parse(obj2.getDate()+" "+obj2.getTime()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             return -1;
         });
-
-        Collections.reverse(Common.orderListPartner);
     }
 
     private void setDiscounts() {
