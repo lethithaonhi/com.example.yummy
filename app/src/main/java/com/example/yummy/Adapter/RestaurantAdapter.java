@@ -148,6 +148,20 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             } else {
                 holder.tvClosed.setVisibility(View.GONE);
             }
+
+            if(type == 0){
+                if(i == 0){
+                    holder.tvTitle.setVisibility(View.VISIBLE);
+                    holder.tvTitle.setText(restaurant.getCity());
+                }else {
+                    if(!restaurant.getCity().equals(restaurantList.get(i-1).getCity())){
+                        holder.tvTitle.setVisibility(View.VISIBLE);
+                        holder.tvTitle.setText(restaurant.getCity());
+                    }else {
+                        holder.tvTitle.setVisibility(View.GONE);
+                    }
+                }
+            }
         }
     }
 
@@ -178,7 +192,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
 
     class RestaurantHolder extends RecyclerView.ViewHolder {
         ImageView imRes, imClose, imDelete;
-        TextView tvName, tvAddress, tvMark, tvDistance, tvDiscount, tvClosed;
+        TextView tvName, tvAddress, tvMark, tvDistance, tvDiscount, tvClosed, tvTitle;
         LinearLayout viewFreeship, viewRoot, viewDiscount;
         SwipeLayout swipeLayout;
         LinearLayout btnEdit, btnClose, vTrash;
@@ -201,7 +215,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             imClose = itemView.findViewById(R.id.im_close);
             vTrash = itemView.findViewById(R.id.trash);
             tvClosed = itemView.findViewById(R.id.close_res);
-
+            tvTitle = itemView.findViewById(R.id.tv_title);
             if(type == 0){
                 tvDistance.setVisibility(View.GONE);
                 tvMark.setVisibility(View.GONE);

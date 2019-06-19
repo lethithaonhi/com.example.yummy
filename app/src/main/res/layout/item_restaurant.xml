@@ -1,219 +1,235 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="8dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginBottom="8dp"
-    android:weightSum="1"
+   android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.daimajia.swipe.SwipeLayout
-        android:background="@color/white"
-        xmlns:swipe="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/swipe"
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_title"
+        android:background="@color/grey"
+        android:padding="8dp"
+        android:textSize="16sp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        swipe:leftEdgeSwipeOffset="0dp"
-        swipe:rightEdgeSwipeOffset="0dp">
+        android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:id="@+id/trash"
-            android:layout_gravity="end"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:tag="Bottom3">
+    <LinearLayout
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        android:weightSum="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/btn_edit"
-                android:gravity="center"
-                android:background="@color/colorPrimary"
-                android:layout_width="60dp"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:src="@drawable/ic_edit_white_24dp"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/btn_delete"
-                android:gravity="center"
-                android:background="@color/red"
-                android:layout_width="60dp"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/im_delete"
-                    android:src="@drawable/ic_lock"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/view_rooot"
-            android:weightSum="1"
+        <com.daimajia.swipe.SwipeLayout
+            android:background="@color/white"
+            xmlns:swipe="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/swipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/item_selector"
-            android:elevation="5dp"
-            android:padding="10dp">
-
-            <FrameLayout
-                android:layout_weight="0.3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:scaleType="fitCenter"
-                    android:id="@+id/im_restaurant"
-                    android:src="@drawable/bg_circle_green"
-                    android:layout_width="match_parent"
-                    android:layout_height="72dp" />
-
-                <TextView
-                    android:id="@+id/close_res"
-                    android:visibility="gone"
-                    android:gravity="center"
-                    android:fontFamily="sans-serif-medium"
-                    android:textColor="@color/red"
-                    android:text="@string/close"
-                    android:background="@color/trans"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </FrameLayout>
+            swipe:leftEdgeSwipeOffset="0dp"
+            swipe:rightEdgeSwipeOffset="0dp">
 
             <LinearLayout
-                android:layout_weight="0.65"
-                android:layout_marginLeft="8dp"
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_marginBottom="8dp"
-                    android:textColor="@color/black"
-                    android:id="@+id/tv_name"
-                    android:text="345 Nguyen Thi Minh Khai, Quan 1, TP HCM"
-                    android:textSize="14sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/tv_address"
-                    android:text="345 Nguyen Thi Minh Khai, Quan 1, TP HCM"
-                    android:textSize="12sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                android:id="@+id/trash"
+                android:layout_gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:tag="Bottom3">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:id="@+id/btn_edit"
+                    android:gravity="center"
+                    android:background="@color/colorPrimary"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent">
 
-                    <LinearLayout
-                        android:layout_marginRight="8dp"
-                        android:visibility="gone"
-                        android:id="@+id/view_discount"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="10dp"
-                        android:background="@drawable/bg_freeship"
-                        android:layout_marginTop="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:layout_marginEnd="8dp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="10dp">
+                    <ImageView
+                        android:src="@drawable/ic_edit_white_24dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp" />
 
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:src="@drawable/discount_blue"
-                            android:layout_width="18dp"
-                            android:layout_height="15dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/btn_delete"
+                    android:gravity="center"
+                    android:background="@color/red"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent">
 
-                        <TextView
-                            android:id="@+id/tv_discount"
-                            android:textSize="10sp"
-                            android:textColor="@color/color_btn_signin_google"
-                            android:layout_marginLeft="5dp"
-                            android:layout_gravity="center"
-                            android:text="30%"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:ignore="SmallSp"
-                            android:layout_marginStart="5dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:visibility="gone"
-                        android:id="@+id/view_freeship"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="10dp"
-                        android:background="@drawable/bg_freeship"
-                        android:layout_marginTop="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="10dp">
-
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:src="@drawable/freeshipping"
-                            android:layout_width="18dp"
-                            android:layout_height="15dp"/>
-
-                        <TextView
-                            android:textSize="10sp"
-                            android:textColor="@color/color_btn_signin_google"
-                            android:layout_marginLeft="5dp"
-                            android:layout_gravity="center"
-                            android:text="@string/freeship"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:ignore="SmallSp"
-                            android:layout_marginStart="5dp" />
-                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/im_delete"
+                        android:src="@drawable/ic_lock"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="0.5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_mark"
-                    android:textColor="@color/green"
-                    android:textSize="14sp"
-                    android:text="8.8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                android:id="@+id/view_rooot"
+                android:weightSum="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_selector"
+                android:elevation="5dp"
+                android:padding="10dp">
 
-                <TextView
-                    android:id="@+id/tv_distance"
-                    android:text="1.2 km"
-                    android:textSize="14sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <FrameLayout
+                    android:layout_weight="0.3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:scaleType="fitCenter"
+                        android:id="@+id/im_restaurant"
+                        android:src="@drawable/bg_circle_green"
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp" />
 
-                <ImageView
-                    android:visibility="gone"
-                    android:layout_marginRight="16dp"
-                    android:id="@+id/im_close"
-                    android:src="@drawable/close"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_marginEnd="16dp" />
+                    <TextView
+                        android:id="@+id/close_res"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/red"
+                        android:text="@string/close"
+                        android:background="@color/trans"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_weight="0.65"
+                    android:layout_marginLeft="8dp"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginBottom="8dp"
+                        android:textColor="@color/black"
+                        android:id="@+id/tv_name"
+                        android:text="345 Nguyen Thi Minh Khai, Quan 1, TP HCM"
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tv_address"
+                        android:text="345 Nguyen Thi Minh Khai, Quan 1, TP HCM"
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_marginRight="8dp"
+                            android:visibility="gone"
+                            android:id="@+id/view_discount"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="10dp"
+                            android:background="@drawable/bg_freeship"
+                            android:layout_marginTop="8dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="8dp"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="10dp">
+
+                            <ImageView
+                                android:layout_gravity="center"
+                                android:src="@drawable/discount_blue"
+                                android:layout_width="18dp"
+                                android:layout_height="15dp" />
+
+                            <TextView
+                                android:id="@+id/tv_discount"
+                                android:textSize="10sp"
+                                android:textColor="@color/color_btn_signin_google"
+                                android:layout_marginLeft="5dp"
+                                android:layout_gravity="center"
+                                android:text="30%"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:ignore="SmallSp"
+                                android:layout_marginStart="5dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/view_freeship"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="10dp"
+                            android:background="@drawable/bg_freeship"
+                            android:layout_marginTop="8dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="10dp">
+
+                            <ImageView
+                                android:layout_gravity="center"
+                                android:src="@drawable/freeshipping"
+                                android:layout_width="18dp"
+                                android:layout_height="15dp"/>
+
+                            <TextView
+                                android:textSize="10sp"
+                                android:textColor="@color/color_btn_signin_google"
+                                android:layout_marginLeft="5dp"
+                                android:layout_gravity="center"
+                                android:text="@string/freeship"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:ignore="SmallSp"
+                                android:layout_marginStart="5dp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="0.5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_mark"
+                        android:textColor="@color/green"
+                        android:textSize="14sp"
+                        android:text="8.8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tv_distance"
+                        android:text="1.2 km"
+                        android:textSize="14sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:visibility="gone"
+                        android:layout_marginRight="16dp"
+                        android:id="@+id/im_close"
+                        android:src="@drawable/close"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_marginEnd="16dp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </com.daimajia.swipe.SwipeLayout>
 
-    </com.daimajia.swipe.SwipeLayout>
+    </LinearLayout>
 </LinearLayout>
