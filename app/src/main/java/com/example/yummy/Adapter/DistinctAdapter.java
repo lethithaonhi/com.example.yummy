@@ -1,6 +1,7 @@
 package com.example.yummy.Adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -12,51 +13,47 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.example.yummy.Activity.RestaurantActivity;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
-import java.util.HashMap;
-import java.util.Objects;
 
-public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> implements Filterable {
+import java.util.ArrayList;
+import java.util.List;
+
+public class DistinctAdapter extends RecyclerView.Adapter<DistinctAdapter.DistinctHolder> implements Filterable {
     private Context context;
-    private HashMap<String, Integer> data;
-    private HashMap<String, Integer> dataFilter;
+    private List<String> data;
+    private List<String> dataFilter;
     private String query = "";
-    private int prevSelection = 0;
-    public static String city;
-    private String cityCus;
-    private boolean isAdmin;
     private int[] check;
+    private int prePos = 0;
+    private String myDistinct;
 
-    public CityAdapter (Context context, HashMap<String, Integer> data, boolean isAdmin){
+
+    public DistinctAdapter(Context context, List<String> data){
         this.context = context;
         this.data = data;
         dataFilter = data;
-        this.isAdmin =isAdmin;
-        city = Common.myAddress;
         check = new int[dataFilter.size()];
     }
 
     @NonNull
     @Override
-    public CityAdapter.CityHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+    public DistinctHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_city, parent, false);
-        return new CityHolder(view);
+        return new DistinctHolder(view);
     }
 
-    public String getCity(){
-        return cityCus;
+    public String getMyDistinct(){
+        return myDistinct;
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull CityAdapter.CityHolder holder, @SuppressLint("RecyclerView") int i) {
-        if(dataFilter.keySet().toArray() != null && i< dataFilter.size()) {
-            String key = (String) Objects.requireNonNull(dataFilter.keySet().toArray())[i];
-            holder.tvCityName.setText(key);
-            holder.tvCount.setText(dataFilter.get(key) + " places");
+    public void onBindViewHolder(@NonNull DistinctHolder holder, int i) {
+        if (dataFilter != null && i < dataFilter.size()) {
+            String key = dataFilter.get(i);
+
+            holder.tvDisName.setText(key);
             if (check[i] != 1) {
                 holder.checkBox.setChecked(false);
             }else {
@@ -64,13 +61,9 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> im
             }
 
             holder.checkBox.setOnClickListener(v -> {
-                    if(isAdmin){
-                        city = key;
-                    }else {
-                        cityCus = key;
-                    }
-                    check[prevSelection] = 0;
-                    prevSelection = i;
+                    myDistinct = key;
+                    check[prePos] = 0;
+                    prePos = i;
                     check[i] = 1;
                     notifyDataSetChanged();
             });
@@ -79,19 +72,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> im
 
     @Override
     public int getItemCount() {
-        return dataFilter != null? dataFilter.size():0;
-    }
-
-    class CityHolder extends RecyclerView.ViewHolder {
-        CheckBox checkBox;
-        TextView tvCityName, tvCount;
-        CityHolder(@NonNull View itemView) {
-            super(itemView);
-
-            checkBox = itemView.findViewById(R.id.checkbox_city);
-            tvCityName = itemView.findViewById(R.id.tv_nameCity);
-            tvCount = itemView.findViewById(R.id.tv_countCity);
-        }
+        return dataFilter != null? dataFilter.size() : 0;
     }
 
     @Override
@@ -101,10 +82,10 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> im
             protected FilterResults performFiltering(CharSequence charSequence) {
                 query = charSequence.toString();
                 if (!query.isEmpty()) {
-                    HashMap<String, Integer> filteredList = new HashMap<>();
-                    for (String key : data.keySet()) {
+                    List<String> filteredList = new ArrayList<>();
+                    for (String key : data) {
                         if (key.toLowerCase().contains(query.toLowerCase())) {
-                            filteredList.put(key, data.get(key));
+                            filteredList.add(key);
                         }
                     }
 
@@ -121,9 +102,21 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> im
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                dataFilter = (HashMap<String, Integer>) filterResults.values;
+                dataFilter = (List<String>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
+    }
+
+    class DistinctHolder extends RecyclerView.ViewHolder {
+        CheckBox checkBox;
+        TextView tvDisName, tvCount;
+        DistinctHolder(@NonNull View itemView) {
+            super(itemView);
+            checkBox = itemView.findViewById(R.id.checkbox_city);
+            tvDisName = itemView.findViewById(R.id.tv_nameCity);
+            tvCount = itemView.findViewById(R.id.tv_countCity);
+            tvCount.setVisibility(View.GONE);
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.example.yummy.Activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.example.yummy.Adapter.AccountAdminAdapter;
 import com.example.yummy.Model.Account;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Common;
 
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import java.util.List;
 
 public class ManageAccountAdminActivity extends AppCompatActivity {
     private List<Account> data;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,8 +49,22 @@ public class ManageAccountAdminActivity extends AppCompatActivity {
         vCus.setOnClickListener(v->showViewAccount(2));
         ImageView imClose = findViewById(R.id.im_close);
         imClose.setOnClickListener(v->finish());
+        registerReceiver();
     }
 
+    private void registerReceiver(){
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
+    }
     private void showViewAccount(int type){ //1: admin, 2: partner, 3: customer
         Dialog dialog = new Dialog(ManageAccountAdminActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setContentView(R.layout.view_list_account_admin);

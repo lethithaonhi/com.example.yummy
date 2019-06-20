@@ -213,7 +213,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                 Log.d("databaseError FireBase", databaseError.getDetails());
                 List<String> list = new ArrayList<>();
                 list.add("quan1");
-                if(Common.db.getRestaurant(list, Common.myAddress).size() > 0){
+                if(Common.db.getRestaurant(list, Common.myAddress,"").size() > 0){
                     Intent intent = new Intent(WelcomeActivity.this,BottomBarActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
@@ -467,7 +467,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
     private void deteleDataCurrent(){
         List<String>list = new ArrayList<>();
         list.add("quan1");
-        if(Common.db.getRestaurant(list, Common.myAddress).size() > 0){
+        if(Common.db.getRestaurant(list, Common.myAddress,"").size() > 0){
             Common.db.clearData();
         }
     }

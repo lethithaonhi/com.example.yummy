@@ -2,6 +2,7 @@ package com.example.yummy.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import com.example.yummy.Model.Blog;
 import com.example.yummy.Model.Order;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.UtilsBottomBar;
 
@@ -43,6 +45,7 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
     private ArrayList<String> dataBottomList, dataBottomListMonth;
     private int countOpenRes, countCloseRes, openAc, closeAc, openBlog, closeBlog;
     private Spinner spMonth;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,8 +56,22 @@ public class ManageStatisticAdminActivity extends AppCompatActivity {
             UtilsBottomBar.getOrderListAll();
         }
         initView();
+        registerReceiver();
     }
 
+    private void registerReceiver(){
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
+    }
     @SuppressLint("SetTextI18n")
     private void initView(){
         Spinner spResYear = findViewById(R.id.sp_res);

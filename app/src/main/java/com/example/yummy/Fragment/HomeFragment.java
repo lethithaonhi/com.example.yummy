@@ -61,6 +61,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
+        Common.myDistinct = getString(R.string.all);
+        UtilsBottomBar.getDistinct(Common.myAddress);
         rcvExp = v.findViewById(R.id.rcv_exp);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rcvExp.setLayoutManager(layoutManager);
@@ -235,7 +237,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         @Override
         protected Void doInBackground(Void... voids) {
             if(Common.db != null) {
-                Common.restaurantListCurrent = Common.db.getRestaurant(Common.listResId, Common.myAddress);
+                Common.restaurantListCurrent = Common.db.getRestaurant(Common.listResId, Common.myAddress, "");
                 for (Restaurant restaurant : Common.restaurantListCurrent) {
                     for (Branch branch : restaurant.getBranchList()) {
                         branch.setDistance(UtilsBottomBar.getDistanceBranch(branch));

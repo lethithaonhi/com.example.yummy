@@ -3,6 +3,7 @@ package com.example.yummy.Activity;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.example.yummy.Model.Account;
 import com.example.yummy.Model.Partner;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Node;
 import com.example.yummy.Utils.UtilsBottomBar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,6 +53,7 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private int role=0;
     private ImageButton imError;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -194,6 +197,22 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
                 vTitle.setVisibility(View.GONE);
             }
         });
+
+        registerReceiver();
+    }
+
+    private void registerReceiver(){
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
     }
 
     private void registerAccount(){

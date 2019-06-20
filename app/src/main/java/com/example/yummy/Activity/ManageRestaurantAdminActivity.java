@@ -1,5 +1,6 @@
 package com.example.yummy.Activity;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,17 +14,33 @@ import android.widget.TextView;
 
 import com.example.yummy.Adapter.RestaurantAdapter;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Common;
 
 public class ManageRestaurantAdminActivity extends AppCompatActivity {
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_admin_detail);
         initView();
+        registerReceiver();
     }
 
+    private void registerReceiver(){
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
+    }
     private void initView(){
         TextView tvType = findViewById(R.id.tv_type);
         tvType.setText(R.string.restaurant);

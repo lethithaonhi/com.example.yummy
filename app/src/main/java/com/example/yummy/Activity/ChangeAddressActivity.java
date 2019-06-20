@@ -2,6 +2,7 @@ package com.example.yummy.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.yummy.Model.Addresses;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
 import com.example.yummy.Utils.UtilsBottomBar;
@@ -43,6 +45,7 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
     private  EditText edtSearch;
     private Marker marker;
     private GoogleMap map;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +72,21 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
 
         ImageView btnClose = findViewById(R.id.btn_close);
         btnClose.setOnClickListener(v->finish());
+        registerReceiver();
+    }
+
+    private void registerReceiver(){
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
     }
 
     @Override

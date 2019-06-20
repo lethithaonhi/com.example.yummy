@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -43,6 +44,7 @@ import com.example.yummy.Model.Discounts;
 import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
 import com.example.yummy.Utils.UtilsBottomBar;
@@ -86,6 +88,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
     private Location location;
     private Branch branch;
     private BranchAdapter branchAdapter;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,8 +97,22 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
 
         type = getIntent().getIntExtra("type", 0);
         initView();
+        registerReceiver();
     }
 
+    private void registerReceiver(){
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
+    }
     private void initView() {
         TextView tvType = findViewById(R.id.tv_type);
         LinearLayout imAdd = findViewById(R.id.btn_add);

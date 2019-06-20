@@ -2,6 +2,7 @@ package com.example.yummy.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import com.example.yummy.Adapter.AddResMenuAdapter;
 import com.example.yummy.Adapter.CityAdapter;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
 import com.example.yummy.Utils.UtilsBottomBar;
@@ -37,6 +39,7 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
     private Calendar myCalender;
     private List<String> checkList;
     private String userId;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
         checkList = new ArrayList<>();
         userId = getIntent().getStringExtra("userID");
         initView();
+        registerReceiver();
     }
 
     private void initView() {
@@ -124,6 +128,20 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
 
 
         });
+    }
+
+    private void registerReceiver(){
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
     }
 
     private boolean checkTime(String open, String close){

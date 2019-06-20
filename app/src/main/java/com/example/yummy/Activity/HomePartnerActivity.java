@@ -2,6 +2,7 @@ package com.example.yummy.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,6 +28,7 @@ import com.example.yummy.Fragment.RestaurantPartnerFragment;
 import com.example.yummy.Fragment.SettingPartnerFragment;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.UtilsBottomBar;
 import com.squareup.picasso.Picasso;
@@ -34,6 +36,7 @@ import com.squareup.picasso.Picasso;
 public class HomePartnerActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -149,6 +152,20 @@ public class HomePartnerActivity extends AppCompatActivity {
 
         LinearLayout btnSignOut = headerLayout.findViewById(R.id.btn_singOut);
         btnSignOut.setOnClickListener(v -> finish());
+        registerReceiver();
+    }
+
+    private void registerReceiver(){
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
     }
 
     @Override

@@ -81,6 +81,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             values.put(BranchContrains.LONGITUDE, branch.getLongitude());
             values.put(BranchContrains.CITY, city);
             values.put(BranchContrains.ISDELETE, branch.getIsDelete());
+            values.put(BranchContrains.DISTRICT, branch.getDistrict());
 
             return (int) db.insert(BranchContrains.TABLE_NAME, null, values);
         }
@@ -189,6 +190,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         branch.setLongitude(cursor.getDouble(6));
         branch.setDistance(cursor.getFloat(8));
         branch.setIsDelete(cursor.getInt(9));
+        branch.setDistrict(cursor.getString(10));
 
         return branch;
     }
@@ -243,14 +245,17 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 new String[] {branch.getAddress(), String.valueOf(branch.getLongitude()), String.valueOf(branch.getLatitude())});
     }
 
-    public List<Restaurant> getRestaurant(List<String> idList, String address) {
+    public List<Restaurant> getRestaurant(List<String> idList, String address, String distinct) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Restaurant> dataList = new ArrayList<>();
-        String query = "SELECT * FROM " + RestaurantContrains.TABLE_NAME + " WHERE " + RestaurantContrains.RES_ID
+        String query;
+
+        query = "SELECT * FROM " + RestaurantContrains.TABLE_NAME + " WHERE " + RestaurantContrains.RES_ID
                 + " = ? AND "+ RestaurantContrains.CITY +" = ?";
+
         for (String id : idList) {
             String[] selectionArgs = new String[]{id, address};
-            List<Branch> branchList = getBranch(id, address);
+            List<Branch> branchList = getBranch(id, address, distinct);
             Cursor cursor = db.rawQuery(query, selectionArgs);
             if (cursor != null && cursor.getCount() != 0) {
                 if (cursor.moveToFirst()) {
@@ -282,7 +287,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         for(String address : addressList) {
             for (String id : idList) {
                 String[] selectionArgs = new String[]{id, address};
-                List<Branch> branchList = getBranch(id, address);
+                List<Branch> branchList = getBranch(id, address, "");
                 Cursor cursor = db.rawQuery(query, selectionArgs);
                 if (cursor != null && cursor.getCount() != 0) {
                     if (cursor.moveToFirst()) {
@@ -313,7 +318,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + RestaurantContrains.TABLE_NAME + " WHERE " + RestaurantContrains.RES_ID
                 + " = ? AND " + RestaurantContrains.CITY + " = ?";
         String[] selectionArgs = new String[]{idRes, address};
-        List<Branch> branchList = getBranch(idRes, address);
+        List<Branch> branchList = getBranch(idRes, address, "");
         Cursor cursor = db.rawQuery(query, selectionArgs);
         if (cursor != null && cursor.getCount() != 0) {
             if (cursor.moveToFirst()) {
@@ -333,12 +338,12 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return dataList.size() > 0 ? dataList.get(0):null;
     }
 
-    private List<Branch> getBranch(String resID, String city){
+    private List<Branch> getBranch(String resID, String city, String distinct){
         SQLiteDatabase db = this.getReadableDatabase();
         List<Branch> dataList = new ArrayList<>();
         String query = "SELECT * FROM " + BranchContrains.TABLE_NAME + " WHERE " + BranchContrains.RES_ID
-                + " = ? AND " + BranchContrains.CITY +" = ?";
-            String[] selectionArgs = new String[]{resID, city};
+                + " = ? AND " + BranchContrains.CITY +" = ? AND "+BranchContrains.DISTRICT+" like ?";
+            String[] selectionArgs = new String[]{resID, city, distinct};
             Cursor cursor = db.rawQuery(query, selectionArgs);
             if (cursor != null && cursor.getCount() != 0) {
                 if (cursor.moveToFirst()) {

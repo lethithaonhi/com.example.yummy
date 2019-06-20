@@ -48,6 +48,7 @@
     <string name="disconnected">Disconnected</string>
     <string name="fragment_user">Account</string>
     <string name="notification">Notification</string>
+    <string name="distinct">Distinct</string>
     <string name="login_please">Log in to your Yummy account</string>
     <string name="intro_account">Sync your list, likes and history</string>
     <string name="history_user">History</string>
@@ -191,7 +192,7 @@
     <string name="max_discount">Max discount</string>
     <string name="min_order">Min order</string>
     <string name="add_branch">Add Branch</string>
-    <string name="address_branch">Enter Address\'s Branch</string>
+    <string name="address_branch">Enter  fill in the complete address\'s branch</string>
     <string name="twice_exit">Please click BACK again to exit!</string>
     <string name="date">Date</string>
     <string name="mess_change_status">Are you sure of the next process?</string>
@@ -201,6 +202,7 @@
     <string name="exit">Exit</string>
     <string name="hot">Hot</string>
     <string name="account">Account</string>
+    <string name="all">All</string>
     <string name="statistics">Statistics</string>
     <string name="admin">Administrator</string>
     <string name="my_account">My Account</string>

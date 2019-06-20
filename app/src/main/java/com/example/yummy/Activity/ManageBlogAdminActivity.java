@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.example.yummy.Adapter.NotificationAdapter;
 import com.example.yummy.Model.Blog;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +46,7 @@ public class ManageBlogAdminActivity extends AppCompatActivity {
     private ImageView imBlog;
     private Blog blog;
     private NotificationAdapter adapter;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +74,21 @@ public class ManageBlogAdminActivity extends AppCompatActivity {
         rcv.setAdapter(adapter);
         ImageView imClose = findViewById(R.id.im_close);
         imClose.setOnClickListener(v->finish());
+        registerReceiver();
+    }
+
+    private void registerReceiver(){
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
     }
 
     private void showDialogAddBlog(){

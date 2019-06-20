@@ -2,6 +2,7 @@ package com.example.yummy.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -24,6 +25,7 @@ import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Order;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
 import com.example.yummy.Utils.UtilsBottomBar;
@@ -40,6 +42,7 @@ public class OrderCustomActivity extends AppCompatActivity {
     private Branch branch;
     private long count = 0;
     private int feeShip = 0, discount=0;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,8 +59,22 @@ public class OrderCustomActivity extends AppCompatActivity {
             finish();
             Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
         }
+        registerReceiver();
     }
 
+    private void registerReceiver(){
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
+    }
     private void initView() {
         RecyclerView rcvMenu = findViewById(R.id.rcv_menu);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

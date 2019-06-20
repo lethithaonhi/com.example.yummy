@@ -3,6 +3,7 @@ package com.example.yummy.Activity;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,10 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.yummy.Adapter.CityAdapter;
+import com.example.yummy.Adapter.DistinctAdapter;
 import com.example.yummy.Adapter.RestaurantAdapter;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.UtilsBottomBar;
 import java.util.ArrayList;
@@ -38,6 +41,7 @@ public class RestaurantActivity extends AppCompatActivity {
     private RecyclerView rcvRes;
     private Dialog dialog;
     private  RestaurantAdapter adapter;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +54,21 @@ public class RestaurantActivity extends AppCompatActivity {
 
         type = getIntent().getIntExtra("type", 0);
         initView();
+        registerReceiver();
+    }
+
+    private void registerReceiver(){
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
     }
 
     private void initView(){
@@ -60,6 +79,8 @@ public class RestaurantActivity extends AppCompatActivity {
         TextView tvAddress = findViewById(R.id.tv_address);
         TextView tvCIty = findViewById(R.id.tv_city);
         tvCIty.setText(Common.myAddress);
+        TextView tvDistinct = findViewById(R.id.tv_district);
+        tvDistinct.setText(Common.myDistinct);
         ImageView btnClose = findViewById(R.id.btn_close);
         rcvRes = findViewById(R.id.rcv_restaurant);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -69,7 +90,9 @@ public class RestaurantActivity extends AppCompatActivity {
         RestaurantMainAsyncTask myAsyncTask = new RestaurantMainAsyncTask();
         myAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         LinearLayout viewCity = findViewById(R.id.view_city);
-        viewCity.setOnClickListener(v -> createDialog());
+        viewCity.setOnClickListener(v -> createDialogCity());
+        LinearLayout viewDistinct = findViewById(R.id.v_distinct);
+        viewDistinct.setOnClickListener(v->createDialogDistinct());
         tvAddress.setText(Common.myLocation.getName());
 
         btnSearch.setOnClickListener(v -> {
@@ -175,7 +198,7 @@ public class RestaurantActivity extends AppCompatActivity {
         Collections.sort(restaurantList, (obj1, obj2) -> Float.compare(obj1.getBranchList().get(0).getDistance(), obj2.getBranchList().get(0).getDistance()));
     }
 
-    private void createDialog(){
+    private void createDialogCity(){
         dialog = new Dialog(RestaurantActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setTitle("");
         dialog.setContentView(R.layout.dialog_city);
@@ -195,6 +218,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
         TextView tvDone = dialog.findViewById(R.id.tv_done);
         tvDone.setOnClickListener(v-> {
+            Common.myAddress = cityAdapter.getCity();
             finish();
             Intent intent = new Intent(this, RestaurantActivity.class);
             intent.putExtra("type", type);
@@ -215,6 +239,53 @@ public class RestaurantActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 cityAdapter.getFilter().filter(s.toString());
+            }
+        });
+    }
+
+    private void createDialogDistinct(){
+        Dialog dialogDis = new Dialog(RestaurantActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
+        dialogDis.setTitle("");
+        dialogDis.setContentView(R.layout.dialog_city);
+        dialogDis.show();
+
+        EditText edSearchCity = dialogDis.findViewById(R.id.edt_search_city);
+        ImageView close = dialogDis.findViewById(R.id.close_dialog);
+        TextView tvTitle = dialogDis.findViewById(R.id.tv_title);
+        tvTitle.setText(R.string.distinct);
+        close.setOnClickListener(v-> dialogDis.dismiss());
+        RecyclerView rcvCity = dialogDis.findViewById(R.id.rcv_city);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rcvCity.setLayoutManager(layoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvCity.getContext(), layoutManager.getOrientation());
+        rcvCity.addItemDecoration(dividerItemDecoration);
+
+        DistinctAdapter disAdapter = new DistinctAdapter(this, Common.distinctList);
+        rcvCity.setAdapter(disAdapter);
+
+        TextView tvDone = dialogDis.findViewById(R.id.tv_done);
+        tvDone.setOnClickListener(v-> {
+            Common.myDistinct = disAdapter.getMyDistinct();
+            finish();
+            Intent intent = new Intent(this, RestaurantActivity.class);
+            intent.putExtra("type", type);
+            startActivity(intent);
+        });
+
+        edSearchCity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                disAdapter.getFilter().filter(s.toString());
             }
         });
     }
@@ -242,7 +313,11 @@ public class RestaurantActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            restaurantList = Common.db.getRestaurant(Common.listResId, Common.myAddress);
+            String distinct;
+            distinct = Common.myDistinct;
+            if(distinct.equals(getBaseContext().getString(R.string.all)))
+                distinct = "";
+            restaurantList = Common.db.getRestaurant(Common.listResId, Common.myAddress, distinct);
             for (Restaurant restaurant :restaurantList){
                 for (Branch branch: restaurant.getBranchList()){
                     branch.setDistance(UtilsBottomBar.getDistanceBranch(branch));

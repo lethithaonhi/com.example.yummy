@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.example.yummy.Model.Account;
 import com.example.yummy.Model.User;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Node;
 import com.example.yummy.Utils.UtilsBottomBar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
     private boolean isPhone = false;
     private boolean isShowPass = false;
     private boolean isShowPass1 = false;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,8 +52,22 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         initView();
+        registerReceiver();
     }
 
+    private void registerReceiver(){
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
+    }
     public void initView() {
         edtUsername = findViewById(R.id.edt_username);
         edtNewPass = findViewById(R.id.edt_pass);

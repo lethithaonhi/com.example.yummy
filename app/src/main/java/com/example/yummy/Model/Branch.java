@@ -12,6 +12,7 @@ public class Branch implements Parcelable {
     private double longitude;
     private float distance;
     private int isDelete; //1: delete, 0: no
+    private String district;
 
     public Branch(){}
 
@@ -24,6 +25,7 @@ public class Branch implements Parcelable {
         longitude = in.readDouble();
         distance = in.readFloat();
         isDelete = in.readInt();
+        district = in.readString();
     }
 
     public int getId_db() {
@@ -90,6 +92,14 @@ public class Branch implements Parcelable {
         this.isDelete = isDelete;
     }
 
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
     public static final Creator<Branch> CREATOR = new Creator<Branch>() {
         @Override
         public Branch createFromParcel(Parcel in) {
@@ -117,5 +127,6 @@ public class Branch implements Parcelable {
         dest.writeDouble(longitude);
         dest.writeFloat(distance);
         dest.writeInt(isDelete);
+        dest.writeString(district);
     }
 }

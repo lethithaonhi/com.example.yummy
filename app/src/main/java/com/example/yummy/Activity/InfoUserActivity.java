@@ -2,6 +2,7 @@ package com.example.yummy.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.example.yummy.Adapter.AddressAdapter;
 import com.example.yummy.Model.Account;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +29,7 @@ public class InfoUserActivity extends AppCompatActivity {
     private TextView tvBirth;
     private int gender = 1;
     private boolean isPhone = true;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -132,6 +135,14 @@ public class InfoUserActivity extends AppCompatActivity {
         });
 
         tvBirth.setOnClickListener(v-> showDatePickerDialog());
+        registerReceiver();
+    }
+
+    private void registerReceiver(){
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
     }
 
     private void showDatePickerDialog() {
@@ -147,5 +158,12 @@ public class InfoUserActivity extends AppCompatActivity {
                 callback, nam, thang, ngay);
         pic.setTitle(R.string.address_user);
         pic.show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
     }
 }

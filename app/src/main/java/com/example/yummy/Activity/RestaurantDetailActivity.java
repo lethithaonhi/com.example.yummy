@@ -3,6 +3,7 @@ package com.example.yummy.Activity;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -24,6 +25,7 @@ import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.Model.Review;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
 import com.example.yummy.Utils.UtilsBottomBar;
@@ -39,6 +41,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private Branch branch;
     private ViewPager viewPager;
     private FrameLayout viewReview;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,8 +55,22 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         setToolbar();
         setViewPaper();
         initView();
+        registerReceiver();
     }
 
+    private void registerReceiver(){
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
+    }
     @Override
     protected void onResume() {
         super.onResume();

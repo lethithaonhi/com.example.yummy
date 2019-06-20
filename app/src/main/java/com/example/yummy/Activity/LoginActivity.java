@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import com.example.yummy.Model.Account;
 import com.example.yummy.Model.Addresses;
 import com.example.yummy.Model.Partner;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
 import com.example.yummy.Utils.UtilsBottomBar;
@@ -73,6 +75,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private Dialog dialog;
 //    private FirebaseUser user;
 //    private LoginButton loginFB;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 234;
@@ -159,8 +162,22 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             startActivity(new Intent(this, HomePartnerActivity.class));
             finish();
         });
+        registerReceiver();
     }
 
+    private void registerReceiver(){
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
+    }
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 

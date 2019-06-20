@@ -31,4 +31,6 @@ public class Common {
     public static List<Order> orderListRes;
     public static List<Order> orderListPartner;
     public static boolean isNetwork = true;
+    public static List<String> distinctList;
+    public static String myDistinct;
 }
