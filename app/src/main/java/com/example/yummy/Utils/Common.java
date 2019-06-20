@@ -30,4 +30,5 @@ public class Common {
     public static boolean isAdd;
     public static List<Order> orderListRes;
     public static List<Order> orderListPartner;
+    public static boolean isNetwork = true;
 }

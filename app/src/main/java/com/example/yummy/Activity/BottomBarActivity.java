@@ -1,6 +1,7 @@
 package com.example.yummy.Activity;
 
 import android.annotation.SuppressLint;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.example.yummy.Fragment.NotificationFragment;
 import com.example.yummy.Model.Blog;
 import com.example.yummy.Model.Order;
 import com.example.yummy.R;
+import com.example.yummy.Receive.NetworkChangeReceiver;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
 import com.example.yummy.Utils.UtilsBottomBar;
@@ -36,6 +38,7 @@ import java.util.Map;
 
 public class BottomBarActivity extends AppCompatActivity {
     private boolean doubleBackToExitPressedOnce = false;
+    private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +55,11 @@ public class BottomBarActivity extends AppCompatActivity {
             Common.orderListCurrent = new ArrayList<>();
             UtilsBottomBar.getOrderCurrent();
         }
+
+        networkChangeReceiver = new NetworkChangeReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkChangeReceiver, intentFilter);
     }
 
     private void getBlog(){
@@ -141,5 +149,12 @@ public class BottomBarActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.twice_exit, Toast.LENGTH_SHORT).show();
 
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(networkChangeReceiver != null)
+            unregisterReceiver(networkChangeReceiver);
     }
 }
