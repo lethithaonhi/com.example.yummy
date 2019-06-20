@@ -70,6 +70,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/im_call"
+                    android:padding="6dp"
+                    android:background="@drawable/bg_circle_blue"
+                    android:src="@drawable/ic_call_white_24dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp" />
+
+                <ImageView
+                    android:id="@+id/im_mess"
+                    android:layout_marginStart="16dp"
+                    android:padding="7dp"
+                    android:background="@drawable/bg_circle_blue"
+                    android:src="@drawable/ic_chat_white_24dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginLeft="16dp" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <FrameLayout

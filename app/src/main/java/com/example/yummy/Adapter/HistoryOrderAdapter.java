@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -227,6 +229,7 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
     private PulsatorLayout mPulsator;
     private ImageView imStatus, vClose;
 
+    @SuppressLint("IntentReset")
     private void showOrderPart(Order order){
         Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setTitle("");
@@ -251,6 +254,21 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
         TextView tvDescribe = dialog.findViewById(R.id.tv_describe);
         if(!order.getNode().isEmpty())
             tvDescribe.setText(context.getString(R.string.nodes)+": "+order.getNode());
+
+        ImageView imCall = dialog.findViewById(R.id.im_call);
+        ImageView imMess = dialog.findViewById(R.id.im_mess);
+        imCall.setOnClickListener(v->{
+            Uri number = Uri.parse("tel:"+order.getPhone());
+            Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+            context.startActivity(callIntent);
+        });
+
+        imMess.setOnClickListener(v->{
+            Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+            smsIntent.setType("vnd.android-dir/mms-sms");
+            smsIntent.putExtra("address", order.getPhone());
+            context.startActivity(smsIntent);
+        });
 
         tvStatus = dialog.findViewById(R.id.tv_status);
         tvConfirm = dialog.findViewById(R.id.tv_confirm);
