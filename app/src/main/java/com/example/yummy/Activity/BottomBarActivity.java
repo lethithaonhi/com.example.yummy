@@ -83,12 +83,11 @@ public class BottomBarActivity extends AppCompatActivity {
         });
     }
 
-    private BottomNavigationItemView items;
     private BottomNavigationMenuView menuView;
     @SuppressLint("RestrictedApi")
     public void disableShiftMode(BottomNavigationView view) {
         menuView = (BottomNavigationMenuView) view.getChildAt(0);
-        items = (BottomNavigationItemView) menuView.getChildAt(0);
+        BottomNavigationItemView items = (BottomNavigationItemView) menuView.getChildAt(0);
         // set once again checked value, so view will be updated
         items.setChecked(true);
         try {

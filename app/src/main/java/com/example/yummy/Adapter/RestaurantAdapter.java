@@ -171,11 +171,17 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     }
 
     private Branch getBranch(Restaurant restaurant){
+        String distinct;
+        if(Common.myDistinct == null || Common.myDistinct.equals(context.getString(R.string.all))){
+            distinct = "";
+        }else {
+            distinct = Common.myDistinct;
+        }
         if(restaurant.getBranchList() != null && restaurant.getBranchList().size() > 0) {
-            branch = restaurant.getBranchList().get(0);
-            min = branch.getDistance();
+            branch = new Branch();
+            min =1000000;
             for (Branch branchNew : restaurant.getBranchList()) {
-                if (min > branchNew.getDistance()) {
+                if (min > branchNew.getDistance() && branchNew.getDistrict().contains(distinct)) {
                     min = branchNew.getDistance();
                     branch = branchNew;
                 }

@@ -34,13 +34,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class RestaurantActivity extends AppCompatActivity {
-    private List<Restaurant> restaurantList;
+    private List<Restaurant> restaurantList, restaurantAllList;
     private int type; //1: mark, 0: normal, 2: distance, 3:discount
     private String[] typeName;
     private CityAdapter cityAdapter;
     private RecyclerView rcvRes;
     private Dialog dialog;
-    private  RestaurantAdapter adapter;
+    private RestaurantAdapter adapter;
     private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
@@ -57,7 +57,7 @@ public class RestaurantActivity extends AppCompatActivity {
         registerReceiver();
     }
 
-    private void registerReceiver(){
+    private void registerReceiver() {
         networkChangeReceiver = new NetworkChangeReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
@@ -67,11 +67,11 @@ public class RestaurantActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(networkChangeReceiver != null)
+        if (networkChangeReceiver != null)
             unregisterReceiver(networkChangeReceiver);
     }
 
-    private void initView(){
+    private void initView() {
         TextView tvType = findViewById(R.id.tv_type);
         tvType.setText(typeName[type]);
         EditText edSearch = findViewById(R.id.edt_search);
@@ -92,7 +92,7 @@ public class RestaurantActivity extends AppCompatActivity {
         LinearLayout viewCity = findViewById(R.id.view_city);
         viewCity.setOnClickListener(v -> createDialogCity());
         LinearLayout viewDistinct = findViewById(R.id.v_distinct);
-        viewDistinct.setOnClickListener(v->createDialogDistinct());
+        viewDistinct.setOnClickListener(v -> createDialogDistinct());
         tvAddress.setText(Common.myLocation.getName());
 
         btnSearch.setOnClickListener(v -> {
@@ -103,7 +103,7 @@ public class RestaurantActivity extends AppCompatActivity {
             btnSearch.setVisibility(View.GONE);
         });
 
-        btnClose.setOnClickListener(v->{
+        btnClose.setOnClickListener(v -> {
             viewCity.setVisibility(View.VISIBLE);
             edSearch.setText("");
             edSearch.setVisibility(View.GONE);
@@ -131,74 +131,74 @@ public class RestaurantActivity extends AppCompatActivity {
         });
 
         LinearLayout viewAddress = findViewById(R.id.view_address);
-        viewAddress.setOnClickListener(v->{
-            if(Common.accountCurrent != null) {
+        viewAddress.setOnClickListener(v -> {
+            if (Common.accountCurrent != null) {
                 Intent intent = new Intent(this, ChangeAddressActivity.class);
                 startActivity(intent);
-            }else {
+            } else {
                 Toast.makeText(this, R.string.login_first, Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, LoginActivity.class));
             }
         });
     }
 
-    private void setRestaurantList(){
-        if(type == 1){
+    private void setRestaurantList() {
+        if (type == 1) {
             Collections.sort(restaurantList, (obj1, obj2) -> Float.compare(obj1.getMark(), obj2.getMark()));
             Collections.reverse(restaurantList);
-        }else if(type == 2){
-            for (Restaurant restaurant : restaurantList){
+        } else if (type == 2) {
+            for (Restaurant restaurant : restaurantList) {
                 Collections.sort(restaurant.getBranchList(), (obj1, obj2) -> Float.compare(obj1.getDistance(), obj2.getDistance()));
             }
 
             Collections.sort(restaurantList, (obj1, obj2) -> Float.compare(obj1.getBranchList().get(0).getDistance(), obj2.getBranchList().get(0).getDistance()));
-        }else if(type== 3){
+        } else if (type == 3) {
             List<Restaurant> restaurantListNew = new ArrayList<>();
-            for(Restaurant restaurant : restaurantList){
-                if(restaurant.getDiscounts() != null && restaurant.getDiscounts().getDiscount()  > 0 ){
+            for (Restaurant restaurant : restaurantList) {
+                if (restaurant.getDiscounts() != null && restaurant.getDiscounts().getDiscount() > 0) {
                     restaurantListNew.add(restaurant);
                 }
             }
             restaurantList = restaurantListNew;
             Collections.sort(restaurantList, (ob1, ob2) -> ob2.getDiscounts().getDiscount() - ob1.getDiscounts().getDiscount());
-        }else if(type == 4){
+        } else if (type == 4) {
             getResFromMenu("mathucdon1");
-        }else if(type == 5){
+        } else if (type == 5) {
             getResFromMenu("mathucdon2");
-        }else if(type == 6){
+        } else if (type == 6) {
             getResFromMenu("mathucdon3");
-        }else if(type == 7){
+        } else if (type == 7) {
             getResFromMenu("mathucdon5");
-        }else if(type == 8){
+        } else if (type == 8) {
             getResFromMenu("mathucdon6");
-        }else if(type == 9){
+        } else if (type == 9) {
             getResFromMenu("mathucdon7");
-        }else if(type == 10){
+        } else if (type == 10) {
             getResFromMenu("mathucdon8");
-        }else if(type == 11){
+        } else if (type == 11) {
             getResFromMenu("mathucdon4");
         }
     }
 
-    private void getResFromMenu(String maMenu){
+    private void getResFromMenu(String maMenu) {
         List<Restaurant> restaurantNewList = new ArrayList<>();
-        for(Restaurant restaurant: restaurantList){
-            for(String menu : restaurant.getMenuIdList()){
-                if(menu.equals(maMenu)){
+        for (Restaurant restaurant : restaurantList) {
+            for (String menu : restaurant.getMenuIdList()) {
+                if (menu.equals(maMenu)) {
                     restaurantNewList.add(restaurant);
                     break;
                 }
             }
         }
         restaurantList = restaurantNewList;
-        for (Restaurant restaurant : restaurantList){
+        for (Restaurant restaurant : restaurantList) {
             Collections.sort(restaurant.getBranchList(), (obj1, obj2) -> Float.compare(obj1.getDistance(), obj2.getDistance()));
         }
 
         Collections.sort(restaurantList, (obj1, obj2) -> Float.compare(obj1.getBranchList().get(0).getDistance(), obj2.getBranchList().get(0).getDistance()));
     }
 
-    private void createDialogCity(){
+    private void createDialogCity() {
         dialog = new Dialog(RestaurantActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setTitle("");
         dialog.setContentView(R.layout.dialog_city);
@@ -206,7 +206,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
         EditText edSearchCity = dialog.findViewById(R.id.edt_search_city);
         ImageView close = dialog.findViewById(R.id.close_dialog);
-        close.setOnClickListener(v-> dismissDialog());
+        close.setOnClickListener(v -> dismissDialog());
         RecyclerView rcvCity = dialog.findViewById(R.id.rcv_city);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcvCity.setLayoutManager(layoutManager);
@@ -217,7 +217,7 @@ public class RestaurantActivity extends AppCompatActivity {
         rcvCity.setAdapter(cityAdapter);
 
         TextView tvDone = dialog.findViewById(R.id.tv_done);
-        tvDone.setOnClickListener(v-> {
+        tvDone.setOnClickListener(v -> {
             Common.myAddress = cityAdapter.getCity();
             finish();
             Intent intent = new Intent(this, RestaurantActivity.class);
@@ -243,7 +243,7 @@ public class RestaurantActivity extends AppCompatActivity {
         });
     }
 
-    private void createDialogDistinct(){
+    private void createDialogDistinct() {
         Dialog dialogDis = new Dialog(RestaurantActivity.this, android.R.style.Theme_Translucent_NoTitleBar);
         dialogDis.setTitle("");
         dialogDis.setContentView(R.layout.dialog_city);
@@ -253,7 +253,7 @@ public class RestaurantActivity extends AppCompatActivity {
         ImageView close = dialogDis.findViewById(R.id.close_dialog);
         TextView tvTitle = dialogDis.findViewById(R.id.tv_title);
         tvTitle.setText(R.string.distinct);
-        close.setOnClickListener(v-> dialogDis.dismiss());
+        close.setOnClickListener(v -> dialogDis.dismiss());
         RecyclerView rcvCity = dialogDis.findViewById(R.id.rcv_city);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcvCity.setLayoutManager(layoutManager);
@@ -264,7 +264,7 @@ public class RestaurantActivity extends AppCompatActivity {
         rcvCity.setAdapter(disAdapter);
 
         TextView tvDone = dialogDis.findViewById(R.id.tv_done);
-        tvDone.setOnClickListener(v-> {
+        tvDone.setOnClickListener(v -> {
             Common.myDistinct = disAdapter.getMyDistinct();
             finish();
             Intent intent = new Intent(this, RestaurantActivity.class);
@@ -290,11 +290,12 @@ public class RestaurantActivity extends AppCompatActivity {
         });
     }
 
-    public void dismissDialog(){
-        if(dialog != null){
+    public void dismissDialog() {
+        if (dialog != null) {
             dialog.dismiss();
         }
     }
+
     @SuppressLint("StaticFieldLeak")
     private class RestaurantMainAsyncTask extends AsyncTask<Void, Void, Void> {
 
@@ -302,6 +303,7 @@ public class RestaurantActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             restaurantList = new ArrayList<>();
+            restaurantAllList = new ArrayList<>();
         }
 
         @Override
@@ -313,18 +315,40 @@ public class RestaurantActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            String distinct;
-            distinct = Common.myDistinct;
-            if(distinct.equals(getBaseContext().getString(R.string.all)))
-                distinct = "";
-            restaurantList = Common.db.getRestaurant(Common.listResId, Common.myAddress, distinct);
-            for (Restaurant restaurant :restaurantList){
-                for (Branch branch: restaurant.getBranchList()){
+            restaurantAllList = Common.db.getRestaurant(Common.listResId, Common.myAddress);
+            for (Restaurant restaurant : restaurantAllList) {
+                for (Branch branch : restaurant.getBranchList()) {
                     branch.setDistance(UtilsBottomBar.getDistanceBranch(branch));
                 }
+                if (Common.myDistinct != null && !Common.myDistinct.equals(getString(R.string.all))) {
+                    if (checkRes(restaurant)) {
+                        restaurantList.add(restaurant);
+                    }
+                }
+            }
+            if (Common.myDistinct != null && !Common.myDistinct.equals(getString(R.string.all))) {
+                restaurantList = new ArrayList<>();
+                for (Restaurant restaurant : restaurantAllList) {
+                    if (checkRes(restaurant)) {
+                        restaurantList.add(restaurant);
+                    }
+                }
+            }else {
+                restaurantList = restaurantAllList;
             }
             setRestaurantList();
             return null;
         }
+    }
+
+    private boolean checkRes(Restaurant restaurant) {
+        if (restaurant.getBranchList().size() > 0 && Common.myDistinct != null) {
+            for (Branch branch : restaurant.getBranchList()) {
+                if (branch.getDistrict().contains(Common.myDistinct)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

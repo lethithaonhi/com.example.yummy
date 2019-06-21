@@ -237,7 +237,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         @Override
         protected Void doInBackground(Void... voids) {
             if(Common.db != null) {
-                Common.restaurantListCurrent = Common.db.getRestaurant(Common.listResId, Common.myAddress, "");
+                Common.restaurantListCurrent = Common.db.getRestaurant(Common.listResId, Common.myAddress);
                 for (Restaurant restaurant : Common.restaurantListCurrent) {
                     for (Branch branch : restaurant.getBranchList()) {
                         branch.setDistance(UtilsBottomBar.getDistanceBranch(branch));
