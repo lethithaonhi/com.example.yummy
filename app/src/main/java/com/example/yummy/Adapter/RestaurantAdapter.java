@@ -6,9 +6,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
@@ -16,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -31,9 +28,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
-import com.example.yummy.Activity.AddRestaurantActivity;
 import com.example.yummy.Activity.RestaurantDetailActivity;
-import com.example.yummy.Model.Account;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
@@ -49,9 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.RestaurantHolder> implements Filterable, AddResMenuAdapter.OnChangeListMenu {
     private List<Restaurant> restaurantList;
@@ -239,7 +232,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
                 if (!query.isEmpty()) {
                     List<Restaurant> filteredList = new ArrayList<>();
                     for (Restaurant restaurant : restaurantList) {
-                        if (restaurant.getName().toLowerCase().contains(query.toLowerCase())) {
+                        if (restaurant.getName().toLowerCase().contains(query.toLowerCase()) || (branch != null && branch.getAddress().toLowerCase().contains(query.toLowerCase()))) {
                             filteredList.add(restaurant);
                         }
                     }
@@ -325,7 +318,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         }else {
             edFeeShip.setVisibility(View.VISIBLE);
             rdNo.setChecked(true);
-            edFeeShip.setText(restaurant.getFreeship()+"");
+            edFeeShip.setText(String.valueOf(restaurant.getFreeship()));
         }
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rdb_no) {
@@ -412,7 +405,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     }
 
     private void openTimeDialog(TextView txtTime, int hour, int minute) {
-        TimePickerDialog.OnTimeSetListener myTimeListener = (view, hourOfDay, minute1) -> {
+        @SuppressLint("SetTextI18n") TimePickerDialog.OnTimeSetListener myTimeListener = (view, hourOfDay, minute1) -> {
             if (view.isShown()) {
                 myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 myCalender.set(Calendar.MINUTE, minute1);
