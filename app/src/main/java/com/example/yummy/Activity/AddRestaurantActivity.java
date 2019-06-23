@@ -3,6 +3,7 @@ package com.example.yummy.Activity;
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.yummy.Adapter.AddResMenuAdapter;
 import com.example.yummy.Adapter.CityAdapter;
+import com.example.yummy.Adapter.DistinctAdapter;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Receive.NetworkChangeReceiver;
@@ -40,6 +42,8 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
     private List<String> checkList;
     private String userId;
     private NetworkChangeReceiver networkChangeReceiver;
+    private  CityAdapter cityAdapter;
+    private RecyclerView rcvDistinct;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +67,7 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcvType.setLayoutManager(layoutManager);
         rcvType.setNestedScrollingEnabled(false);
+
         if(Common.menuList != null && Common.blogList.size() > 0) {
             AddResMenuAdapter adapter = new AddResMenuAdapter(this);
             rcvType.setAdapter(adapter);
@@ -89,8 +94,17 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvCity.getContext(), layoutManager.getOrientation());
         rcvCity.addItemDecoration(dividerItemDecoration);
 
-        CityAdapter cityAdapter = new CityAdapter(this, Common.cityList, true);
+        cityAdapter = new CityAdapter(this, Common.cityList, true);
         rcvCity.setAdapter(cityAdapter);
+
+        rcvDistinct = findViewById(R.id.rcv_distinct);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rcvDistinct.setLayoutManager(layoutManager1);
+        rcvDistinct.setNestedScrollingEnabled(false);
+
+        DistinctAsyncTask asyncTask = new DistinctAsyncTask();
+        asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
 
         tvOpen.setOnClickListener(v -> openTimeDialog(tvOpen, hour, minute));
         tvClose.setOnClickListener(v -> openTimeDialog(tvClose, hour, minute));
@@ -183,4 +197,20 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
         this.checkList = checkList;
     }
 
+    @SuppressLint("StaticFieldLeak")
+    private class DistinctAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            DistinctAdapter adapter = new DistinctAdapter(getBaseContext(), Common.distinctList);
+            rcvDistinct.setAdapter(adapter);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            UtilsBottomBar.getDistinct(cityAdapter.getCity());
+            return null;
+        }
+    }
 }

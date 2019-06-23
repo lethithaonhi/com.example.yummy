@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import okhttp3.internal.Util;
+
 public class RestaurantActivity extends AppCompatActivity {
     private List<Restaurant> restaurantList, restaurantAllList;
     private int type; //1: mark, 0: normal, 2: distance, 3:discount
@@ -219,6 +221,7 @@ public class RestaurantActivity extends AppCompatActivity {
         TextView tvDone = dialog.findViewById(R.id.tv_done);
         tvDone.setOnClickListener(v -> {
             Common.myAddress = cityAdapter.getCity();
+            UtilsBottomBar.getDistinct(Common.myAddress);
             finish();
             Intent intent = new Intent(this, RestaurantActivity.class);
             intent.putExtra("type", type);
