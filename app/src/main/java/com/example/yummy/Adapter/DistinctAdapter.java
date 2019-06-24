@@ -1,7 +1,5 @@
 package com.example.yummy.Adapter;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,8 +12,6 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.example.yummy.R;
-import com.example.yummy.Utils.Common;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +30,7 @@ public class DistinctAdapter extends RecyclerView.Adapter<DistinctAdapter.Distin
         this.data = data;
         dataFilter = data;
         check = new int[dataFilter.size()];
+        myDistinct = data.get(0);
     }
 
     @NonNull

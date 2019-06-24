@@ -52,7 +52,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     private String query = "";
     private Context context;
     private Branch branch;
-    private float min;
+    private double min;
     private TextView tvOpen, tvClose;
     private Calendar myCalender;
     private int type; //1:cus, 0: admin
@@ -172,7 +172,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         }
         if(restaurant.getBranchList() != null && restaurant.getBranchList().size() > 0) {
             branch = new Branch();
-            min =1000000;
+            min = 1000000000;
             for (Branch branchNew : restaurant.getBranchList()) {
                 if (min > branchNew.getDistance() && branchNew.getDistrict().contains(distinct)) {
                     min = branchNew.getDistance();

@@ -86,9 +86,7 @@ public class RestaurantPartnerFragment extends Fragment {
             startActivity(intent);
         });
 
-        vImage.setOnClickListener(vl-> {
-            showImgMenu();
-        });
+        vImage.setOnClickListener(vl-> showImgMenu());
         if(Common.accountCurrent != null && Common.accountCurrent.getPartner() != null) {
             UtilsBottomBar.RestaurantPartnerAsyncTask asyncTask = new UtilsBottomBar.RestaurantPartnerAsyncTask(Common.accountCurrent.getPartner().getBoss());
             asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -101,7 +99,6 @@ public class RestaurantPartnerFragment extends Fragment {
             if(getActivity() != null)
                 getActivity().finish();
         }
-
         return v;
     }
 

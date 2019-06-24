@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.daimajia.swipe.util.Attributes;
 import com.example.yummy.Adapter.AddResMenuAdapter;
 import com.example.yummy.Adapter.BranchAdapter;
+import com.example.yummy.Adapter.DistinctAdapter;
 import com.example.yummy.Adapter.HistoryOrderAdapter;
 import com.example.yummy.Adapter.MenuPartnerAdapter;
 import com.example.yummy.Model.Addresses;
@@ -453,7 +454,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
     }
 
     private void showAddBranch() {
-        Dialog dialog = new Dialog(this);
+        Dialog dialog = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
         dialog.setTitle("");
         dialog.setContentView(R.layout.view_add_branch_cus);
         dialog.show();
@@ -469,6 +470,13 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
         address = "";
         btnCancel.setOnClickListener(v -> dialog.dismiss());
 
+        RecyclerView rcvDistinct = dialog.findViewById(R.id.rcv_distinct);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rcvDistinct.setLayoutManager(layoutManager1);
+        rcvDistinct.setNestedScrollingEnabled(false);
+        DistinctAdapter adapter = new DistinctAdapter(getBaseContext(), Common.distinctList);
+        rcvDistinct.setAdapter(adapter);
+
         imCheck.setOnClickListener(v -> {
             address = edAddress.getText().toString().trim();
             if (!address.isEmpty()) {
@@ -480,11 +488,13 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
         });
 
         btnAdd.setOnClickListener(v -> {
+            String distinct = adapter.getMyDistinct();
             address = edAddress.getText().toString().trim();
-            if (!address.isEmpty() && branch.getAvatar() != null && !branch.getAvatar().isEmpty() && location != null && location.getLatitude() != 0 && location.getLongitude() != 0) {
+            if (!distinct.isEmpty() && !address.isEmpty() && branch.getAvatar() != null && !branch.getAvatar().isEmpty() && location != null && location.getLatitude() != 0 && location.getLongitude() != 0) {
                 branch.setAddress(address);
                 branch.setLatitude(location.getLatitude());
                 branch.setLongitude(location.getLongitude());
+                branch.setDistrict(distinct);
 
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                 String key = nodeRoot.child(Node.Branch).child(Common.restaurantPartner.getRes_id()).push().getKey();

@@ -589,14 +589,15 @@ public class UtilsBottomBar {
         return "";
     }
 
-    public static void getDistinct(String city){
+    public static void getDistinct(String city, boolean isAll){
         DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
         if(city != null && !city.isEmpty())
         mData.child(Node.distinct).child(city).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Common.distinctList = new ArrayList<>();
-                Common.distinctList.add("All");
+                if(isAll)
+                    Common.distinctList.add("All");
                 for(DataSnapshot dataSnapshot1 :  dataSnapshot.getChildren()){
                     Common.distinctList.add(dataSnapshot1.getValue(String.class));
                 }

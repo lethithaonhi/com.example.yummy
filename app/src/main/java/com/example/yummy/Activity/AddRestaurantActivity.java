@@ -43,7 +43,6 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
     private String userId;
     private NetworkChangeReceiver networkChangeReceiver;
     private  CityAdapter cityAdapter;
-    private RecyclerView rcvDistinct;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,15 +95,6 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
 
         cityAdapter = new CityAdapter(this, Common.cityList, true);
         rcvCity.setAdapter(cityAdapter);
-
-        rcvDistinct = findViewById(R.id.rcv_distinct);
-        LinearLayoutManager layoutManager1 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rcvDistinct.setLayoutManager(layoutManager1);
-        rcvDistinct.setNestedScrollingEnabled(false);
-
-        DistinctAsyncTask asyncTask = new DistinctAsyncTask();
-        asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
 
         tvOpen.setOnClickListener(v -> openTimeDialog(tvOpen, hour, minute));
         tvClose.setOnClickListener(v -> openTimeDialog(tvClose, hour, minute));
@@ -195,22 +185,5 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
     @Override
     public void OnChangeListMenu(List<String> checkList) {
         this.checkList = checkList;
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private class DistinctAsyncTask extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            DistinctAdapter adapter = new DistinctAdapter(getBaseContext(), Common.distinctList);
-            rcvDistinct.setAdapter(adapter);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            UtilsBottomBar.getDistinct(cityAdapter.getCity());
-            return null;
-        }
     }
 }

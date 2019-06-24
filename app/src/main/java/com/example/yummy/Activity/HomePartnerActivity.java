@@ -191,5 +191,6 @@ public class HomePartnerActivity extends AppCompatActivity {
                 Common.restaurantPartner = restaurant;
             }
         }
+        UtilsBottomBar.getDistinct(Common.restaurantPartner.getCity(), false);
     }
 }

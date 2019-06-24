@@ -81,9 +81,9 @@ public class RestaurantActivity extends AppCompatActivity {
         TextView tvAddress = findViewById(R.id.tv_address);
         TextView tvCIty = findViewById(R.id.tv_city);
         tvCIty.setText(Common.myAddress);
+        ImageView btnClose = findViewById(R.id.btn_close);
         TextView tvDistinct = findViewById(R.id.tv_district);
         tvDistinct.setText(Common.myDistinct);
-        ImageView btnClose = findViewById(R.id.btn_close);
         rcvRes = findViewById(R.id.rcv_restaurant);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcvRes.setLayoutManager(layoutManager);
@@ -93,6 +93,7 @@ public class RestaurantActivity extends AppCompatActivity {
         myAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         LinearLayout viewCity = findViewById(R.id.view_city);
         viewCity.setOnClickListener(v -> createDialogCity());
+
         LinearLayout viewDistinct = findViewById(R.id.v_distinct);
         viewDistinct.setOnClickListener(v -> createDialogDistinct());
         tvAddress.setText(Common.myLocation.getName());
@@ -221,7 +222,8 @@ public class RestaurantActivity extends AppCompatActivity {
         TextView tvDone = dialog.findViewById(R.id.tv_done);
         tvDone.setOnClickListener(v -> {
             Common.myAddress = cityAdapter.getCity();
-            UtilsBottomBar.getDistinct(Common.myAddress);
+            Common.myDistinct = getString(R.string.all);
+            UtilsBottomBar.getDistinct(Common.myAddress, true);
             finish();
             Intent intent = new Intent(this, RestaurantActivity.class);
             intent.putExtra("type", type);
