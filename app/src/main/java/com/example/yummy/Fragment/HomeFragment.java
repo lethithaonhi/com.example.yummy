@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.yummy.Activity.BlogActivity;
+import com.example.yummy.Activity.NearByActivity;
 import com.example.yummy.Activity.RestaurantActivity;
 import com.example.yummy.Activity.WelcomeActivity;
 import com.example.yummy.Adapter.BannerAdapter;
@@ -170,8 +171,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             intent.putExtra("type", 0);
             startActivity(intent);
         }else if(v.getId() == R.id.view_nearby){
-            Intent intent = new Intent(getContext(), RestaurantActivity.class);
-            intent.putExtra("type", 2);
+            Intent intent = new Intent(getContext(), NearByActivity.class);
+//            intent.putExtra("type", 2);
             startActivity(intent);
         }else if(v.getId() == R.id.view_hot){
             Intent intent = new Intent(getContext(), RestaurantActivity.class);
@@ -241,6 +242,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 for (Restaurant restaurant : Common.restaurantListCurrent) {
                     for (Branch branch : restaurant.getBranchList()) {
                         branch.setDistance(UtilsBottomBar.getDistanceBranch(branch));
+
                     }
                 }
                 Common.menuList = UtilsBottomBar.getMenuList();
