@@ -252,5 +252,6 @@
     <string name="mess_press">Tap to change the next status of this order</string>
     <string name="send_code_again">Send code again </string>
     <string name="new_order">New Order</string>
+    <string name="your_location">Your Location</string>
     <string name="receive_order">Your restaurant received new orders!</string>
 </resources>

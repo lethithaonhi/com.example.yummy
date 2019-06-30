@@ -40,4 +40,6 @@
     <color name="blue_light">#801352F1</color>
     <color name="transSta">#80FFFAD0</color>
     <color name="green_white">#7EDF64</color>
+    <color name="maps">#f17bafff</color>
+    <color name="mapsfill">#efbdd7ff</color>
 </resources>
