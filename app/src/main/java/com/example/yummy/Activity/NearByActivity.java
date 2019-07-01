@@ -108,13 +108,15 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
     private void setAdapter(){
         RestaurantAdapter adapter = new RestaurantAdapter(restaurantList, this, 3);
         rcvRes.setAdapter(adapter);
+        adapter.setOnSawMapChangeListener(this);
     }
 
     @Override
     public void onSawMap(Branch branch) {
         LatLng markerPosition = new LatLng(branch.getLatitude(), branch.getLongitude());
         Marker marker = myMap.addMarker(new MarkerOptions().position(markerPosition).title(branch.getAddress()));
-        CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15f);
+        myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15f));
+
     }
 
     private BitmapDescriptor bitmapDescriptorFromVector(int vectorResId) {

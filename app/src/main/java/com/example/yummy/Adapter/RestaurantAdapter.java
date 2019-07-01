@@ -59,7 +59,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     private List<String> checkList;
     private OnSawMapChangeListener onSawMapChangeListener;
 
-    public void setOnCountChangeListener(OnSawMapChangeListener onSawMapChangeListener) {
+    public void setOnSawMapChangeListener(OnSawMapChangeListener onSawMapChangeListener) {
         this.onSawMapChangeListener = onSawMapChangeListener;
     }
 
