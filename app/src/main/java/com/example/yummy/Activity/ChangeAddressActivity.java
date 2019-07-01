@@ -46,11 +46,14 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
     private Marker marker;
     private GoogleMap map;
     private NetworkChangeReceiver networkChangeReceiver;
+    private int isSave = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_address);
+
+        isSave = getIntent().getIntExtra("isSave", 0);
 
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -156,11 +159,16 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
                     location.setLatitude(lat);
                     location.setLongitude(lng);
 
-                    Common.myLocation = addressnew;
+                    if(isSave == 0) {
+                        Common.myLocation = addressnew;
+                        DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
+                        nodeRoot.child(Node.Address).child(Common.accountCurrent.getUserId()).push().setValue(addressnew);
+                    }else {
+                        Common.newLocation = addressnew;
+                    }
                     setMarker(map);
-                    DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
-                    nodeRoot.child(Node.Address).child(Common.accountCurrent.getUserId()).push().setValue(addressnew);
                 }else {
+
                     Toast.makeText(ChangeAddressActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
                     if (dialog.isShowing()) {
                         dialog.dismiss();

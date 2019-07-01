@@ -55,8 +55,17 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     private double min;
     private TextView tvOpen, tvClose;
     private Calendar myCalender;
-    private int type; //1:cus, 0: admin
+    private int type; //1:cus, 0: admin, 3: nearby
     private List<String> checkList;
+    private OnSawMapChangeListener onSawMapChangeListener;
+
+    public void setOnCountChangeListener(OnSawMapChangeListener onSawMapChangeListener) {
+        this.onSawMapChangeListener = onSawMapChangeListener;
+    }
+
+    public interface OnSawMapChangeListener {
+        void onSawMap(Branch branch);
+    }
 
     public RestaurantAdapter(List<Restaurant> restaurantList, Context context, int type){
         this.restaurantList = restaurantList;
@@ -155,6 +164,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
                     }
                 }
             }
+
+            holder.imSeeMap.setOnClickListener(v-> onSawMapChangeListener.onSawMap(branch));
         }
     }
 
@@ -190,7 +201,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
     }
 
     class RestaurantHolder extends RecyclerView.ViewHolder {
-        ImageView imRes, imClose, imDelete;
+        ImageView imRes, imClose, imDelete, imSeeMap;
         TextView tvName, tvAddress, tvMark, tvDistance, tvDiscount, tvClosed, tvTitle;
         LinearLayout viewFreeship, viewRoot, viewDiscount;
         SwipeLayout swipeLayout;
@@ -215,10 +226,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
             vTrash = itemView.findViewById(R.id.trash);
             tvClosed = itemView.findViewById(R.id.close_res);
             tvTitle = itemView.findViewById(R.id.tv_title);
+            imSeeMap = itemView.findViewById(R.id.im_seeMap);
             if(type == 0){
                 tvDistance.setVisibility(View.GONE);
                 tvMark.setVisibility(View.GONE);
                 imClose.setVisibility(View.VISIBLE);
+            }else if(type == 3){
+                imSeeMap.setVisibility(View.VISIBLE);
             }
         }
     }

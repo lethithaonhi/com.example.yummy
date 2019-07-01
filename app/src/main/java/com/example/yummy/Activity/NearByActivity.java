@@ -1,13 +1,19 @@
 package com.example.yummy.Activity;
 
-import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.yummy.Adapter.RestaurantAdapter;
 import com.example.yummy.Model.Branch;
@@ -18,26 +24,22 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NearByActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class NearByActivity extends AppCompatActivity implements OnMapReadyCallback, RestaurantAdapter.OnSawMapChangeListener {
     private GoogleMap myMap;
     private List<Restaurant> restaurantList;
     private RecyclerView rcvRes;
-    private ProgressDialog myProgress;
-//    private List<Marker> markerList;
-//    private LatLngBounds.Builder builder;
-//    private CameraUpdate cu;
-    private LatLng current;
     private Circle circle;
-    private SupportMapFragment map;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
         setContentView(R.layout.activity_nearby);
         initView();
 
-        map = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment map = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (map != null) {
             map.getMapAsync(this);
         }
@@ -63,13 +65,17 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
             getMarkerList();
             setAdapter();
         });
+        TextView tvAddress = findViewById(R.id.tv_address);
+        tvAddress.setText(Common.newLocation.getName());
+        LinearLayout viewAddress = findViewById(R.id.view_address);
+        viewAddress.setOnClickListener(v->startActivity(new Intent(this, ChangeAddressActivity.class)));
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         myMap = googleMap;
-        current = new LatLng(Common.myLocation.getLatitude(), Common.myLocation.getLongitude());
-        myMap.addMarker(new MarkerOptions().position(current).title(getString(R.string.your_location)).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_near_me_blue_24dp)));
+        LatLng current = new LatLng(Common.newLocation.getLatitude(), Common.newLocation.getLongitude());
+        myMap.addMarker(new MarkerOptions().position(current).title(getString(R.string.your_location)).icon(bitmapDescriptorFromVector(R.drawable.ic_near_me_blue_24dp)));
         myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, (float) 14));
 
         //tạo vòng tròn bao quanh
@@ -100,7 +106,23 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void setAdapter(){
-        RestaurantAdapter adapter = new RestaurantAdapter(restaurantList, this, 1);
+        RestaurantAdapter adapter = new RestaurantAdapter(restaurantList, this, 3);
         rcvRes.setAdapter(adapter);
+    }
+
+    @Override
+    public void onSawMap(Branch branch) {
+        LatLng markerPosition = new LatLng(branch.getLatitude(), branch.getLongitude());
+        Marker marker = myMap.addMarker(new MarkerOptions().position(markerPosition).title(branch.getAddress()));
+        CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15f);
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(this, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 }
