@@ -117,6 +117,22 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
         Marker marker = myMap.addMarker(new MarkerOptions().position(markerPosition).title(branch.getAddress()));
         myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15f));
 
+//        CameraPosition cameraPosition = new CameraPosition.Builder()
+//                .target(Latitude, Latitude) // Center Set
+//                .zoom(11.0f)                // Zoom
+//                .bearing(90)                // Orientation of the camera to east
+//                .tilt(30)                   // Tilt of the camera to 30 degrees
+//                .build();                   // Creates a CameraPosition from the builder
+//        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+
+//        CameraUpdate center=
+//                CameraUpdateFactory.newLatLng(new LatLng(doubleLat, doubleLon));
+//        CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
+//
+//        map.moveCamera(center);
+//        map.animateCamera(zoom);
+
     }
 
     private BitmapDescriptor bitmapDescriptorFromVector(int vectorResId) {
