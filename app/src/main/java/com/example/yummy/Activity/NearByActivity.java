@@ -115,7 +115,7 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
     public void onSawMap(Branch branch) {
         LatLng markerPosition = new LatLng(branch.getLatitude(), branch.getLongitude());
         Marker marker = myMap.addMarker(new MarkerOptions().position(markerPosition).title(branch.getAddress()));
-        myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15f));
+        myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 20f));
 
 //        CameraPosition cameraPosition = new CameraPosition.Builder()
 //                .target(Latitude, Latitude) // Center Set

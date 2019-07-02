@@ -91,7 +91,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
         branch = getBranch(restaurant);
         if(branch != null) {
             holder.tvName.setText(restaurant.getName());
-            holder.tvMark.setText(restaurant.getMark() + "");
+            holder.tvMark.setText(new DecimalFormat("##.##").format(restaurant.getMark()));
             holder.tvDistance.setText(new DecimalFormat("##.##").format(min / 1000) + " km");
             holder.tvAddress.setText(branch.getAddress());
             if (branch.getAvatar() != null && !branch.getAvatar().isEmpty())
