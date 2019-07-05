@@ -15,7 +15,7 @@ import java.util.Map;
 public class Common {
     public static MyDatabaseHelper db;
     public static Addresses myLocation;
-    public static Addresses newLocation;
+    public static Addresses nearLocation;
     public static List<String> listResId;
     public static String myAddress; //city
     public static List<Restaurant> restaurantListAll;

@@ -63,7 +63,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
         Common.myDistinct = getString(R.string.all);
-        Common.newLocation = Common.myLocation;
+        Common.nearLocation = Common.myLocation;
         UtilsBottomBar.getDistinct(Common.myAddress, true);
         rcvExp = v.findViewById(R.id.rcv_exp);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);

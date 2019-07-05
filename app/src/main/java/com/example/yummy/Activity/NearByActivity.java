@@ -66,7 +66,7 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
             setAdapter();
         });
         TextView tvAddress = findViewById(R.id.tv_address);
-        tvAddress.setText(Common.newLocation.getName());
+        tvAddress.setText(Common.nearLocation.getName());
         LinearLayout viewAddress = findViewById(R.id.view_address);
         viewAddress.setOnClickListener(v->startActivity(new Intent(this, ChangeAddressActivity.class)));
     }
@@ -74,7 +74,7 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         myMap = googleMap;
-        LatLng current = new LatLng(Common.newLocation.getLatitude(), Common.newLocation.getLongitude());
+        LatLng current = new LatLng(Common.nearLocation.getLatitude(), Common.nearLocation.getLongitude());
         myMap.addMarker(new MarkerOptions().position(current).title(getString(R.string.your_location)).icon(bitmapDescriptorFromVector(R.drawable.ic_near_me_blue_24dp)));
         myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, (float) 14));
 
