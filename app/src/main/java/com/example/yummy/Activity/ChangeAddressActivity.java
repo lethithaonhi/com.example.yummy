@@ -41,8 +41,8 @@ import javax.net.ssl.HttpsURLConnection;
 public class ChangeAddressActivity extends AppCompatActivity implements OnMapReadyCallback {
     private Location location;
     private String address;
-    private  MapFragment mapFragment;
-    private  EditText edtSearch;
+    private MapFragment mapFragment;
+    private EditText edtSearch;
     private Marker marker;
     private GoogleMap map;
     private NetworkChangeReceiver networkChangeReceiver;
@@ -64,21 +64,21 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
         edtSearch = findViewById(R.id.edt_search_address);
         Button btnSearch = findViewById(R.id.btn_search);
 
-        btnSearch.setOnClickListener(v->{
-            if(!edtSearch.getText().toString().trim().isEmpty()) {
+        btnSearch.setOnClickListener(v -> {
+            if (!edtSearch.getText().toString().trim().isEmpty()) {
                 DataLongOperationAsynchTask asynchTask = new DataLongOperationAsynchTask();
                 asynchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            }else {
+            } else {
                 Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
             }
         });
 
         ImageView btnClose = findViewById(R.id.btn_close);
-        btnClose.setOnClickListener(v->finish());
+        btnClose.setOnClickListener(v -> finish());
         registerReceiver();
     }
 
-    private void registerReceiver(){
+    private void registerReceiver() {
         networkChangeReceiver = new NetworkChangeReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
@@ -88,7 +88,7 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(networkChangeReceiver != null)
+        if (networkChangeReceiver != null)
             unregisterReceiver(networkChangeReceiver);
     }
 
@@ -98,10 +98,10 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
         setMarker(googleMap);
     }
 
-    private void setMarker(GoogleMap googleMap){
+    private void setMarker(GoogleMap googleMap) {
         googleMap.clear();
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        if(marker != null){
+        if (marker != null) {
             marker.remove();
         }
         MarkerOptions markerOptions = new MarkerOptions();
@@ -116,6 +116,7 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
     @SuppressLint("StaticFieldLeak")
     private class DataLongOperationAsynchTask extends AsyncTask<String, Void, String[]> {
         ProgressDialog dialog = new ProgressDialog(ChangeAddressActivity.this);
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -130,7 +131,7 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
             try {
                 address = edtSearch.getText().toString().trim();
                 address = address.replaceAll("\\s", "+");
-                response = getLatLongByURL("https://maps.google.com/maps/api/geocode/json?address="+address+"&sensor=false&key="+getResources().getString(R.string.api_key_map));
+                response = getLatLongByURL("https://maps.google.com/maps/api/geocode/json?address=" + address + "&sensor=false&key=" + getResources().getString(R.string.api_key_map));
                 return new String[]{response};
             } catch (Exception e) {
                 return new String[]{"error"};
@@ -142,38 +143,41 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
             try {
                 JSONObject jsonObject = new JSONObject(result[0]);
                 Addresses addressnew = new Addresses();
-                double lng = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
+                double lng = ((JSONArray) jsonObject.get("results")).getJSONObject(0)
                         .getJSONObject("geometry").getJSONObject("location")
                         .getDouble("lng");
 
-                double lat = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
+                double lat = ((JSONArray) jsonObject.get("results")).getJSONObject(0)
                         .getJSONObject("geometry").getJSONObject("location")
                         .getDouble("lat");
 
-                if(lat != 0 && lng != 0) {
+                if (lat != 0 && lng != 0) {
                     addressnew.setLatitude(lat);
                     addressnew.setLongitude(lng);
                     String addresse = UtilsBottomBar.getAddressCurrent(getBaseContext(), lat, lng);
                     addressnew.setName(addresse);
-
-                    location.setLatitude(lat);
-                    location.setLongitude(lng);
-
-                    if(isSave == 0) {
-                        Common.myLocation = addressnew;
-                        DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
-                        nodeRoot.child(Node.Address).child(Common.accountCurrent.getUserId()).push().setValue(addressnew);
-                    }else {
-                        Common.newLocation = addressnew;
-                    }
-                    setMarker(map);
-                }else {
-
-                    Toast.makeText(ChangeAddressActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
-                    if (dialog.isShowing()) {
-                        dialog.dismiss();
-                    }
+                } else {
+                    addressnew = Common.basicAddress;
                 }
+
+                location.setLatitude(lat);
+                location.setLongitude(lng);
+
+                if (isSave == 0) {
+                    Common.myLocation = addressnew;
+                    DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
+                    nodeRoot.child(Node.Address).child(Common.accountCurrent.getUserId()).push().setValue(addressnew);
+                } else {
+                    Common.newLocation = addressnew;
+                }
+                setMarker(map);
+                Toast.makeText(ChangeAddressActivity.this, R.string.success, Toast.LENGTH_SHORT).show();
+//                }else {
+//                    Toast.makeText(ChangeAddressActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
+//                    if (dialog.isShowing()) {
+//                        dialog.dismiss();
+//                    }
+//                }
             } catch (JSONException e) {
                 e.printStackTrace();
                 Toast.makeText(ChangeAddressActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();

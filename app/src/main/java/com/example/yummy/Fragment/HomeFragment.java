@@ -139,6 +139,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }, DELAY_MS, PERIOD_MS);
 
         updateCityList();
+        if(Common.basicAddress == null){
+            UtilsBottomBar.setBasicAddress();
+        }
         return v;
     }
 

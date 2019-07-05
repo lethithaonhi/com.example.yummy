@@ -165,7 +165,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
                 }
             }
 
-            holder.imSeeMap.setOnClickListener(v-> onSawMapChangeListener.onSawMap(branch));
+            holder.imSeeMap.setOnClickListener(v-> {
+                branch = getBranch(restaurant);
+                onSawMapChangeListener.onSawMap(branch);
+            });
         }
     }
 

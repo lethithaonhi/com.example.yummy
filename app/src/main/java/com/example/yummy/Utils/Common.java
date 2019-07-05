@@ -35,4 +35,5 @@ public class Common {
     public static boolean isNetwork = true;
     public static List<String> distinctList;
     public static String myDistinct;
+    public static Addresses basicAddress;
 }

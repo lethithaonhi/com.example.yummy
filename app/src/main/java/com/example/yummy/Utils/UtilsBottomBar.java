@@ -580,6 +580,13 @@ public class UtilsBottomBar {
         notificationService.notify(MY_NOTIFICATION_ID, notification);
     }
 
+    public static void setBasicAddress(){
+        Common.basicAddress.setLongitude(106.7720122);
+        Common.basicAddress.setLatitude(10.8510564);
+        Common.basicAddress.setName("1 Võ Văn Ngân, Linh Chiểu, Thủ Đức, Hồ Chí Minh, Việt Nam");
+        Common.basicAddress.setId("ANmsamndaih3f4ashdsayuidycn7w6");
+    }
+
     public static String getRestaurantName(String resID){
         for(Restaurant restaurant : Common.restaurantListAll){
             if(restaurant.getRes_id().equals(resID)){
