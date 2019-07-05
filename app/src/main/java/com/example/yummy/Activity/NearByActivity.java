@@ -1,5 +1,6 @@
 package com.example.yummy.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -7,10 +8,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,7 +45,10 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
     private List<Restaurant> restaurantList;
     private RecyclerView rcvRes;
     private Circle circle;
+    private NestedScrollView nestedScrollView;
+    private FrameLayout viewMap;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +59,20 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
         if (map != null) {
             map.getMapAsync(this);
         }
+
+        viewMap.setOnTouchListener((view, motionEvent) -> {
+            nestedScrollView.setNestedScrollingEnabled(false);
+            return true;
+        });
+
+        nestedScrollView.setOnTouchListener((view, motionEvent) -> {
+            nestedScrollView.setNestedScrollingEnabled(true);
+            return true;
+        });
     }
 
     private void initView(){
+        viewMap = findViewById(R.id.view_map);
         rcvRes = findViewById(R.id.rcv_restaurant);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rcvRes.setLayoutManager(layoutManager);
@@ -69,6 +88,7 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
         tvAddress.setText(Common.nearLocation.getName());
         LinearLayout viewAddress = findViewById(R.id.view_address);
         viewAddress.setOnClickListener(v->startActivity(new Intent(this, ChangeAddressActivity.class)));
+        nestedScrollView = findViewById(R.id.scroll_view);
     }
 
     @Override

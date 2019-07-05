@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -38,6 +37,7 @@ import com.example.yummy.Model.Review;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
+import com.example.yummy.Utils.UtilsBottomBar;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -68,6 +68,7 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
         setContentView(R.layout.activity_welcome);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         Common.cityList = new HashMap<>();
+        UtilsBottomBar.setBasicAddress();
         registerService();
         db = new MyDatabaseHelper(this);
         doSaveLang();
@@ -367,13 +368,14 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                 getCityLocation(latitude, longitude);
             } else {
                 Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+                finish();
             }
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
         // If request is cancelled, the result arrays are empty.
         if (requestCode == 2 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -387,8 +389,10 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                     Common.myLocation = address;
                     //Request location updates:
                     getLocation();
+                }else {
+                    Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+                    finish();
                 }
-
             }
         }else {
             new AlertDialog.Builder(this)

@@ -167,17 +167,17 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
                     Common.myLocation = addressnew;
                     DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                     nodeRoot.child(Node.Address).child(Common.accountCurrent.getUserId()).push().setValue(addressnew);
-                } else {
-                    Common.nearLocation = addressnew;
-                }
+//                } else {
+//                    Common.nearLocation = addressnew;
+//                }
                 setMarker(map);
                 Toast.makeText(ChangeAddressActivity.this, R.string.success, Toast.LENGTH_SHORT).show();
-//                }else {
-//                    Toast.makeText(ChangeAddressActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
-//                    if (dialog.isShowing()) {
-//                        dialog.dismiss();
-//                    }
-//                }
+                }else {
+                    Toast.makeText(ChangeAddressActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
+                    if (dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
                 Toast.makeText(ChangeAddressActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
