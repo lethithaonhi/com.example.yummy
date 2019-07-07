@@ -87,7 +87,11 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
         TextView tvAddress = findViewById(R.id.tv_address);
         tvAddress.setText(Common.nearLocation.getName());
         LinearLayout viewAddress = findViewById(R.id.view_address);
-        viewAddress.setOnClickListener(v->startActivity(new Intent(this, ChangeAddressActivity.class)));
+        viewAddress.setOnClickListener(v->{
+            Intent intent = new Intent(this, ChangeAddressActivity.class);
+            intent.putExtra("isSave", 1);
+            startActivity(intent);
+        });
         nestedScrollView = findViewById(R.id.scroll_view);
     }
 

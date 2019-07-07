@@ -581,6 +581,7 @@ public class UtilsBottomBar {
     }
 
     public static void setBasicAddress(){
+        Common.basicAddress = new Addresses();
         Common.basicAddress.setLongitude(106.7720122);
         Common.basicAddress.setLatitude(10.8510564);
         Common.basicAddress.setName("1 Võ Văn Ngân, Linh Chiểu, Thủ Đức, Hồ Chí Minh, Việt Nam");

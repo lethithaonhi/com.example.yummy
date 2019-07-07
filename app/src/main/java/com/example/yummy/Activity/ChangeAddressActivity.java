@@ -156,9 +156,9 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
                     addressnew.setLongitude(lng);
                     String addresse = UtilsBottomBar.getAddressCurrent(getBaseContext(), lat, lng);
                     addressnew.setName(addresse);
-                } else {
-                    addressnew = Common.basicAddress;
-                }
+//                } else {
+//                    addressnew = Common.basicAddress;
+//                }
 
                 location.setLatitude(lat);
                 location.setLongitude(lng);
@@ -167,9 +167,9 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
                     Common.myLocation = addressnew;
                     DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                     nodeRoot.child(Node.Address).child(Common.accountCurrent.getUserId()).push().setValue(addressnew);
-//                } else {
-//                    Common.nearLocation = addressnew;
-//                }
+                } else {
+                    Common.nearLocation = addressnew;
+                }
                 setMarker(map);
                 Toast.makeText(ChangeAddressActivity.this, R.string.success, Toast.LENGTH_SHORT).show();
                 }else {
