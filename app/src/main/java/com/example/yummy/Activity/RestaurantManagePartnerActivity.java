@@ -558,7 +558,7 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
                 if (lat != 0 && lng != 0) {
                     addressnew.setLatitude(lat);
                     addressnew.setLongitude(lng);
-                    String addresse = UtilsBottomBar.getAddressCurrent(getBaseContext(), lat, lng);
+                    String addresse = UtilsBottomBar.getAddressCurrent(getBaseContext(), lat, lng, false);
                     addressnew.setName(addresse);
 
                     location.setLatitude(lat);

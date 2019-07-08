@@ -125,6 +125,7 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
             dialog.show();
         }
 
+        @SuppressLint("WrongThread")
         @Override
         protected String[] doInBackground(String... params) {
             String response;
@@ -154,8 +155,6 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
                 if (lat != 0 && lng != 0) {
                     addressnew.setLatitude(lat);
                     addressnew.setLongitude(lng);
-                    String addresse = UtilsBottomBar.getAddressCurrent(getBaseContext(), lat, lng);
-                    addressnew.setName(addresse);
 //                } else {
 //                    addressnew = Common.basicAddress;
 //                }
@@ -164,10 +163,14 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
                 location.setLongitude(lng);
 
                 if (isSave == 0) {
+                    String addresse = UtilsBottomBar.getAddressCurrent(getBaseContext(), lat, lng, false);
+                    addressnew.setName(addresse);
                     Common.myLocation = addressnew;
                     DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                     nodeRoot.child(Node.Address).child(Common.accountCurrent.getUserId()).push().setValue(addressnew);
                 } else {
+                    String addresse = UtilsBottomBar.getAddressCurrent(getBaseContext(), lat, lng, true);
+                    addressnew.setName(addresse);
                     Common.nearLocation = addressnew;
                 }
                 setMarker(map);
@@ -176,6 +179,9 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
                     Toast.makeText(ChangeAddressActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
                     if (dialog.isShowing()) {
                         dialog.dismiss();
+                    }
+                    if(isSave == 1){
+                        Common.nearLocation = Common.basicAddress;
                     }
                 }
             } catch (JSONException e) {

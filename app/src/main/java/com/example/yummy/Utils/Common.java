@@ -19,6 +19,7 @@ public class Common {
     public static List<String> listResId;
     public static String myAddress; //city
     public static List<Restaurant> restaurantListAll;
+    public static List<Restaurant> restaurantListNearBy;
     public static List<Map<String, String>> menuList;
     public static List<Restaurant> restaurantListCurrent;
     public static Restaurant restaurantPartner;

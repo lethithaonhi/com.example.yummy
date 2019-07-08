@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         RestaurantAsyncTask myAsyncTask = new RestaurantAsyncTask();
         myAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         if(Common.myLocation != null) {
-            String address = UtilsBottomBar.getAddressCurrent(getContext(), Common.myLocation.getLatitude(), Common.myLocation.getLongitude());
+            String address = UtilsBottomBar.getAddressCurrent(getContext(), Common.myLocation.getLatitude(), Common.myLocation.getLongitude(), false);
             Common.myLocation.setName(address);
         }
         TextView tvMore = v.findViewById(R.id.tv_more);
@@ -227,6 +227,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         protected void onPreExecute() {
             super.onPreExecute();
             Common.restaurantListCurrent = new ArrayList<>();
+            Common.restaurantListNearBy = new ArrayList<>();
         }
 
         @Override
@@ -242,11 +243,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 Common.restaurantListCurrent = Common.db.getRestaurant(Common.listResId, Common.myAddress);
                 for (Restaurant restaurant : Common.restaurantListCurrent) {
                     for (Branch branch : restaurant.getBranchList()) {
-                        branch.setDistance(UtilsBottomBar.getDistanceBranch(branch));
-
+                        branch.setDistance(UtilsBottomBar.getDistanceBranch(branch, Common.myLocation.getLatitude(), Common.myLocation.getLongitude()));
                     }
                 }
                 Common.menuList = UtilsBottomBar.getMenuList();
+                Common.restaurantListNearBy = Common.restaurantListCurrent;
             }
             return null;
         }

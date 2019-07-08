@@ -51,7 +51,7 @@ public class OrderCustomActivity extends AppCompatActivity {
 
         restaurant = getIntent().getParcelableExtra("restaurant");
         branch = getIntent().getParcelableExtra("branch");
-        branch.setDistance(UtilsBottomBar.getDistanceBranch(branch));
+        branch.setDistance(UtilsBottomBar.getDistanceBranch(branch, Common.myLocation.getLatitude(), Common.myLocation.getLongitude()));
         menuList = (HashMap<Menu, Integer>) getIntent().getSerializableExtra("menulist");
         if (restaurant != null && branch != null && menuList != null) {
             initView();

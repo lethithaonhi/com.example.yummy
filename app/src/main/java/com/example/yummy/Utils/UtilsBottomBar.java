@@ -92,10 +92,10 @@ public class UtilsBottomBar {
         return menuList;
     }
 
-    public static float getDistanceBranch(Branch branch) {
+    public static float getDistanceBranch(Branch branch, double latitude, double longitude) {
         float[] distance = new float[1];
         Location.distanceBetween(branch.getLatitude(), branch.getLongitude(),
-                Common.myLocation.getLatitude(), Common.myLocation.getLongitude(), distance);
+                latitude, longitude, distance);
         Common.db.updateBranch(distance[0], branch.getId_db());
         return distance[0];
     }
@@ -111,7 +111,7 @@ public class UtilsBottomBar {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static String getAddressCurrent(Context context, double latitude, double longitude) {
+    public static String getAddressCurrent(Context context, double latitude, double longitude, boolean isNearBy) {
         List<Address> addresses;
         String address = "";
         if (latitude == 0 || longitude == 0) {
@@ -125,11 +125,19 @@ public class UtilsBottomBar {
                 Addresses address1 = new Addresses();
                 address1.setLatitude(latitude);
                 address1.setLongitude(longitude);
-                Common.myLocation = address1;
-
-                for (Restaurant restaurant : Common.restaurantListCurrent){
-                    for (Branch branch : restaurant.getBranchList()){
-                        branch.setDistance(getDistanceBranch(branch));
+                if(isNearBy){
+                    Common.nearLocation = address1;
+                    for (Restaurant restaurant : Common.restaurantListNearBy){
+                        for (Branch branch : restaurant.getBranchList()){
+                            branch.setDistance(getDistanceBranch(branch, Common.nearLocation.getLatitude(), Common.nearLocation.getLongitude()));
+                        }
+                    }
+                }else {
+                    Common.myLocation = address1;
+                    for (Restaurant restaurant : Common.restaurantListCurrent){
+                        for (Branch branch : restaurant.getBranchList()){
+                            branch.setDistance(getDistanceBranch(branch, Common.myLocation.getLatitude(), Common.myLocation.getLongitude()));
+                        }
                     }
                 }
             }
@@ -395,7 +403,7 @@ public class UtilsBottomBar {
                 Common.restaurantPartner = Common.db.getRestaurantPartner(resID, Common.myAddress);
                 if(Common.restaurantPartner != null && Common.restaurantPartner.getBranchList() != null) {
                     for (Branch branch : Common.restaurantPartner.getBranchList()) {
-                        branch.setDistance(UtilsBottomBar.getDistanceBranch(branch));
+                        branch.setDistance(UtilsBottomBar.getDistanceBranch(branch, Common.myLocation.getLatitude(), Common.myLocation.getLongitude()));
                     }
                 }
                 Common.menuList = UtilsBottomBar.getMenuList();
@@ -577,7 +585,8 @@ public class UtilsBottomBar {
         NotificationManager notificationService  =
                 (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification =  notBuilder.build();
-        notificationService.notify(MY_NOTIFICATION_ID, notification);
+        if(notificationService != null)
+            notificationService.notify(MY_NOTIFICATION_ID, notification);
     }
 
     public static void setBasicAddress(){

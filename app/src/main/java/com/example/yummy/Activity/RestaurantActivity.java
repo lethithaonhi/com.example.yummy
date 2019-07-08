@@ -323,7 +323,7 @@ public class RestaurantActivity extends AppCompatActivity {
             restaurantAllList = Common.db.getRestaurant(Common.listResId, Common.myAddress);
             for (Restaurant restaurant : restaurantAllList) {
                 for (Branch branch : restaurant.getBranchList()) {
-                    branch.setDistance(UtilsBottomBar.getDistanceBranch(branch));
+                    branch.setDistance(UtilsBottomBar.getDistanceBranch(branch, Common.myLocation.getLatitude(), Common.myLocation.getLongitude()));
                 }
                 if (Common.myDistinct != null && !Common.myDistinct.equals(getString(R.string.all))) {
                     if (checkRes(restaurant)) {

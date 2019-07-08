@@ -116,7 +116,7 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
     private void getMarkerList(){
         double radius = circle.getRadius();
         restaurantList = new ArrayList<>();
-        for(Restaurant restaurant : Common.restaurantListCurrent){
+        for(Restaurant restaurant : Common.restaurantListNearBy){
             for(Branch branch : restaurant.getBranchList()){
                 if(branch.getDistance() < radius){
                     if(!restaurantList.contains(restaurant)){
