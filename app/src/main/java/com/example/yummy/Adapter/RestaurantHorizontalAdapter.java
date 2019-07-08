@@ -1,10 +1,11 @@
 package com.example.yummy.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,11 @@ import com.example.yummy.Activity.RestaurantDetailActivity;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
-import com.example.yummy.Utils.Common;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<RestaurantHorizontalAdapter.RestaurantHorizontalHolder> {
@@ -70,6 +73,30 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
             intent.putExtra("type", 0);
             context.startActivity(intent);
         });
+
+        Time today = new Time(Time.getCurrentTimezone());
+        today.setToNow();
+
+        if (!checkTimeCloses(restaurant.getOpen_time(), today.format("%k:%M"), restaurant.getClose_open())) {
+            holder.tvClose.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvClose.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean checkTimeCloses(String open, String timeRes, String close){
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat inputParser = new SimpleDateFormat("HH:mm");
+        try {
+            Date dateOpen = inputParser.parse(open);
+            Date dateClose = inputParser.parse(close);
+            Date time = inputParser.parse(timeRes);
+            if ( dateOpen.before(time) && dateClose.after(time)) {
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
@@ -96,7 +123,7 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
     }
 
     class RestaurantHorizontalHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvAddress;
+        TextView tvName, tvAddress, tvClose;
         ImageView imgRes;
         LinearLayout viewRoot, vMore;
 
@@ -107,7 +134,7 @@ public class RestaurantHorizontalAdapter extends RecyclerView.Adapter<Restaurant
             imgRes = itemView.findViewById(R.id.img_res);
             viewRoot= itemView.findViewById(R.id.viewRoot);
             vMore = itemView.findViewById(R.id.v_more);
+            tvClose = itemView.findViewById(R.id.close_res);
         }
     }
-
 }
