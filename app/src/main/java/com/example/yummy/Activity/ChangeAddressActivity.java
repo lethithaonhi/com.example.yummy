@@ -2,6 +2,7 @@ package com.example.yummy.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -46,7 +47,7 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
     private Marker marker;
     private GoogleMap map;
     private NetworkChangeReceiver networkChangeReceiver;
-    private int isSave = 0;
+    private int isSave = 0; // 1: nearby
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,7 +75,13 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
         });
 
         ImageView btnClose = findViewById(R.id.btn_close);
-        btnClose.setOnClickListener(v -> finish());
+        btnClose.setOnClickListener(v -> {
+            if(isSave == 1){
+                Intent intent = new Intent(this, NearByActivity.class);
+                startActivity(intent);
+            }
+            finish();
+        });
         registerReceiver();
     }
 
@@ -159,28 +166,30 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
 //                    addressnew = Common.basicAddress;
 //                }
 
-                location.setLatitude(lat);
-                location.setLongitude(lng);
+                    location.setLatitude(lat);
+                    location.setLongitude(lng);
 
-                if (isSave == 0) {
-                    String addresse = UtilsBottomBar.getAddressCurrent(getBaseContext(), lat, lng, false);
-                    addressnew.setName(addresse);
-                    Common.myLocation = addressnew;
-                    DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
-                    nodeRoot.child(Node.Address).child(Common.accountCurrent.getUserId()).push().setValue(addressnew);
+                    if (isSave == 0) {
+                        String addresse = UtilsBottomBar.getAddressCurrent(getBaseContext(), lat, lng, false);
+                        addressnew.setName(addresse);
+                        Common.myLocation = addressnew;
+                        if (Common.accountCurrent != null) {
+                            DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
+                            nodeRoot.child(Node.Address).child(Common.accountCurrent.getUserId()).push().setValue(addressnew);
+                        }
+                    } else {
+                        String addresse = UtilsBottomBar.getAddressCurrent(getBaseContext(), lat, lng, true);
+                        addressnew.setName(addresse);
+                        Common.nearLocation = addressnew;
+                    }
+                    setMarker(map);
+                    Toast.makeText(ChangeAddressActivity.this, R.string.success, Toast.LENGTH_SHORT).show();
                 } else {
-                    String addresse = UtilsBottomBar.getAddressCurrent(getBaseContext(), lat, lng, true);
-                    addressnew.setName(addresse);
-                    Common.nearLocation = addressnew;
-                }
-                setMarker(map);
-                Toast.makeText(ChangeAddressActivity.this, R.string.success, Toast.LENGTH_SHORT).show();
-                }else {
                     Toast.makeText(ChangeAddressActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
                     if (dialog.isShowing()) {
                         dialog.dismiss();
                     }
-                    if(isSave == 1){
+                    if (isSave == 1) {
                         Common.nearLocation = Common.basicAddress;
                     }
                 }
@@ -190,6 +199,8 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                 }
+                Common.nearLocation = Common.basicAddress;
+                UtilsBottomBar.setDistanceAll(true, Common.nearLocation);
             }
 
             if (dialog.isShowing()) {

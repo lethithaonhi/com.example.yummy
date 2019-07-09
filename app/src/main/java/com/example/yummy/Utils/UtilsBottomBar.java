@@ -125,21 +125,8 @@ public class UtilsBottomBar {
                 Addresses address1 = new Addresses();
                 address1.setLatitude(latitude);
                 address1.setLongitude(longitude);
-                if(isNearBy){
-                    Common.nearLocation = address1;
-                    for (Restaurant restaurant : Common.restaurantListNearBy){
-                        for (Branch branch : restaurant.getBranchList()){
-                            branch.setDistance(getDistanceBranch(branch, Common.nearLocation.getLatitude(), Common.nearLocation.getLongitude()));
-                        }
-                    }
-                }else {
-                    Common.myLocation = address1;
-                    for (Restaurant restaurant : Common.restaurantListCurrent){
-                        for (Branch branch : restaurant.getBranchList()){
-                            branch.setDistance(getDistanceBranch(branch, Common.myLocation.getLatitude(), Common.myLocation.getLongitude()));
-                        }
-                    }
-                }
+
+               setDistanceAll(isNearBy, address1);
             }
         }
         Geocoder geocoder;
@@ -153,6 +140,24 @@ public class UtilsBottomBar {
             e.printStackTrace();
         }
         return address;
+    }
+
+    public static void setDistanceAll(boolean isNearBy, Addresses address1){
+        if(isNearBy){
+            Common.nearLocation = address1;
+            for (Restaurant restaurant : Common.restaurantListNearBy){
+                for (Branch branch : restaurant.getBranchList()){
+                    branch.setDistance(getDistanceBranch(branch, Common.nearLocation.getLatitude(), Common.nearLocation.getLongitude()));
+                }
+            }
+        }else {
+            Common.myLocation = address1;
+            for (Restaurant restaurant : Common.restaurantListCurrent){
+                for (Branch branch : restaurant.getBranchList()){
+                    branch.setDistance(getDistanceBranch(branch, Common.myLocation.getLatitude(), Common.myLocation.getLongitude()));
+                }
+            }
+        }
     }
 
     public static void getReview(){

@@ -84,6 +84,7 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
             getMarkerList();
             setAdapter();
         });
+
         TextView tvAddress = findViewById(R.id.tv_address);
         tvAddress.setText(Common.nearLocation.getName());
         LinearLayout viewAddress = findViewById(R.id.view_address);
@@ -91,6 +92,7 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
             Intent intent = new Intent(this, ChangeAddressActivity.class);
             intent.putExtra("isSave", 1);
             startActivity(intent);
+            finish();
         });
         nestedScrollView = findViewById(R.id.scroll_view);
     }
@@ -139,23 +141,7 @@ public class NearByActivity extends AppCompatActivity implements OnMapReadyCallb
     public void onSawMap(Branch branch) {
         LatLng markerPosition = new LatLng(branch.getLatitude(), branch.getLongitude());
         Marker marker = myMap.addMarker(new MarkerOptions().position(markerPosition).title(branch.getAddress()));
-        myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 20f));
-
-//        CameraPosition cameraPosition = new CameraPosition.Builder()
-//                .target(Latitude, Latitude) // Center Set
-//                .zoom(11.0f)                // Zoom
-//                .bearing(90)                // Orientation of the camera to east
-//                .tilt(30)                   // Tilt of the camera to 30 degrees
-//                .build();                   // Creates a CameraPosition from the builder
-//        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-
-//        CameraUpdate center=
-//                CameraUpdateFactory.newLatLng(new LatLng(doubleLat, doubleLon));
-//        CameraUpdate zoom=CameraUpdateFactory.zoomTo(15);
-//
-//        map.moveCamera(center);
-//        map.animateCamera(zoom);
+        myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 16f));
 
     }
 
