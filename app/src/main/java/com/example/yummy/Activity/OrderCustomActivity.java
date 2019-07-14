@@ -132,12 +132,14 @@ public class OrderCustomActivity extends AppCompatActivity {
         today.setToNow();
         tvTime.setText(today.format("%k:%M:%S"));
 
+        int item = 0 ;
         Calendar c = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-yyyy");
         tvDate.setText(dateformat.format(c.getTime()));
 
         for (Menu menu : menuList.keySet()) {
             count += (menu.getPrices()* menuList.get(menu));
+            item += menuList.get(menu);
         }
 
         if(restaurant.getDiscounts() != null && count >= restaurant.getDiscounts().getMin_order()){
@@ -165,7 +167,7 @@ public class OrderCustomActivity extends AppCompatActivity {
         tvNameRes.setText(restaurant.getName());
         tvAddress.setText(Common.myLocation.getName());
         tvEdit.setOnClickListener(v -> startActivity(new Intent(this, ChangeAddressActivity.class)));
-        tvCount.setText(menuList.size() + " " + getResources().getString(R.string.item));
+        tvCount.setText(item + " " + getResources().getString(R.string.item));
         tvTotal.setText(UtilsBottomBar.convertStringToMoney((int) count));
         edName.setText(Common.accountCurrent.getName());
         edPhone.setText(Common.accountCurrent.getPhone());
