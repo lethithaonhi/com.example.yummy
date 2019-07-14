@@ -75,7 +75,7 @@
             android:layout_marginRight="20dp"
             android:fontFamily="sans-serif"
             android:gravity="center_horizontal"
-            android:text="Vui lòng nhập Email vào ô bên dưới, chúng tôi sẽ gửi mật khẩu mới vào hộp thư của bạn"
+            android:text="@string/reset_pass"
             android:textColor="@color/searchbox_hint_text_color"
             android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="parent"

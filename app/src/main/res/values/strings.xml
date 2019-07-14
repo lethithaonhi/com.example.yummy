@@ -75,6 +75,7 @@
     </string-array>
     <string name="freeship">Freeship</string>
     <string name="search_city">Search province, city name</string>
+    <string name="search_res">Search restaurant name, address</string>
     <string name="search_location">Enter address</string>
     <string name="search">Search</string>
     <string name="done">Done</string>
@@ -111,6 +112,7 @@
     <string name="old_pass">Old password</string>
     <string name="confirm">Confirm</string>
     <string name="enter_current_pass">Enter Current Password</string>
+    <string name="reset_pass">Please enter your email in the box below, we will send a new password to your inbox</string>
     <string name="enter_new_pass">Enter New Password</string>
     <string name="re_enter_pass">Re-Enter Password</string>
     <string name="error_change_pass">Wrong password.</string>
