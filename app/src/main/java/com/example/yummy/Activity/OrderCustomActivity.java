@@ -41,7 +41,7 @@ public class OrderCustomActivity extends AppCompatActivity {
     private HashMap<Menu, Integer> menuList = new HashMap<>();
     private Branch branch;
     private long count = 0;
-    private int feeShip = 0, discount=0;
+    private int feeShip = 0, discount=0, item = 0 ;;
     private NetworkChangeReceiver networkChangeReceiver;
 
     @Override
@@ -132,7 +132,6 @@ public class OrderCustomActivity extends AppCompatActivity {
         today.setToNow();
         tvTime.setText(today.format("%k:%M:%S"));
 
-        int item = 0 ;
         Calendar c = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-yyyy");
         tvDate.setText(dateformat.format(c.getTime()));
@@ -197,7 +196,7 @@ public class OrderCustomActivity extends AppCompatActivity {
                 order.setDiscount(discount);
                 order.setName(name);
                 order.setPhone(phone);
-                order.setCount(menuList.size());
+                order.setCount(item);
 
                 DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                 String key = nodeRoot.child(Node.Order).child(restaurant.getRes_id()).push().getKey();
