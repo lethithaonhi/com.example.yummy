@@ -418,8 +418,8 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
             discounts = Common.restaurantPartner.getDiscounts();
             edCode.setText(discounts.getCode());
             edDiscount.setText(discounts.getDiscount() + "%");
-            edMax.setText(UtilsBottomBar.convertStringToMoney(discounts.getMax_discount()));
-            edMin.setText(UtilsBottomBar.convertStringToMoney(discounts.getMin_order()));
+            edMax.setText(String.valueOf(discounts.getMax_discount()));
+            edMin.setText(String.valueOf(discounts.getMin_order()));
         }
 
         if(Common.restaurantPartner != null)
@@ -428,9 +428,11 @@ public class RestaurantManagePartnerActivity extends AppCompatActivity implement
         btnCancel.setOnClickListener(v -> dialog.dismiss());
         btnAdd.setOnClickListener(v -> {
             String dis = edDiscount.getText().toString().trim();
+            dis = dis.replace("%","");
             String code = edCode.getText().toString().trim();
             String max = edMax.getText().toString().trim();
             String min = edMin.getText().toString().trim();
+
             int fee = Integer.parseInt(edFeeShip.getText().toString().trim());
 
             if (!dis.isEmpty() && !code.isEmpty() && !max.isEmpty() && !min.isEmpty() && !edFeeShip.getText().toString().trim().isEmpty()) {

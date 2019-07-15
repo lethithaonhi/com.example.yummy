@@ -140,22 +140,22 @@ public class OnGoingFragment extends Fragment{
                                         order.setIsStatus(status);
                                         int pos = adapter.getPos(order);
                                         data.get(pos).setIsStatus(status);
-                                        if(getContext() != null)
-//                                        ((Activity)getContext()).runOnUiThread(OnGoingFragment.this::setAdapter);
-                                            ((Activity)getContext()).runOnUiThread(()->adapter.notifyDataSetChanged());
-                                        if(status == 0){
-                                            showMessStatusOrder(R.string.on_sent);
-                                        }else if(status == 1){
-                                            showMessStatusOrder(R.string.on_confirm);
-                                        }else if(status == 2){
-                                            showMessStatusOrder(R.string.on_dispatch);
-                                        }else if(status == 4){
-                                            showMessStatusOrder(R.string.on_cancel);
+                                        if(getContext() != null) {
+                                            ((Activity) getContext()).runOnUiThread(OnGoingFragment.this::setAdapter);
+                                            if (status == 0) {
+                                                ((Activity) getContext()).runOnUiThread(() -> showMessStatusOrder(R.string.on_sent));
+                                            } else if (status == 1) {
+                                                ((Activity) getContext()).runOnUiThread(() -> showMessStatusOrder(R.string.on_confirm));
+                                            } else if (status == 2) {
+                                                ((Activity) getContext()).runOnUiThread(() -> showMessStatusOrder(R.string.on_dispatch));
+                                            } else if (status == 4) {
+                                                ((Activity) getContext()).runOnUiThread(() -> showMessStatusOrder(R.string.on_cancel));
+                                            }
+                                            if (status == 3) {
+                                                UtilsBottomBar.showSuccessView(getContext(), getString(R.string.on_complete), false);
+                                            }
                                         }
-                                        if(status == 3){
-                                            UtilsBottomBar.showSuccessView(getContext(), getString(R.string.on_complete), false);
-                                        }
-                                        initMessOrder();
+                                        initRingMessOrder();
                                     }
 
                                     if (finalI == Common.orderListCurrent.size() && order.getIsStatus() == 3) {
@@ -172,14 +172,14 @@ public class OnGoingFragment extends Fragment{
                         }
                     }
                 };
-                timer.schedule(timerTask, 3000, 30000);
+                timer.schedule(timerTask, 5000, 30000);
             } catch (IllegalStateException e) {
                 Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void initMessOrder() {
+    private void initRingMessOrder() {
         endPlayer = MediaPlayer.create(getContext(), R.raw.newmess);
         if (endPlayer != null) {
             endPlayer.setVolume(1.0f, 1.0f);
