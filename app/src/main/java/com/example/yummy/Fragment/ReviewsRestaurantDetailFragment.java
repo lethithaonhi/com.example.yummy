@@ -15,6 +15,7 @@ import com.example.yummy.Adapter.ReviewAdapter;
 import com.example.yummy.Model.Branch;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
+import java.util.Collections;
 
 public class ReviewsRestaurantDetailFragment extends Fragment {
     private Restaurant restaurant;
@@ -51,6 +52,7 @@ public class ReviewsRestaurantDetailFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvReviews.getContext(), layoutManager.getOrientation());
         rcvReviews.addItemDecoration(dividerItemDecoration);
 
+        Collections.reverse(restaurant.getReviewList());
         ReviewAdapter reviewAdapter = new ReviewAdapter(getContext(), restaurant.getReviewList());
         rcvReviews.setAdapter(reviewAdapter);
     }
