@@ -57,7 +57,7 @@ public class ManageBlogAdminActivity extends AppCompatActivity {
 
     private void initView(){
         TextView tvType = findViewById(R.id.tv_type);
-        tvType.setText(R.string.restaurant);
+        tvType.setText(R.string.blog);
         LinearLayout vAccount = findViewById(R.id.v_account);
         vAccount.setVisibility(View.GONE);
         RecyclerView rcv = findViewById(R.id.rcv_manage);

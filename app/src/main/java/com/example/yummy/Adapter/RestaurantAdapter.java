@@ -249,6 +249,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
                 if (!query.isEmpty()) {
                     List<Restaurant> filteredList = new ArrayList<>();
                     for (Restaurant restaurant : restaurantList) {
+                        branch = getBranch(restaurant);
                         if (restaurant.getName().toLowerCase().contains(query.toLowerCase()) || (branch != null && branch.getAddress().toLowerCase().contains(query.toLowerCase()))) {
                             filteredList.add(restaurant);
                         }
