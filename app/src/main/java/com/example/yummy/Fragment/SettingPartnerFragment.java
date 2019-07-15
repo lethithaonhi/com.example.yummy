@@ -214,6 +214,8 @@ public class SettingPartnerFragment extends Fragment {
                     if(!newPass.isEmpty() && !rePass.isEmpty() && !curentPass.isEmpty()) {
                         if(!curentPass.equals(Common.accountCurrent.getPassword())){
                             Toast.makeText(getContext(), R.string.error_change_pass, Toast.LENGTH_SHORT).show();
+                        }else if(newPass.length() < 6){
+                            Toast.makeText(getContext(), R.string.request_pass, Toast.LENGTH_SHORT).show();
                         }else if(!newPass.equals(rePass)){
                             Toast.makeText(getContext(), R.string.wrong_pass, Toast.LENGTH_SHORT).show();
                         }else {

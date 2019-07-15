@@ -12,16 +12,16 @@
 
     <TextView
         android:id="@+id/txt_title"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
-    android:fontFamily="@font/audiowide"
-    android:gravity="center_horizontal"
-    android:text="@string/signup"
-    android:textColor="@color/black"
-    android:textSize="35sp"
-    android:visibility="visible"
-    app:layout_constraintBottom_toTopOf="@id/content" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/audiowide"
+        android:gravity="center_horizontal"
+        android:text="@string/signup"
+        android:textColor="@color/black"
+        android:textSize="35sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/content" />
 
         <ImageView
             android:layout_marginTop="40dp"
@@ -131,7 +131,7 @@
             android:elevation="3dp"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:text="@string/register_text"
+            android:text="@string/signup"
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="14sp"/>

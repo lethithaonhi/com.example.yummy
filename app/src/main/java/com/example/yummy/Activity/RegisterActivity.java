@@ -226,6 +226,15 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
             String date = tvDateBirth.getText().toString().trim();
             String phone = edPhone.getText().toString().trim();
 
+            if (phone.length() > 0 && phone.length() < 11 && phone.charAt(0) == '0') {
+                imError.setImageResource(R.drawable.ic_check_circle_24dp);
+                isPhone = true;
+            } else {
+                imError.setImageResource(R.drawable.ic_error_red_24dp);
+                Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+                isPhone = false;
+            }
+
             if(!name.isEmpty() && !date.isEmpty() && isPhone){
                 account.setName(name);
                 account.setPhone(phone);
