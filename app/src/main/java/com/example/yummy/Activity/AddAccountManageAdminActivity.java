@@ -149,9 +149,6 @@ public class AddAccountManageAdminActivity extends AppCompatActivity {
             String name = edName.getText().toString().trim();
             String date = tvDateBirth.getText().toString().trim();
             String phone = edPhone.getText().toString().trim();
-            String bank = edBank.getText().toString().trim();
-            String stk = edSTK.getText().toString().trim();
-            String cmnd = edCMND.getText().toString().trim();
 
             if (phone.length() > 0 && phone.length() < 13) {
                 imError.setImageResource(R.drawable.ic_check_circle_24dp);

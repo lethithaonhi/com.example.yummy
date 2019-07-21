@@ -3,7 +3,6 @@ package com.example.yummy.Activity;
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import com.example.yummy.Adapter.AddResMenuAdapter;
 import com.example.yummy.Adapter.CityAdapter;
-import com.example.yummy.Adapter.DistinctAdapter;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Receive.NetworkChangeReceiver;
@@ -42,7 +40,6 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
     private List<String> checkList;
     private String userId;
     private NetworkChangeReceiver networkChangeReceiver;
-    private  CityAdapter cityAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,7 +90,7 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rcvCity.getContext(), layoutManager.getOrientation());
         rcvCity.addItemDecoration(dividerItemDecoration);
 
-        cityAdapter = new CityAdapter(this, Common.cityList, true);
+        CityAdapter cityAdapter = new CityAdapter(this, Common.cityList, true);
         rcvCity.setAdapter(cityAdapter);
 
         tvOpen.setOnClickListener(v -> openTimeDialog(tvOpen, hour, minute));
