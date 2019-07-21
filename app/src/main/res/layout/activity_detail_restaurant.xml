@@ -43,6 +43,7 @@
 
                 </FrameLayout>
                 <LinearLayout
+                    android:background="@color/trans"
                     android:layout_gravity="bottom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">

@@ -1,6 +1,7 @@
 package com.example.yummy.Fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -37,18 +38,15 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-
-import okhttp3.internal.Util;
 
 import static android.app.Activity.RESULT_OK;
 
 public class RestaurantPartnerFragment extends Fragment {
     private int TAKE_PHOTO_CODE = 1;
-    private ImgRestaurantDetailAdapter adapter;
     private int CHOOSE_PHOTO_CODE = 2;
+    private TextView tvCountImg;
+    private ImgRestaurantDetailAdapter adapter;
 
     public static RestaurantPartnerFragment newInstance() {
         Bundle args = new Bundle();
@@ -111,7 +109,7 @@ public class RestaurantPartnerFragment extends Fragment {
 
             TextView tvName = dialog.findViewById(R.id.tv_name);
             tvName.setText(Common.restaurantPartner.getName());
-            TextView tvCountImg = dialog.findViewById(R.id.tv_countImg);
+            tvCountImg = dialog.findViewById(R.id.tv_countImg);
             ImageView btnAdd = dialog.findViewById(R.id.btn_add);
             btnAdd.setVisibility(View.VISIBLE);
             btnAdd.setOnClickListener(v-> createDialogChangeAvatar());
@@ -119,7 +117,9 @@ public class RestaurantPartnerFragment extends Fragment {
             RecyclerView rcvImRes = dialog.findViewById(R.id.rcv_image_res);
             rcvImRes.setLayoutManager(new GridLayoutManager(getContext(), 3));
             if(Common.restaurantPartner.getImgList() != null) {
-                tvCountImg.setText(Common.restaurantPartner.getImgList().size()+" " + getContext().getString(R.string.image));
+                if(Common.restaurantPartner.getImgList().size() >= 1 && !Common.restaurantPartner.getImgList().get(0).isEmpty()) {
+                    tvCountImg.setText(Common.restaurantPartner.getImgList().size() + " " + getContext().getString(R.string.image));
+                }
                 adapter = new ImgRestaurantDetailAdapter(getContext(), Common.restaurantPartner.getImgList(), Common.restaurantPartner, 1);
                 rcvImRes.setAdapter(adapter);
             }
@@ -219,6 +219,15 @@ public class RestaurantPartnerFragment extends Fragment {
                             Toast.makeText(getContext(), R.string.success, Toast.LENGTH_SHORT).show();
                             Common.restaurantPartner.getImgList().add(downloadUri.toString());
                             adapter.notifyDataSetChanged();
+                            if(getContext() != null) {
+                                ((Activity) getContext()).runOnUiThread(() -> {
+                                    if (Common.restaurantPartner.getImgList().size() >= 1 && !Common.restaurantPartner.getImgList().get(0).isEmpty()) {
+                                        tvCountImg.setText(Common.restaurantPartner.getImgList().size() + " " + getContext().getString(R.string.image));
+                                    }
+                                });
+                            }
+                        }else {
+                            Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
