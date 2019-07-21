@@ -115,17 +115,23 @@ public class AddRestaurantActivity extends AppCompatActivity implements AddResMe
                 restaurant.setFreeship(freeShip);
                 restaurant.setVideo(video);
                 restaurant.setMenuIdList(checkList);
+                restaurant.setMark(5);
                 DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
                 String key = mData.child(Node.QuanAn).push().getKey();
-                mData.child(Node.QuanAn).child(key).setValue(restaurant);
-                if(userId != null){
-                    mData.child(Node.Partner).child(userId).child(Node.Boss).setValue(key);
-                }
-                if(CityAdapter.city != null && !CityAdapter.city.isEmpty()){
-                    mData.child(Node.DiaDiem).child(CityAdapter.city).push().setValue(key);
-                }
+                if (key != null) {
+                    mData.child(Node.QuanAn).child(key).setValue(restaurant);
 
-                UtilsBottomBar.showSuccessView(this, getString(R.string.success),true);
+                    if (userId != null) {
+                        mData.child(Node.Partner).child(userId).child(Node.Boss).setValue(key);
+                    }
+                    if (CityAdapter.city != null && !CityAdapter.city.isEmpty()) {
+                        mData.child(Node.DiaDiem).child(CityAdapter.city).push().setValue(key);
+                    }
+
+                    UtilsBottomBar.showSuccessView(this, getString(R.string.success), true);
+                }else {
+                    Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+                }
             }else {
                 Toast.makeText(this, R.string.empty_user, Toast.LENGTH_SHORT).show();
             }
