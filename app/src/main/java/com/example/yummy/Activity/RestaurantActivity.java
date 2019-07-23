@@ -528,8 +528,9 @@ public class RestaurantActivity extends AppCompatActivity {
             Map<String, Integer> perms = new HashMap<>();
             perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
             perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
-            for (int i = 0; i < permissions.length; i++)
+            for (int i = 0; i < permissions.length; i++) {
                 perms.put(permissions[i], grantResults[i]);
+            }
             if (perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                     && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 getFilePath();
