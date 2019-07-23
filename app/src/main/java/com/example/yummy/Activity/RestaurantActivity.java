@@ -507,7 +507,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ImageResponse> call, Throwable t) {
-                Toast.makeText(RestaurantActivity.this, "An unknown error has occured.", Toast.LENGTH_SHORT)
+                Toast.makeText(RestaurantActivity.this, R.string.some_error, Toast.LENGTH_SHORT)
                         .show();
                 t.printStackTrace();
             }
