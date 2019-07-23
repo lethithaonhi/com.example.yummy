@@ -450,6 +450,7 @@ public class RestaurantActivity extends AppCompatActivity {
                 }
             }
             createDialogLoadImg(bitmap);
+            getFilePath();
         }
     }
 
