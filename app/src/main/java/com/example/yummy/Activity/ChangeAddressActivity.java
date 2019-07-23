@@ -127,7 +127,7 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog.setMessage("Please wait...");
+            dialog.setMessage(getString(R.string.please_wait));
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
         }
@@ -162,9 +162,6 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
                 if (lat != 0 && lng != 0) {
                     addressnew.setLatitude(lat);
                     addressnew.setLongitude(lng);
-//                } else {
-//                    addressnew = Common.basicAddress;
-//                }
 
                     location.setLatitude(lat);
                     location.setLongitude(lng);
@@ -186,7 +183,7 @@ public class ChangeAddressActivity extends AppCompatActivity implements OnMapRea
                     Toast.makeText(ChangeAddressActivity.this, R.string.success, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(ChangeAddressActivity.this, R.string.error_change_address, Toast.LENGTH_SHORT).show();
-                    if (dialog.isShowing()) {
+                    if (dialog != null && dialog.isShowing()) {
                         dialog.dismiss();
                     }
                     if (isSave == 1) {

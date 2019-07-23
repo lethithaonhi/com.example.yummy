@@ -252,4 +252,5 @@
     <string name="reset_pass">Vui lòng nhập Email vào ô bên dưới, chúng tôi sẽ gửi mật khẩu mới vào hộp thư của bạn</string>
     <string name="search_res">Tìm kiếm tên quán ăn, địa chỉ quán</string>
     <string name="send">Gửi</string>
+    <string name="error_pess">Một vài quyền bị từ chối.</string>
 </resources>

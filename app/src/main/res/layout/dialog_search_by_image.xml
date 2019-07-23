@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_gravity="center"
+    android:gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_marginTop="30dp"
+            android:padding="28dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content">
+
+           <ImageView
+               android:id="@+id/img_search"
+               android:src="@drawable/warning"
+               android:background="@drawable/border_line_black"
+               android:layout_margin="24dp"
+               android:layout_width="match_parent"
+               android:layout_height="150dp" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="24sp"
+                android:text="@string/error"
+                android:textColor="@color/red"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btn_search"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:text="@string/search"
+                android:background="@color/blue_ins"
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/instagram"
+            android:layout_width="56dp"
+            android:layout_height="56dp" />
+
+    </FrameLayout>
+
+</LinearLayout>

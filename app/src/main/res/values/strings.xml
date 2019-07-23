@@ -257,4 +257,5 @@
     <string name="your_location">Your Location</string>
     <string name="receive_order">Your restaurant received new orders!</string>
     <string name="send">Send</string>
+    <string name="error_pess">Some permissions are denied</string>
 </resources>
