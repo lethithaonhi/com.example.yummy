@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/btn_hide_keyboard"
+            android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -132,7 +132,7 @@
                     android:elevation="3dp"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
-                    android:text="Gửi"
+                    android:text="@string/send"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="14sp"
