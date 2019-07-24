@@ -532,7 +532,7 @@ public class RestaurantActivity extends AppCompatActivity {
                     if (response.body() != null) {
 //                        Toast.makeText(RestaurantActivity.this,  , Toast.LENGTH_SHORT).show();
 //                        Log.d("URL Picture", "http://imgur.com/" + response.body().data.id);
-                        getKeySearchByImage("i.imgur.com/" + response.body().data.id);
+                        getKeySearchByImage(response.body().data.link.substring(6));
                     }
                 }
             }
