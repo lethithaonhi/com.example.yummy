@@ -445,6 +445,8 @@ public class AccountFragment extends Fragment {
                             });
                             DatabaseReference nodeRoot = FirebaseDatabase.getInstance().getReference();
                             nodeRoot.child(Node.user).child(Common.accountCurrent.getUserId()).child("avatar").setValue(downloadUri.toString());
+                        }else {
+                            Toast.makeText(mContext, R.string.error_change_avatar, Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(mContext, R.string.error_change_avatar, Toast.LENGTH_SHORT).show();

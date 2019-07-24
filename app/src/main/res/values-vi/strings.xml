@@ -254,4 +254,12 @@
     <string name="send">Gửi</string>
     <string name="error_pess">Một vài quyền bị từ chối.</string>
     <string name="some_error">Xuất hiện một số lỗi khi upload.</string>
+    <string name="notification_success">Ảnh đã được load</string>
+    <string name="notification_progress">Đang tải…</string>
+    <string name="notification_share_link">Link hình ảnh</string>
+    <string name="notification_fail">Upload thất bại.</string>
+    <string name="input_title">Đề tài</string>
+    <string name="input_description">Mô tả</string>
+    <string name="btn_picture">Browse</string>
+    <string name="btn_upload">Upload</string>
 </resources>

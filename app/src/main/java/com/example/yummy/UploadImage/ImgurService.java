@@ -18,7 +18,7 @@ import retrofit2.http.Query;
 public interface ImgurService {
     @Multipart
     @Headers({
-            "Authorization: Client-ID 0b5e46b0ac7b39f"
+            "Authorization: Client-ID b5e2860524646bb"
     })
     @POST("image")
     Call<ImageResponse> postImage(

@@ -2,6 +2,7 @@
     <string name="app_name">Yummy</string>
     <string name="Your_API_KEY" translatable="false">AIzaSyB9v2vE1hC-ojehepfnkcCSwBp6BLVTsN4</string>
     <string name="api_key_map" translatable="false">AIzaSyC0pWEQijgfqgJecVJVMaF6a1wXpUgmj78</string>
+    <string name="YOUR_CLIENT_ID" translatable="false">b5e2860524646bb</string>
     <string name="welcome">Welcome to Yummy</string>
     <string name="loading">Loading…</string>
     <string name="home">Home</string>
@@ -259,4 +260,12 @@
     <string name="send">Send</string>
     <string name="error_pess">Some permissions are denied</string>
     <string name="some_error">An unknown error has occurred.</string>
+    <string name="notification_success">Picture uploaded.</string>
+    <string name="notification_progress">Uploading...</string>
+    <string name="notification_share_link">Picture link</string>
+    <string name="notification_fail">Upload failed.</string>
+    <string name="input_title">Title</string>
+    <string name="input_description">Description</string>
+    <string name="btn_picture">Browse</string>
+    <string name="btn_upload">Upload</string>
 </resources>

@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -42,6 +43,12 @@ import com.example.yummy.UploadImage.ImageResponse;
 import com.example.yummy.UploadImage.*;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.UtilsBottomBar;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,6 +75,7 @@ public class RestaurantActivity extends AppCompatActivity {
     private Dialog dialog;
     private RestaurantAdapter adapter;
     private NetworkChangeReceiver networkChangeReceiver;
+    private EditText edSearch;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,7 +108,7 @@ public class RestaurantActivity extends AppCompatActivity {
     private void initView() {
         TextView tvType = findViewById(R.id.tv_type);
         tvType.setText(typeName[type]);
-        EditText edSearch = findViewById(R.id.edt_search);
+        edSearch = findViewById(R.id.edt_search);
         ImageView btnSearch = findViewById(R.id.btn_search);
         TextView tvAddress = findViewById(R.id.tv_address);
         TextView tvCIty = findViewById(R.id.tv_city);
@@ -394,6 +402,8 @@ public class RestaurantActivity extends AppCompatActivity {
     private Uri returnUri;
     private Dialog dialogLoadImg;
     private ProgressDialog progressDialog;
+    private String urlMain = "http://images.google.com/searchbyimage?image_url=";
+
 
     private void createDialogSearchByImg() {
         Dialog dialog = new Dialog(this);
@@ -450,7 +460,34 @@ public class RestaurantActivity extends AppCompatActivity {
                 }
             }
             createDialogLoadImg(bitmap);
+            super.onActivityResult(requestCode, resultCode, data);
+//
+            Log.d(this.getLocalClassName(), "Before check");
+
+
+            if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M){
+                final List<String> permissionsList = new ArrayList<String>();
+                addPermission(permissionsList, Manifest.permission.READ_EXTERNAL_STORAGE);
+                addPermission(permissionsList, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                if (!permissionsList.isEmpty())
+                    ActivityCompat.requestPermissions(RestaurantActivity.this,
+                            permissionsList.toArray(new String[permissionsList.size()]),
+                            READ_WRITE_EXTERNAL);
+                else
+                    getFilePath();
+            } else {
             getFilePath();
+            }
+        }
+    }
+
+    private void addPermission(List<String> permissionsList, String permission) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                permissionsList.add(permission);
+                shouldShowRequestPermissionRationale(permission);
+            }
         }
     }
 
@@ -478,7 +515,7 @@ public class RestaurantActivity extends AppCompatActivity {
         final Call<ImageResponse> call =
                 imgurService.postImage(
                        "search",
-                        "search by image", "", "",
+                        "search", "", "lethithaonhi999",
                         MultipartBody.Part.createFormData(
                                 "image",
                                 chosenFile.getName(),
@@ -487,32 +524,32 @@ public class RestaurantActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<ImageResponse>() {
             @Override
-            public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
-                if (response == null) {
-                    return;
-                }
+            public void onResponse(@NonNull Call<ImageResponse> call, @NonNull Response<ImageResponse> response) {
                 if (response.isSuccessful()) {
                     if(dialogLoadImg != null && dialogLoadImg.isShowing()) {
                         dialogLoadImg.dismiss();
                     }
-                    Toast.makeText(RestaurantActivity.this, "http://imgur.com/" + response.body().data.id , Toast.LENGTH_SHORT)
-                            .show();
-                    Log.d("URL Picture", "http://imgur.com/" + response.body().data.id);
-                    progressDialog = new ProgressDialog(RestaurantActivity.this);
-                    progressDialog.setMessage(getString(R.string.please_wait));
-                    progressDialog.setCanceledOnTouchOutside(false);
-                    progressDialog.show();
+                    if (response.body() != null) {
+//                        Toast.makeText(RestaurantActivity.this,  , Toast.LENGTH_SHORT).show();
+//                        Log.d("URL Picture", "http://imgur.com/" + response.body().data.id);
+                        getKeySearchByImage("i.imgur.com/" + response.body().data.id);
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<ImageResponse> call, Throwable t) {
-                Toast.makeText(RestaurantActivity.this, R.string.some_error, Toast.LENGTH_SHORT)
-                        .show();
+            public void onFailure(@NonNull Call<ImageResponse> call, @NonNull Throwable t) {
+                Toast.makeText(RestaurantActivity.this, R.string.some_error, Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
+                if(progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
             }
         });
-
+        progressDialog = new ProgressDialog(RestaurantActivity.this);
+        progressDialog.setMessage(getString(R.string.please_wait));
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
     }
 
     private void getFilePath() {
@@ -541,5 +578,40 @@ public class RestaurantActivity extends AppCompatActivity {
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+    @SuppressLint("StaticFieldLeak")
+    private void getKeySearchByImage(String url) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                urlMain = urlMain + url + ".jpg";
+                String keyMain = "";
+                try {
+                    Document doc = Jsoup.connect(urlMain).get();
+                    Elements keys = doc.select(".gLFyf");
+
+                    for (Element key : keys) {
+                        keyMain = key.attr("value");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(RestaurantActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
+                }
+                return keyMain;
+            }
+
+            @Override
+            protected void onPostExecute(String key) {
+                super.onPostExecute(key);
+                if(!key.isEmpty()) {
+                   edSearch.setText(key);
+                }else {
+                    Toast.makeText(RestaurantActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
+                }
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

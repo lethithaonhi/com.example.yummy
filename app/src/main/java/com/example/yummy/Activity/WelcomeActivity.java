@@ -93,10 +93,6 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
         mDatabase.child(Node.DiaDiem).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!isDelete) {
-                    isDelete = true;
-                    deteleDataCurrent();
-                }
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     String address = data.getKey();
                     if (address != null) {
@@ -465,14 +461,6 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
             // Handle IOException
         } catch (NullPointerException e) {
             // Handle NullPointerException
-        }
-    }
-
-    private void deteleDataCurrent(){
-        List<String>list = new ArrayList<>();
-        list.add("quan1");
-        if(Common.db.getRestaurant(list, Common.myAddress).size() > 0){
-            Common.db.clearData();
         }
     }
 }
