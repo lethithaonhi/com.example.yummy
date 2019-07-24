@@ -30,10 +30,12 @@ import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.example.yummy.Activity.RestaurantDetailActivity;
 import com.example.yummy.Model.Branch;
+import com.example.yummy.Model.Menu;
 import com.example.yummy.Model.Restaurant;
 import com.example.yummy.R;
 import com.example.yummy.Utils.Common;
 import com.example.yummy.Utils.Node;
+import com.example.yummy.Utils.UtilsBottomBar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -250,7 +252,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
                     List<Restaurant> filteredList = new ArrayList<>();
                     for (Restaurant restaurant : restaurantList) {
                         branch = getBranch(restaurant);
-                        if (restaurant.getName().toLowerCase().contains(query.toLowerCase()) || (branch != null && branch.getAddress().toLowerCase().contains(query.toLowerCase()))) {
+                        if (checkRestaurant(restaurant, query)) {
                             filteredList.add(restaurant);
                         }
                     }
@@ -272,6 +274,31 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Re
                 notifyDataSetChanged();
             }
         };
+    }
+
+    private boolean checkRestaurant(Restaurant restaurant, String query){
+        if(UtilsBottomBar.stripAccents(restaurant.getName().toLowerCase()).contains(UtilsBottomBar.stripAccents(query.toLowerCase()))
+                || UtilsBottomBar.stripAccents(query.toLowerCase()).contains(UtilsBottomBar.stripAccents(restaurant.getName().toLowerCase()))
+                || (branch != null && UtilsBottomBar.stripAccents(branch.getAddress().toLowerCase()).contains(UtilsBottomBar.stripAccents(query.toLowerCase())))){
+            return true;
+        }
+
+        for(Menu menu:restaurant.getMenuList()){
+            if(UtilsBottomBar.stripAccents(menu.getName().toLowerCase()).contains(UtilsBottomBar.stripAccents(query.toLowerCase()))
+                    || UtilsBottomBar.stripAccents(query.toLowerCase()).contains(UtilsBottomBar.stripAccents(menu.getName().toLowerCase()))){
+                return true;
+            }
+        }
+
+        if(restaurant.getKeySearch() != null && restaurant.getKeySearch().size() > 0){
+            for(String key : restaurant.getKeySearch()){
+                if(UtilsBottomBar.stripAccents(query.toLowerCase()).contains(UtilsBottomBar.stripAccents(key.toLowerCase()))
+                || UtilsBottomBar.stripAccents(key.toLowerCase()).contains(UtilsBottomBar.stripAccents(query.toLowerCase()))){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void showDialogClose(Restaurant restaurant) {

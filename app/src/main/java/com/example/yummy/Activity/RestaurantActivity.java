@@ -402,7 +402,6 @@ public class RestaurantActivity extends AppCompatActivity {
     private Uri returnUri;
     private Dialog dialogLoadImg;
     private ProgressDialog progressDialog;
-    private String urlMain = "http://images.google.com/searchbyimage?image_url=";
 
 
     private void createDialogSearchByImg() {
@@ -532,7 +531,7 @@ public class RestaurantActivity extends AppCompatActivity {
                     if (response.body() != null) {
 //                        Toast.makeText(RestaurantActivity.this,  , Toast.LENGTH_SHORT).show();
 //                        Log.d("URL Picture", "http://imgur.com/" + response.body().data.id);
-                        getKeySearchByImage(response.body().data.link.substring(6));
+                        getKeySearchByImage(response.body().data.link.substring(8));
                     }
                 }
             }
@@ -584,6 +583,7 @@ public class RestaurantActivity extends AppCompatActivity {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
+                String urlMain = "http://images.google.com/searchbyimage?image_url=";
                 urlMain = urlMain + url + ".jpg";
                 String keyMain = "";
                 try {

@@ -24,4 +24,5 @@ public class Node {
     public static String mark = "mark";
     public static String freeship = "freeship";
     public static String distinct = "District";
+    public static String search = "Search";
 }

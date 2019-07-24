@@ -22,6 +22,7 @@ public class Restaurant implements Parcelable {
     private Discounts discounts;
     private List<Review> reviewList;
     private int isClose; //1:close, 0: open
+    private List<String> keySearch;
 
     public Restaurant(){}
 
@@ -145,6 +146,14 @@ public class Restaurant implements Parcelable {
         this.isClose = isClose;
     }
 
+    public List<String> getKeySearch() {
+        return keySearch;
+    }
+
+    public void setKeySearch(List<String> keySearch) {
+        this.keySearch = keySearch;
+    }
+
     protected Restaurant(Parcel in) {
         res_id = in.readString();
         name = in.readString();
@@ -164,6 +173,7 @@ public class Restaurant implements Parcelable {
         reviewList = new ArrayList<>();
         in.readList(reviewList, Review.class.getClassLoader());
         isClose = in.readInt();
+        keySearch = in.createStringArrayList();
     }
 
     public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
@@ -200,5 +210,6 @@ public class Restaurant implements Parcelable {
         dest.writeParcelable(discounts, flags);
         dest.writeList(reviewList);
         dest.writeInt(isClose);
+        dest.writeList(keySearch);
     }
 }

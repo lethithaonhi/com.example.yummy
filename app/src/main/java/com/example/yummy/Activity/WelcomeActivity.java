@@ -136,6 +136,8 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                                                         }
                                                     });
 
+                                                    UtilsBottomBar.getKeySearch(restaurant);
+
                                                     mDatabase.child(Node.HinhAnhQuanAn).child(resID).addValueEventListener(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

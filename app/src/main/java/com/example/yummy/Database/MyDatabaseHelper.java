@@ -148,6 +148,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             values.put(RestaurantContrains.MIN_ORDER, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getMin_order() : 0);
             values.put(RestaurantContrains.CODE, restaurant.getDiscounts() != null ? restaurant.getDiscounts().getCode() : "");
             values.put(RestaurantContrains.IS_CLOSE, restaurant.getIsClose());
+            values.put(RestaurantContrains.KEY_LIST, convertListToString(restaurant.getKeySearch()));
             // Trèn một dòng dữ liệu vào bảng.
             db.insert(RestaurantContrains.TABLE_NAME, null, values);
 
@@ -169,6 +170,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         restaurant.setCity(cursor.getString(8));
         restaurant.setMark(cursor.getFloat(9));
         restaurant.setFreeship(cursor.getInt(10));
+        restaurant.setKeySearch(convertStringToList(cursor.getString(16)));
 
         Discounts discounts = new Discounts();
         discounts.setDiscount(cursor.getInt(11));

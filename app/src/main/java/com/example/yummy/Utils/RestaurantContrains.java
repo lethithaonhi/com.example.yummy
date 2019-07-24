@@ -18,12 +18,13 @@ public class RestaurantContrains {
     public static final String MIN_ORDER = "Min_Order";
     public static final String CODE = "Code";
     public static final String IS_CLOSE = "IsClose";
+    public static final String KEY_LIST = "Key_List";
 
     public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
             + ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "+ RES_ID + " TEXT, " + NAME_RES +" TEXT, "
             + OPEN_TIME + " TEXT, " + CLOSE_TIME + " TEXT, " + VIDEO +" TEXT, "
             + IMG_LIST +" TEXT, " + MENU_LIST + " TEXT, " +CITY + " TEXT, " + MARK + " REAL, " + FREESHIP + " INTEGER, "
-            + DISCOUNT + " INTEGER, "+ MAX_DISCOUNT + " INTEGER, "+ MIN_ORDER + " INTEGER, "+ CODE + " TEXT, " + IS_CLOSE + " INTEGER)";
+            + DISCOUNT + " INTEGER, "+ MAX_DISCOUNT + " INTEGER, "+ MIN_ORDER + " INTEGER, "+ CODE + " TEXT, " + IS_CLOSE + " INTEGER, "+ KEY_LIST + " TEXT)";
 
     public static final String DELETE_TABLE = "DELETE FROM " + TABLE_NAME;
 }
