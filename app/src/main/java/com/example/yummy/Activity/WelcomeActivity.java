@@ -136,7 +136,20 @@ public class WelcomeActivity extends AppCompatActivity implements GoogleApiClien
                                                         }
                                                     });
 
-                                                    UtilsBottomBar.getKeySearch(restaurant);
+                                                    mDatabase.child(Node.search).child(restaurant.getRes_id()).addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                            List<String> keyList = new ArrayList<>();
+                                                            for (DataSnapshot data : dataSnapshot.getChildren())
+                                                                keyList.add(data.getValue(String.class));
+                                                            restaurant.setKeySearch(keyList);
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                        }
+                                                    });
 
                                                     mDatabase.child(Node.HinhAnhQuanAn).child(resID).addValueEventListener(new ValueEventListener() {
                                                         @Override

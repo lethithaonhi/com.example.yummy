@@ -210,6 +210,6 @@ public class Restaurant implements Parcelable {
         dest.writeParcelable(discounts, flags);
         dest.writeList(reviewList);
         dest.writeInt(isClose);
-        dest.writeList(keySearch);
+        dest.writeStringList(keySearch);
     }
 }

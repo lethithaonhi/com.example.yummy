@@ -48,8 +48,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_restaurant);
 
-        restaurant = getIntent().getParcelableExtra("restaurant");
         branch = getIntent().getParcelableExtra("branch");
+        restaurant = getIntent().getParcelableExtra("restaurant");
         ImageView imBack = findViewById(R.id.im_back);
         imBack.setOnClickListener(v->finish());
         setToolbar();

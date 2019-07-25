@@ -639,22 +639,4 @@ public class UtilsBottomBar {
         s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
         return s;
     }
-
-   public static void getKeySearch(Restaurant restaurant) {
-       DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
-       mData.child(Node.search).child(restaurant.getRes_id()).addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               List<String> keyList = new ArrayList<>();
-               for (DataSnapshot data : dataSnapshot.getChildren())
-                   keyList.add(data.getValue(String.class));
-               restaurant.setKeySearch(keyList);
-           }
-
-           @Override
-           public void onCancelled(@NonNull DatabaseError databaseError) {
-
-           }
-       });
-   }
 }
